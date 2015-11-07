@@ -1,12 +1,4 @@
 [submodule "ChiikaAPI/ThirdParty/curl"]
 	path = ChiikaAPI/ThirdParty/curl
 	url = https://github.com/bagder/curl.git
-[submodule "ChiikaAPI/ThirdParty/jsoncpp"]
-	path = ChiikaAPI/ThirdParty/jsoncpp
-	url = https://github.com/open-source-parsers/jsoncpp
-[submodule "ChiikaAPI/ThirdParty/pugixml"]
-	path = ChiikaAPI/ThirdParty/pugixml
-	url = https://github.com/zeux/pugixml.git
-[submodule "ChiikaAPI/ThirdParty/anitomy"]
-	path = ChiikaAPI/ThirdParty/anitomy
-	url = https://github.com/erengy/anitomy
+	
