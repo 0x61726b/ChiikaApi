@@ -17,6 +17,7 @@
 #define __FileHelper_h__
 //----------------------------------------------------------------------------
 #include "Required.h"
+#include "Singleton.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -30,6 +31,27 @@ namespace ChiikaApi
 		bool Open();
 		void Close();
 		std::string Read();
+	};
+	class MalApiExport FileWriter
+	{
+	protected:
+		std::ofstream mStream;
+		std::string mFile;
+	public:
+		FileWriter(const std::string& fileName);
+		bool Open();
+		void Close();
+		void Write(std::string);
+	};
+	class MalApiExport FileUtil : public Singleton<FileUtil>
+	{
+	public:
+		bool CheckIfDirectoryExists(const std::string& path);
+		bool CreateDir(const std::string& path);
+
+
+		static FileUtil& Get(void);
+		static FileUtil* GetPtr(void);
 	};
 }
 //----------------------------------------------------------------------------

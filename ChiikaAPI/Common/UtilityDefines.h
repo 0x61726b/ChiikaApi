@@ -21,10 +21,10 @@
 #	define QToChar(x) /*x.toStdString().c_str()*/
 #	define Q_(x) /*String::fromStdString(x)*/
 #	define FromStdToInt(x) /*String::fromStdString(x).toInt()*/
-#	define FromXMLValueToInt(x) /*String::fromStdString(x.text().get()).toInt()*/
-#	define FromXMLValueToFloat(x)/* String::fromStdString(x.text().get()).toFloat()*/
+#	define FromXMLValueToInt(x) atoi(x.text().get()) /*String::fromStdString(x.text().get()).toInt()*/
+#	define FromXMLValueToFloat(x) atof(x.text().get()) /* String::fromStdString(x.text().get()).toFloat()*/
 #	define FromXMLValueToStd(x)  x.text().get()
-#	define JsToQ(x) String::fromStdString(x.asString())
+#	define JsToQ(x) (x.asString())
 #	define SetXMLValue(x,y) x.text().set(y)
 #	define SetXMLAttrType(x,y) x.append_attribute("Type").set_value(y)
 #	define ForEachOnStd(x,y) \

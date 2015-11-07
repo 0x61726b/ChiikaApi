@@ -18,6 +18,7 @@
 #include "Common/ExceptionManager.h"
 #include "pugixml.hpp"
 #include "Logging\Log.h"
+#include "Logging\FileHelper.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -69,7 +70,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AppSettings::SetDefaultValues()
 	{
-		String dataPath = (m_sGlobalPath) + "/Data";
+		String dataPath = (m_sGlobalPath)+"/Data";
 		m_sSettingsPath = dataPath + "/Chiika.cfg";
 
 		Initialize();
@@ -77,12 +78,12 @@ namespace ChiikaApi
 		m_bFirstLaunch = true;
 
 
-		/*QFile file(m_sSettingsPath);
-		if(file.exists())
+		FileReader file(m_sSettingsPath);
+		if(file.Open())
 		{
 			m_bFirstLaunch = false;
 			return;
-		}*/
+		}
 
 
 		String m_sAnimeListFile = dataPath + "/Chitanda.eru";
@@ -215,24 +216,24 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AppSettings::Initialize()
 	{
-		String dataPath = (m_sGlobalPath) + "/Data";
-		//QDir dir(dataPath);
+		String dataPath = (m_sGlobalPath)+"/Data";
+		//Create folders here
 
-		////Create folders here
+		if(!FileUtil::Get().CheckIfDirectoryExists(dataPath))
+		{
+			if(!FileUtil::Get().CreateDir(dataPath))
+			{
+				CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't create Data directory!","AppSettings::Initialize")
+					m_bFirstLaunch = true;
+			}
+		}
 
-		//if(!dir.exists())
-		//{
-		//	if(!QDir().mkdir(dataPath))
-		//		CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't create Data directory!","AppSettings::Initialize")
-		//		m_bFirstLaunch = true;
-		//}
-
-		//QDir imageDir(dataPath + "/Images");
-		//if(!imageDir.exists())
-		//{
-		//	if(!QDir().mkdir(dataPath + "/Images"))
-		//		CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't create Images directory!","AppSettings::Initialize")
-		//}
+		String imageDir = (dataPath + "/Images");
+		if(!FileUtil::Get().CheckIfDirectoryExists(imageDir))
+		{
+			if(!FileUtil::Get().CreateDir(imageDir))
+				CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't create Images directory!","AppSettings::Initialize")
+		}
 	}
 	//----------------------------------------------------------------------------
 	String AppSettings::GetStringOption(OptionsEnum option)
@@ -302,7 +303,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AppSettings::SetBooleanOption(OptionsEnum option,bool newValue)
 	{
-				ShrPtr<SettingInterface> ptr;
+		ShrPtr<SettingInterface> ptr;
 		StdIt(OptionValueMap) It = m_Settings.find(option);
 
 		ShrPtr<BooleanOption> filePtr = std::static_pointer_cast<BooleanOption>(It->second);
@@ -316,75 +317,75 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AppSettings::Save()
 	{
-		//QFile file((m_sSettingsPath));
+		FileWriter file((m_sSettingsPath));
 
 
-		//if(file.open(QFile::WriteOnly))
-		//{
-		//	pugi::xml_document doc;
+		if(file.Open())
+		{
+			pugi::xml_document doc;
 
-		//	pugi::xml_node  root = doc.append_child("Chiika");
-		//	pugi::xml_node  settings = root.append_child("Settings");
+			pugi::xml_node  root = doc.append_child("Chiika");
+			pugi::xml_node  settings = root.append_child("Settings");
 
-		//	//pugi::xml_node  _iterator It;
+			//pugi::xml_node  _iterator It;
 
-		//	StdIt(OptionValueMap) It;
-		//	ForEachOnStd(It,m_Settings)
-		//	{
-		//		//Get string value
-		//		StdIt(OptionsMap) strValue = AllChiikaSettings.find(It->first);
-		//		if(IsValidIt(strValue,AllChiikaSettings))
-		//		{
-		//			pugi::xml_node  pugi::xml_node  = settings.append_child(strValue->second.toStdString().c_str());
+			StdIt(OptionValueMap) It;
+			ForEachOnStd(It,m_Settings)
+			{
+				//Get string value
+				StdIt(OptionsMap) strValue = AllChiikaSettings.find(It->first);
+				if(IsValidIt(strValue,AllChiikaSettings))
+				{
+					pugi::xml_node node = settings.append_child(strValue->second.c_str());
 
-		//			StdIt(OptionValueMap) s = m_Settings.find(It->first);
-		//			ShrPtr<SettingInterface> sptr = s->second;
+					StdIt(OptionValueMap) s = m_Settings.find(It->first);
+					ShrPtr<SettingInterface> sptr = s->second;
 
-		//			switch(sptr->GetType())
-		//			{
-		//			case OptionsType::Str:
-		//			{
-		//				SetXMLValue(node,QToChar(GetStringOption(It->first)));
-		//				SetXMLAttrType(node,"String");
-		//			}
-		//			break;
-		//			case OptionsType::Boolean:
-		//			{
-		//				SetXMLValue(node,(GetBooleanOption(It->first)));
-		//				SetXMLAttrType(node,"Boolean");
-		//			}
-		//			break;
-		//			case OptionsType::Int:
-		//			{
-		//				SetXMLValue(node,GetIntegerOption(It->first));
-		//				SetXMLAttrType(node,"Integer");
-		//			}
-		//			break;
-		//			}
-		//		}
-		//	}
+					switch(sptr->GetType())
+					{
+					case OptionsType::Str:
+					{
+						SetXMLValue(node,(GetStringOption(It->first).c_str()));
+						SetXMLAttrType(node,"String");
+					}
+					break;
+					case OptionsType::Boolean:
+					{
+						SetXMLValue(node,(GetBooleanOption(It->first)));
+						SetXMLAttrType(node,"Boolean");
+					}
+					break;
+					case OptionsType::Int:
+					{
+						SetXMLValue(node,GetIntegerOption(It->first));
+						SetXMLAttrType(node,"Integer");
+					}
+					break;
+					}
+				}
+			}
 
-		//	doc.save_file(m_sSettingsPath.toStdString().c_str());
-		//}
-		//else
-		//{
-		//	CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't save settings file!","AppSettings::Save")
-		//}
+			doc.save_file(m_sSettingsPath.c_str());
+		}
+		else
+		{
+			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't save settings file!","AppSettings::Save")
+		}
 	}
 	//----------------------------------------------------------------------------
 	void AppSettings::Load()
 	{
-		/*QFile file((m_sSettingsPath));
-		if(file.open(QFile::ReadOnly))
+		FileReader file((m_sSettingsPath));
+		if(file.Open())
 		{
 			pugi::xml_document doc;
-			String fileData = file.readAll();
-			doc.load(fileData.toStdString().c_str());
+			String fileData = file.Read();
+			doc.load(fileData.c_str());
 
 			pugi::xml_node  root = doc.child("Chiika");
 			pugi::xml_node  settings = root.child("Settings");
 
-			pugi::xml_node  _iterator It;
+			pugi::xml_node::iterator It;
 			ForEachOnXml(It,settings)
 			{
 				String nodeName = It->name();
@@ -427,7 +428,7 @@ namespace ChiikaApi
 					break;
 					case OptionsType::Int:
 					{
-						AddIntegerOption(e,nodeValue.toInt());
+						AddIntegerOption(e,atoi(nodeValue.c_str()));
 					}
 					break;
 					}
@@ -438,12 +439,12 @@ namespace ChiikaApi
 		else
 		{
 			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't open settings file!","AppSettings::Load")
-		}*/
+		}
 	}
 	//----------------------------------------------------------------------------
 	String AppSettings::GetDataPath()
 	{
-		return (m_sGlobalPath) + "/Data";
+		return (m_sGlobalPath)+"/Data";
 	}
 	//----------------------------------------------------------------------------
 	String AppSettings::GetImagePath()

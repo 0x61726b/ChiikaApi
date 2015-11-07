@@ -15,6 +15,7 @@
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
 #include "Root\Root.h"
+#include "Request\RequestManager.h"
 
 int main()
 {
@@ -27,6 +28,11 @@ int main()
 	std::string modulePath = p.substr(0,lastEscape);
 
 	ChiikaApi::Root r(modulePath);
+
+	
+
+	std::getchar();
+
 
 
 	return 0;

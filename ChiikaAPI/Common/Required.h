@@ -139,6 +139,10 @@ namespace ChiikaApi
 	typedef MultiMap<String,CurlConfigOption>::type CurlConfigOptionMap;
 #	define REQUEST_SUCCESS(x) (x == 200 || x == 201)
 }
+#ifdef YUME_PLATFORM_WIN32
+#include "windows.h"
+#include "winbase.h"
+#endif
 //----------------------------------------------------------------------------
 #define ApiDebugMode
 //#define ApiShowXMLOutput

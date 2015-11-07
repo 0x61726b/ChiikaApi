@@ -191,96 +191,95 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	AnimeList ParsingManager::ParseGetUserAnimeList(const String& data)
 	{
-		//pugi::xml_document doc;
-		//try
-		//{
-		//	doc.load(data.c_str());
-		//}
-		//catch(ChiikaApi::Exception& ex)
-		//{
-		//	CHIKA_EXCEPTION(Exception::ERR_XML_PARSING,"Can't parse XML data!","ParsingManager::ParseGetUserAnimeList")
-		//}
+		pugi::xml_document doc;
+		try
+		{
+			doc.load(data.c_str());
+		}
+		catch(ChiikaApi::Exception& ex)
+		{
+			CHIKA_EXCEPTION(Exception::ERR_XML_PARSING,"Can't parse XML data!","ParsingManager::ParseGetUserAnimeList")
+		}
 
-		//pugi::xml_pugi::xml_node  myanimelist = doc.child("myanimelist");
-		//pugi::xml_pugi::xml_node  user = myanimelist.child("myinfo");
-		//pugi::xml_node  userWatching = user.child("user_watching");
-		//pugi::xml_node  user_completed = user.child("user_completed");
-		//pugi::xml_node  user_onhold = user.child("user_onhold");
-		//pugi::xml_node  user_dropped = user.child("user_dropped");
-		//pugi::xml_node  user_plantowatch = user.child("user_plantowatch");
-		//pugi::xml_node  user_days_spent_watching = user.child("user_days_spent_watching");
+		pugi::xml_node  myanimelist = doc.child("myanimelist");
+		pugi::xml_node  user = myanimelist.child("myinfo");
+		pugi::xml_node  userWatching = user.child("user_watching");
+		pugi::xml_node  user_completed = user.child("user_completed");
+		pugi::xml_node  user_onhold = user.child("user_onhold");
+		pugi::xml_node  user_dropped = user.child("user_dropped");
+		pugi::xml_node  user_plantowatch = user.child("user_plantowatch");
+		pugi::xml_node  user_days_spent_watching = user.child("user_days_spent_watching");
 
-		//String userName = user.child("user_name").text().get();
-		//String id = user.child("user_id").text().get();
+		String userName = user.child("user_name").text().get();
+		String id = user.child("user_id").text().get();
 
-		//UserInfo ui = LocalDataManager::Get().GetUserInfo();
-		//ui.UserName = ToStd(userName);
-		//ui.AnimeInfo.Watching = FromXMLValueToInt(userWatching);
-		//ui.AnimeInfo.Completed = FromXMLValueToInt(user_completed);
-		//ui.AnimeInfo.OnHold = FromXMLValueToInt(user_onhold);
-		//ui.AnimeInfo.Dropped = FromXMLValueToInt(user_dropped);
-		//ui.AnimeInfo.PlanToWatch = FromXMLValueToInt(user_plantowatch);
-		//ui.AnimeInfo.DaySpentAnime = FromXMLValueToFloat(user_days_spent_watching);
+		UserInfo ui = LocalDataManager::Get().GetUserInfo();
+		ui.UserName = ToStd(userName);
+		ui.AnimeInfo.Watching = FromXMLValueToInt(userWatching);
+		ui.AnimeInfo.Completed = FromXMLValueToInt(user_completed);
+		ui.AnimeInfo.OnHold = FromXMLValueToInt(user_onhold);
+		ui.AnimeInfo.Dropped = FromXMLValueToInt(user_dropped);
+		ui.AnimeInfo.PlanToWatch = FromXMLValueToInt(user_plantowatch);
+		ui.AnimeInfo.DaySpentAnime = FromXMLValueToFloat(user_days_spent_watching);
 
-		//LocalDataManager::Get().SetUserInfo(ui);
+		LocalDataManager::Get().SetUserInfo(ui);
 
-		////doc.print(std::cout);
+		//doc.print(std::cout);
 
-		//int animeCount = 0;
-		//AnimeList list;
-		//for(pugi::xml_node  anime = myanimelist.child("anime");anime;anime = anime.next_sibling())
-		//{
-		//	pugi::xml_node  animeDbId = anime.child("series_animedb_id");
-		//	pugi::xml_node  series_title = anime.child("series_title");
-		//	pugi::xml_node  series_synonyms = anime.child("series_synonyms");
-		//	pugi::xml_node  series_type = anime.child("series_type");
-		//	pugi::xml_node  series_episodes = anime.child("series_episodes");
-		//	pugi::xml_node  series_status = anime.child("series_status");
-		//	pugi::xml_node  series_start = anime.child("series_start");
-		//	pugi::xml_node  series_end = anime.child("series_end");
-		//	pugi::xml_node  series_image = anime.child("series_image");
-		//	pugi::xml_node  my_id = anime.child("my_id"); //What does this even mean?
-		//	pugi::xml_node  my_watched_episodes = anime.child("my_watched_episodes");
-		//	pugi::xml_node  my_start_date = anime.child("my_start_date");
-		//	pugi::xml_node  my_finish_date = anime.child("my_finish_date");
-		//	pugi::xml_node  my_score = anime.child("my_score");
-		//	pugi::xml_node  my_status = anime.child("my_status");
-		//	pugi::xml_node  my_rewatching = anime.child("my_rewatching");
-		//	pugi::xml_node  my_rewatching_ep = anime.child("my_rewatching_ep");
-		//	pugi::xml_node  my_last_updated = anime.child("my_last_updated");
-		//	//pugi::xml_node  my_finish_date = anime.child("my_finish_date");
+		int animeCount = 0;
+		AnimeList list;
+		for(pugi::xml_node  anime = myanimelist.child("anime");anime;anime = anime.next_sibling())
+		{
+			pugi::xml_node  animeDbId = anime.child("series_animedb_id");
+			pugi::xml_node  series_title = anime.child("series_title");
+			pugi::xml_node  series_synonyms = anime.child("series_synonyms");
+			pugi::xml_node  series_type = anime.child("series_type");
+			pugi::xml_node  series_episodes = anime.child("series_episodes");
+			pugi::xml_node  series_status = anime.child("series_status");
+			pugi::xml_node  series_start = anime.child("series_start");
+			pugi::xml_node  series_end = anime.child("series_end");
+			pugi::xml_node  series_image = anime.child("series_image");
+			pugi::xml_node  my_id = anime.child("my_id"); //What does this even mean?
+			pugi::xml_node  my_watched_episodes = anime.child("my_watched_episodes");
+			pugi::xml_node  my_start_date = anime.child("my_start_date");
+			pugi::xml_node  my_finish_date = anime.child("my_finish_date");
+			pugi::xml_node  my_score = anime.child("my_score");
+			pugi::xml_node  my_status = anime.child("my_status");
+			pugi::xml_node  my_rewatching = anime.child("my_rewatching");
+			pugi::xml_node  my_rewatching_ep = anime.child("my_rewatching_ep");
+			pugi::xml_node  my_last_updated = anime.child("my_last_updated");
+			//pugi::xml_node  my_finish_date = anime.child("my_finish_date");
 
-		//	Anime animu;
-		//	animu.Id = FromXMLValueToInt(animeDbId);
-		//	animu.Title = FromXMLValueToStd(series_title);
-		//	animu.English = FromXMLValueToStd(series_synonyms);
-		//	animu.Type = (AnimeType)FromXMLValueToInt(series_type);
-		//	animu.EpisodeCount = FromXMLValueToInt(series_episodes);
+			Anime animu;
+			animu.Id = FromXMLValueToInt(animeDbId);
+			animu.Title = FromXMLValueToStd(series_title);
+			animu.English = FromXMLValueToStd(series_synonyms);
+			animu.Type = (AnimeType)FromXMLValueToInt(series_type);
+			animu.EpisodeCount = FromXMLValueToInt(series_episodes);
 
-		//	animu.Status = (AnimeStatus)FromXMLValueToInt(series_status);
-		//	animu.StartDate = FromXMLValueToStd(series_start);
-		//	animu.EndDate = FromXMLValueToStd(series_end);
-		//	animu.Image = FromXMLValueToStd(series_image);
+			animu.Status = (AnimeStatus)FromXMLValueToInt(series_status);
+			animu.StartDate = FromXMLValueToStd(series_start);
+			animu.EndDate = FromXMLValueToStd(series_end);
+			animu.Image = FromXMLValueToStd(series_image);
 
-		//	AnimeInfo info;
-		//	info.Animu = animu;
-		//	info.MyId = FromXMLValueToInt(my_id);
-		//	info.WatchedEpisodes = FromXMLValueToInt(my_watched_episodes);
-		//	info.StartDate = FromXMLValueToStd(my_start_date);
-		//	info.EndDate = FromXMLValueToStd(my_finish_date);
-		//	info.Score = FromXMLValueToInt(my_score);
-		//	info.Status = (AnimeUserStatus)FromXMLValueToInt(my_status);
-		//	info.Rewatching = FromXMLValueToInt(my_rewatching);
-		//	info.RewatchingEp = FromXMLValueToInt(my_rewatching_ep);
-		//	info.LastUpdated = FromXMLValueToStd(my_last_updated);
+			AnimeInfo info;
+			info.Animu = animu;
+			info.MyId = FromXMLValueToInt(my_id);
+			info.WatchedEpisodes = FromXMLValueToInt(my_watched_episodes);
+			info.StartDate = FromXMLValueToStd(my_start_date);
+			info.EndDate = FromXMLValueToStd(my_finish_date);
+			info.Score = FromXMLValueToInt(my_score);
+			info.Status = (AnimeUserStatus)FromXMLValueToInt(my_status);
+			info.Rewatching = FromXMLValueToInt(my_rewatching);
+			info.RewatchingEp = FromXMLValueToInt(my_rewatching_ep);
+			info.LastUpdated = FromXMLValueToStd(my_last_updated);
 
-		//	list.insert(AnimeList::value_type(animu.Id,info));
-		//	animeCount++;
-		//}
+			list.insert(AnimeList::value_type(animu.Id,info));
+			animeCount++;
+		}
 
 
-		//return list;
-		return AnimeList();
+		return list;
 	}
 	//----------------------------------------------------------------------------
 	MangaList ParsingManager::ParseGetUserMangaList(const String& data)
