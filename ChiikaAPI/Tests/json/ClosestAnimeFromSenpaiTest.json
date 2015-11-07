@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "tz": {
+      "-7200": {
+        "offset": -7200,
+        "abbr": "PMDT"
+      },
+      "-3600": {
+        "offset": 0,
+        "abbr": "EGST"
+      },
+      "0": {
+        "offset": 0,
+        "abbr": "GMT"
+      },
+      "3600": {
+        "offset": 3600,
+        "abbr": "CET"
+      },
+      "7200": {
+        "offset": 7200,
+        "abbr": "CAT"
+      }
+    }
+  },
+  "items": [
+    {
+      "name": "Testogatari",
+      "airdates": {
+        "-7200": {
+          "rd_date": "10 Oct",
+          "rd_time": "11:00",
+          "weekday": 6,
+          "rd_weekday": "Sat",
+          "weekday_isodd": false,
+          "weekday_sort": 558000
+        },
+        "-3600": {
+          "rd_date": "10 Oct",
+          "rd_time": "13:00",
+          "weekday": 6,
+          "rd_weekday": "Sat",
+          "weekday_isodd": false,
+          "weekday_sort": 565200
+        },
+        "0": {
+          "rd_date": "10 Oct",
+          "rd_time": "13:00",
+          "weekday": 6,
+          "rd_weekday": "Sat",
+          "weekday_isodd": false,
+          "weekday_sort": 565200
+        },
+        "3600": {
+          "rd_date": "10 Oct",
+          "rd_time": "14:00",
+          "weekday": 6,
+          "rd_weekday": "Sat",
+          "weekday_isodd": false,
+          "weekday_sort": 568800
+        },
+        "7200": {
+          "rd_date": "10 Oct",
+          "rd_time": "15:00",
+          "weekday": 6,
+          "rd_weekday": "Sat",
+          "weekday_isodd": false,
+          "weekday_sort": 572400
+        }
+      }
+    }
+  ]
+}
