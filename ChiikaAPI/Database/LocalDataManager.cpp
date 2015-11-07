@@ -44,7 +44,7 @@ namespace ChiikaApi
 		//	if(file.open(QFile::WriteOnly))
 		//	{
 		//		pugi::xml_document doc;
-		//		Node root = doc.append_child("Chiika");
+		//		pugi::xml_node  root = doc.append_child("Chiika");
 
 		//		switch(m_eType)
 		//		{
@@ -110,32 +110,32 @@ namespace ChiikaApi
 		//	String fileData = file.readAll();
 		//	doc.load(fileData.toStdString().c_str());
 
-		//	Node root = doc.child("Chiika");
-		//	Node myanimelist = root.child("MyAnimeList");
+		//	pugi::xml_node  root = doc.child("Chiika");
+		//	pugi::xml_node  myanimelist = root.child("MyAnimeList");
 
 		//	ChiikaApi::AnimeList list;
-		//	for(Node anime = myanimelist.child("anime");anime;anime = anime.next_sibling())
+		//	for(pugi::xml_node  anime = myanimelist.child("anime");anime;anime = anime.next_sibling())
 		//	{
 
-		//		Node animeDbId = anime.child("series_animedb_id");
-		//		Node series_title = anime.child("series_title");
-		//		Node series_synonyms = anime.child("series_synonyms");
-		//		Node series_type = anime.child("series_type");
-		//		Node series_episodes = anime.child("series_episodes");
-		//		Node series_status = anime.child("series_status");
-		//		Node series_start = anime.child("series_start");
-		//		Node series_end = anime.child("series_end");
-		//		Node series_image = anime.child("series_image");
-		//		Node my_id = anime.child("my_id"); //What does this even mean?
-		//		Node my_watched_episodes = anime.child("my_watched_episodes");
-		//		Node my_start_date = anime.child("my_start_date");
-		//		Node my_finish_date = anime.child("my_finish_date");
-		//		Node my_score = anime.child("my_score");
-		//		Node my_status = anime.child("my_status");
-		//		Node my_rewatching = anime.child("my_rewatching");
-		//		Node my_rewatching_ep = anime.child("my_rewatching_ep");
-		//		Node my_last_updated = anime.child("my_last_updated");
-		//		//Node my_finish_date = anime.child("my_finish_date");
+		//		pugi::xml_node  animeDbId = anime.child("series_animedb_id");
+		//		pugi::xml_node  series_title = anime.child("series_title");
+		//		pugi::xml_node  series_synonyms = anime.child("series_synonyms");
+		//		pugi::xml_node  series_type = anime.child("series_type");
+		//		pugi::xml_node  series_episodes = anime.child("series_episodes");
+		//		pugi::xml_node  series_status = anime.child("series_status");
+		//		pugi::xml_node  series_start = anime.child("series_start");
+		//		pugi::xml_node  series_end = anime.child("series_end");
+		//		pugi::xml_node  series_image = anime.child("series_image");
+		//		pugi::xml_node  my_id = anime.child("my_id"); //What does this even mean?
+		//		pugi::xml_node  my_watched_episodes = anime.child("my_watched_episodes");
+		//		pugi::xml_node  my_start_date = anime.child("my_start_date");
+		//		pugi::xml_node  my_finish_date = anime.child("my_finish_date");
+		//		pugi::xml_node  my_score = anime.child("my_score");
+		//		pugi::xml_node  my_status = anime.child("my_status");
+		//		pugi::xml_node  my_rewatching = anime.child("my_rewatching");
+		//		pugi::xml_node  my_rewatching_ep = anime.child("my_rewatching_ep");
+		//		pugi::xml_node  my_last_updated = anime.child("my_last_updated");
+		//		//pugi::xml_node  my_finish_date = anime.child("my_finish_date");
 
 		//		Anime animu;
 		//		animu.Id = FromXMLValueToInt(animeDbId);
@@ -187,8 +187,8 @@ namespace ChiikaApi
 		//{
 		//	pugi::xml_document doc;
 
-		//	Node root = doc.append_child("Chiika");
-		//	Node MAL = root.append_child("MyAnimeList");
+		//	pugi::xml_node  root = doc.append_child("Chiika");
+		//	pugi::xml_node  MAL = root.append_child("MyAnimeList");
 
 		//	ChiikaApi::AnimeList list = MalManager::Get().GetAnimeList();
 		//	ChiikaApi::AnimeList::iterator It;
@@ -197,26 +197,26 @@ namespace ChiikaApi
 		//		AnimeInfo Animu = It->second;
 
 
-		//		Node anime = MAL.append_child("anime");
+		//		pugi::xml_node  anime = MAL.append_child("anime");
 
-		//		Node animeDbId = anime.append_child("series_animedb_id");
-		//		Node series_title = anime.append_child("series_title");
-		//		Node series_synonyms = anime.append_child("series_synonyms");
-		//		Node series_type = anime.append_child("series_type");
-		//		Node series_episodes = anime.append_child("series_episodes");
-		//		Node series_status = anime.append_child("series_status");
-		//		Node series_start = anime.append_child("series_start");
-		//		Node series_end = anime.append_child("series_end");
-		//		Node series_image = anime.append_child("series_image");
-		//		Node my_id = anime.append_child("my_id"); //What does this even mean?
-		//		Node my_watched_episodes = anime.append_child("my_watched_episodes");
-		//		Node my_start_date = anime.append_child("my_start_date");
-		//		Node my_finish_date = anime.append_child("my_finish_date");
-		//		Node my_score = anime.append_child("my_score");
-		//		Node my_status = anime.append_child("my_status");
-		//		Node my_rewatching = anime.append_child("my_rewatching");
-		//		Node my_rewatching_ep = anime.append_child("my_rewatching_ep");
-		//		Node my_last_updated = anime.append_child("my_last_updated");
+		//		pugi::xml_node  animeDbId = anime.append_child("series_animedb_id");
+		//		pugi::xml_node  series_title = anime.append_child("series_title");
+		//		pugi::xml_node  series_synonyms = anime.append_child("series_synonyms");
+		//		pugi::xml_node  series_type = anime.append_child("series_type");
+		//		pugi::xml_node  series_episodes = anime.append_child("series_episodes");
+		//		pugi::xml_node  series_status = anime.append_child("series_status");
+		//		pugi::xml_node  series_start = anime.append_child("series_start");
+		//		pugi::xml_node  series_end = anime.append_child("series_end");
+		//		pugi::xml_node  series_image = anime.append_child("series_image");
+		//		pugi::xml_node  my_id = anime.append_child("my_id"); //What does this even mean?
+		//		pugi::xml_node  my_watched_episodes = anime.append_child("my_watched_episodes");
+		//		pugi::xml_node  my_start_date = anime.append_child("my_start_date");
+		//		pugi::xml_node  my_finish_date = anime.append_child("my_finish_date");
+		//		pugi::xml_node  my_score = anime.append_child("my_score");
+		//		pugi::xml_node  my_status = anime.append_child("my_status");
+		//		pugi::xml_node  my_rewatching = anime.append_child("my_rewatching");
+		//		pugi::xml_node  my_rewatching_ep = anime.append_child("my_rewatching_ep");
+		//		pugi::xml_node  my_last_updated = anime.append_child("my_last_updated");
 
 		//		SetXMLValue(animeDbId,Animu.Animu.Id);
 		//		SetXMLValue(series_title,Animu.Animu.Title.c_str());
@@ -267,33 +267,33 @@ namespace ChiikaApi
 		//	String fileData = file.readAll();
 		//	doc.load(fileData.toStdString().c_str());
 
-		//	Node root = doc.child("Chiika");
-		//	Node mymangalist = root.child("MangaList");
+		//	pugi::xml_node  root = doc.child("Chiika");
+		//	pugi::xml_node  mymangalist = root.child("MangaList");
 
 		//	ChiikaApi::MangaList list;
-		//	for(Node manga = mymangalist.child("manga");manga;manga = manga.next_sibling())
+		//	for(pugi::xml_node  manga = mymangalist.child("manga");manga;manga = manga.next_sibling())
 		//	{
 
-		//		Node series_mangadb_id = manga.child("series_mangadb_id");
-		//		Node series_title = manga.child("series_title");
-		//		Node series_synonyms = manga.child("series_synonyms");
-		//		Node series_type = manga.child("series_type");
-		//		Node series_chapters = manga.child("series_chapters");
-		//		Node series_volumes = manga.child("series_volumes");
-		//		Node series_status = manga.child("series_status");
-		//		Node series_start = manga.child("series_start");
-		//		Node series_end = manga.child("series_end");
-		//		Node series_image = manga.child("series_image");
-		//		Node my_id = manga.child("my_id"); //What does this even mean?
-		//		Node my_read_chapters = manga.child("my_read_chapters");
-		//		Node my_read_volumes = manga.child("my_read_volumes");
-		//		Node my_start_date = manga.child("my_start_date");
-		//		Node my_finish_date = manga.child("my_finish_date");
-		//		Node my_score = manga.child("my_score");
-		//		Node my_status = manga.child("my_status");
-		//		Node my_rereading = manga.child("my_rereadingg");
-		//		Node my_rereading_chap = manga.child("my_rereading_chap");
-		//		Node my_last_updated = manga.child("my_last_updated");
+		//		pugi::xml_node  series_mangadb_id = manga.child("series_mangadb_id");
+		//		pugi::xml_node  series_title = manga.child("series_title");
+		//		pugi::xml_node  series_synonyms = manga.child("series_synonyms");
+		//		pugi::xml_node  series_type = manga.child("series_type");
+		//		pugi::xml_node  series_chapters = manga.child("series_chapters");
+		//		pugi::xml_node  series_volumes = manga.child("series_volumes");
+		//		pugi::xml_node  series_status = manga.child("series_status");
+		//		pugi::xml_node  series_start = manga.child("series_start");
+		//		pugi::xml_node  series_end = manga.child("series_end");
+		//		pugi::xml_node  series_image = manga.child("series_image");
+		//		pugi::xml_node  my_id = manga.child("my_id"); //What does this even mean?
+		//		pugi::xml_node  my_read_chapters = manga.child("my_read_chapters");
+		//		pugi::xml_node  my_read_volumes = manga.child("my_read_volumes");
+		//		pugi::xml_node  my_start_date = manga.child("my_start_date");
+		//		pugi::xml_node  my_finish_date = manga.child("my_finish_date");
+		//		pugi::xml_node  my_score = manga.child("my_score");
+		//		pugi::xml_node  my_status = manga.child("my_status");
+		//		pugi::xml_node  my_rereading = manga.child("my_rereadingg");
+		//		pugi::xml_node  my_rereading_chap = manga.child("my_rereading_chap");
+		//		pugi::xml_node  my_last_updated = manga.child("my_last_updated");
 
 
 		//		Manga mango;
@@ -341,9 +341,9 @@ namespace ChiikaApi
 		//{
 		//	pugi::xml_document doc;
 
-		//	Node root = doc.append_child("Chiika");
+		//	pugi::xml_node  root = doc.append_child("Chiika");
 
-		//	Node MAL = root.append_child("MangaList");
+		//	pugi::xml_node  MAL = root.append_child("MangaList");
 
 		//	ChiikaApi::MangaList list = MalManager::Get().GetMangaList();
 
@@ -352,28 +352,28 @@ namespace ChiikaApi
 		//	{
 		//		MangaInfo Mango = It->second;
 
-		//		Node manga = MAL.append_child("manga");
+		//		pugi::xml_node  manga = MAL.append_child("manga");
 
-		//		Node series_mangadb_id = manga.append_child("series_mangadb_id");
-		//		Node series_title = manga.append_child("series_title");
-		//		Node series_synonyms = manga.append_child("series_synonyms");
-		//		Node series_type = manga.append_child("series_type");
-		//		Node series_chapters = manga.append_child("series_chapters");
-		//		Node series_volumes = manga.append_child("series_volumes");
-		//		Node series_status = manga.append_child("series_status");
-		//		Node series_start = manga.append_child("series_start");
-		//		Node series_end = manga.append_child("series_end");
-		//		Node series_image = manga.append_child("series_image");
-		//		Node my_id = manga.append_child("my_id"); //What does this even mean?
-		//		Node my_read_chapters = manga.append_child("my_read_chapters");
-		//		Node my_read_volumes = manga.append_child("my_read_volumes");
-		//		Node my_start_date = manga.append_child("my_start_date");
-		//		Node my_finish_date = manga.append_child("my_finish_date");
-		//		Node my_score = manga.append_child("my_score");
-		//		Node my_status = manga.append_child("my_status");
-		//		Node my_rereading = manga.append_child("my_rereadingg");
-		//		Node my_rereading_chap = manga.append_child("my_rereading_chap");
-		//		Node my_last_updated = manga.append_child("my_last_updated");
+		//		pugi::xml_node  series_mangadb_id = manga.append_child("series_mangadb_id");
+		//		pugi::xml_node  series_title = manga.append_child("series_title");
+		//		pugi::xml_node  series_synonyms = manga.append_child("series_synonyms");
+		//		pugi::xml_node  series_type = manga.append_child("series_type");
+		//		pugi::xml_node  series_chapters = manga.append_child("series_chapters");
+		//		pugi::xml_node  series_volumes = manga.append_child("series_volumes");
+		//		pugi::xml_node  series_status = manga.append_child("series_status");
+		//		pugi::xml_node  series_start = manga.append_child("series_start");
+		//		pugi::xml_node  series_end = manga.append_child("series_end");
+		//		pugi::xml_node  series_image = manga.append_child("series_image");
+		//		pugi::xml_node  my_id = manga.append_child("my_id"); //What does this even mean?
+		//		pugi::xml_node  my_read_chapters = manga.append_child("my_read_chapters");
+		//		pugi::xml_node  my_read_volumes = manga.append_child("my_read_volumes");
+		//		pugi::xml_node  my_start_date = manga.append_child("my_start_date");
+		//		pugi::xml_node  my_finish_date = manga.append_child("my_finish_date");
+		//		pugi::xml_node  my_score = manga.append_child("my_score");
+		//		pugi::xml_node  my_status = manga.append_child("my_status");
+		//		pugi::xml_node  my_rereading = manga.append_child("my_rereadingg");
+		//		pugi::xml_node  my_rereading_chap = manga.append_child("my_rereading_chap");
+		//		pugi::xml_node  my_last_updated = manga.append_child("my_last_updated");
 
 		//		SetXMLValue(series_mangadb_id,Mango.Mango.Id);
 		//		SetXMLValue(series_title,Mango.Mango.Title.c_str());
@@ -423,23 +423,23 @@ namespace ChiikaApi
 		//	String fileData = file.readAll();
 		//	doc.load(fileData.toStdString().c_str());
 
-		//	Node root = doc.child("Chiika");
-		//	Node info  = root.child("UserInfo");
-		//	Node userName = info.child("UserName");
-		//	Node pass = info.child("Pass");
-		//	Node watching = info.child("Watching");
-		//	Node Completed = info.child("Completed");
-		//	Node OnHold = info.child("OnHold");
-		//	Node Dropped = info.child("Dropped");
-		//	Node PlanToWatch = info.child("PlanToWatch");
-		//	Node DaySpentAnime = info.child("DaySpentAnime");
+		//	pugi::xml_node  root = doc.child("Chiika");
+		//	pugi::xml_node  info  = root.child("UserInfo");
+		//	pugi::xml_node  userName = info.child("UserName");
+		//	pugi::xml_node  pass = info.child("Pass");
+		//	pugi::xml_node  watching = info.child("Watching");
+		//	pugi::xml_node  Completed = info.child("Completed");
+		//	pugi::xml_node  OnHold = info.child("OnHold");
+		//	pugi::xml_node  Dropped = info.child("Dropped");
+		//	pugi::xml_node  PlanToWatch = info.child("PlanToWatch");
+		//	pugi::xml_node  DaySpentAnime = info.child("DaySpentAnime");
 
-		//	Node Reading = info.child("Reading");
-		//	Node Read = info.child("Read");
-		//	Node MangaOnHold = info.child("MangaOnHold");
-		//	Node MangaDropped = info.child("MangaDropped");
-		//	Node PlanToRead = info.child("PlanToRead");
-		//	Node DaySpentReading = info.child("DaySpentReading");
+		//	pugi::xml_node  Reading = info.child("Reading");
+		//	pugi::xml_node  Read = info.child("Read");
+		//	pugi::xml_node  MangaOnHold = info.child("MangaOnHold");
+		//	pugi::xml_node  MangaDropped = info.child("MangaDropped");
+		//	pugi::xml_node  PlanToRead = info.child("PlanToRead");
+		//	pugi::xml_node  DaySpentReading = info.child("DaySpentReading");
 
 		//	ChiikaApi::UserInfo ui;
 		//	ui.UserName = FromXMLValueToStd(userName);
@@ -477,23 +477,23 @@ namespace ChiikaApi
 		//{
 		//	pugi::xml_document doc;
 
-		//	Node root = doc.append_child("Chiika");
-		//	Node UserInfo  = root.append_child("UserInfo");
-		//	Node userName = UserInfo.append_child("UserName");
-		//	Node pass = UserInfo.append_child("Pass");
-		//	Node watching = UserInfo.append_child("Watching");
-		//	Node Completed = UserInfo.append_child("Completed");
-		//	Node OnHold = UserInfo.append_child("OnHold");
-		//	Node Dropped = UserInfo.append_child("Dropped");
-		//	Node PlanToWatch = UserInfo.append_child("PlanToWatch");
-		//	Node DaySpentAnime = UserInfo.append_child("DaySpentAnime");
+		//	pugi::xml_node  root = doc.append_child("Chiika");
+		//	pugi::xml_node  UserInfo  = root.append_child("UserInfo");
+		//	pugi::xml_node  userName = UserInfo.append_child("UserName");
+		//	pugi::xml_node  pass = UserInfo.append_child("Pass");
+		//	pugi::xml_node  watching = UserInfo.append_child("Watching");
+		//	pugi::xml_node  Completed = UserInfo.append_child("Completed");
+		//	pugi::xml_node  OnHold = UserInfo.append_child("OnHold");
+		//	pugi::xml_node  Dropped = UserInfo.append_child("Dropped");
+		//	pugi::xml_node  PlanToWatch = UserInfo.append_child("PlanToWatch");
+		//	pugi::xml_node  DaySpentAnime = UserInfo.append_child("DaySpentAnime");
 
-		//	Node Reading = UserInfo.append_child("Reading");
-		//	Node Read = UserInfo.append_child("Read");
-		//	Node MangaOnHold = UserInfo.append_child("MangaOnHold");
-		//	Node MangaDropped = UserInfo.append_child("MangaDropped");
-		//	Node PlanToRead = UserInfo.append_child("PlanToRead");
-		//	Node DaySpentReading = UserInfo.append_child("DaySpentReading");
+		//	pugi::xml_node  Reading = UserInfo.append_child("Reading");
+		//	pugi::xml_node  Read = UserInfo.append_child("Read");
+		//	pugi::xml_node  MangaOnHold = UserInfo.append_child("MangaOnHold");
+		//	pugi::xml_node  MangaDropped = UserInfo.append_child("MangaDropped");
+		//	pugi::xml_node  PlanToRead = UserInfo.append_child("PlanToRead");
+		//	pugi::xml_node  DaySpentReading = UserInfo.append_child("DaySpentReading");
 
 
 
@@ -543,33 +543,33 @@ namespace ChiikaApi
 		//			String fileData = file.readAll();
 		//			doc.load(fileData.toStdString().c_str());
 		//
-		//			Node root = doc.child("Chiika");
-		//			Node updateList = root.child("UpdateList");
+		//			pugi::xml_node  root = doc.child("Chiika");
+		//			pugi::xml_node  updateList = root.child("UpdateList");
 		//#pragma region AnimeList
 		//			ChiikaApi::AnimeList list;
-		//			for(Node anime = updateList.child("anime");anime;anime = anime.next_sibling())
+		//			for(pugi::xml_node  anime = updateList.child("anime");anime;anime = anime.next_sibling())
 		//			{
 		//
-		//				Node animeDbId = anime.child("series_animedb_id");
-		//				Node Op = anime.child("Operation");
-		//				Node series_title = anime.child("series_title");
-		//				Node series_synonyms = anime.child("series_synonyms");
-		//				Node series_type = anime.child("series_type");
-		//				Node series_episodes = anime.child("series_episodes");
-		//				Node series_status = anime.child("series_status");
-		//				Node series_start = anime.child("series_start");
-		//				Node series_end = anime.child("series_end");
-		//				Node series_image = anime.child("series_image");
-		//				Node my_id = anime.child("my_id"); //What does this even mean?
-		//				Node my_watched_episodes = anime.child("my_watched_episodes");
-		//				Node my_start_date = anime.child("my_start_date");
-		//				Node my_finish_date = anime.child("my_finish_date");
-		//				Node my_score = anime.child("my_score");
-		//				Node my_status = anime.child("my_status");
-		//				Node my_rewatching = anime.child("my_rewatching");
-		//				Node my_rewatching_ep = anime.child("my_rewatching_ep");
-		//				Node my_last_updated = anime.child("my_last_updated");
-		//				//Node my_finish_date = anime.child("my_finish_date");
+		//				pugi::xml_node  animeDbId = anime.child("series_animedb_id");
+		//				pugi::xml_node  Op = anime.child("Operation");
+		//				pugi::xml_node  series_title = anime.child("series_title");
+		//				pugi::xml_node  series_synonyms = anime.child("series_synonyms");
+		//				pugi::xml_node  series_type = anime.child("series_type");
+		//				pugi::xml_node  series_episodes = anime.child("series_episodes");
+		//				pugi::xml_node  series_status = anime.child("series_status");
+		//				pugi::xml_node  series_start = anime.child("series_start");
+		//				pugi::xml_node  series_end = anime.child("series_end");
+		//				pugi::xml_node  series_image = anime.child("series_image");
+		//				pugi::xml_node  my_id = anime.child("my_id"); //What does this even mean?
+		//				pugi::xml_node  my_watched_episodes = anime.child("my_watched_episodes");
+		//				pugi::xml_node  my_start_date = anime.child("my_start_date");
+		//				pugi::xml_node  my_finish_date = anime.child("my_finish_date");
+		//				pugi::xml_node  my_score = anime.child("my_score");
+		//				pugi::xml_node  my_status = anime.child("my_status");
+		//				pugi::xml_node  my_rewatching = anime.child("my_rewatching");
+		//				pugi::xml_node  my_rewatching_ep = anime.child("my_rewatching_ep");
+		//				pugi::xml_node  my_last_updated = anime.child("my_last_updated");
+		//				//pugi::xml_node  my_finish_date = anime.child("my_finish_date");
 		//
 		//				Anime animu;
 		//				animu.Id = FromXMLValueToInt(animeDbId);
@@ -601,30 +601,30 @@ namespace ChiikaApi
 		//#pragma endregion
 		//#pragma region MangaList
 		//			ChiikaApi::MangaList mangaList;
-		//			for(Node manga = updateList.child("manga");manga;manga = manga.next_sibling())
+		//			for(pugi::xml_node  manga = updateList.child("manga");manga;manga = manga.next_sibling())
 		//			{
 		//
-		//				Node series_mangadb_id = manga.child("series_mangadb_id");
-		//				Node Op = manga.child("Operation");
-		//				Node series_title = manga.child("series_title");
-		//				Node series_synonyms = manga.child("series_synonyms");
-		//				Node series_type = manga.child("series_type");
-		//				Node series_chapters = manga.child("series_chapters");
-		//				Node series_volumes = manga.child("series_volumes");
-		//				Node series_status = manga.child("series_status");
-		//				Node series_start = manga.child("series_start");
-		//				Node series_end = manga.child("series_end");
-		//				Node series_image = manga.child("series_image");
-		//				Node my_id = manga.child("my_id"); //What does this even mean?
-		//				Node my_read_chapters = manga.child("my_read_chapters");
-		//				Node my_read_volumes = manga.child("my_read_volumes");
-		//				Node my_start_date = manga.child("my_start_date");
-		//				Node my_finish_date = manga.child("my_finish_date");
-		//				Node my_score = manga.child("my_score");
-		//				Node my_status = manga.child("my_status");
-		//				Node my_rereading = manga.child("my_rereadingg");
-		//				Node my_rereading_chap = manga.child("my_rereading_chap");
-		//				Node my_last_updated = manga.child("my_last_updated");
+		//				pugi::xml_node  series_mangadb_id = manga.child("series_mangadb_id");
+		//				pugi::xml_node  Op = manga.child("Operation");
+		//				pugi::xml_node  series_title = manga.child("series_title");
+		//				pugi::xml_node  series_synonyms = manga.child("series_synonyms");
+		//				pugi::xml_node  series_type = manga.child("series_type");
+		//				pugi::xml_node  series_chapters = manga.child("series_chapters");
+		//				pugi::xml_node  series_volumes = manga.child("series_volumes");
+		//				pugi::xml_node  series_status = manga.child("series_status");
+		//				pugi::xml_node  series_start = manga.child("series_start");
+		//				pugi::xml_node  series_end = manga.child("series_end");
+		//				pugi::xml_node  series_image = manga.child("series_image");
+		//				pugi::xml_node  my_id = manga.child("my_id"); //What does this even mean?
+		//				pugi::xml_node  my_read_chapters = manga.child("my_read_chapters");
+		//				pugi::xml_node  my_read_volumes = manga.child("my_read_volumes");
+		//				pugi::xml_node  my_start_date = manga.child("my_start_date");
+		//				pugi::xml_node  my_finish_date = manga.child("my_finish_date");
+		//				pugi::xml_node  my_score = manga.child("my_score");
+		//				pugi::xml_node  my_status = manga.child("my_status");
+		//				pugi::xml_node  my_rereading = manga.child("my_rereadingg");
+		//				pugi::xml_node  my_rereading_chap = manga.child("my_rereading_chap");
+		//				pugi::xml_node  my_last_updated = manga.child("my_last_updated");
 		//
 		//
 		//				Manga mango;
@@ -679,8 +679,8 @@ namespace ChiikaApi
 		//			String fileData = file.readAll();
 		//			doc.load(fileData.toStdString().c_str());
 		//
-		//			Node root = doc.append_child("Chiika");
-		//			Node MAL = root.append_child("UpdateList");
+		//			pugi::xml_node  root = doc.append_child("Chiika");
+		//			pugi::xml_node  MAL = root.append_child("UpdateList");
 		//
 		//#pragma region Anime
 		//
@@ -691,26 +691,26 @@ namespace ChiikaApi
 		//				AnimeInfo Animu = It->second;
 		//
 		//
-		//				Node anime = MAL.append_child("anime");
-		//				Node Op = anime.append_child("Operation");
-		//				Node animeDbId = anime.append_child("series_animedb_id");
-		//				Node series_title = anime.append_child("series_title");
-		//				Node series_synonyms = anime.append_child("series_synonyms");
-		//				Node series_type = anime.append_child("series_type");
-		//				Node series_episodes = anime.append_child("series_episodes");
-		//				Node series_status = anime.append_child("series_status");
-		//				Node series_start = anime.append_child("series_start");
-		//				Node series_end = anime.append_child("series_end");
-		//				Node series_image = anime.append_child("series_image");
-		//				Node my_id = anime.append_child("my_id"); //What does this even mean?
-		//				Node my_watched_episodes = anime.append_child("my_watched_episodes");
-		//				Node my_start_date = anime.append_child("my_start_date");
-		//				Node my_finish_date = anime.append_child("my_finish_date");
-		//				Node my_score = anime.append_child("my_score");
-		//				Node my_status = anime.append_child("my_status");
-		//				Node my_rewatching = anime.append_child("my_rewatching");
-		//				Node my_rewatching_ep = anime.append_child("my_rewatching_ep");
-		//				Node my_last_updated = anime.append_child("my_last_updated");
+		//				pugi::xml_node  anime = MAL.append_child("anime");
+		//				pugi::xml_node  Op = anime.append_child("Operation");
+		//				pugi::xml_node  animeDbId = anime.append_child("series_animedb_id");
+		//				pugi::xml_node  series_title = anime.append_child("series_title");
+		//				pugi::xml_node  series_synonyms = anime.append_child("series_synonyms");
+		//				pugi::xml_node  series_type = anime.append_child("series_type");
+		//				pugi::xml_node  series_episodes = anime.append_child("series_episodes");
+		//				pugi::xml_node  series_status = anime.append_child("series_status");
+		//				pugi::xml_node  series_start = anime.append_child("series_start");
+		//				pugi::xml_node  series_end = anime.append_child("series_end");
+		//				pugi::xml_node  series_image = anime.append_child("series_image");
+		//				pugi::xml_node  my_id = anime.append_child("my_id"); //What does this even mean?
+		//				pugi::xml_node  my_watched_episodes = anime.append_child("my_watched_episodes");
+		//				pugi::xml_node  my_start_date = anime.append_child("my_start_date");
+		//				pugi::xml_node  my_finish_date = anime.append_child("my_finish_date");
+		//				pugi::xml_node  my_score = anime.append_child("my_score");
+		//				pugi::xml_node  my_status = anime.append_child("my_status");
+		//				pugi::xml_node  my_rewatching = anime.append_child("my_rewatching");
+		//				pugi::xml_node  my_rewatching_ep = anime.append_child("my_rewatching_ep");
+		//				pugi::xml_node  my_last_updated = anime.append_child("my_last_updated");
 		//
 		//				SetXMLValue(animeDbId,Animu.Animu.Id);
 		//				SetXMLValue(Op,Animu.UpdateOperation);
@@ -742,29 +742,29 @@ namespace ChiikaApi
 		//			{
 		//				MangaInfo Mango = ItManga->second;
 		//
-		//				Node manga = MAL.append_child("manga");
-		//				Node Op = manga.append_child("Operation");
-		//				Node series_mangadb_id = manga.append_child("series_mangadb_id");
+		//				pugi::xml_node  manga = MAL.append_child("manga");
+		//				pugi::xml_node  Op = manga.append_child("Operation");
+		//				pugi::xml_node  series_mangadb_id = manga.append_child("series_mangadb_id");
 		//
-		//				Node series_title = manga.append_child("series_title");
-		//				Node series_synonyms = manga.append_child("series_synonyms");
-		//				Node series_type = manga.append_child("series_type");
-		//				Node series_chapters = manga.append_child("series_chapters");
-		//				Node series_volumes = manga.append_child("series_volumes");
-		//				Node series_status = manga.append_child("series_status");
-		//				Node series_start = manga.append_child("series_start");
-		//				Node series_end = manga.append_child("series_end");
-		//				Node series_image = manga.append_child("series_image");
-		//				Node my_id = manga.append_child("my_id"); //What does this even mean?
-		//				Node my_read_chapters = manga.append_child("my_read_chapters");
-		//				Node my_read_volumes = manga.append_child("my_read_volumes");
-		//				Node my_start_date = manga.append_child("my_start_date");
-		//				Node my_finish_date = manga.append_child("my_finish_date");
-		//				Node my_score = manga.append_child("my_score");
-		//				Node my_status = manga.append_child("my_status");
-		//				Node my_rereading = manga.append_child("my_rereadingg");
-		//				Node my_rereading_chap = manga.append_child("my_rereading_chap");
-		//				Node my_last_updated = manga.append_child("my_last_updated");
+		//				pugi::xml_node  series_title = manga.append_child("series_title");
+		//				pugi::xml_node  series_synonyms = manga.append_child("series_synonyms");
+		//				pugi::xml_node  series_type = manga.append_child("series_type");
+		//				pugi::xml_node  series_chapters = manga.append_child("series_chapters");
+		//				pugi::xml_node  series_volumes = manga.append_child("series_volumes");
+		//				pugi::xml_node  series_status = manga.append_child("series_status");
+		//				pugi::xml_node  series_start = manga.append_child("series_start");
+		//				pugi::xml_node  series_end = manga.append_child("series_end");
+		//				pugi::xml_node  series_image = manga.append_child("series_image");
+		//				pugi::xml_node  my_id = manga.append_child("my_id"); //What does this even mean?
+		//				pugi::xml_node  my_read_chapters = manga.append_child("my_read_chapters");
+		//				pugi::xml_node  my_read_volumes = manga.append_child("my_read_volumes");
+		//				pugi::xml_node  my_start_date = manga.append_child("my_start_date");
+		//				pugi::xml_node  my_finish_date = manga.append_child("my_finish_date");
+		//				pugi::xml_node  my_score = manga.append_child("my_score");
+		//				pugi::xml_node  my_status = manga.append_child("my_status");
+		//				pugi::xml_node  my_rereading = manga.append_child("my_rereadingg");
+		//				pugi::xml_node  my_rereading_chap = manga.append_child("my_rereading_chap");
+		//				pugi::xml_node  my_last_updated = manga.append_child("my_last_updated");
 		//
 		//				SetXMLValue(series_mangadb_id,Mango.Mango.Id);
 		//				SetXMLValue(Op,Mango.UpdateOperation);
@@ -817,30 +817,30 @@ namespace ChiikaApi
 		String fileData = file.readAll();
 		doc.load(fileData.toStdString().c_str());
 
-		Node root = doc.child("Chiika");
-		Node animeDetails = root.child("AnimeDetails");
+		pugi::xml_node  root = doc.child("Chiika");
+		pugi::xml_node  animeDetails = root.child("AnimeDetails");
 
-		for(Node anime = animeDetails.child("anime");anime;anime = anime.next_sibling())
+		for(pugi::xml_node  anime = animeDetails.child("anime");anime;anime = anime.next_sibling())
 		{
-		Node Id = anime.child("Id");
-		Node syn = anime.child("Synopsis");
-		Node tags = anime.child("Tags");
-		Node premiered = anime.child("Premiered");
-		Node producers = anime.child("Producers");
-		Node duration = anime.child("DurationPerEpisode");
+		pugi::xml_node  Id = anime.child("Id");
+		pugi::xml_node  syn = anime.child("Synopsis");
+		pugi::xml_node  tags = anime.child("Tags");
+		pugi::xml_node  premiered = anime.child("Premiered");
+		pugi::xml_node  producers = anime.child("Producers");
+		pugi::xml_node  duration = anime.child("DurationPerEpisode");
 
-		Node score = anime.child("Score");
-		Node ranked = anime.child("Ranked");
-		Node popularity = anime.child("Popularity");
+		pugi::xml_node  score = anime.child("Score");
+		pugi::xml_node  ranked = anime.child("Ranked");
+		pugi::xml_node  popularity = anime.child("Popularity");
 
 		std::vector<String> vTags;
-		for(Node tag = tags.child("Tag");tag;tag= tag.next_sibling())
+		for(pugi::xml_node  tag = tags.child("Tag");tag;tag= tag.next_sibling())
 		{
 		vTags.push_back(tag.text().get());
 		}
 
 		std::vector<String> vProducers;
-		for(Node producer = producers.child("Producer");producer;producer= producer.next_sibling())
+		for(pugi::xml_node  producer = producers.child("Producer");producer;producer= producer.next_sibling())
 		{
 		vProducers.push_back(producer.text().get());
 		}
@@ -889,8 +889,8 @@ namespace ChiikaApi
 		if(file.open(QFile::WriteOnly))
 		{
 		pugi::xml_document doc;
-		Node root = doc.append_child("Chiika");
-		Node MAL = root.append_child("AnimeDetails");
+		pugi::xml_node  root = doc.append_child("Chiika");
+		pugi::xml_node  MAL = root.append_child("AnimeDetails");
 
 		ChiikaApi::AnimeList list = MalManager::Get().GetAnimeList();
 		ChiikaApi::AnimeList::iterator It;
@@ -900,17 +900,17 @@ namespace ChiikaApi
 		ChiikaApi::AnimeDetails Details = It->second.Animu.ExtraDetails;
 		ChiikaApi::AnimeStatistics Statistics = It->second.Animu.Statistics;
 
-		Node anime = MAL.append_child("anime");
-		Node animeDbId = anime.append_child("Id");
-		Node syn = anime.append_child("Synopsis");
-		Node tags = anime.append_child("Tags");
-		Node premiered = anime.append_child("Premiered");
-		Node producers = anime.append_child("Producers");
-		Node duration = anime.append_child("DurationPerEpisode");
+		pugi::xml_node  anime = MAL.append_child("anime");
+		pugi::xml_node  animeDbId = anime.append_child("Id");
+		pugi::xml_node  syn = anime.append_child("Synopsis");
+		pugi::xml_node  tags = anime.append_child("Tags");
+		pugi::xml_node  premiered = anime.append_child("Premiered");
+		pugi::xml_node  producers = anime.append_child("Producers");
+		pugi::xml_node  duration = anime.append_child("DurationPerEpisode");
 
-		Node score = anime.append_child("Score");
-		Node ranked = anime.append_child("Ranked");
-		Node popularity = anime.append_child("Popularity");
+		pugi::xml_node  score = anime.append_child("Score");
+		pugi::xml_node  ranked = anime.append_child("Ranked");
+		pugi::xml_node  popularity = anime.append_child("Popularity");
 
 
 		SetXMLValue(animeDbId,Animu.Animu.Id);
@@ -925,7 +925,7 @@ namespace ChiikaApi
 		for(int i=0; i < Details.Producers.size(); i++)
 		{
 		String p = Details.Producers[i];
-		Node pNode = producers.append_child("Producer");
+		pugi::xml_node  ppugi::xml_node  = producers.append_child("Producer");
 		SetXMLValue(pNode,p.toStdString().c_str());
 		}
 
@@ -933,7 +933,7 @@ namespace ChiikaApi
 		for(int i=0; i < Details.Tags.size(); i++)
 		{
 		String tag = Details.Tags[i];
-		Node tagNode = tags.append_child("Tag");
+		pugi::xml_node  tagpugi::xml_node  = tags.append_child("Tag");
 		SetXMLValue(tagNode,tag.toStdString().c_str());
 		}
 		}

@@ -774,23 +774,23 @@ namespace ChiikaApi
 	String RequestManager::GetAnimeXML(const AnimeInfo& anime)
 	{
 		pugi::xml_document doc;
-		Node entry = doc.append_child("entry");
-		Node episode = entry.append_child("episode");
-		Node status = entry.append_child("status");
-		Node score = entry.append_child("score");
-		Node downloaded_episodes = entry.append_child("downloaded_episodes");
-		Node storage_type = entry.append_child("storage_type");
-		Node storage_value = entry.append_child("storage_value");
-		Node times_rewatched = entry.append_child("times_rewatched");
-		Node rewatch_value = entry.append_child("rewatch_value");
-		Node date_start = entry.append_child("date_start");
-		Node date_finish = entry.append_child("date_finish");
-		Node priority = entry.append_child("priority");
-		Node enable_discussion = entry.append_child("enable_discussion");
-		Node enable_rewatching = entry.append_child("enable_rewatching");
-		Node comments = entry.append_child("comments");
-		Node fansub_group = entry.append_child("fansub_group");
-		Node tags = entry.append_child("tags");
+		pugi::xml_node entry = doc.append_child("entry");
+		pugi::xml_node episode = entry.append_child("episode");
+		pugi::xml_node status = entry.append_child("status");
+		pugi::xml_node score = entry.append_child("score");
+		pugi::xml_node downloaded_episodes = entry.append_child("downloaded_episodes");
+		pugi::xml_node storage_type = entry.append_child("storage_type");
+		pugi::xml_node storage_value = entry.append_child("storage_value");
+		pugi::xml_node times_rewatched = entry.append_child("times_rewatched");
+		pugi::xml_node rewatch_value = entry.append_child("rewatch_value");
+		pugi::xml_node date_start = entry.append_child("date_start");
+		pugi::xml_node date_finish = entry.append_child("date_finish");
+		pugi::xml_node priority = entry.append_child("priority");
+		pugi::xml_node enable_discussion = entry.append_child("enable_discussion");
+		pugi::xml_node enable_rewatching = entry.append_child("enable_rewatching");
+		pugi::xml_node comments = entry.append_child("comments");
+		pugi::xml_node fansub_group = entry.append_child("fansub_group");
+		pugi::xml_node tags = entry.append_child("tags");
 
 		pugi::xml_node decl = doc.prepend_child(pugi::node_declaration);
 		decl.append_attribute("version") = "1.0";
@@ -808,23 +808,23 @@ namespace ChiikaApi
 	String RequestManager::GetMangaXML(const MangaInfo& manga)
 	{
 		pugi::xml_document doc;
-		Node entry = doc.append_child("entry");
-		Node chapters = entry.append_child("chapters");
-		Node volume = entry.append_child("volume");
-		Node status = entry.append_child("status");
-		Node score = entry.append_child("score");
-		Node downloaded_chapters = entry.append_child("downloaded_chapters");
-		Node times_reread = entry.append_child("times_reread");
-		Node reread_value = entry.append_child("reread_value");
-		Node date_start = entry.append_child("date_start");
-		Node date_finish = entry.append_child("date_finish");
-		Node priority = entry.append_child("priority");
-		Node enable_discussion = entry.append_child("enable_discussion");
-		Node enable_rereading = entry.append_child("enable_rereading");
-		Node comments = entry.append_child("comments");
-		Node scan_group = entry.append_child("scan_group");
-		Node tags = entry.append_child("tags");
-		Node retail_volumes = entry.append_child("retail_volumes");
+		pugi::xml_node entry = doc.append_child("entry");
+		pugi::xml_node chapters = entry.append_child("chapters");
+		pugi::xml_node volume = entry.append_child("volume");
+		pugi::xml_node status = entry.append_child("status");
+		pugi::xml_node score = entry.append_child("score");
+		pugi::xml_node downloaded_chapters = entry.append_child("downloaded_chapters");
+		pugi::xml_node times_reread = entry.append_child("times_reread");
+		pugi::xml_node reread_value = entry.append_child("reread_value");
+		pugi::xml_node date_start = entry.append_child("date_start");
+		pugi::xml_node date_finish = entry.append_child("date_finish");
+		pugi::xml_node priority = entry.append_child("priority");
+		pugi::xml_node enable_discussion = entry.append_child("enable_discussion");
+		pugi::xml_node enable_rereading = entry.append_child("enable_rereading");
+		pugi::xml_node comments = entry.append_child("comments");
+		pugi::xml_node scan_group = entry.append_child("scan_group");
+		pugi::xml_node tags = entry.append_child("tags");
+		pugi::xml_node retail_volumes = entry.append_child("retail_volumes");
 
 		pugi::xml_node decl = doc.prepend_child(pugi::node_declaration);
 		decl.append_attribute("version") = "1.0";

@@ -134,6 +134,7 @@ set(CHIIKA_THIRD_PARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}//ThirdParty)
 set(CHIIKA_LIBRARIES libcurl)
 set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib)
 set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} pugixml)
+set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} Anitomy)
 
 add_subdirectory(Tests)
 
@@ -170,6 +171,10 @@ target_link_libraries(ChiikaApi jsoncpp_lib)
 #Pugixml
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\pugixml\\src)
 target_link_libraries(ChiikaApi pugixml)
+
+#Anitomy
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\anitomy)
+target_link_libraries(ChiikaApi Anitomy)
 
 #Tests
 

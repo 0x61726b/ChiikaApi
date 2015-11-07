@@ -323,10 +323,10 @@ namespace ChiikaApi
 		//{
 		//	pugi::xml_document doc;
 
-		//	Node root = doc.append_child("Chiika");
-		//	Node settings = root.append_child("Settings");
+		//	pugi::xml_node  root = doc.append_child("Chiika");
+		//	pugi::xml_node  settings = root.append_child("Settings");
 
-		//	//pugi::xml_node_iterator It;
+		//	//pugi::xml_node  _iterator It;
 
 		//	StdIt(OptionValueMap) It;
 		//	ForEachOnStd(It,m_Settings)
@@ -335,7 +335,7 @@ namespace ChiikaApi
 		//		StdIt(OptionsMap) strValue = AllChiikaSettings.find(It->first);
 		//		if(IsValidIt(strValue,AllChiikaSettings))
 		//		{
-		//			Node node = settings.append_child(strValue->second.toStdString().c_str());
+		//			pugi::xml_node  pugi::xml_node  = settings.append_child(strValue->second.toStdString().c_str());
 
 		//			StdIt(OptionValueMap) s = m_Settings.find(It->first);
 		//			ShrPtr<SettingInterface> sptr = s->second;
@@ -381,10 +381,10 @@ namespace ChiikaApi
 			String fileData = file.readAll();
 			doc.load(fileData.toStdString().c_str());
 
-			Node root = doc.child("Chiika");
-			Node settings = root.child("Settings");
+			pugi::xml_node  root = doc.child("Chiika");
+			pugi::xml_node  settings = root.child("Settings");
 
-			pugi::xml_node_iterator It;
+			pugi::xml_node  _iterator It;
 			ForEachOnXml(It,settings)
 			{
 				String nodeName = It->name();
