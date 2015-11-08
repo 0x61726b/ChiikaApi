@@ -1,25 +1,27 @@
 # Chiika Api
 Chiika Anime Tracker Api
 
-C++ library for MyAnimelist interactions.
+Cross platform multi-purpose C++ library for MyAnimelist interactions.
 
 ## Some of the features:
 -Full Myanimelist integration
+
 -Scraping anime and user data(such as friends)
+
 -Senpai.Moe data for calendar and such
--Media player recognition (only for Windows yet)
+
+-Media player recognition (only for Windows for now)
+
 -Local database
+
 -Tests
+
 
 #### 3rd party libraries used
 - [Anitomy](https://github.com/arkenthera/anitomy)
-
 - [Curl](https://github.com/bagder/curl)
-
 - [Googletest and Googlemock](https://github.com/google/googletest)
-
 - [Jsoncpp](https://github.com/arkenthera/jsoncpp)
-
 - [Pugixml](https://github.com/arkenthera/pugixml)
 
 Some libraries are edited for enchanced use.
