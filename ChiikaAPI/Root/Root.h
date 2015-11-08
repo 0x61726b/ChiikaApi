@@ -27,15 +27,15 @@ namespace ChiikaApi
 	class MalApiExport Root : public RequestListener,public GeneralAllocatedObject
 	{
 	public:
-		Root(const std::string& modulePath);
+		Root(const ChiString& modulePath);
 		~Root();
 
 
-		void SetAnimeFolderPath(String path);
-		String GetAnimeFolderPath();
+		void SetAnimeFolderPath(ChiString path);
+		ChiString GetAnimeFolderPath();
 
-		String GetDataPath();
-		String GetImageFolderPath();
+		ChiString GetDataPath();
+		ChiString GetImageFolderPath();
 
 		AppSettings* GetAppSettings();
 
@@ -59,10 +59,10 @@ namespace ChiikaApi
 		void UpdateManga(const MangaInfo& data);
 		void DeleteManga(const MangaInfo& name);
 
-		void SearchAnime(const String& name);
-		void SearchManga(const String& name);
+		void SearchAnime(const ChiString& name);
+		void SearchManga(const ChiString& name);
 
-		void SearchAnilistAnime(const String& name);
+		void SearchAnilistAnime(const ChiString& name);
 
 		void DownloadAnimeImage(const AnimeInfo& anime);
 		void RequestUserPageScrape();
@@ -90,8 +90,8 @@ namespace ChiikaApi
 		//Api Related things
 		void InitializeApi(bool b);
 		void Exit();
-		String GetVersion();
-		String GetHash(); //debugging purposes
+		ChiString GetVersion();
+		ChiString GetHash(); //debugging purposes
 
 		virtual void Notify(ThreadedRequest* req);
 
@@ -110,9 +110,9 @@ namespace ChiikaApi
 
 
 	protected:
-		String m_sListData;
-		String m_sVersion;
-		String m_sCommitHash;
+		ChiString m_sListData;
+		ChiString m_sVersion;
+		ChiString m_sCommitHash;
 	};
 }
 //----------------------------------------------------------------------------

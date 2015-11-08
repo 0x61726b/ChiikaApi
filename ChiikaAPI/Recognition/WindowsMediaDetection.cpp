@@ -19,7 +19,7 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	typedef Map<MediaPlayerList,String>::type MediaPlayerClassNameMap;
+	typedef Map<MediaPlayerList,ChiString>::type MediaPlayerClassNameMap;
 	MediaPlayerClassNameMap ClassNames =
 	{
 		MediaPlayerClassNameMap::value_type(MPC,"MediaPlayerClassicW"),
@@ -111,9 +111,9 @@ namespace ChiikaApi
 	//		StdIt(MediaPlayerClassNameMap) It;
 	//		ForEachOnStd(It,ClassNames)
 	//		{
-	//			if(It->second == String::fromStdString(className))
+	//			if(It->second == ChiString::fromStdChiString(className))
 	//			{
-	//				if(String::fromStdString(windowValue) == "BS.Player")
+	//				if(ChiString::fromStdChiString(windowValue) == "BS.Player")
 	//				{
 	//					BsPlayerworkaround();
 	//					qDebug() << "BS Player detected";

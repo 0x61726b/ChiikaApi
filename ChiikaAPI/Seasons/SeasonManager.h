@@ -21,7 +21,7 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	typedef Map<String,Timezone>::type TimezoneMap;
+	typedef Map<ChiString,Timezone>::type TimezoneMap;
 	typedef Vector<SenpaiItem>::type SenpaiData;
 
 	class MalApiExport SeasonManager : public Singleton<SeasonManager>

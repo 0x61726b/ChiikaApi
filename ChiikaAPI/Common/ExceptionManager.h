@@ -27,11 +27,11 @@ namespace ChiikaApi
 	protected:
 		long line;
 		int number;
-		String typeName;
-		String description;
-		String source;
-		String file;
-		mutable String fullDesc;
+		ChiString typeName;
+		ChiString description;
+		ChiString source;
+		ChiString file;
+		mutable ChiString fullDesc;
 	public:
 		enum ExceptionCodes
 		{
@@ -48,11 +48,11 @@ namespace ChiikaApi
 			ERR_THREADING
 		};
 
-		Exception(int number,const String& description,const String& source);
+		Exception(int number,const ChiString& description,const ChiString& source);
 
 		/** Advanced constructor.
 		*/
-		Exception(int number,const String& description,const String& source,const char* type,const char* file,long line);
+		Exception(int number,const ChiString& description,const ChiString& source,const char* type,const char* file,long line);
 
 		/** Copy constructor.
 		*/
@@ -65,7 +65,7 @@ namespace ChiikaApi
 		*/
 		void operator = (const Exception& rhs);
 
-		/** Returns a string with the full description of this error.
+		/** Returns a ChiString with the full description of this error.
 			@remarks
 			The description contains the error number, the description
 			supplied by the thrower, what routine threw the exception,
@@ -75,7 +75,7 @@ namespace ChiikaApi
 			the place in which OGRE found the problem, and a text
 			description from the 3D rendering library, if available.
 			*/
-		virtual const String& getFullDescription(void) const;
+		virtual const ChiString& getFullDescription(void) const;
 
 		/** Gets the error code.
 		*/
@@ -83,21 +83,21 @@ namespace ChiikaApi
 
 		/** Gets the source function.
 		*/
-		virtual const String &getSource() const { return source; }
+		virtual const ChiString &getSource() const { return source; }
 
 		/** Gets source file name.
 		*/
-		virtual const String &getFile() const { return file; }
+		virtual const ChiString &getFile() const { return file; }
 
 		/** Gets line number.
 		*/
 		virtual long getLine() const { return line; }
 
-		/** Returns a string with only the 'description' field of this exception. Use
+		/** Returns a ChiString with only the 'description' field of this exception. Use
 			getFullDescriptionto get a full description of the error including line number,
 			error number and what function threw the exception.
 			*/
-		virtual const String &getDescription(void) const { return description; }
+		virtual const ChiString &getDescription(void) const { return description; }
 
 		/// Override std::exception::what
 		const char* what() const throw() { return getFullDescription().c_str(); }
@@ -113,61 +113,61 @@ namespace ChiikaApi
 	class MalApiExport UnimplementedException : public Exception
 	{
 	public:
-		UnimplementedException(int inNumber,const String& inDescription,const String& inSource,const char* inFile,long inLine)
+		UnimplementedException(int inNumber,const ChiString& inDescription,const ChiString& inSource,const char* inFile,long inLine)
 			: Exception(inNumber,inDescription,inSource,"UnimplementedException",inFile,inLine) {}
 	};
 	class MalApiExport FileNotFoundException : public Exception
 	{
 	public:
-		FileNotFoundException(int inNumber,const String& inDescription,const String& inSource,const char* inFile,long inLine)
+		FileNotFoundException(int inNumber,const ChiString& inDescription,const ChiString& inSource,const char* inFile,long inLine)
 			: Exception(inNumber,inDescription,inSource,"FileNotFoundException",inFile,inLine) {}
 	};
 	class MalApiExport IOException : public Exception
 	{
 	public:
-		IOException(int inNumber,const String& inDescription,const String& inSource,const char* inFile,long inLine)
+		IOException(int inNumber,const ChiString& inDescription,const ChiString& inSource,const char* inFile,long inLine)
 			: Exception(inNumber,inDescription,inSource,"IOException",inFile,inLine) {}
 	};
 	class MalApiExport InvalidStateException : public Exception
 	{
 	public:
-		InvalidStateException(int inNumber,const String& inDescription,const String& inSource,const char* inFile,long inLine)
+		InvalidStateException(int inNumber,const ChiString& inDescription,const ChiString& inSource,const char* inFile,long inLine)
 			: Exception(inNumber,inDescription,inSource,"InvalidStateException",inFile,inLine) {}
 	};
 	class MalApiExport InvalidParametersException : public Exception
 	{
 	public:
-		InvalidParametersException(int inNumber,const String& inDescription,const String& inSource,const char* inFile,long inLine)
+		InvalidParametersException(int inNumber,const ChiString& inDescription,const ChiString& inSource,const char* inFile,long inLine)
 			: Exception(inNumber,inDescription,inSource,"InvalidParametersException",inFile,inLine) {}
 	};
 	class MalApiExport ItemIdentityException : public Exception
 	{
 	public:
-		ItemIdentityException(int inNumber,const String& inDescription,const String& inSource,const char* inFile,long inLine)
+		ItemIdentityException(int inNumber,const ChiString& inDescription,const ChiString& inSource,const char* inFile,long inLine)
 			: Exception(inNumber,inDescription,inSource,"ItemIdentityException",inFile,inLine) {}
 	};
 	class MalApiExport InternalErrorException : public Exception
 	{
 	public:
-		InternalErrorException(int inNumber,const String& inDescription,const String& inSource,const char* inFile,long inLine)
+		InternalErrorException(int inNumber,const ChiString& inDescription,const ChiString& inSource,const char* inFile,long inLine)
 			: Exception(inNumber,inDescription,inSource,"InternalErrorException",inFile,inLine) {}
 	};
 	class MalApiExport RuntimeAssertionException : public Exception
 	{
 	public:
-		RuntimeAssertionException(int inNumber,const String& inDescription,const String& inSource,const char* inFile,long inLine)
+		RuntimeAssertionException(int inNumber,const ChiString& inDescription,const ChiString& inSource,const char* inFile,long inLine)
 			: Exception(inNumber,inDescription,inSource,"RuntimeAssertionException",inFile,inLine) {}
 	};
 	class MalApiExport XMLParsingException : public Exception
 	{
 	public:
-		XMLParsingException(int inNumber,const String& inDescription,const String& inSource,const char* inFile,long inLine)
+		XMLParsingException(int inNumber,const ChiString& inDescription,const ChiString& inSource,const char* inFile,long inLine)
 			: Exception(inNumber,inDescription,inSource,"XMLParsingException",inFile,inLine) {}
 	};
 	class MalApiExport ThreadingException : public Exception
 	{
 	public:
-		ThreadingException(int inNumber,const String& inDescription,const String& inSource,const char* inFile,long inLine)
+		ThreadingException(int inNumber,const ChiString& inDescription,const ChiString& inSource,const char* inFile,long inLine)
 			: Exception(inNumber,inDescription,inSource,"ThreadingException",inFile,inLine) {}
 	};
 	class ExceptionFactory
@@ -178,76 +178,76 @@ namespace ChiikaApi
 	public:
 		static UnimplementedException create(
 			ExceptionCodeType<Exception::ERR_NOT_IMPLEMENTED> code,
-			const String& desc,
-			const String& src,const char* file,long line)
+			const ChiString& desc,
+			const ChiString& src,const char* file,long line)
 		{
 			return UnimplementedException(code.number,desc,src,file,line);
 		}
 		static FileNotFoundException create(
 			ExceptionCodeType<Exception::ERR_FILE_NOT_FOUND> code,
-			const String& desc,
-			const String& src,const char* file,long line)
+			const ChiString& desc,
+			const ChiString& src,const char* file,long line)
 		{
 			return FileNotFoundException(code.number,desc,src,file,line);
 		}
 		static IOException create(
 			ExceptionCodeType<Exception::ERR_CANNOT_WRITE_TO_FILE> code,
-			const String& desc,
-			const String& src,const char* file,long line)
+			const ChiString& desc,
+			const ChiString& src,const char* file,long line)
 		{
 			return IOException(code.number,desc,src,file,line);
 		}
 		static InvalidStateException create(
 			ExceptionCodeType<Exception::ERR_INVALID_STATE> code,
-			const String& desc,
-			const String& src,const char* file,long line)
+			const ChiString& desc,
+			const ChiString& src,const char* file,long line)
 		{
 			return InvalidStateException(code.number,desc,src,file,line);
 		}
 		static InvalidParametersException create(
 			ExceptionCodeType<Exception::ERR_INVALIDPARAMS> code,
-			const String& desc,
-			const String& src,const char* file,long line)
+			const ChiString& desc,
+			const ChiString& src,const char* file,long line)
 		{
 			return InvalidParametersException(code.number,desc,src,file,line);
 		}
 		static ItemIdentityException create(
 			ExceptionCodeType<Exception::ERR_ITEM_NOT_FOUND> code,
-			const String& desc,
-			const String& src,const char* file,long line)
+			const ChiString& desc,
+			const ChiString& src,const char* file,long line)
 		{
 			return ItemIdentityException(code.number,desc,src,file,line);
 		}
 		static ItemIdentityException create(
 			ExceptionCodeType<Exception::ERR_DUPLICATE_ITEM> code,
-			const String& desc,
-			const String& src,const char* file,long line)
+			const ChiString& desc,
+			const ChiString& src,const char* file,long line)
 		{
 			return ItemIdentityException(code.number,desc,src,file,line);
 		}
 		static InternalErrorException create(
 			ExceptionCodeType<Exception::ERR_INTERNAL_ERROR> code,
-			const String& desc,
-			const String& src,const char* file,long line)
+			const ChiString& desc,
+			const ChiString& src,const char* file,long line)
 		{
 			return InternalErrorException(code.number,desc,src,file,line);
 		}
 		static RuntimeAssertionException create(
 			ExceptionCodeType<Exception::ERR_RT_ASSERTION_FAILED> code,
-			const String& desc,
-			const String& src,const char* file,long line)
+			const ChiString& desc,
+			const ChiString& src,const char* file,long line)
 		{
 			return RuntimeAssertionException(code.number,desc,src,file,line);
 		}
 		static XMLParsingException create(ExceptionCodeType<Exception::ERR_XML_PARSING> code,
-			const String& desc,
-			const String& src,const char* file,long line)
+			const ChiString& desc,
+			const ChiString& src,const char* file,long line)
 		{
 			return XMLParsingException(code.number,desc,src,file,line);
 		}
 		static ThreadingException create(ExceptionCodeType<Exception::ERR_THREADING> code,
-			const String& desc,
-			const String& src,const char* file,long line)
+			const ChiString& desc,
+			const ChiString& src,const char* file,long line)
 		{
 			return ThreadingException(code.number,desc,src,file,line);
 		}

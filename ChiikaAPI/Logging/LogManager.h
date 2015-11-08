@@ -27,30 +27,30 @@ namespace ChiikaApi
 	public:
 		CHIKA_AUTO_MUTEX
 
-		typedef Map<String,Log*>::type LogList;
+		typedef Map<ChiString,Log*>::type LogList;
 
 		LogList m_Logs;
 
 		Log* m_pDefaultLog;
 
-		Log* CreateLog(const String& name,bool defaultLog = false,bool debuggerOutput = true,
+		Log* CreateLog(const ChiString& name,bool defaultLog = false,bool debuggerOutput = true,
 			bool suppressFileOutput = false);
 
 		LogManager();
 		~LogManager();
 
-		Log* GetLog(const String& name);
+		Log* GetLog(const ChiString& name);
 		
 		Log* GetDefaultLog();
-		void DestroyLog(const String& name);
+		void DestroyLog(const ChiString& name);
 		void DestroyLog(Log* log);
 
 		Log* setDefaultLog(Log* newLog);
 
-        void LogMessage(const String& message, LogMessageLevel lml = LOG_LEVEL_INFO,
+        void LogMessage(const ChiString& message, LogMessageLevel lml = LOG_LEVEL_INFO,
 			bool maskDebug = false);
 
-		void LogMessage(LogMessageLevel lml, const String& message,
+		void LogMessage(LogMessageLevel lml, const ChiString& message,
 			bool maskDebug = false) {
 			Log(message, lml, maskDebug);
 		}

@@ -39,8 +39,6 @@
 #include <queue>
 #include <bitset>
 
-typedef std::string String;
-
 // Note - not in the original STL, but exists in SGI STL and STLport
 // For gcc 4.3 see http://gcc.gnu.org/gcc-4.3/changes.html
 #if (YUME_COMPILER == YUME_COMPILER_GNUC) && !defined(STLPORT)

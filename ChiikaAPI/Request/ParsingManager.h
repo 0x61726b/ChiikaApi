@@ -25,25 +25,25 @@ namespace ChiikaApi
 	class MalApiExport ParsingManager : public Singleton<ParsingManager>
 	{
 	public:
-		bool ParseVerifyRequest(const String& data);
-		AnimeList ParseSearchResult(const String& data);
-		AnimeList ParseGetUserAnimeList(const String& data);
-		MangaList ParseGetUserMangaList(const String& data);
-		const AnimeInfo& ParseCRUDAnime(const String& data);
-		String ParseAnilistAuth(const String& data);
-		void ParseAnilistSearchAnime(const String& data);
-		AnimeInfo ParseAnimeScrape(const String& data,int Id);
-		void ParseUserPage(const String& data);
+		bool ParseVerifyRequest(const ChiString& data);
+		AnimeList ParseSearchResult(const ChiString& data);
+		AnimeList ParseGetUserAnimeList(const ChiString& data);
+		MangaList ParseGetUserMangaList(const ChiString& data);
+		const AnimeInfo& ParseCRUDAnime(const ChiString& data);
+		ChiString ParseAnilistAuth(const ChiString& data);
+		void ParseAnilistSearchAnime(const ChiString& data);
+		AnimeInfo ParseAnimeScrape(const ChiString& data,int Id);
+		void ParseUserPage(const ChiString& data);
 		void Parse(ThreadedRequest* r);
 
 
-		void ParseSenpai(const String& data);
+		void ParseSenpai(const ChiString& data);
 
-		std::vector<String> GetItemsSeperatedBy(String data,String seperator);
-		String ParseWebPage(String data,String searchStart,String searchEnd);
-		String RemoveLink(String data);
-		String RemoveHTMLElements(String data);
-		bool CheckValidLink(String s);
+		std::vector<ChiString> GetItemsSeperatedBy(ChiString data,ChiString seperator);
+		ChiString ParseWebPage(ChiString data,ChiString searchStart,ChiString searchEnd);
+		ChiString RemoveLink(ChiString data);
+		ChiString RemoveHTMLElements(ChiString data);
+		bool CheckValidLink(ChiString s);
 		//Singleton Interface
 	public:
 		static ParsingManager& Get();

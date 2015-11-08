@@ -40,6 +40,8 @@ set(ChiikaApi_Logging_Src
   Logging/LogManager.h
   Logging/FileHelper.h
   Logging/FileHelper.cpp
+  Logging/ChiString.h
+  Logging/ChiString.cpp
   )
 source_group(ChiikaApi\\\\Logging FILES ${ChiikaApi_Logging_Src})
 
@@ -135,6 +137,7 @@ set(CHIIKA_LIBRARIES libcurl)
 set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib)
 set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} pugixml)
 set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} Anitomy)
+set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} gmock)
 
 add_subdirectory(Tests)
 
@@ -148,7 +151,6 @@ add_library(ChiikaApi SHARED
   ${ChiikaApi_Root_Src}
   ${ChiikaApi_Seasons_Src}
   ${ChiikaApi_Settings_Src}
-  #${ChiikaApi_Tests_Src}
   )
 
 use_precompiled_header(ChiikaApi 
@@ -175,6 +177,7 @@ target_link_libraries(ChiikaApi pugixml)
 #Anitomy
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\anitomy)
 target_link_libraries(ChiikaApi Anitomy)
+
 
 #Tests
 

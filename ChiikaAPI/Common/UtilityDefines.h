@@ -17,12 +17,12 @@
 #define __ChiikaUtilityDefines_h__
 //----------------------------------------------------------------------------
 #	define ToStd(x) x.c_str()
-#	define QToStd(x) x.toStdString()
-#	define QToChar(x) /*x.toStdString().c_str()*/
-#	define Q_(x) /*String::fromStdString(x)*/
-#	define FromStdToInt(x) /*String::fromStdString(x).toInt()*/
-#	define FromXMLValueToInt(x) atoi(x.text().get()) /*String::fromStdString(x.text().get()).toInt()*/
-#	define FromXMLValueToFloat(x) atof(x.text().get()) /* String::fromStdString(x.text().get()).toFloat()*/
+#	define QToStd(x) x.toStdChiString()
+#	define QToChar(x) /*x.toStdChiString().c_str()*/
+#	define Q_(x) /*ChiString::fromStdChiString(x)*/
+#	define FromStdToInt(x) /*ChiString::fromStdChiString(x).toInt()*/
+#	define FromXMLValueToInt(x) atoi(x.text().get()) /*ChiString::fromStdChiString(x.text().get()).toInt()*/
+#	define FromXMLValueToFloat(x) atof(x.text().get()) /* ChiString::fromStdChiString(x.text().get()).toFloat()*/
 #	define FromXMLValueToStd(x)  x.text().get()
 #	define JsToQ(x) (x.asString())
 #	define SetXMLValue(x,y) x.text().set(y)
@@ -39,7 +39,7 @@
 #	define ShrPtr std::shared_ptr //SharedPtr is used by boost huh
 #	define UniquePtr std::unique_ptr
 #	define MakeShared std::make_shared
-#	define AddStringOption(x,y) AddToMap(MakePair(x,MakeShared<StringOption>(x,y)),m_Settings)
+#	define AddChiStringOption(x,y) AddToMap(MakePair(x,MakeShared<ChiStringOption>(x,y)),m_Settings)
 #	define AddBooleanOption(x,y) AddToMap(MakePair(x,MakeShared<BooleanOption>(x,y)),m_Settings)
 #	define AddIntegerOption(x,y) AddToMap(MakePair(x,MakeShared<IntegerOption>(x,y)),m_Settings)
 #	define RequestThread ThreadedRequest*

@@ -46,7 +46,7 @@ namespace ChiikaApi
 		}
 	}
 	//-----------------------------------------------------------------------
-	Log* LogManager::CreateLog(const String& name,bool defaultLog,bool debuggerOutput,
+	Log* LogManager::CreateLog(const ChiString& name,bool defaultLog,bool debuggerOutput,
 		bool suppressFileOutput)
 	{
 		CHIKA_AUTO_MUTEX_LOCK
@@ -76,7 +76,7 @@ namespace ChiikaApi
 		return oldLog;
 	}
 	//-----------------------------------------------------------------------
-	Log* LogManager::GetLog(const String& name)
+	Log* LogManager::GetLog(const ChiString& name)
 	{
 		CHIKA_AUTO_MUTEX_LOCK
 			LogList::iterator i = m_Logs.find(name);
@@ -87,7 +87,7 @@ namespace ChiikaApi
 		return 0;
 	}
 	//-----------------------------------------------------------------------
-	void LogManager::DestroyLog(const String& name)
+	void LogManager::DestroyLog(const ChiString& name)
 	{
 		LogList::iterator i = m_Logs.find(name);
 		if(i != m_Logs.end())
@@ -112,7 +112,7 @@ namespace ChiikaApi
 		DestroyLog(log->GetName());
 	}
 	//-----------------------------------------------------------------------
-	void LogManager::LogMessage(const String& message,LogMessageLevel lml,bool maskDebug)
+	void LogManager::LogMessage(const ChiString& message,LogMessageLevel lml,bool maskDebug)
 	{
 		CHIKA_AUTO_MUTEX_LOCK
 			if(m_pDefaultLog)

@@ -23,7 +23,7 @@
 namespace ChiikaApi
 {
 	//----------------------------------------------------------------------------
-	typedef Map<OptionsEnum,String>::type OptionsMap;
+	typedef Map<OptionsEnum,ChiString>::type OptionsMap;
 	//----------------------------------------------------------------------------
 	OptionsMap AllChiikaSettings =
 	{
@@ -52,7 +52,7 @@ namespace ChiikaApi
 		OptionsMap::value_type(GEN_APP_STARTING_PAGE,"AppStartingPage")
 	};
 	//----------------------------------------------------------------------------
-	OptionsEnum GetEnumValue(String str)
+	OptionsEnum GetEnumValue(ChiString str)
 	{
 		StdIt(OptionsMap) It;
 		ForEachOnStd(It,AllChiikaSettings)
@@ -70,7 +70,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AppSettings::SetDefaultValues()
 	{
-		String dataPath = (m_sGlobalPath)+"/Data";
+		ChiString dataPath = (m_sGlobalPath)+"/Data";
 		m_sSettingsPath = dataPath + "/Chiika.cfg";
 
 		Initialize();
@@ -86,25 +86,25 @@ namespace ChiikaApi
 		}
 
 
-		String m_sAnimeListFile = dataPath + "/Chitanda.eru";
-		String m_sMangaListFile =  dataPath + "/Oreki.houtarou";
-		String m_sUpdateListFile =  dataPath + "/Satoshi.fukube";
-		String m_sUserInfo = dataPath + "/User.eru";
-		String m_sAnimeDetailsFile = dataPath + "/Detailskun.eru";
-		String m_sAnimeFolderPath = "";
-		String m_sSenpaiPath = dataPath + "/Senpai.moe";
+		ChiString m_sAnimeListFile = dataPath + "/Chitanda.eru";
+		ChiString m_sMangaListFile =  dataPath + "/Oreki.houtarou";
+		ChiString m_sUpdateListFile =  dataPath + "/Satoshi.fukube";
+		ChiString m_sUserInfo = dataPath + "/User.eru";
+		ChiString m_sAnimeDetailsFile = dataPath + "/Detailskun.eru";
+		ChiString m_sAnimeFolderPath = "";
+		ChiString m_sSenpaiPath = dataPath + "/Senpai.moe";
 		LoggingLevel lv = LoggingLevel::LOG_LEVEL_NORMAL;
 
 		/**/
 		AddIntegerOption(API_LOG_LEVEL,(int)lv);
 
-		AddStringOption(LIBRARY_ANIME_LIST_PATH,m_sAnimeListFile);
-		AddStringOption(LIBRARY_MANGA_LIST_PATH,m_sMangaListFile);
-		AddStringOption(LIBRARY_UPDATE_LIST_PATH,m_sUpdateListFile);
-		AddStringOption(LIBRARY_USER_INFO_PATH,m_sUserInfo);
-		AddStringOption(LIBRARY_ANIME_DETAILS_PATH,m_sAnimeDetailsFile);
-		AddStringOption(LIBRARY_ANIME_FOLDER_PATH,m_sAnimeFolderPath);
-		AddStringOption(LIBRARY_SENPAI_PATH,m_sSenpaiPath);
+		AddChiStringOption(LIBRARY_ANIME_LIST_PATH,m_sAnimeListFile);
+		AddChiStringOption(LIBRARY_MANGA_LIST_PATH,m_sMangaListFile);
+		AddChiStringOption(LIBRARY_UPDATE_LIST_PATH,m_sUpdateListFile);
+		AddChiStringOption(LIBRARY_USER_INFO_PATH,m_sUserInfo);
+		AddChiStringOption(LIBRARY_ANIME_DETAILS_PATH,m_sAnimeDetailsFile);
+		AddChiStringOption(LIBRARY_ANIME_FOLDER_PATH,m_sAnimeFolderPath);
+		AddChiStringOption(LIBRARY_SENPAI_PATH,m_sSenpaiPath);
 		/**/
 		AddBooleanOption(WINDOW_START_MINIMIZED,false);
 		AddBooleanOption(WINDOW_START_WITH_WINDOWS,false);
@@ -113,12 +113,12 @@ namespace ChiikaApi
 		/**/
 		AddIntegerOption(LIBRARY_SYNC_EVERY_X_SECOND,150);
 		/**/
-		AddStringOption(COLORS_ANIMELIST,"red");
-		AddStringOption(COLORS_MANGALIST,"blue");
-		AddStringOption(COLORS_HOME,"teal");
-		AddStringOption(COLORS_SETTINGS,"blueGrey");
+		AddChiStringOption(COLORS_ANIMELIST,"red");
+		AddChiStringOption(COLORS_MANGALIST,"blue");
+		AddChiStringOption(COLORS_HOME,"teal");
+		AddChiStringOption(COLORS_SETTINGS,"blueGrey");
 		/**/
-		AddStringOption(GEN_APP_STARTING_PAGE,"Home");
+		AddChiStringOption(GEN_APP_STARTING_PAGE,"Home");
 
 		Save();
 	}
@@ -134,22 +134,22 @@ namespace ChiikaApi
 		return Type;
 	}
 	//----------------------------------------------------------------------------
-	StringOption::StringOption(OptionsEnum nsp,String v)
+	ChiStringOption::ChiStringOption(OptionsEnum nsp,ChiString v)
 		: SettingInterface(nsp,OptionsType::Str)
 	{
 		SetValue(v);
 	}
 	//----------------------------------------------------------------------------
-	void StringOption::Execute()
+	void ChiStringOption::Execute()
 	{
 	}
 	//----------------------------------------------------------------------------
-	String StringOption::GetValue()
+	ChiString ChiStringOption::GetValue()
 	{
 		return Value;
 	}
 	//----------------------------------------------------------------------------
-	void StringOption::SetValue(String str)
+	void ChiStringOption::SetValue(ChiString str)
 	{
 		Value = str;
 	}
@@ -194,7 +194,7 @@ namespace ChiikaApi
 		return Value;
 	}
 	//----------------------------------------------------------------------------
-	AppSettings::AppSettings(const String& settings,String globalPath)
+	AppSettings::AppSettings(const ChiString& settings,ChiString globalPath)
 	{
 		m_sGlobalPath = globalPath;
 
@@ -209,14 +209,14 @@ namespace ChiikaApi
 		m_Settings.clear();
 	}
 	//----------------------------------------------------------------------------
-	void AppSettings::SetAnimeFolderPath(String path)
+	void AppSettings::SetAnimeFolderPath(ChiString path)
 	{
 
 	}
 	//----------------------------------------------------------------------------
 	void AppSettings::Initialize()
 	{
-		String dataPath = (m_sGlobalPath)+"/Data";
+		ChiString dataPath = (m_sGlobalPath)+"/Data";
 		//Create folders here
 
 		if(!FileUtil::Get().CheckIfDirectoryExists(dataPath))
@@ -228,7 +228,7 @@ namespace ChiikaApi
 			}
 		}
 
-		String imageDir = (dataPath + "/Images");
+		ChiString imageDir = (dataPath + "/Images");
 		if(!FileUtil::Get().CheckIfDirectoryExists(imageDir))
 		{
 			if(!FileUtil::Get().CreateDir(imageDir))
@@ -236,12 +236,12 @@ namespace ChiikaApi
 		}
 	}
 	//----------------------------------------------------------------------------
-	String AppSettings::GetStringOption(OptionsEnum option)
+	ChiString AppSettings::GetChiStringOption(OptionsEnum option)
 	{
 		ShrPtr<SettingInterface> ptr;
 		StdIt(OptionValueMap) It = m_Settings.find(option);
 
-		ShrPtr<StringOption> filePtr = std::static_pointer_cast<StringOption>(It->second);
+		ShrPtr<ChiStringOption> filePtr = std::static_pointer_cast<ChiStringOption>(It->second);
 		if(filePtr)
 		{
 			return filePtr->GetValue();
@@ -287,12 +287,12 @@ namespace ChiikaApi
 		}
 	}
 	//----------------------------------------------------------------------------
-	void AppSettings::SetStringOption(OptionsEnum option,String newValue)
+	void AppSettings::SetChiStringOption(OptionsEnum option,ChiString newValue)
 	{
 		ShrPtr<SettingInterface> ptr;
 		StdIt(OptionValueMap) It = m_Settings.find(option);
 
-		ShrPtr<StringOption> filePtr = std::static_pointer_cast<StringOption>(It->second);
+		ShrPtr<ChiStringOption> filePtr = std::static_pointer_cast<ChiStringOption>(It->second);
 		if(filePtr)
 		{
 			filePtr->SetValue(newValue);
@@ -332,7 +332,7 @@ namespace ChiikaApi
 			StdIt(OptionValueMap) It;
 			ForEachOnStd(It,m_Settings)
 			{
-				//Get string value
+				//Get ChiString value
 				StdIt(OptionsMap) strValue = AllChiikaSettings.find(It->first);
 				if(IsValidIt(strValue,AllChiikaSettings))
 				{
@@ -345,8 +345,8 @@ namespace ChiikaApi
 					{
 					case OptionsType::Str:
 					{
-						SetXMLValue(node,(GetStringOption(It->first).c_str()));
-						SetXMLAttrType(node,"String");
+						SetXMLValue(node,(GetChiStringOption(It->first).c_str()));
+						SetXMLAttrType(node,"ChiString");
 					}
 					break;
 					case OptionsType::Boolean:
@@ -379,7 +379,7 @@ namespace ChiikaApi
 		if(file.Open())
 		{
 			pugi::xml_document doc;
-			String fileData = file.Read();
+			ChiString fileData = file.Read();
 			doc.load(fileData.c_str());
 
 			pugi::xml_node  root = doc.child("Chiika");
@@ -388,17 +388,17 @@ namespace ChiikaApi
 			pugi::xml_node::iterator It;
 			ForEachOnXml(It,settings)
 			{
-				String nodeName = It->name();
-				String nodeAttr = It->attribute("Type").value();
+				ChiString nodeName = It->name();
+				ChiString nodeAttr = It->attribute("Type").value();
 
 				if(nodeName != "")
 				{
-					String nodeValue = It->child_value();
+					ChiString nodeValue = It->child_value();
 					OptionsEnum e = GetEnumValue(nodeName);
 
 					OptionsType type;
 
-					if(nodeAttr == "String")
+					if(nodeAttr == "ChiString")
 					{
 						type = OptionsType::Str;
 					}
@@ -415,7 +415,7 @@ namespace ChiikaApi
 					{
 					case OptionsType::Str:
 					{
-						AddStringOption(e,nodeValue);
+						AddChiStringOption(e,nodeValue);
 					}
 					break;
 					case OptionsType::Boolean:
@@ -442,12 +442,12 @@ namespace ChiikaApi
 		}
 	}
 	//----------------------------------------------------------------------------
-	String AppSettings::GetDataPath()
+	ChiString AppSettings::GetDataPath()
 	{
 		return (m_sGlobalPath)+"/Data";
 	}
 	//----------------------------------------------------------------------------
-	String AppSettings::GetImagePath()
+	ChiString AppSettings::GetImagePath()
 	{
 		return GetDataPath() + "/Images/";
 	}

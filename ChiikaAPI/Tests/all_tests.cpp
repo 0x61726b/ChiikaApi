@@ -13,27 +13,5 @@
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
-#include "Common/Required.h"
-#include "Root\Root.h"
-#include "Request\RequestManager.h"
 
-int main()
-{
-	//Set module path
-	HMODULE hModule = GetModuleHandleW(NULL);
-	CHAR path[MAX_PATH];
-	GetModuleFileNameA(hModule,path,MAX_PATH);
-	std::string p = path;
-	std::size_t lastEscape = p.find_last_of("\\");
-	std::string modulePath = p.substr(0,lastEscape);
-
-	ChiikaApi::Root r(modulePath);
-
-	
-
-	std::getchar();
-
-
-
-	return 0;
-}
+//#include "api_string_unittest.cpp"

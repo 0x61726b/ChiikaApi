@@ -21,7 +21,7 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	    Exception::Exception(int num, const String& desc, const String& src) :
+	    Exception::Exception(int num, const ChiString& desc, const ChiString& src) :
         line( 0 ),
         number( num ),
         description( desc ),
@@ -31,7 +31,7 @@ namespace ChiikaApi
         //LogManager::getSingleton().logMessage(this->getFullDescription());
     }
 
-    Exception::Exception(int num, const String& desc, const String& src, 
+    Exception::Exception(int num, const ChiString& desc, const ChiString& src, 
 		const char* typ, const char* fil, long lin) :
         line( lin ),
         number( num ),
@@ -70,7 +70,7 @@ namespace ChiikaApi
 		typeName = rhs.typeName;
     }
 
-    const String& Exception::getFullDescription(void) const
+    const ChiString& Exception::getFullDescription(void) const
     {
 		if (fullDesc.empty())
 		{

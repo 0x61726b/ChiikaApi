@@ -17,7 +17,7 @@
 #define __Log_h__
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
-#include <String.h>
+#include <string.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -46,7 +46,7 @@ namespace ChiikaApi
 	public:
 		virtual ~LogListener() {}
 
-		virtual void MessageLogged(const String& message,LogMessageLevel lml,bool maskDebug,const String &logName,bool& skipThisMessage) = 0;
+		virtual void MessageLogged(const ChiString& message,LogMessageLevel lml,bool maskDebug,const ChiString &logName,bool& skipThisMessage) = 0;
 	};
 
 	class MalApiExport Log
@@ -57,7 +57,7 @@ namespace ChiikaApi
 		bool			mDebugOut;
 		bool			mSuppressFile;
 		bool			mTimeStamp;
-		String			mLogName;
+		ChiString			mLogName;
 
 		typedef Vector<LogListener*>::type mtLogListener;
 		mtLogListener mListeners;
@@ -66,10 +66,10 @@ namespace ChiikaApi
 		CHIKA_AUTO_MUTEX
 
 		class Stream;
-		Log(const String& name,bool debugOutput = true,bool suppressFileOutput = false);
+		Log(const ChiString& name,bool debugOutput = true,bool suppressFileOutput = false);
 
 		~Log();
-		const String& GetName() const { return mLogName; }
+		const ChiString& GetName() const { return mLogName; }
 
 		bool IsDebugOutputEnabled() const { return mDebugOut; }
 
@@ -77,7 +77,7 @@ namespace ChiikaApi
 
 		bool IsTimeStampEnabled() const { return mTimeStamp; }
 
-		void LogMessage(const String& message,LogMessageLevel lml = LOG_LEVEL_INFO,bool maskDebug = false);
+		void LogMessage(const ChiString& message,LogMessageLevel lml = LOG_LEVEL_INFO,bool maskDebug = false);
 
 		Stream stream(LogMessageLevel lml = LOG_LEVEL_INFO,bool maskDebug = false);
 

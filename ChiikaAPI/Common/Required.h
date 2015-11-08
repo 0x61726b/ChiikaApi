@@ -45,6 +45,16 @@ namespace ChiikaApi
 }
 //----------------------------------------------------------------------------
 #include "StdHeaders.h"
+//----------------------------------------------------------------------------
+namespace ChiikaApi
+{
+	typedef std::string _ChiStringBase;
+	typedef std::basic_stringstream<char,std::char_traits<char>,std::allocator<char> > _ChiStringStreamBase;
+
+	typedef _ChiStringBase ChiString;
+	typedef _ChiStringStreamBase ChiStringStream;
+}
+//----------------------------------------------------------------------------
 #include "Memory\MemoryAllocator.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
@@ -136,7 +146,7 @@ namespace ChiikaApi
 	typedef Map<int,MangaInfo>::type MangaList;
 	typedef AnimeList::iterator AnimeListIt;
 	typedef MangaList::iterator MangaListIt;
-	typedef MultiMap<String,CurlConfigOption>::type CurlConfigOptionMap;
+	typedef MultiMap<ChiString,CurlConfigOption>::type CurlConfigOptionMap;
 #	define REQUEST_SUCCESS(x) (x == 200 || x == 201)
 }
 #ifdef YUME_PLATFORM_WIN32

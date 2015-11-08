@@ -37,7 +37,7 @@ namespace ChiikaApi
 
 	//	void OnMediaPlayerClosed();
 
-	//	typedef std::pair<std::string,std::string> ClassValue;
+	//	typedef std::pair<ChiString,ChiString> ClassValue;
 	//	typedef std::map<HWND,ClassValue> WindowProperties;
 
 	//	MediaPlayerList m_eDetectedMediaPlayer;

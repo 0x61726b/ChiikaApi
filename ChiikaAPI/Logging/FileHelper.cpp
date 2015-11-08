@@ -18,7 +18,18 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	FileReader::FileReader(const std::string& file)
+	ChiString GetMiddle(ChiString str,std::size_t pos,std::size_t count)
+	{
+		if(count < str.size())
+			return str.substr(pos,count);
+		if(count == -1)
+			return str;
+		if(count >= str.size())
+			return str;
+		return ChiString();
+	}
+	//----------------------------------------------------------------------------
+	FileReader::FileReader(const ChiString& file)
 	{
 		mFile = file;
 	}
@@ -34,10 +45,10 @@ namespace ChiikaApi
 		mStream.close();
 	}
 	//----------------------------------------------------------------------------
-	std::string FileReader::Read()
+	ChiString FileReader::Read()
 	{
 		std::ostringstream output;
-		std::string line;
+		ChiString line;
 		while(std::getline(mStream,line))
 		{
 			output << line;
@@ -45,7 +56,7 @@ namespace ChiikaApi
 		return output.str();
 	}
 	//----------------------------------------------------------------------------
-	FileWriter::FileWriter(const std::string& file)
+	FileWriter::FileWriter(const ChiString& file)
 	{
 		mFile = file;
 	}
@@ -61,13 +72,13 @@ namespace ChiikaApi
 		mStream.close();
 	}
 	//----------------------------------------------------------------------------
-	void FileWriter::Write(std::string s)
+	void FileWriter::Write(ChiString s)
 	{
 		mStream << s;
 		mStream.flush();
 	}
 	//----------------------------------------------------------------------------
-	bool FileUtil::CheckIfDirectoryExists(const std::string& path)
+	bool FileUtil::CheckIfDirectoryExists(const ChiString& path)
 	{
 #ifdef YUME_PLATFORM_WIN32
 		DWORD dwAttrib = GetFileAttributes(path.c_str());
@@ -77,7 +88,7 @@ namespace ChiikaApi
 #endif
 	}
 	//----------------------------------------------------------------------------
-	bool FileUtil::CreateDir(const std::string& path)
+	bool FileUtil::CreateDir(const ChiString& path)
 	{
 		if(CheckIfDirectoryExists(path))
 			return false;

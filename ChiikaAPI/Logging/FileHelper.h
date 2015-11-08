@@ -25,34 +25,36 @@ namespace ChiikaApi
 	{
 	protected:
 		std::ifstream mStream;
-		std::string mFile;
+		ChiString mFile;
 	public:
-		FileReader(const std::string& fileName);
+		FileReader(const ChiString& fileName);
 		bool Open();
 		void Close();
-		std::string Read();
+		ChiString Read();
 	};
 	class MalApiExport FileWriter
 	{
 	protected:
 		std::ofstream mStream;
-		std::string mFile;
+		ChiString mFile;
 	public:
-		FileWriter(const std::string& fileName);
+		FileWriter(const ChiString& fileName);
 		bool Open();
 		void Close();
-		void Write(std::string);
+		void Write(ChiString);
 	};
 	class MalApiExport FileUtil : public Singleton<FileUtil>
 	{
 	public:
-		bool CheckIfDirectoryExists(const std::string& path);
-		bool CreateDir(const std::string& path);
+		bool CheckIfDirectoryExists(const ChiString& path);
+		bool CreateDir(const ChiString& path);
 
 
 		static FileUtil& Get(void);
 		static FileUtil* GetPtr(void);
 	};
+
+	ChiString GetMiddle(ChiString str,::size_t pos,std::size_t count);
 }
 //----------------------------------------------------------------------------
 

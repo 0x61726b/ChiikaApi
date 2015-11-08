@@ -1,5 +1,5 @@
 //----------------------------------------------------------------------------
-//Chiika Hello World
+//Chiika Api
 //Copyright (C) 2015  Alperen Gezer
 //This program is free software; you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -13,24 +13,6 @@
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
-#include "Common/Required.h"
-#include "Root\Root.h"
 
-#include <Shlwapi.h>
-#pragma comment(lib, "shlwapi.lib")
-
-int main()
-{
-	//Set module path
-	HMODULE hModule = GetModuleHandleW(NULL);
-	CHAR path[MAX_PATH];
-	GetModuleFileNameA(hModule,path,MAX_PATH);
-	std::string p = path;
-	std::size_t lastEscape = p.find_last_of("\\");
-	std::string modulePath = p.substr(0,lastEscape);
-
-	ChiikaApi::Root r(modulePath);
-
-
-	return 0;
-}
+#include "api_string_unittest.h"
+//----------------------------------------------------------------------------

@@ -37,17 +37,17 @@ namespace ChiikaApi
 		OptionsType Type;
 	};
 	//----------------------------------------------------------------------------
-	class MalApiExport StringOption : public SettingInterface
+	class MalApiExport ChiStringOption : public SettingInterface
 	{
 	public:
 		//Setting Interface
-		StringOption(OptionsEnum nsp,String v);
+		ChiStringOption(OptionsEnum nsp,ChiString v);
 
 		void Execute();
-		String GetValue();
-		void SetValue(String v);
+		ChiString GetValue();
+		void SetValue(ChiString v);
 	private:
-		String Value;
+		ChiString Value;
 	};
 	//----------------------------------------------------------------------------
 	class MalApiExport BooleanOption : public SettingInterface
@@ -79,19 +79,19 @@ namespace ChiikaApi
 	class MalApiExport AppSettings : Singleton<AppSettings>
 	{
 	public:
-		typedef std::map<std::string,std::string> FileMap; //<Name,Path>
+		typedef std::map<ChiString,ChiString> FileMap; //<Name,Path>
 		FileMap Files;
 
 		static AppSettings& Get();
 		static AppSettings* GetPtr();
 
-		AppSettings(const String& settingsFile,String globalPath);
+		AppSettings(const ChiString& settingsFile,ChiString globalPath);
 		~AppSettings();
 		void Initialize();
 		void Load();
 		void Save();
 		typedef Map<MangaInfo,MangaInfo>::type hehehe;
-		void SetAnimeFolderPath(String path);
+		void SetAnimeFolderPath(ChiString path);
 
 		/* A new era starts here*/
 
@@ -101,22 +101,22 @@ namespace ChiikaApi
 		void SetDefaultValues();
 		
 
-		String GetStringOption(OptionsEnum option);
+		ChiString GetChiStringOption(OptionsEnum option);
 		bool    GetBooleanOption(OptionsEnum option);
 		int		GetIntegerOption(OptionsEnum option);
 
-		void SetStringOption(OptionsEnum option,String newValue);
+		void SetChiStringOption(OptionsEnum option,ChiString newValue);
 		void SetBooleanOption(OptionsEnum option,bool newValue);
 		/* New era ends here*/
 
-		String GetDataPath();
-		String GetImagePath();
+		ChiString GetDataPath();
+		ChiString GetImagePath();
 
 		bool GetIfFirstLaunch();
 
 	private:
-		String m_sGlobalPath;
-		String m_sSettingsPath;
+		ChiString m_sGlobalPath;
+		ChiString m_sSettingsPath;
 
 		//Option Values
 

@@ -20,8 +20,8 @@ namespace ChiikaApi
 {
 	typedef struct _CurlConfigOption
 	{
-		String Name;
-		String Value;
+		ChiString Name;
+		ChiString Value;
 		int cUrlOpt;
 
 		_CurlConfigOption(): Name(""),Value(""),cUrlOpt(0) {}
@@ -29,24 +29,24 @@ namespace ChiikaApi
 
 	typedef struct _MALUserInfo
 	{
-		String UserName;
-		String Pass;
+		ChiString UserName;
+		ChiString Pass;
 	} MALUser;
 
 
 	struct AnilistAuth
 	{
-		String AccessToken;
+		ChiString AccessToken;
 		int Hour;
 		int Day;
 	};
 
 	struct AnitomyResult
 	{
-		String EpisodeTitle;
-		String EpisodeNumber;
-		String VideoRes;
-		String Group;
+		ChiString EpisodeTitle;
+		ChiString EpisodeNumber;
+		ChiString VideoRes;
+		ChiString Group;
 	};
 
 
@@ -118,16 +118,16 @@ namespace ChiikaApi
 	typedef struct _Manga
 	{
 		int Id;
-		String Title;
-		String English;
+		ChiString Title;
+		ChiString English;
 		MangaType Type; //We left off here boys
 		int Chapters;
 		int Volumes;
 		MangaStatus Status;
-		String StartDate;
-		String EndDate;
-		String Image;
-		String Synopsis;
+		ChiString StartDate;
+		ChiString EndDate;
+		ChiString Image;
+		ChiString Synopsis;
 		_Manga()
 		{
 			Id = 0;
@@ -146,11 +146,11 @@ namespace ChiikaApi
 
 	struct AnimeDetails
 	{
-		String Synopsis;
-		std::vector<String> Tags;
-		String Premiered;
-		std::vector<String> Producers;
-		String DurationPerEpisode;
+		ChiString Synopsis;
+		std::vector<ChiString> Tags;
+		ChiString Premiered;
+		std::vector<ChiString> Producers;
+		ChiString DurationPerEpisode;
 
 		AnimeDetails()
 		{
@@ -174,14 +174,14 @@ namespace ChiikaApi
 	typedef struct _Anime
 	{
 		int Id;
-		String Title;
-		String English;
+		ChiString Title;
+		ChiString English;
 		int EpisodeCount;
 		AnimeType Type;
 		AnimeStatus Status;
-		String StartDate;
-		String EndDate;
-		String Image;
+		ChiString StartDate;
+		ChiString EndDate;
+		ChiString Image;
 
 		//Experimental
 		AnimeDetails ExtraDetails;
@@ -202,21 +202,21 @@ namespace ChiikaApi
 
 	struct AnimeFileInfo
 	{
-		String FolderPath;
-		std::vector<String> EpisodePaths;
+		ChiString FolderPath;
+		std::vector<ChiString> EpisodePaths;
 	};
 	typedef struct _AnimeInfo
 	{
 		Anime Animu;
 		int MyId;
 		int WatchedEpisodes;
-		String StartDate;
-		String EndDate;
+		ChiString StartDate;
+		ChiString EndDate;
 		int Score;
 		AnimeUserStatus Status;
 		int Rewatching;
 		int RewatchingEp;
-		String LastUpdated;
+		ChiString LastUpdated;
 		CRUDOp UpdateOperation;
 
 		_AnimeInfo()
@@ -239,13 +239,13 @@ namespace ChiikaApi
 		int MyId;
 		int ReadChapters;
 		int ReadVolumes;
-		String StartDate;
-		String EndDate;
+		ChiString StartDate;
+		ChiString EndDate;
 		int Score;
 		MangaUserStatus Status;
 		int Rereading;
 		int RereadChapters;
-		String LastUpdated;
+		ChiString LastUpdated;
 		CRUDOp UpdateOperation;
 		_MangaInfo()
 		{
@@ -266,44 +266,44 @@ namespace ChiikaApi
 
 	struct AnimeFileDetails
 	{
-		String Directory;
-		String FullPath;
-		String Group;
-		String Quality;
+		ChiString Directory;
+		ChiString FullPath;
+		ChiString Group;
+		ChiString Quality;
 	};
 	struct Timezone
 	{
-		String TimezoneIdentifier;
-		String Name;
-		String Offset; //To Utc
+		ChiString TimezoneIdentifier;
+		ChiString Name;
+		ChiString Offset; //To Utc
 	};
 	struct UserTimezoneInfo
 	{
-		String Name;
+		ChiString Name;
 		long Bias;
 	};
 	struct Airdate
 	{
 		Timezone TimeZone;
-		String RdDate;
-		String RdTime;
+		ChiString RdDate;
+		ChiString RdTime;
 		int Weekday;
-		String RdWeekday;
+		ChiString RdWeekday;
 	};
 	struct SenpaiItem
 	{
-		String Name;
+		ChiString Name;
 		int MalID;
 		bool IsSequel;
-		String Simulcast;
-		String AirdateStr;
-		String Fansub;
+		ChiString Simulcast;
+		ChiString AirdateStr;
+		ChiString Fansub;
 		int SimulcastDelay;
-		String Type;
+		ChiString Type;
 		bool MissingAirdate;
 		bool MissingAirtime;
-		String AirDateOriginal;
-		Map<String,Airdate>::type Airdates;
+		ChiString AirDateOriginal;
+		Map<ChiString,Airdate>::type Airdates;
 	};
 	
 
@@ -350,9 +350,9 @@ namespace ChiikaApi
 
 	typedef struct _User
 	{
-		String UserName;
-		String Pass;
-		String ImageLink;
+		ChiString UserName;
+		ChiString Pass;
+		ChiString ImageLink;
 
 		UserAnimeInfo AnimeInfo;
 		UserMangaInfo MangaInfo;

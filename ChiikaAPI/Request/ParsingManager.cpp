@@ -21,6 +21,8 @@
 #include "Database/LocalDataManager.h"
 #include "Settings/Settings.h"
 #include "json\json.h"
+#include "Logging\ChiString.h"
+#include "Logging\FileHelper.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -37,7 +39,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void ParsingManager::Parse(ThreadedRequest* request)
 	{
-		String RequestName = request->Name;
+		ChiString RequestName = request->Name;
 
 		if(RequestName == "Verify")
 		{
@@ -71,7 +73,7 @@ namespace ChiikaApi
 		}
 		if(RequestName == "AnilistAuth")
 		{
-			String accessToken = ParseAnilistAuth(request->m_sBuffer);
+			ChiString accessToken = ParseAnilistAuth(request->m_sBuffer);
 			request->m_Result.AnilistAuthCode = accessToken;
 		}
 		if(RequestName == "AnilistSearchAnime")
@@ -93,17 +95,17 @@ namespace ChiikaApi
 		}
 	}
 	//----------------------------------------------------------------------------
-	void ParsingManager::ParseAnilistSearchAnime(const String& data)
+	void ParsingManager::ParseAnilistSearchAnime(const ChiString& data)
 	{
 		Json::Value root;
 		Json::Reader reader;
 		reader.parse(data,root);
 
 
-		//qDebug() << root.toStyledString().c_str();
+		//qDebug() << root.toStyledChiString().c_str();
 	}
 	//----------------------------------------------------------------------------
-	String ParsingManager::ParseAnilistAuth(const String& data)
+	ChiString ParsingManager::ParseAnilistAuth(const ChiString& data)
 	{
 		Json::Value root;
 		Json::Reader reader;
@@ -113,7 +115,7 @@ namespace ChiikaApi
 		return root["access_token"].asString().c_str();
 	}
 	//----------------------------------------------------------------------------
-	bool ParsingManager::ParseVerifyRequest(const String& Data)
+	bool ParsingManager::ParseVerifyRequest(const ChiString& Data)
 	{
 		pugi::xml_document doc;
 		try
@@ -125,8 +127,8 @@ namespace ChiikaApi
 			CHIKA_EXCEPTION(Exception::ERR_XML_PARSING,"Can't parse XML data!","ParsingManager::ParseVerifyRequest")
 		}
 		pugi::xml_node  user = doc.child("user");
-		String userName = user.child("username").text().get();
-		String id = user.child("id").text().get();
+		ChiString userName = user.child("username").text().get();
+		ChiString id = user.child("id").text().get();
 
 		UserInfo ui = LocalDataManager::Get().GetUserInfo();
 
@@ -137,59 +139,56 @@ namespace ChiikaApi
 		return false;
 	}
 	//----------------------------------------------------------------------------
-	AnimeList ParsingManager::ParseSearchResult(const String& data)
+	AnimeList ParsingManager::ParseSearchResult(const ChiString& data)
 	{
-		//pugi::xml_document doc;
-		//try
-		//{
-		//	doc.load(data.c_str());
-		//}
-		//catch(ChiikaApi::Exception& ex)
-		//{
-		//	CHIKA_EXCEPTION(Exception::ERR_XML_PARSING,"Can't parse XML data!","ParsingManager::ParseSearchResult")
-		//}
+		pugi::xml_document doc;
+		try
+		{
+			doc.load(data.c_str());
+		}
+		catch(ChiikaApi::Exception& ex)
+		{
+			CHIKA_EXCEPTION(Exception::ERR_XML_PARSING,"Can't parse XML data!","ParsingManager::ParseSearchResult")
+		}
 
 
-		//pugi::xml_pugi::xml_node  anime = doc.child("anime");
-		//AnimeList list;
-		//if(!anime.empty())
-		//{
-
-
-		//	for(pugi::xml_pugi::xml_node  entry = anime.first_child();entry;entry = entry.next_sibling())
-		//	{
-		//		Anime animu;
-		//		pugi::xml_pugi::xml_node  Id = entry.child("id");
-		//		pugi::xml_pugi::xml_node  title = entry.child("title");
-		//		pugi::xml_pugi::xml_node  english = entry.child("english");
-		//		pugi::xml_pugi::xml_node  synonyms = entry.child("synonyms");
-		//		pugi::xml_pugi::xml_node  episodes = entry.child("episodes");
-		//		pugi::xml_pugi::xml_node  status = entry.child("status");
-		//		pugi::xml_pugi::xml_node  start_date = entry.child("start_date");
-		//		pugi::xml_pugi::xml_node  end_date = entry.child("end_date");
-		//		pugi::xml_pugi::xml_node  synopsis = entry.child("synopsis");
-		//		pugi::xml_pugi::xml_node  image = entry.child("image");
-		//		animu.Id = FromXMLValueToInt(Id);
-		//		animu.Title = FromXMLValueToStd(title);
-		//		animu.English = FromXMLValueToStd(english);
-		//		//animu.Title = FromXMLValueToStd(synonyms); Add this later
-		//		animu.EpisodeCount = FromXMLValueToInt(episodes);
-		//		animu.Status = (AnimeStatus)FromXMLValueToInt(status);
-		//		animu.StartDate = FromXMLValueToStd(start_date);
-		//		animu.EndDate = FromXMLValueToStd(end_date);
-		//		animu.Image = FromXMLValueToStd(image);
-		//		animu.ExtraDetails.Synopsis = synopsis.text().get();
-		//		AnimeInfo ai;
-		//		ai.Animu = animu;
-		//		list.insert(AnimeList::value_type(animu.Id,ai));
-		//	}
-		//	return list;
-		//}
-		//return list;
-		return AnimeList();
+		pugi::xml_node  anime = doc.child("anime");
+		AnimeList list;
+		if(!anime.empty())
+		{
+			for(pugi::xml_node entry = anime.first_child();entry;entry = entry.next_sibling())
+			{
+				Anime animu;
+				pugi::xml_node  Id = entry.child("id");
+				pugi::xml_node  title = entry.child("title");
+				pugi::xml_node  english = entry.child("english");
+				pugi::xml_node  synonyms = entry.child("synonyms");
+				pugi::xml_node  episodes = entry.child("episodes");
+				pugi::xml_node  status = entry.child("status");
+				pugi::xml_node  start_date = entry.child("start_date");
+				pugi::xml_node  end_date = entry.child("end_date");
+				pugi::xml_node  synopsis = entry.child("synopsis");
+				pugi::xml_node  image = entry.child("image");
+				animu.Id = FromXMLValueToInt(Id);
+				animu.Title = FromXMLValueToStd(title);
+				animu.English = FromXMLValueToStd(english);
+				//animu.Title = FromXMLValueToStd(synonyms); Add this later
+				animu.EpisodeCount = FromXMLValueToInt(episodes);
+				animu.Status = (AnimeStatus)FromXMLValueToInt(status);
+				animu.StartDate = FromXMLValueToStd(start_date);
+				animu.EndDate = FromXMLValueToStd(end_date);
+				animu.Image = FromXMLValueToStd(image);
+				animu.ExtraDetails.Synopsis = synopsis.text().get();
+				AnimeInfo ai;
+				ai.Animu = animu;
+				list.insert(AnimeList::value_type(animu.Id,ai));
+			}
+			return list;
+		}
+		return list;
 	}
 	//----------------------------------------------------------------------------
-	AnimeList ParsingManager::ParseGetUserAnimeList(const String& data)
+	AnimeList ParsingManager::ParseGetUserAnimeList(const ChiString& data)
 	{
 		pugi::xml_document doc;
 		try
@@ -210,8 +209,8 @@ namespace ChiikaApi
 		pugi::xml_node  user_plantowatch = user.child("user_plantowatch");
 		pugi::xml_node  user_days_spent_watching = user.child("user_days_spent_watching");
 
-		String userName = user.child("user_name").text().get();
-		String id = user.child("user_id").text().get();
+		ChiString userName = user.child("user_name").text().get();
+		ChiString id = user.child("user_id").text().get();
 
 		UserInfo ui = LocalDataManager::Get().GetUserInfo();
 		ui.UserName = ToStd(userName);
@@ -228,7 +227,7 @@ namespace ChiikaApi
 
 		int animeCount = 0;
 		AnimeList list;
-		for(pugi::xml_node  anime = myanimelist.child("anime");anime;anime = anime.next_sibling())
+		for(pugi::xml_node anime = myanimelist.child("anime");anime;anime = anime.next_sibling())
 		{
 			pugi::xml_node  animeDbId = anime.child("series_animedb_id");
 			pugi::xml_node  series_title = anime.child("series_title");
@@ -282,244 +281,240 @@ namespace ChiikaApi
 		return list;
 	}
 	//----------------------------------------------------------------------------
-	MangaList ParsingManager::ParseGetUserMangaList(const String& data)
+	MangaList ParsingManager::ParseGetUserMangaList(const ChiString& data)
 	{
 
-		//pugi::xml_document doc;
+		pugi::xml_document doc;
 
-		//try
-		//{
-		//	doc.load(data.c_str());
-		//}
-		//catch(ChiikaApi::Exception& ex)
-		//{
-		//	CHIKA_EXCEPTION(Exception::ERR_XML_PARSING,"Can't parse XML data!","ParsingManager::ParseGetUserMangaList")
-		//}
+		try
+		{
+			doc.load(data.c_str());
+		}
+		catch(ChiikaApi::Exception& ex)
+		{
+			CHIKA_EXCEPTION(Exception::ERR_XML_PARSING,"Can't parse XML data!","ParsingManager::ParseGetUserMangaList")
+		}
 
-		//pugi::xml_pugi::xml_node  myanimelist = doc.child("myanimelist");
+		pugi::xml_node  myanimelist = doc.child("myanimelist");
 
-		//pugi::xml_pugi::xml_node  user = myanimelist.child("myinfo");
-		//pugi::xml_node  user_reading = user.child("user_reading");
-		//pugi::xml_node  user_completed = user.child("user_completed");
-		//pugi::xml_node  user_onhold = user.child("user_onhold");
-		//pugi::xml_node  user_dropped = user.child("user_dropped");
-		//pugi::xml_node  user_plantowatch = user.child("user_plantoread");
-		//pugi::xml_node  user_days_spent_watching = user.child("user_days_spent_watching");
+		pugi::xml_node  user = myanimelist.child("myinfo");
+		pugi::xml_node  user_reading = user.child("user_reading");
+		pugi::xml_node  user_completed = user.child("user_completed");
+		pugi::xml_node  user_onhold = user.child("user_onhold");
+		pugi::xml_node  user_dropped = user.child("user_dropped");
+		pugi::xml_node  user_plantowatch = user.child("user_plantoread");
+		pugi::xml_node  user_days_spent_watching = user.child("user_days_spent_watching");
 
-		//String userName = user.child("user_name").text().get();
-		//String id = user.child("user_id").text().get();
-
-		//UserInfo ui = LocalDataManager::Get().GetUserInfo();
-
-		//ui.MangaInfo.Reading = FromXMLValueToInt(user_reading);
-		//ui.MangaInfo.Completed= FromXMLValueToInt(user_completed);
-		//ui.MangaInfo.OnHold = FromXMLValueToInt(user_onhold);
-		//ui.MangaInfo.Dropped = FromXMLValueToInt(user_dropped);
-		//ui.MangaInfo.PlanToRead= FromXMLValueToInt(user_plantowatch);
-		//ui.MangaInfo.DaysSpentReading= FromXMLValueToFloat(user_days_spent_watching);
-
-		//LocalDataManager::Get().SetUserInfo(ui);
-
-		//MangaList list;
-
-		//for(pugi::xml_node  manga = myanimelist.child("manga");manga;manga = manga.next_sibling())
-		//{
-		//	pugi::xml_node  series_mangadb_id = manga.child("series_mangadb_id");
-		//	pugi::xml_node  series_title = manga.child("series_title");
-		//	pugi::xml_node  series_synonyms = manga.child("series_synonyms");
-		//	pugi::xml_node  series_type = manga.child("series_type");
-		//	pugi::xml_node  series_chapters = manga.child("series_chapters");
-		//	pugi::xml_node  series_volumes = manga.child("series_volumes");
-		//	pugi::xml_node  series_status = manga.child("series_status");
-		//	pugi::xml_node  series_start = manga.child("series_start");
-		//	pugi::xml_node  series_end = manga.child("series_end");
-		//	pugi::xml_node  series_image = manga.child("series_image");
-		//	pugi::xml_node  my_id = manga.child("my_id"); //What does this even mean?
-		//	pugi::xml_node  my_read_chapters = manga.child("my_read_chapters");
-		//	pugi::xml_node  my_read_volumes = manga.child("my_read_volumes");
-		//	pugi::xml_node  my_start_date = manga.child("my_start_date");
-		//	pugi::xml_node  my_finish_date = manga.child("my_finish_date");
-		//	pugi::xml_node  my_score = manga.child("my_score");
-		//	pugi::xml_node  my_status = manga.child("my_status");
-		//	pugi::xml_node  my_rereading = manga.child("my_rereadingg");
-		//	pugi::xml_node  my_rereading_chap = manga.child("my_rereading_chap");
-		//	pugi::xml_node  my_last_updated = manga.child("my_last_updated");
-
-
-		//	Manga mango;
-		//	mango.Id = FromXMLValueToInt(series_mangadb_id);
-		//	mango.Title = FromXMLValueToStd(series_title);
-		//	mango.English = FromXMLValueToStd(series_synonyms);
-		//	mango.Type = (MangaType)FromXMLValueToInt(series_type);
-		//	mango.Chapters = FromXMLValueToInt(series_chapters);
-		//	mango.Volumes = FromXMLValueToInt(series_volumes);
-
-		//	mango.Status = (MangaStatus)FromXMLValueToInt(series_status);
-		//	mango.StartDate = FromXMLValueToStd(series_start);
-		//	mango.EndDate = FromXMLValueToStd(series_end);
-		//	mango.Image = FromXMLValueToStd(series_image);
-
-		//	MangaInfo info;
-		//	info.Mango = mango;
-		//	info.MyId = FromXMLValueToInt(my_id);
-		//	info.StartDate = FromXMLValueToStd(my_start_date);
-		//	info.EndDate = FromXMLValueToStd(my_finish_date);
-		//	info.ReadChapters = FromXMLValueToInt(my_read_chapters);
-		//	info.ReadVolumes = FromXMLValueToInt(my_read_volumes);
-		//	info.Score = FromXMLValueToInt(my_score);
-		//	info.Status = (MangaUserStatus)FromXMLValueToInt(my_status);
-		//	info.Rereading = FromXMLValueToInt(my_rereading);
-		//	info.RereadChapters = FromXMLValueToInt(my_rereading_chap);
-		//	info.LastUpdated = FromXMLValueToStd(my_last_updated);
-
-		//	list.insert(MangaList::value_type(mango.Id,info));
-
-		//}
-		//return list;
-		return MangaList();
-	}
-	//----------------------------------------------------------------------------
-	const AnimeInfo& ParsingManager::ParseCRUDAnime(const String& data)
-	{
-		return AnimeInfo();
-	}
-	//----------------------------------------------------------------------------
-	AnimeInfo ParsingManager::ParseAnimeScrape(const String& data,int Id)
-	{
-		////Oh The Good Ol' html parsing
-		////What a time to be alive
-
-		//String qData = String::fromStdString(data);
-
-		////---------------------------------------------
-		////---------------------------------------------
-		////-----------------GENRE-----------------------
-		////---------------------------------------------
-		////---------------------------------------------
-
-		//int genresStart = qData.indexOf("Genres:</span>");
-		//int genresEnd = qData.indexOf("</div>",genresStart);
-
-
-		//String genres = qData.mid(genresStart + 14,genresEnd - genresStart);
-		//std::vector<String> genreList = GetItemsSeperatedBy(genres,",");
-
-		////---------------------------------------------
-		////---------------------------------------------
-		////-----------------Duration--------------------
-		////---------------------------------------------
-		////---------------------------------------------
-		//String search = "Duration:</span>";
-		//String end = "</div>";
-		//String duration = ParseWebPage(qData,search,end);
-		////---------------------------------------------
-		////---------------------------------------------
-		////-----------------Premiered-------------------
-		////---------------------------------------------
-		////---------------------------------------------
-		//search = "Premiered:</span>";
-		//end = "</div>";
-		//String premiered = ParseWebPage(qData,search,end);
-		//premiered = RemoveLink(premiered);
-		////---------------------------------------------
-		////---------------------------------------------
-		////-----------------Producers-------------------
-		////---------------------------------------------
-		////---------------------------------------------
-		//search = "Producers:</span>";
-		//end = "</div>";
-		//String producers = ParseWebPage(qData,search,end);
-		//std::vector<String> producersList = GetItemsSeperatedBy(producers,",");
-		////---------------------------------------------
-		////---------------------------------------------
-		////-----------------Score-----------------------
-		////---------------------------------------------
-		////---------------------------------------------
-		//search = "Score:</span>";
-		//end = "</div>";
-		//String score = ParseWebPage(qData,search,end);
-		//score = RemoveHTMLElements(score);
-		////---------------------------------------------
-		////---------------------------------------------
-		////-----------------Ranked----------------------
-		////---------------------------------------------
-		////---------------------------------------------
-		//search = "Ranked:</span>";
-		//end = "</div>";
-		//String ranked = ParseWebPage(qData,search,end);
-		//ranked = RemoveHTMLElements(ranked);
-		//ranked = ranked.mid(1,ranked.size() -1); //Remove the # for int purposes
-		////---------------------------------------------
-		////---------------------------------------------
-		////-----------------Popularity------------------
-		////---------------------------------------------
-		////---------------------------------------------
-		//search = "Popularity:</span>";
-		//end = "</div>";
-		//String popularity = ParseWebPage(qData,search,end);
-		//popularity = popularity.mid(1,popularity.size() -1); //Remove the # for int purposes
-
-		////---------------------------------------------
-		////---------------------------------------------
-		////----------WILL STEAL MOAR LATER--------------
-		////---------------------------------------------
-		////---------------------------------------------
-
-		////---------------------------------------------
-		////---------------------------------------------
-		////---------------SYNOPSIS----------------------
-		////---------------------------------------------
-		////---------------------------------------------
-		//search = "Synopsis</h2><span itemprop=\"description\">";
-		//end = "<br />";
-		//String synopsis = ParseWebPage(qData,search,end);
-
-		//AnimeInfo animeFromList = MalManager::Get().GetAnimeById(Id);
-		//AnimeDetails details = animeFromList.Animu.ExtraDetails;
-		//AnimeStatistics statistics = animeFromList.Animu.Statistics;
-		//if(ANIME_IN_LIST(animeFromList))
-		//{
-		//	details.DurationPerEpisode = duration;
-		//	details.Premiered = premiered;
-		//	details.Producers = producersList;
-		//	details.Tags = genreList;
-		//	details.Synopsis = synopsis;
-		//	//
-		//	statistics.Popularity = popularity.toInt();
-		//	statistics.Ranked = ranked.toInt();
-		//	statistics.Score = score.toFloat();
-
-		//	animeFromList.Animu.ExtraDetails = details;
-		//	animeFromList.Animu.Statistics = statistics;
-		//	MalManager::Get().UpdateAnime(animeFromList);
-		//}
-
-
-
-		//return animeFromList;
-		return AnimeInfo();
-	}
-	//----------------------------------------------------------------------------
-	void ParsingManager::ParseUserPage(const String& data)
-	{
-		/*String qData = String::fromStdString(data);
-
-		String searchStart = "profile_leftcell";
-		String searchEnd = "</div>";
-		String imageUrl = ParseWebPage(qData,searchStart,searchEnd);
-
-		imageUrl = ParseWebPage(imageUrl,"<img src=\"","\">");
-		imageUrl = imageUrl.trimmed();
+		ChiString userName = user.child("user_name").text().get();
+		ChiString id = user.child("user_id").text().get();
 
 		UserInfo ui = LocalDataManager::Get().GetUserInfo();
-		ui.ImageLink = imageUrl.toStdString();
-		LocalDataManager::Get().SetUserInfo(ui);*/
 
+		ui.MangaInfo.Reading = FromXMLValueToInt(user_reading);
+		ui.MangaInfo.Completed= FromXMLValueToInt(user_completed);
+		ui.MangaInfo.OnHold = FromXMLValueToInt(user_onhold);
+		ui.MangaInfo.Dropped = FromXMLValueToInt(user_dropped);
+		ui.MangaInfo.PlanToRead= FromXMLValueToInt(user_plantowatch);
+		ui.MangaInfo.DaysSpentReading= FromXMLValueToFloat(user_days_spent_watching);
+
+		LocalDataManager::Get().SetUserInfo(ui);
+
+		MangaList list;
+
+		for(pugi::xml_node manga = myanimelist.child("manga");manga;manga = manga.next_sibling())
+		{
+			pugi::xml_node  series_mangadb_id = manga.child("series_mangadb_id");
+			pugi::xml_node  series_title = manga.child("series_title");
+			pugi::xml_node  series_synonyms = manga.child("series_synonyms");
+			pugi::xml_node  series_type = manga.child("series_type");
+			pugi::xml_node  series_chapters = manga.child("series_chapters");
+			pugi::xml_node  series_volumes = manga.child("series_volumes");
+			pugi::xml_node  series_status = manga.child("series_status");
+			pugi::xml_node  series_start = manga.child("series_start");
+			pugi::xml_node  series_end = manga.child("series_end");
+			pugi::xml_node  series_image = manga.child("series_image");
+			pugi::xml_node  my_id = manga.child("my_id"); //What does this even mean?
+			pugi::xml_node  my_read_chapters = manga.child("my_read_chapters");
+			pugi::xml_node  my_read_volumes = manga.child("my_read_volumes");
+			pugi::xml_node  my_start_date = manga.child("my_start_date");
+			pugi::xml_node  my_finish_date = manga.child("my_finish_date");
+			pugi::xml_node  my_score = manga.child("my_score");
+			pugi::xml_node  my_status = manga.child("my_status");
+			pugi::xml_node  my_rereading = manga.child("my_rereadingg");
+			pugi::xml_node  my_rereading_chap = manga.child("my_rereading_chap");
+			pugi::xml_node  my_last_updated = manga.child("my_last_updated");
+
+
+			Manga mango;
+			mango.Id = FromXMLValueToInt(series_mangadb_id);
+			mango.Title = FromXMLValueToStd(series_title);
+			mango.English = FromXMLValueToStd(series_synonyms);
+			mango.Type = (MangaType)FromXMLValueToInt(series_type);
+			mango.Chapters = FromXMLValueToInt(series_chapters);
+			mango.Volumes = FromXMLValueToInt(series_volumes);
+
+			mango.Status = (MangaStatus)FromXMLValueToInt(series_status);
+			mango.StartDate = FromXMLValueToStd(series_start);
+			mango.EndDate = FromXMLValueToStd(series_end);
+			mango.Image = FromXMLValueToStd(series_image);
+
+			MangaInfo info;
+			info.Mango = mango;
+			info.MyId = FromXMLValueToInt(my_id);
+			info.StartDate = FromXMLValueToStd(my_start_date);
+			info.EndDate = FromXMLValueToStd(my_finish_date);
+			info.ReadChapters = FromXMLValueToInt(my_read_chapters);
+			info.ReadVolumes = FromXMLValueToInt(my_read_volumes);
+			info.Score = FromXMLValueToInt(my_score);
+			info.Status = (MangaUserStatus)FromXMLValueToInt(my_status);
+			info.Rereading = FromXMLValueToInt(my_rereading);
+			info.RereadChapters = FromXMLValueToInt(my_rereading_chap);
+			info.LastUpdated = FromXMLValueToStd(my_last_updated);
+
+			list.insert(MangaList::value_type(mango.Id,info));
+
+		}
+		return list;
 	}
 	//----------------------------------------------------------------------------
-	void ParsingManager::ParseSenpai(const String& data)
+	const AnimeInfo& ParsingManager::ParseCRUDAnime(const ChiString& data)
 	{
-		/*Json::Value root;
+		return AnimeInfo();
+	}
+	//----------------------------------------------------------------------------
+	AnimeInfo ParsingManager::ParseAnimeScrape(const ChiString& data,int Id)
+	{
+		//Oh The Good Ol' html parsing
+		//What a time to be alive
+
+		ChiString qData = data;
+		ChiStringUtil strUtil;
+		//---------------------------------------------
+		//---------------------------------------------
+		//-----------------GENRE-----------------------
+		//---------------------------------------------
+		//---------------------------------------------
+
+		int genresStart = qData.find_first_of("Genres:</span>");
+		int genresEnd = qData.find_first_of("</div>",genresStart);
+
+
+		ChiString genres = strUtil.GetMiddle(qData,genresStart + 14,genresEnd - genresStart);
+		std::vector<ChiString> genreList = GetItemsSeperatedBy(genres,",");
+
+		//---------------------------------------------
+		//---------------------------------------------
+		//-----------------Duration--------------------
+		//---------------------------------------------
+		//---------------------------------------------
+		ChiString search = "Duration:</span>";
+		ChiString end = "</div>";
+		ChiString duration = ParseWebPage(qData,search,end);
+		//---------------------------------------------
+		//---------------------------------------------
+		//-----------------Premiered-------------------
+		//---------------------------------------------
+		//---------------------------------------------
+		search = "Premiered:</span>";
+		end = "</div>";
+		ChiString premiered = ParseWebPage(qData,search,end);
+		premiered = RemoveLink(premiered);
+		//---------------------------------------------
+		//---------------------------------------------
+		//-----------------Producers-------------------
+		//---------------------------------------------
+		//---------------------------------------------
+		search = "Producers:</span>";
+		end = "</div>";
+		ChiString producers = ParseWebPage(qData,search,end);
+		std::vector<ChiString> producersList = GetItemsSeperatedBy(producers,",");
+		//---------------------------------------------
+		//---------------------------------------------
+		//-----------------Score-----------------------
+		//---------------------------------------------
+		//---------------------------------------------
+		search = "Score:</span>";
+		end = "</div>";
+		ChiString score = ParseWebPage(qData,search,end);
+		score = RemoveHTMLElements(score);
+		//---------------------------------------------
+		//---------------------------------------------
+		//-----------------Ranked----------------------
+		//---------------------------------------------
+		//---------------------------------------------
+		search = "Ranked:</span>";
+		end = "</div>";
+		ChiString ranked = ParseWebPage(qData,search,end);
+		ranked = RemoveHTMLElements(ranked);
+		ranked = strUtil.GetMiddle(ranked,1,ranked.size() -1); //Remove the # for int purposes
+		//---------------------------------------------
+		//---------------------------------------------
+		//-----------------Popularity------------------
+		//---------------------------------------------
+		//---------------------------------------------
+		search = "Popularity:</span>";
+		end = "</div>";
+		ChiString popularity = ParseWebPage(qData,search,end);
+		popularity = strUtil.GetMiddle(popularity,1,popularity.size() -1); //Remove the # for int purposes
+
+		//---------------------------------------------
+		//---------------------------------------------
+		//----------WILL STEAL MOAR LATER--------------
+		//---------------------------------------------
+		//---------------------------------------------
+
+		//---------------------------------------------
+		//---------------------------------------------
+		//---------------SYNOPSIS----------------------
+		//---------------------------------------------
+		//---------------------------------------------
+		search = "Synopsis</h2><span itemprop=\"description\">";
+		end = "<br />";
+		ChiString synopsis = ParseWebPage(qData,search,end);
+
+		AnimeInfo animeFromList = MalManager::Get().GetAnimeById(Id);
+		AnimeDetails details = animeFromList.Animu.ExtraDetails;
+		AnimeStatistics statistics = animeFromList.Animu.Statistics;
+		if(ANIME_IN_LIST(animeFromList))
+		{
+			details.DurationPerEpisode = duration;
+			details.Premiered = premiered;
+			details.Producers = producersList;
+			details.Tags = genreList;
+			details.Synopsis = synopsis;
+			//
+			statistics.Popularity = atoi(popularity.c_str());
+			statistics.Ranked = atoi(ranked.c_str());
+			statistics.Score = atof(score.c_str());
+
+			animeFromList.Animu.ExtraDetails = details;
+			animeFromList.Animu.Statistics = statistics;
+			MalManager::Get().UpdateAnime(animeFromList);
+		}
+
+
+
+		return animeFromList;
+	}
+	//----------------------------------------------------------------------------
+	void ParsingManager::ParseUserPage(const ChiString& data)
+	{
+		ChiStringUtil strUtil;
+		ChiString searchStart = "profile_leftcell";
+		ChiString searchEnd = "</div>";
+		ChiString imageUrl = ParseWebPage(data,searchStart,searchEnd);
+
+		imageUrl = ParseWebPage(imageUrl,"<img src=\"","\">");
+		imageUrl = strUtil.Trim(imageUrl);
+
+		UserInfo ui = LocalDataManager::Get().GetUserInfo();
+		ui.ImageLink = imageUrl;
+		LocalDataManager::Get().SetUserInfo(ui);
+	}
+	//----------------------------------------------------------------------------
+	void ParsingManager::ParseSenpai(const ChiString& data)
+	{
+		Json::Value root;
 		Json::Reader reader;
 
 
@@ -527,55 +522,54 @@ namespace ChiikaApi
 
 		if(b)
 		{
-		QFile f = AppSettings::Get().GetStringOption(LIBRARY_SENPAI_PATH);
+			FileWriter f(AppSettings::Get().GetChiStringOption(LIBRARY_SENPAI_PATH));
 
-		if(f.open(QFile::WriteOnly))
-		{
-		f.write(ToStd(data));
-		f.close();
+			if(f.Open())
+			{
+				f.Write(ToStd(data));
+				f.Close();
+			}
 		}
-		}
-		LocalDataManager::Get().LoadSenpaiData();*/
+		LocalDataManager::Get().LoadSenpaiData();
 	}
 	//----------------------------------------------------------------------------
-	String ParsingManager::ParseWebPage(String data,String searchStart,String searchEnd)
+	ChiString ParsingManager::ParseWebPage(ChiString data,ChiString searchStart,ChiString searchEnd)
 	{
-		//int start = data.indexOf(searchStart);
-		//int end = data.indexOf(searchEnd,start);
+		ChiStringUtil strUtil;
+		int start = data.find(searchStart);
+		int end = data.find(searchEnd,start);
 
-		//String first = data.mid(start,end-start);
-		//first = first.mid(searchStart.size(),first.size() - searchStart.size());
-		//first = first.trimmed();
-
-		//
-		//return first;
+		ChiString first = strUtil.GetMiddle(data,start,end-start);
+		first = strUtil.GetMiddle(first,searchStart.size(),first.size() - searchStart.size());
+		first = strUtil.Trim(first);
+		return first;
+	}
+	//----------------------------------------------------------------------------
+	ChiString ParsingManager::RemoveHTMLElements(ChiString data)
+	{
+		ChiStringUtil strUtil;
+		if(data.find("<span") != -1)
+		{
+			int start = data.find("<span");
+			int descEnd= data.find("\">");
+			int end = data.find("</span>",start);
+			data = strUtil.GetMiddle(data,descEnd,end - descEnd);
+			data = strUtil.GetMiddle(data,2,data.size() -1);
+			return strUtil.Trim(data);
+		}
+		if(data.find("<sup") != -1)
+		{
+			int start = data.find("<sup>");
+			int end = data.find("</sup>",start);
+			end = end + 6;
+			ChiString sup = strUtil.GetMiddle(data,start,end-start);
+			/*data = data.replace(sup,"");*/
+			return strUtil.Trim(data);
+		}
 		return "";
 	}
 	//----------------------------------------------------------------------------
-	String ParsingManager::RemoveHTMLElements(String data)
-	{
-		/*if(data.contains("<span"))
-		{
-		int start = data.indexOf("<span");
-		int descEnd= data.indexOf("\">");
-		int end = data.indexOf("</span>",start);
-		data = data.mid(descEnd,end - descEnd);
-		data = data.mid(2,data.size() -1);
-		return data.trimmed();
-		}
-		if(data.contains("<sup"))
-		{
-		int start = data.indexOf("<sup>");
-		int end = data.indexOf("</sup>",start);
-		end = end + 6;
-		String sup = data.mid(start,end-start);
-		data = data.remove(sup);
-		return data.trimmed();
-		}*/
-		return "";
-	}
-	//----------------------------------------------------------------------------
-	bool ParsingManager::CheckValidLink(String s)
+	bool ParsingManager::CheckValidLink(ChiString s)
 	{
 		/*QRegExp r("/^http?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png)$/");
 
@@ -590,56 +584,55 @@ namespace ChiikaApi
 		return false;
 	}
 	//----------------------------------------------------------------------------
-	String ParsingManager::RemoveLink(String data)
+	ChiString ParsingManager::RemoveLink(ChiString data)
 	{
-		/*if(data.contains("<a href"))
+		ChiStringUtil strUtil;
+		if(data.find("<a href") != -1)
 		{
-		int linkStart = data.indexOf("<a href");
-		int linkDescEnd = data.indexOf("\">");
-		int linkEnd = data.indexOf("</a>",linkStart);
-		data = data.mid(linkDescEnd,linkEnd - linkDescEnd);
-		data = data.mid(2,data.size() -1);
-		data = data.trimmed();
-		return data;
+			int linkStart = data.find("<a href");
+			int linkDescEnd = data.find("\">");
+			int linkEnd = data.find("</a>",linkStart);
+			data = strUtil.GetMiddle(data,linkDescEnd,linkEnd - linkDescEnd);
+			data = strUtil.GetMiddle(data,2,data.size() -1);
+			data = strUtil.Trim(data);
+			return data;
 		}
-		return data;*/
-		return "";
+		return data;
 	}
 	//----------------------------------------------------------------------------
-	std::vector<String> ParsingManager::GetItemsSeperatedBy(String data,String seperator)
+	std::vector<ChiString> ParsingManager::GetItemsSeperatedBy(ChiString data,ChiString seperator)
 	{
-		//int commaCount = 0;
+		int commaCount = 0;
 
+		ChiStringUtil strUtil;
+		strUtil.Trim(data);
+		data.insert(data.size()-1,seperator);
+		int start = 0,end = 0;
 
-		//data.replace(" ","");
-		//data.insert(data.size()-1,seperator);
-		//int start = 0,end = 0;
+		std::vector<ChiString> genreList;
 
-		//std::vector<String> genreList;
+		for(int i=0; i < data.size(); i++)
+		{
+			if(data.at(i) == (char)seperator.c_str())
+			{
+				commaCount++; //tag count
 
-		//for(int i=0; i < data.size(); i++)
-		//{
-		//	if(data.at(i) == seperator)
-		//	{
-		//		commaCount++; //tag count
+				end = i;
 
-		//		end = i;
+				ChiString g = strUtil.GetMiddle(data,start+1,end-start);
 
-		//		String g = data.mid(start+1,end-start);
+				ChiString seperatorLeft = ">";
+				ChiString seperatorRight = "<";
 
-		//		String seperatorLeft = ">";
-		//		String seperatorRight = "<";
+				int sStart = g.find(seperatorLeft);
+				int sEnd = g.find(seperatorRight,sStart);
 
-		//		int sStart = g.indexOf(seperatorLeft);
-		//		int sEnd = g.indexOf(seperatorRight,sStart);
-
-		//		String genre = g.mid(sStart+1,sEnd - sStart - 1);
-		//		genreList.push_back(genre);
-		//		start = end;
-		//	}
-		//}
-		//return genreList;
-		return std::vector<String>();
+				ChiString genre = strUtil.GetMiddle(g,sStart+1,sEnd - sStart - 1);
+				genreList.push_back(genre);
+				start = end;
+			}
+		}
+		return genreList;
 	}
 }
 //----------------------------------------------------------------------------

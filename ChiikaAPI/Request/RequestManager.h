@@ -21,7 +21,7 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	typedef std::map<String,String> ThreadOptions;
+	typedef std::map<ChiString,ChiString> ThreadOptions;
 	enum RequestCodes
 	{
 		REQUEST_ERROR = 0,
@@ -39,7 +39,7 @@ namespace ChiikaApi
 	struct RequestResult
 	{
 		RequestCodes Code;
-		String ErrorDesc;
+		ChiString ErrorDesc;
 		long HttpCode;
 
 
@@ -50,7 +50,7 @@ namespace ChiikaApi
 		AnimeInfo AnimeResult;
 		MangaInfo MangaResult;
 
-		String AnilistAuthCode;
+		ChiString AnilistAuthCode;
 	};
 	//----------------------------------------------------------------------------
 	class MalApiExport RequestListener
@@ -68,7 +68,7 @@ namespace ChiikaApi
 		ThreadedRequest();
 		~ThreadedRequest();
 
-		void SetParameters(CurlConfigOptionMap Options,const String& name,const RequestType& type = RequestType::MyAnimeList);
+		void SetParameters(CurlConfigOptionMap Options,const ChiString& name,const RequestType& type = RequestType::MyAnimeList);
 		void CreateThread();
 		void DeleteThread();
 
@@ -79,22 +79,22 @@ namespace ChiikaApi
 
 
 		std::thread* m_pThread;
-		String m_sUrl;
-		String m_sUsrPwd;
+		ChiString m_sUrl;
+		ChiString m_sUsrPwd;
 		int m_iMethod;
-		String xmlData;
+		ChiString xmlData;
 		CurlConfigOptionMap Options;
 
-		String Name;
+		ChiString Name;
 
 		RequestType Type;
 
 		bool m_bWorking;
 
-		virtual void OnWorkFinished(String data);
+		virtual void OnWorkFinished(ChiString data);
 
-		String m_sBuffer;
-		static int CallbackFunc(char* data,size_t size,size_t nmemb,std::string* buffer);
+		ChiString m_sBuffer;
+		static int CallbackFunc(char* data,size_t size,size_t nmemb,ChiString* buffer);
 		static int ReadCallbackFunc(void *ptr, size_t size, size_t nmemb, void *userp);
 
 		static size_t Curlfwrite(void *buffer, size_t size, size_t nmemb, void *stream);
@@ -119,7 +119,7 @@ namespace ChiikaApi
 		void CreateVerifyRequest(RequestListener* l);
 
 		//Anime
-		void CreateAnimeSearchRequest(RequestListener* l,String keyword);
+		void CreateAnimeSearchRequest(RequestListener* l,ChiString keyword);
 		void CreateGetAnimeListRequest(RequestListener* l);
 		//~
 		//Manga
@@ -131,13 +131,13 @@ namespace ChiikaApi
 		//Anilist
 		void CreateAnilistRequest();
 		void CreateAnilistAuthRequest(RequestListener* l);
-		void CreateAnilistSearchAnime(RequestListener* l,String keyword);
+		void CreateAnilistSearchAnime(RequestListener* l,ChiString keyword);
 		
-		String GetAnimeXML(const AnimeInfo& anime);
-		String GetMangaXML(const MangaInfo& manga);
+		ChiString GetAnimeXML(const AnimeInfo& anime);
+		ChiString GetMangaXML(const MangaInfo& manga);
 		
 		
-		void CreateImageDownloadRequest(RequestListener* l,String url,String fileName,const AnimeInfo& anime);
+		void CreateImageDownloadRequest(RequestListener* l,ChiString url,ChiString fileName,const AnimeInfo& anime);
 		
 		void CreateAnimePageScrapeRequest(RequestListener* l,const AnimeInfo& anime);
 		void CreateUserPageScrapeRequest(RequestListener* l);

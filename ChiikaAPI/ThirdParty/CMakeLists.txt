@@ -20,3 +20,9 @@ add_subdirectory(pugixml\\scripts)
 #Modified Anitomy
 #
 add_subdirectory(anitomy)
+
+#
+#
+#To-do add build test 
+add_subdirectory(googletest\\googlemock)
+

@@ -26,15 +26,16 @@
 #include "Seasons/SeasonManager.h"
 #include "json/json.h"
 #include "Logging\FileHelper.h"
+#include "Logging\ChiString.h"
 namespace ChiikaApi
 {
 	//----------------------------------------------------------------------------
-	Root::Root(const std::string& modulePath)
+	Root::Root(const ChiString& modulePath)
 	{
 		m_pSettings = ChiikaNew AppSettings("Chiika.cfg",modulePath);
 		m_pLogManager = ChiikaNew LogManager;
 
-		String version = std::to_string(CHIIKAAPI_VERSION_MAJOR) + "." + std::to_string(CHIIKAAPI_VERSION_MINOR) + "." + std::to_string(CHIIKAAPI_VERSION_PATCH);;
+		ChiString version = std::to_string(CHIIKAAPI_VERSION_MAJOR) + "." + std::to_string(CHIIKAAPI_VERSION_MINOR) + "." + std::to_string(CHIIKAAPI_VERSION_PATCH);;
 		m_sVersion = version;
 		m_sCommitHash = CHIIKAAPI_COMMIT_HASH;
 
@@ -65,14 +66,9 @@ namespace ChiikaApi
 		LOG(INFO) << "Creating LocalData Manager";
 		m_pLocalData = ChiikaNew LocalDataManager;
 
-		FileReader fr(m_pSettings->GetDataPath() + "\\Chiika.log");
-
-		if(fr.Open())
-		{
-			std::string r = fr.Read();
-			LOGD << r.c_str();
-		}
-		fr.Close();
+		ChiString p = "Nine pineapples";
+		ChiString y = GetMiddle(p,5,4);
+		ChiString z = GetMiddle(p,5,-1);
 		
 	}
 	//----------------------------------------------------------------------------
@@ -87,22 +83,22 @@ namespace ChiikaApi
 		delete m_pRecognizer;
 	}
 	//----------------------------------------------------------------------------
-	void Root::SetAnimeFolderPath(String path)
+	void Root::SetAnimeFolderPath(ChiString path)
 	{
 		AppSettings::Get().SetAnimeFolderPath(path);
 	}
 	//----------------------------------------------------------------------------
-	String Root::GetAnimeFolderPath()
+	ChiString Root::GetAnimeFolderPath()
 	{
-		return AppSettings::Get().GetStringOption(LIBRARY_ANIME_FOLDER_PATH);
+		return AppSettings::Get().GetChiStringOption(LIBRARY_ANIME_FOLDER_PATH);
 	}
 	//----------------------------------------------------------------------------
-	String Root::GetDataPath()
+	ChiString Root::GetDataPath()
 	{
 		return AppSettings::Get().GetDataPath();
 	}
 	//----------------------------------------------------------------------------
-	String Root::GetImageFolderPath()
+	ChiString Root::GetImageFolderPath()
 	{
 		return AppSettings::Get().GetImagePath();
 	}
@@ -112,12 +108,12 @@ namespace ChiikaApi
 		return m_pLocalData->GetUserInfo();
 	}
 	//----------------------------------------------------------------------------
-	void Root::SearchAnime(const String& name)
+	void Root::SearchAnime(const ChiString& name)
 	{
 		m_pRequestManager->CreateAnimeSearchRequest(this,name);
 	}
 	//----------------------------------------------------------------------------
-	void Root::SearchManga(const String& name)
+	void Root::SearchManga(const ChiString& name)
 	{
 
 	}
@@ -191,7 +187,7 @@ namespace ChiikaApi
 		m_pRequestManager->CreateSenpaiMoeDataRequest(this);
 	}
 	//----------------------------------------------------------------------------
-	void Root::SearchAnilistAnime(const String& name)
+	void Root::SearchAnilistAnime(const ChiString& name)
 	{
 		m_pRequestManager->CreateAnilistSearchAnime(this,name);
 	}
@@ -235,10 +231,10 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void Root::DownloadAnimeImage(const AnimeInfo& anime)
 	{
-		String url = (anime.Animu.Image);
-		/*String fileName = url.mid(url.lastIndexOf("/") + 1,url.size() - url.lastIndexOf("/")).toStdString();*/
+		ChiString url = (anime.Animu.Image);
+		/*ChiString fileName = url.mid(url.lastIndexOf("/") + 1,url.size() - url.lastIndexOf("/")).toStdChiString();*/
 
-		/*m_pRequestManager->CreateImageDownloadRequest(this,url.toStdString(),fileName,anime);*/
+		/*m_pRequestManager->CreateImageDownloadRequest(this,url.toStdChiString(),fileName,anime);*/
 	}
 	//----------------------------------------------------------------------------
 	void Root::InitializeApi(bool b
@@ -320,7 +316,7 @@ namespace ChiikaApi
 	{
 		if(REQUEST_SUCCESS(r->m_Result.HttpCode))
 		{
-			/*LOG("Anime search result returned " + String::number(list.size()) + " entries")*/
+			/*LOG("Anime search result returned " + ChiString::number(list.size()) + " entries")*/
 
 			//
 			//AnimeList copy = list;
@@ -511,7 +507,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void Root::Notify(ThreadedRequest* req)
 	{
-		String RequestName = req->Name;
+		ChiString RequestName = req->Name;
 		
 		if(RequestName == "AnilistAuth")
 		{
@@ -614,12 +610,12 @@ namespace ChiikaApi
 		return  NULL;
 	}
 	//----------------------------------------------------------------------------
-	String Root::GetVersion()
+	ChiString Root::GetVersion()
 	{
 		return m_sVersion;
 	}
 	//----------------------------------------------------------------------------
-	String Root::GetHash()
+	ChiString Root::GetHash()
 	{
 		return m_sCommitHash;
 	}

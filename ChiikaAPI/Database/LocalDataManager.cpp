@@ -24,7 +24,7 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	FileLoader::FileLoader(String path,FileType type)
+	FileLoader::FileLoader(ChiString path,FileType type)
 	{
 		m_sPath = path;
 		m_eType = type;
@@ -34,7 +34,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void FileLoader::Create()
 	{
-		String dataFile = m_sPath;
+		ChiString dataFile = m_sPath;
 
 		
 
@@ -94,7 +94,7 @@ namespace ChiikaApi
 
 	}
 	//----------------------------------------------------------------------------
-	AnimeFileLoader::AnimeFileLoader(String path)
+	AnimeFileLoader::AnimeFileLoader(ChiString path)
 		: FileLoader(path,FileLoader::FileType::AnimeList)
 	{
 
@@ -102,14 +102,14 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AnimeFileLoader::Load()
 	{
-		String dataFile = m_sPath;
+		ChiString dataFile = m_sPath;
 		FileReader file(dataFile);
 
 
 		if(file.Open())
 		{
 			pugi::xml_document doc;
-			String fileData = file.Read();
+			ChiString fileData = file.Read();
 			doc.load(fileData.c_str());
 			file.Close();
 
@@ -169,7 +169,7 @@ namespace ChiikaApi
 			//LOG("Anime list loaded succesfully!")
 
 
-			//LOG("Loading animelist took " + String::number(stopwatch.GetDuration()) +" micro seconds");
+			//LOG("Loading animelist took " + ChiString::number(stopwatch.GetDuration()) +" micro seconds");
 
 		}
 		else
@@ -180,7 +180,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AnimeFileLoader::Save()
 	{
-		String dataFile = m_sPath;
+		ChiString dataFile = m_sPath;
 		FileWriter file(dataFile);
 
 
@@ -243,7 +243,7 @@ namespace ChiikaApi
 			file.Close();
 			//LOG("Anime list saved succesfully!")
 
-			//LOG("Saving animelist took " + String::number(st.GetDuration()) +" micro seconds");
+			//LOG("Saving animelist took " + ChiString::number(st.GetDuration()) +" micro seconds");
 		}
 		else
 		{
@@ -251,7 +251,7 @@ namespace ChiikaApi
 		}
 	}
 	//----------------------------------------------------------------------------
-	MangaFileLoader::MangaFileLoader(String path)
+	MangaFileLoader::MangaFileLoader(ChiString path)
 		: FileLoader(path,FileLoader::FileType::MangaList)
 	{
 
@@ -259,14 +259,14 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void MangaFileLoader::Load()
 	{
-		String dataFile = m_sPath;
+		ChiString dataFile = m_sPath;
 		FileReader file(dataFile);
 
 
 		if(file.Open())
 		{
 			pugi::xml_document doc;
-			String fileData = file.Read();
+			ChiString fileData = file.Read();
 			doc.load(fileData.c_str());
 
 			pugi::xml_node  root = doc.child("Chiika");
@@ -337,7 +337,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void MangaFileLoader::Save()
 	{
-		String dataFile = m_sPath;
+		ChiString dataFile = m_sPath;
 		FileWriter file(dataFile);
 
 		if(file.Open())
@@ -411,20 +411,20 @@ namespace ChiikaApi
 		}
 	}
 	//----------------------------------------------------------------------------
-	UserInfoLoader::UserInfoLoader(String path,ChiikaApi::UserInfo)
+	UserInfoLoader::UserInfoLoader(ChiString path,ChiikaApi::UserInfo)
 		: FileLoader(path,FileLoader::FileType::UserInfo)
 	{
 	}
 	//----------------------------------------------------------------------------
 	void UserInfoLoader::Load()
 	{
-		String dataFile = m_sPath;
+		ChiString dataFile = m_sPath;
 		FileReader file(dataFile);
 
 		if(file.Open())
 		{
 			pugi::xml_document doc;
-			String fileData = file.Read();
+			ChiString fileData = file.Read();
 			doc.load(fileData.c_str());
 
 			pugi::xml_node  root = doc.child("Chiika");
@@ -475,7 +475,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void UserInfoLoader::Save()
 	{
-		String dataFile = m_sPath;
+		ChiString dataFile = m_sPath;
 		FileWriter file(dataFile);
 
 		if(file.Open())
@@ -531,7 +531,7 @@ namespace ChiikaApi
 		}
 	}
 	//----------------------------------------------------------------------------
-	UpdateListLoader::UpdateListLoader(String path)
+	UpdateListLoader::UpdateListLoader(ChiString path)
 		: FileLoader(path,FileType::UpdateList)
 	{
 
@@ -539,14 +539,14 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void UpdateListLoader::Load()
 	{
-		String dataFile = m_sPath;
+		ChiString dataFile = m_sPath;
 		FileReader file(dataFile);
 
 
 		if(file.Open())
 		{
 			pugi::xml_document doc;
-			String fileData = file.Read();
+			ChiString fileData = file.Read();
 			doc.load(fileData.c_str());
 
 			pugi::xml_node  root = doc.child("Chiika");
@@ -672,7 +672,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void UpdateListLoader::Save()
 	{
-		String dataFile = m_sPath;
+		ChiString dataFile = m_sPath;
 		FileWriter file(dataFile);
 
 
@@ -802,21 +802,21 @@ namespace ChiikaApi
 		}
 	}
 	//----------------------------------------------------------------------------
-	AnimeDetailsLoader::AnimeDetailsLoader(String path)
+	AnimeDetailsLoader::AnimeDetailsLoader(ChiString path)
 		: FileLoader(path,FileType::AnimeDetails)
 	{
 	}
 	//----------------------------------------------------------------------------
 	void AnimeDetailsLoader::Load()
 	{
-		String dataFile = m_sPath;
+		ChiString dataFile = m_sPath;
 		FileReader file(dataFile);
 
 
 		if(file.Open())
 		{
 			pugi::xml_document doc;
-			String fileData = file.Read();
+			ChiString fileData = file.Read();
 			doc.load(fileData.c_str());
 
 			pugi::xml_node  root = doc.child("Chiika");
@@ -835,13 +835,13 @@ namespace ChiikaApi
 				pugi::xml_node  ranked = anime.child("Ranked");
 				pugi::xml_node  popularity = anime.child("Popularity");
 
-				std::vector<String> vTags;
+				std::vector<ChiString> vTags;
 				for(pugi::xml_node tag = tags.child("Tag");tag;tag= tag.next_sibling())
 				{
 					vTags.push_back(tag.text().get());
 				}
 
-				std::vector<String> vProducers;
+				std::vector<ChiString> vProducers;
 				for(pugi::xml_node producer = producers.child("Producer");producer;producer= producer.next_sibling())
 				{
 					vProducers.push_back(producer.text().get());
@@ -863,12 +863,12 @@ namespace ChiikaApi
 
 					for(int i=0; i < vTags.size(); i++)
 					{
-						String tag = vTags[i];
+						ChiString tag = vTags[i];
 						details.Tags.push_back(tag);
 					}
 					for(int i=0; i < vProducers.size(); i++)
 					{
-						String producer = vProducers[i];
+						ChiString producer = vProducers[i];
 						details.Producers.push_back(producer);
 					}
 
@@ -885,7 +885,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AnimeDetailsLoader::Save()
 	{
-		String dataFile = m_sPath;
+		ChiString dataFile = m_sPath;
 		FileWriter file(dataFile);
 
 		if(file.Open())
@@ -926,7 +926,7 @@ namespace ChiikaApi
 
 				for(int i=0; i < Details.Producers.size(); i++)
 				{
-					String p = Details.Producers[i];
+					ChiString p = Details.Producers[i];
 					pugi::xml_node pNode = producers.append_child("Producer");
 					SetXMLValue(pNode,p.c_str());
 				}
@@ -934,7 +934,7 @@ namespace ChiikaApi
 
 				for(int i=0; i < Details.Tags.size(); i++)
 				{
-					String tag = Details.Tags[i];
+					ChiString tag = Details.Tags[i];
 					pugi::xml_node  tagNode = tags.append_child("Tag");
 					SetXMLValue(tagNode,tag.c_str());
 				}
@@ -944,14 +944,14 @@ namespace ChiikaApi
 		}
 	}
 	//----------------------------------------------------------------------------
-	SenpaiLoader::SenpaiLoader(String path)
+	SenpaiLoader::SenpaiLoader(ChiString path)
 		: FileLoader(path,FileType::SenpaiJSON)
 	{
 	}
 	//----------------------------------------------------------------------------
 	void SenpaiLoader::Load()
 	{
-		String dataFile = m_sPath;
+		ChiString dataFile = m_sPath;
 		FileReader file(dataFile);
 
 
@@ -959,7 +959,7 @@ namespace ChiikaApi
 		{
 			Json::Value root;
 			Json::Reader reader;
-			String fileData = file.Read();
+			ChiString fileData = file.Read();
 
 			bool b = reader.parse(fileData,root);
 
@@ -967,8 +967,8 @@ namespace ChiikaApi
 			{
 				//Root
 				const Json::Value meta = root["meta"];
-				String season = (meta["season"].asString());
-				String start = (meta["start"].asString());
+				ChiString season = (meta["season"].asString());
+				ChiString start = (meta["start"].asString());
 				float startU = (meta["start_u"].asFloat());
 
 				const Json::Value tz = meta["tz"];
@@ -1017,7 +1017,7 @@ namespace ChiikaApi
 					const Json::Value airdates = v["airdates"];
 
 					Json::Value::const_iterator adIt = airdates.begin();
-					Map<String,Airdate>::type airdateList;
+					Map<ChiString,Airdate>::type airdateList;
 
 					ForEachOnStd(adIt,airdates)
 					{
@@ -1025,7 +1025,7 @@ namespace ChiikaApi
 
 						Airdate ad;
 
-						String timezoneValue = (adIt.name());
+						ChiString timezoneValue = (adIt.name());
 
 						ad.TimeZone = list.find(timezoneValue)->second;
 						ad.RdDate = JsToQ(t["rd_date"]);
@@ -1054,12 +1054,12 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	LocalDataManager::LocalDataManager()
 	{
-		m_sAnimeListFilePath = AppSettings::Get().GetStringOption(LIBRARY_ANIME_LIST_PATH);
-		m_sMangaListFilePath = AppSettings::Get().GetStringOption(LIBRARY_MANGA_LIST_PATH);
-		m_sUserInfoPath = AppSettings::Get().GetStringOption(LIBRARY_USER_INFO_PATH);
-		m_sUpdateListPath = AppSettings::Get().GetStringOption(LIBRARY_UPDATE_LIST_PATH);
-		m_sAnimeDetailsPath = AppSettings::Get().GetStringOption(LIBRARY_ANIME_DETAILS_PATH);
-		m_sSenpaiPath = AppSettings::Get().GetStringOption(LIBRARY_SENPAI_PATH);;
+		m_sAnimeListFilePath = AppSettings::Get().GetChiStringOption(LIBRARY_ANIME_LIST_PATH);
+		m_sMangaListFilePath = AppSettings::Get().GetChiStringOption(LIBRARY_MANGA_LIST_PATH);
+		m_sUserInfoPath = AppSettings::Get().GetChiStringOption(LIBRARY_USER_INFO_PATH);
+		m_sUpdateListPath = AppSettings::Get().GetChiStringOption(LIBRARY_UPDATE_LIST_PATH);
+		m_sAnimeDetailsPath = AppSettings::Get().GetChiStringOption(LIBRARY_ANIME_DETAILS_PATH);
+		m_sSenpaiPath = AppSettings::Get().GetChiStringOption(LIBRARY_SENPAI_PATH);;
 
 
 		m_AnimeLoader = new AnimeFileLoader(m_sAnimeListFilePath);
@@ -1117,7 +1117,7 @@ namespace ChiikaApi
 		m_UpdateListLoader->Load();
 	}
 	//----------------------------------------------------------------------------
-	void LocalDataManager::SetUserNamePass(String u,String p)
+	void LocalDataManager::SetUserNamePass(ChiString u,ChiString p)
 	{
 		m_UserDetailedInfo.UserName = u;
 		m_UserDetailedInfo.Pass = p;

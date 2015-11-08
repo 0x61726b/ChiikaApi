@@ -38,7 +38,7 @@ namespace ChiikaApi
 			SenpaiJSON
 		};
 
-		FileLoader(String filePath,FileType type);
+		FileLoader(ChiString filePath,FileType type);
 
 		virtual void Save() = 0;
 		virtual void Load() = 0;
@@ -47,13 +47,13 @@ namespace ChiikaApi
 
 
 	protected:
-		String m_sPath;
+		ChiString m_sPath;
 		FileType m_eType;
 	};
 	class MalApiExport AnimeFileLoader : public FileLoader
 	{
 	public:
-		AnimeFileLoader(String path);
+		AnimeFileLoader(ChiString path);
 
 		void Save();
 		void Load();
@@ -61,7 +61,7 @@ namespace ChiikaApi
 	class MalApiExport MangaFileLoader : public FileLoader
 	{
 	public:
-		MangaFileLoader(String path);
+		MangaFileLoader(ChiString path);
 
 		void Save();
 		void Load();
@@ -69,7 +69,7 @@ namespace ChiikaApi
 	class MalApiExport UserInfoLoader : public FileLoader
 	{
 	public:
-		UserInfoLoader(String path,ChiikaApi::UserInfo ui);
+		UserInfoLoader(ChiString path,ChiikaApi::UserInfo ui);
 
 		void Save();
 		void Load();
@@ -81,7 +81,7 @@ namespace ChiikaApi
 	{
 	public:
 
-		UpdateListLoader(String path);
+		UpdateListLoader(ChiString path);
 
 		void Save();
 		void Load();
@@ -89,7 +89,7 @@ namespace ChiikaApi
 	class MalApiExport AnimeDetailsLoader : public FileLoader
 	{
 	public:
-		AnimeDetailsLoader(String path);
+		AnimeDetailsLoader(ChiString path);
 
 		void Save();
 		void Load();
@@ -97,7 +97,7 @@ namespace ChiikaApi
 	class MalApiExport SenpaiLoader : public FileLoader
 	{
 	public:
-		SenpaiLoader(String path);
+		SenpaiLoader(ChiString path);
 
 		void Save();
 		void Load();
@@ -134,7 +134,7 @@ namespace ChiikaApi
 		void LoadSenpaiData();
 	public:
 
-		void SetUserNamePass(String userName,String pass);
+		void SetUserNamePass(ChiString userName,ChiString pass);
 
 		const UserInfo& GetUserInfo();
 		void SetUserInfo(UserInfo i);
@@ -142,12 +142,12 @@ namespace ChiikaApi
 	private:
 		UserInfo m_UserDetailedInfo;
 	private:
-		String m_sAnimeListFilePath;
-		String m_sMangaListFilePath;
-		String m_sUserInfoPath;
-		String m_sUpdateListPath;
-		String m_sAnimeDetailsPath;
-		String m_sSenpaiPath;
+		ChiString m_sAnimeListFilePath;
+		ChiString m_sMangaListFilePath;
+		ChiString m_sUserInfoPath;
+		ChiString m_sUpdateListPath;
+		ChiString m_sAnimeDetailsPath;
+		ChiString m_sSenpaiPath;
 
 	private:
 		AnimeFileLoader* m_AnimeLoader;

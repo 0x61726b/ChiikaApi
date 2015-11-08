@@ -31,7 +31,7 @@ namespace ChiikaApi
 		FILE *stream;
 	};
 	//----------------------------------------------------------------------------
-	int ThreadedRequest::CallbackFunc(char* data,size_t size,size_t nmemb,std::string* buffer)
+	int ThreadedRequest::CallbackFunc(char* data,size_t size,size_t nmemb,ChiString* buffer)
 	{
 		// What we will return
 		int result = 0;
@@ -72,7 +72,7 @@ namespace ChiikaApi
 		if(out && !out->stream)
 		{
 			/* open file for writing */
-			String path = AppSettings::Get().GetDataPath() + "/Images/" + out->filename ;
+			ChiString path = AppSettings::Get().GetDataPath() + "/Images/" + out->filename ;
 			/*path.replace(path.find("/"),"\\\\");*/
 			out->stream=fopen(path.c_str(),"wb");
 			if(!out->stream)
@@ -94,7 +94,7 @@ namespace ChiikaApi
 
 	}
 	//----------------------------------------------------------------------------
-	void ThreadedRequest::SetParameters(CurlConfigOptionMap opts,const String& name,const RequestType& type)
+	void ThreadedRequest::SetParameters(CurlConfigOptionMap opts,const ChiString& name,const RequestType& type)
 	{
 		m_sUrl = opts.find("Url")->second.Value;
 		if(opts.find("UserName") != opts.end() && opts.find("PassWord") != opts.end())
@@ -193,7 +193,7 @@ namespace ChiikaApi
 					if(xmlData.size() > 0)
 					{
 						const char* data = xmlData.c_str();
-						String append = "data=";
+						ChiString append = "data=";
 						append.append(data);
 
 						curl_easy_setopt(m_pCurl,CURLOPT_POST,1L);
@@ -207,7 +207,7 @@ namespace ChiikaApi
 					CurlConfigOptionMap::iterator It = Options.begin();
 
 					int paramCount = 0;
-					String postData = "";
+					ChiString postData = "";
 					for(It;It != Options.end(); It++)
 					{
 						if(paramCount != 0)
@@ -291,7 +291,7 @@ namespace ChiikaApi
 		m_pThread->join();
 	}
 	//----------------------------------------------------------------------------
-	void ThreadedRequest::OnWorkFinished(String data)
+	void ThreadedRequest::OnWorkFinished(ChiString data)
 	{
 		if(m_Result.Code != RequestCodes::REQUEST_ERROR)
 		{
@@ -373,7 +373,7 @@ namespace ChiikaApi
 		r->AddListener(l);
 	}
 	//----------------------------------------------------------------------------
-	void RequestManager::CreateAnimeSearchRequest(RequestListener* l,String keyword)
+	void RequestManager::CreateAnimeSearchRequest(RequestListener* l,ChiString keyword)
 	{
 		CurlConfigOption url;
 		CurlConfigOption method;
@@ -381,7 +381,7 @@ namespace ChiikaApi
 		CurlConfigOption passWord;
 
 		url.Name = "Url";
-		String k = (keyword);
+		ChiString k = (keyword);
 		/*k.replace(" ","+");*/
 		url.Value = "http://myanimelist.net/api/anime/search.xml?q=" + k;
 
@@ -446,11 +446,11 @@ namespace ChiikaApi
 		CurlConfigOption userName;
 		CurlConfigOption passWord;
 		CurlConfigOption xmlData;
-		String animeId = std::to_string(anime.Animu.Id);
-		String mangaId = std::to_string(manga.Mango.Id);
+		ChiString animeId = std::to_string(anime.Animu.Id);
+		ChiString mangaId = std::to_string(manga.Mango.Id);
 
-		String op;
-		String sTarget;
+		ChiString op;
+		ChiString sTarget;
 
 		userName.Name = "UserName";
 		userName.Value = LocalDataManager::Get().GetUserInfo().UserName;
@@ -596,9 +596,9 @@ namespace ChiikaApi
 		method.cUrlOpt = CURLOPT_HTTPPOST;
 
 		//Take these out of here probably
-		String grant_type = "client_credentials";
-		String client_id = "arkenthera-71vj2";
-		String client_secret = "T4a8AMEyk389ENC6RwysxIRYTdHI1p";
+		ChiString grant_type = "client_credentials";
+		ChiString client_id = "arkenthera-71vj2";
+		ChiString client_secret = "T4a8AMEyk389ENC6RwysxIRYTdHI1p";
 
 		CurlConfigOption grant_typeOpt;
 		CurlConfigOption client_idOpt;
@@ -629,7 +629,7 @@ namespace ChiikaApi
 		r->AddListener(l);
 	}
 	//----------------------------------------------------------------------------
-	void RequestManager::CreateAnilistSearchAnime(RequestListener* l,String keyword)
+	void RequestManager::CreateAnilistSearchAnime(RequestListener* l,ChiString keyword)
 	{
 		CreateAnilistRequest();
 
@@ -656,7 +656,7 @@ namespace ChiikaApi
 		r->AddListener(l);
 	}
 	//----------------------------------------------------------------------------
-	void RequestManager::CreateImageDownloadRequest(RequestListener* l,String imageUrl,String fileName,const AnimeInfo& anime)
+	void RequestManager::CreateImageDownloadRequest(RequestListener* l,ChiString imageUrl,ChiString fileName,const AnimeInfo& anime)
 	{
 		CurlConfigOption url;
 		CurlConfigOption method;
@@ -729,7 +729,7 @@ namespace ChiikaApi
 		method.cUrlOpt = CURLOPT_HTTPGET;
 
 		userAgent.Name = "Ua";
-		//Found this string at https://github.com/djh3315. Seems like abandoned so I pulled the string. (pun intended)
+		//Found this ChiString at https://github.com/djh3315. Seems like abandoned so I pulled the ChiString. (pun intended)
 		//I could not find any information about the person
 		//So I could not mail him/her to get approval
 		//Please dont ban me incapsula!
@@ -771,7 +771,7 @@ namespace ChiikaApi
 		r->AddListener(l);
 	}
 	//----------------------------------------------------------------------------
-	String RequestManager::GetAnimeXML(const AnimeInfo& anime)
+	ChiString RequestManager::GetAnimeXML(const AnimeInfo& anime)
 	{
 		pugi::xml_document doc;
 		pugi::xml_node entry = doc.append_child("entry");
@@ -800,12 +800,12 @@ namespace ChiikaApi
 		episode.text().set(anime.WatchedEpisodes);
 		status.text().set(anime.Status);
 		score.text().set(anime.Score);
-		std::stringstream str;
+		ChiStringStream str;
 		doc.save(str);
 		return str.str();
 	}
 	//----------------------------------------------------------------------------
-	String RequestManager::GetMangaXML(const MangaInfo& manga)
+	ChiString RequestManager::GetMangaXML(const MangaInfo& manga)
 	{
 		pugi::xml_document doc;
 		pugi::xml_node entry = doc.append_child("entry");
@@ -835,7 +835,7 @@ namespace ChiikaApi
 		SetXMLValue(volume,manga.ReadVolumes);
 		SetXMLValue(score,manga.Score);
 
-		std::stringstream str;
+		ChiStringStream str;
 		doc.save(str);
 		return str.str();
 	}

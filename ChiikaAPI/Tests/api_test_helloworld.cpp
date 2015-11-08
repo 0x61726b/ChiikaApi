@@ -1,5 +1,5 @@
 //----------------------------------------------------------------------------
-//Chiika Api
+//Chiika Hello World
 //Copyright (C) 2015  Alperen Gezer
 //This program is free software; you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -13,22 +13,15 @@
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
-#ifndef __AnimeRecognition_h__
-#define __AnimeRecognition_h__
-//----------------------------------------------------------------------------
-#include "Common/Required.h"
-#include "Common/Singleton.h"
+#include <windows.h>
 
-
-namespace ChiikaApi
+int main()
 {
-	class AnimeRecognition : public Singleton<AnimeRecognition>
-	{
-	public:
-		AnimeRecognition();
+    // <-- Program logic here
 
-		void RecognizeAndCache(ChiString file);
-		static AnimeRecognition& Get();
-	};
+	while(true)
+	{
+
+	}
+    return 0;
 }
-#endif // ANIMERECOGNITION_H

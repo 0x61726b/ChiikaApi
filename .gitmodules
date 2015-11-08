@@ -11,3 +11,6 @@
 [submodule "ChiikaAPI/ThirdParty/jsoncpp"]
 	path = ChiikaAPI/ThirdParty/jsoncpp
 	url = https://github.com/arkenthera/jsoncpp.git
+[submodule "ChiikaAPI/ThirdParty/googletest"]
+	path = ChiikaAPI/ThirdParty/googletest
+	url = https://github.com/google/googletest.git

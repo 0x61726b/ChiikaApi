@@ -16,7 +16,7 @@
 #include "Stable.h"
 #include "Recognition/AnimeRecognition.h"
 
-#include <string>
+#include <string.h>
 //#include "ThirdParty/anitomy/anitomy/anitomy.h"
 #include "Logging\LogManager.h"
 //----------------------------------------------------------------------------
@@ -33,19 +33,19 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------											
 	AnimeRecognition::AnimeRecognition()
 	{
-		//std::stringstream strStream;
-		//String test = "test";
-		//std::string param = test.toStdString();
+		//ChiStringstream strStream;
+		//ChiString test = "test";
+		//ChiString param = test.toStdChiString();
 		//strStream << param;
-		//const std::string& tmp = strStream.str();
+		//const ChiString& tmp = strStream.str();
 		//const char* cstr = tmp.c_str();
-		//LOG(String::fromStdString(cstr));
+		//LOG(ChiString::fromStdChiString(cstr));
 	}
 	//----------------------------------------------------------------------------
-	void AnimeRecognition::RecognizeAndCache(String file)
+	void AnimeRecognition::RecognizeAndCache(ChiString file)
 	{
 		//anitomy::Anitomy anitomy;
-		//anitomy.Parse(file.toStdWString()); //Wide string mmmhhmm
+		//anitomy.Parse(file.toStdWChiString()); //Wide ChiString mmmhhmm
 
 		//anitomy::Elements& elements = anitomy.elements();
 

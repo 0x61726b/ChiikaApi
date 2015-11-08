@@ -19,11 +19,11 @@
 namespace ChiikaApi
 {
 	/** Little Explanation on how settings work on Chiika
-		We have OptionsEnum and an option map which is used to "stringfy" this option enum
-		that is used when writing to XML. Different types of settings(String,bool,int)
+		We have OptionsEnum and an option map which is used to "ChiStringfy" this option enum
+		that is used when writing to XML. Different types of settings(ChiString,bool,int)
 		will implement Setting interface and they will be stored as pointers on the singleton class
 		The reason I chose to do this is purely laziness.I didnt want to hard code every possible setting
-		then write getter and setter for every one of them.Huh. This way I'll write getters for string,int and boolean
+		then write getter and setter for every one of them.Huh. This way I'll write getters for ChiString,int and boolean
 		options then cast pointers.Since I know the types pointer casting 100% safe (maybe not).
 		Somehow if you change a setting or add a setting here, remember to use the correct macro to add otherwise things will go bad.
 	*/
@@ -32,12 +32,12 @@ namespace ChiikaApi
 		/* Api Settings*/
 		API_LOG_LEVEL,
 		/* Library Setttings*/
-		LIBRARY_ANIME_LIST_PATH, //String
-		LIBRARY_MANGA_LIST_PATH, //String
-		LIBRARY_UPDATE_LIST_PATH, //String
-		LIBRARY_USER_INFO_PATH, //String
-		LIBRARY_ANIME_FOLDER_PATH, //String
-		LIBRARY_ANIME_DETAILS_PATH,//String
+		LIBRARY_ANIME_LIST_PATH, //ChiString
+		LIBRARY_MANGA_LIST_PATH, //ChiString
+		LIBRARY_UPDATE_LIST_PATH, //ChiString
+		LIBRARY_USER_INFO_PATH, //ChiString
+		LIBRARY_ANIME_FOLDER_PATH, //ChiString
+		LIBRARY_ANIME_DETAILS_PATH,//ChiString
 		LIBRARY_SENPAI_PATH,
 		LIBRARY_SYNC_EVERY_X_SECOND, //Int
 		/* Window Settings*/
@@ -51,7 +51,7 @@ namespace ChiikaApi
 		COLORS_HOME,
 		COLORS_SETTINGS,
 		/* General */
-		GEN_APP_STARTING_PAGE //String. Can be [Home,AList,MList]
+		GEN_APP_STARTING_PAGE //ChiString. Can be [Home,AList,MList]
 	};
 	enum OptionsType
 	{

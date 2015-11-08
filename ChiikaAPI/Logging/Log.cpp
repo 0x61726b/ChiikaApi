@@ -20,7 +20,7 @@
 namespace ChiikaApi
 {
 	//-----------------------------------------------------------------------
-	Log::Log(const String& name,bool debuggerOuput,bool suppressFile):
+	Log::Log(const ChiString& name,bool debuggerOuput,bool suppressFile):
 		mLogLevel(LOG_LEVEL_NORMAL),mDebugOut(debuggerOuput),
 		mSuppressFile(suppressFile),mTimeStamp(true),mLogName(name)
 	{
@@ -40,7 +40,7 @@ namespace ChiikaApi
 			}
 	}
 	//-----------------------------------------------------------------------
-	void Log::LogMessage(const String& message,LogMessageLevel lml,bool maskDebug)
+	void Log::LogMessage(const ChiString& message,LogMessageLevel lml,bool maskDebug)
 	{
 		CHIKA_AUTO_MUTEX_LOCK
 			if((mLogLevel + lml) >= LOG_THRESHOLD)
@@ -71,7 +71,7 @@ namespace ChiikaApi
 								<< ":" << std::setw(2) << std::setfill('0') << pTime->tm_sec
 								<< ": ";
 						}
-						std::string prefix = "";
+						ChiString prefix = "";
 						if(lml == LogMessageLevel::LOG_LEVEL_INFO)
 						{
 							prefix = "INFO ->";
