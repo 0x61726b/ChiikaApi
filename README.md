@@ -20,7 +20,7 @@ C++ library for MyAnimelist interactions.
 
 - [Jsoncpp](https://github.com/arkenthera/jsoncpp)
 
-- [Pugixml](https://github.com/arkenthera/jsoncpp)
+- [Pugixml](https://github.com/arkenthera/pugixml)
 
 Some libraries are edited for enchanced use.
 
@@ -36,3 +36,11 @@ cd _build
 cmake .. 
 ```
 
+Recomended Cmake settings
+
+```
+BUILD_CURL_EXE uncheck
+BUILD_CURL_TESTS uncheck
+BUILD_STATIC_LIBS uncheck
+JSON_CPP_WITH_TESTS uncheck
+```
