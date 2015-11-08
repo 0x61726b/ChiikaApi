@@ -13,10 +13,15 @@ C++ library for MyAnimelist interactions.
 
 #### 3rd party libraries used
 - [Anitomy](https://github.com/arkenthera/anitomy)
+
 - [Curl](https://github.com/bagder/curl)
+
 - [Googletest and Googlemock](https://github.com/google/googletest)
+
 - [Jsoncpp](https://github.com/arkenthera/jsoncpp)
+
 - [Pugixml](https://github.com/arkenthera/jsoncpp)
+
 Some libraries are edited for enchanced use.
 
 ## Building
