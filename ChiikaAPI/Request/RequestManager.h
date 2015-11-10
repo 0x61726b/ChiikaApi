@@ -47,7 +47,7 @@ namespace ChiikaApi
 		AnimeList m_AnimeList;
 		MangaList m_MangaList;
 
-		AnimeInfo AnimeResult;
+		UserAnimeEntry AnimeResult;
 		MangaInfo MangaResult;
 
 		ChiString AnilistAuthCode;
@@ -57,6 +57,7 @@ namespace ChiikaApi
 	{
 	public:
 		virtual void Notify(ThreadedRequest* thread) = 0;
+		virtual ~RequestListener() { }
 	};
 
 	//----------------------------------------------------------------------------
@@ -66,7 +67,7 @@ namespace ChiikaApi
 		
 
 		ThreadedRequest();
-		~ThreadedRequest();
+		virtual ~ThreadedRequest();
 
 		void SetParameters(CurlConfigOptionMap Options,const ChiString& name,const RequestType& type = RequestType::MyAnimeList);
 		void CreateThread();
@@ -126,25 +127,27 @@ namespace ChiikaApi
 		void CreateGetMangaListRequest(RequestListener* l);
 		//~
 
-		void CreateCRUDRequest(RequestListener* l,const AnimeInfo& anime,const MangaInfo& manga,CRUDOp operation,CRUDTarget target);
+		void CreateCRUDRequest(RequestListener* l,const UserAnimeEntry& anime,const MangaInfo& manga,CRUDOp operation,CRUDTarget target);
 
 		//Anilist
 		void CreateAnilistRequest();
 		void CreateAnilistAuthRequest(RequestListener* l);
 		void CreateAnilistSearchAnime(RequestListener* l,ChiString keyword);
 		
-		ChiString GetAnimeXML(const AnimeInfo& anime);
+		ChiString GetAnimeXML(const UserAnimeEntry& anime);
 		ChiString GetMangaXML(const MangaInfo& manga);
 		
 		
-		void CreateImageDownloadRequest(RequestListener* l,ChiString url,ChiString fileName,const AnimeInfo& anime);
+		void CreateImageDownloadRequest(RequestListener* l,ChiString url,ChiString fileName,const UserAnimeEntry& anime);
 		
-		void CreateAnimePageScrapeRequest(RequestListener* l,const AnimeInfo& anime);
+		void CreateAnimePageScrapeRequest(RequestListener* l,const UserAnimeEntry& anime);
 		void CreateUserPageScrapeRequest(RequestListener* l);
 
 
 
 		void CreateSenpaiMoeDataRequest(RequestListener* l);
+
+		void CreateTestRequest(ThreadedRequest*,CurlConfigOptionMap);
 
 
 		

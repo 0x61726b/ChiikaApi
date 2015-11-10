@@ -29,18 +29,20 @@ namespace ChiikaApi
 
 		CHIKA_AUTO_MUTEX
 
+		
+
 		void AddAnimeList(const AnimeList& list);
 		void AddAnimeUpdateList(const AnimeList& list);
 
 		void AddMangaList(const MangaList& list);
 		void AddMangaUpdateList(const MangaList& list);
 
-		void AddAnime(const AnimeInfo& anime);
-		void AddAnimeToUpdates(const AnimeInfo& anime);
+		void AddAnime(const UserAnimeEntry& anime);
+		void AddAnimeToUpdates(const UserAnimeEntry& anime);
 
-		void DeleteAnimeFromUpdates(const AnimeInfo& anime);
-		void DeleteAnime(const AnimeInfo& anime);
-		void UpdateAnime(const AnimeInfo& anime);
+		void DeleteAnimeFromUpdates(const UserAnimeEntry& anime);
+		void DeleteAnime(const UserAnimeEntry& anime);
+		void UpdateAnime(const UserAnimeEntry& anime);
 
 		void UpdateAnimeList(const AnimeList& list);
 
@@ -58,9 +60,9 @@ namespace ChiikaApi
 		const MangaList& GetMangaList() const;
 		const MangaList& GetMangaUpdateList() const;
 
-		void RequestDownloadAnimeStats(const AnimeInfo& info);
+		void RequestDownloadAnimeStats(const UserAnimeEntry& info);
 
-		AnimeInfo GetAnimeById(int Id);
+		UserAnimeEntry GetAnimeById(int Id);
 
 
 

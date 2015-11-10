@@ -133,16 +133,16 @@ namespace ChiikaApi
 	};
 	//----------------------------------------------------------------------------
 #	define CHIKA_AUTO_MUTEX_NAME chitanda
-#	define CHIKA_AUTO_MUTEX /*mutable boost::recursive_mutex CHIKA_AUTO_MUTEX_NAME;*/
-#	define CHIKA_AUTO_MUTEX_LOCK /*boost::recursive_mutex::scoped_lock AutoMutexLock(CHIKA_AUTO_MUTEX_NAME);*/
+#	define CHIKA_AUTO_MUTEX /*mutable boost::recursive_mutex CHIKA_AUTO_MUTEX_NAME;*/ std::mutex CHIKA_AUTO_MUTEX_NAME;
+#	define CHIKA_AUTO_MUTEX_LOCK /*boost::recursive_mutex::scoped_lock AutoMutexLock(CHIKA_AUTO_MUTEX_NAME);*/ std::unique_lock<std::mutex> AutoLock(CHIKA_AUTO_MUTEX_NAME,std::try_to_lock) ;
 }
 //----------------------------------------------------------------------------
 #	include "Common/MyAnimeList.h"
-#define ANIME_IN_LIST(x) (x.Animu.Id != 0)
+#define ANIME_IN_LIST(x) (x.Anime.Id != 0)
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	typedef MultiMap<int,AnimeInfo>::type AnimeList;
+	typedef MultiMap<int,UserAnimeEntry>::type AnimeList;
 	typedef Map<int,MangaInfo>::type MangaList;
 	typedef AnimeList::iterator AnimeListIt;
 	typedef MangaList::iterator MangaListIt;

@@ -140,21 +140,21 @@ namespace ChiikaApi
 				pugi::xml_node  my_last_updated = anime.child("my_last_updated");
 				//pugi::xml_node  my_finish_date = anime.child("my_finish_date");
 
-				Anime animu;
-				animu.Id = FromXMLValueToInt(animeDbId);
-				animu.Title = FromXMLValueToStd(series_title);
-				animu.English = FromXMLValueToStd(series_synonyms);
-				animu.Type = (AnimeType)FromXMLValueToInt(series_type);
-				animu.EpisodeCount = FromXMLValueToInt(series_episodes);
+				Anime Anime;
+				Anime.Id = FromXMLValueToInt(animeDbId);
+				Anime.Title = FromXMLValueToStd(series_title);
+				Anime.English = FromXMLValueToStd(series_synonyms);
+				Anime.Type = (AnimeType)FromXMLValueToInt(series_type);
+				Anime.EpisodeCount = FromXMLValueToInt(series_episodes);
 
-				animu.Status = (AnimeStatus)FromXMLValueToInt(series_status);
-				animu.StartDate = FromXMLValueToStd(series_start);
-				animu.EndDate = FromXMLValueToStd(series_end);
-				animu.Image = FromXMLValueToStd(series_image);
+				Anime.Status = (AnimeStatus)FromXMLValueToInt(series_status);
+				Anime.StartDate = FromXMLValueToStd(series_start);
+				Anime.EndDate = FromXMLValueToStd(series_end);
+				Anime.Image = FromXMLValueToStd(series_image);
 
-				AnimeInfo info;
+				UserAnimeEntry info;
 				info.WatchedEpisodes = FromXMLValueToInt(my_watched_episodes);
-				info.Animu = animu;
+				info.Anime = Anime;
 				info.MyId = FromXMLValueToInt(my_id);
 				info.StartDate = FromXMLValueToStd(my_start_date);
 				info.EndDate = FromXMLValueToStd(my_finish_date);
@@ -163,7 +163,7 @@ namespace ChiikaApi
 				info.Rewatching = FromXMLValueToInt(my_rewatching);
 				info.RewatchingEp = FromXMLValueToInt(my_rewatching_ep);
 				info.LastUpdated = FromXMLValueToStd(my_last_updated);
-				list.insert(AnimeList::value_type(animu.Id,info));
+				list.insert(AnimeList::value_type(Anime.Id,info));
 			}
 			MalManager::Get().AddAnimeList(list);
 			//LOG("Anime list loaded succesfully!")
@@ -195,7 +195,7 @@ namespace ChiikaApi
 			ChiikaApi::AnimeList::iterator It;
 			for(It = list.begin(); It != list.end(); ++It)
 			{
-				AnimeInfo Animu = It->second;
+				UserAnimeEntry Anime = It->second;
 
 
 				pugi::xml_node  anime = MAL.append_child("anime");
@@ -219,24 +219,24 @@ namespace ChiikaApi
 				pugi::xml_node  my_rewatching_ep = anime.append_child("my_rewatching_ep");
 				pugi::xml_node  my_last_updated = anime.append_child("my_last_updated");
 
-				SetXMLValue(animeDbId,Animu.Animu.Id);
-				SetXMLValue(series_title,Animu.Animu.Title.c_str());
-				SetXMLValue(series_synonyms,Animu.Animu.English.c_str());
-				SetXMLValue(series_type,Animu.Animu.Type);
-				SetXMLValue(series_episodes,Animu.Animu.EpisodeCount);
-				SetXMLValue(series_status,Animu.Animu.Status);
-				SetXMLValue(series_start,Animu.Animu.StartDate.c_str());
-				SetXMLValue(series_end,Animu.Animu.EndDate.c_str());
-				SetXMLValue(series_image,Animu.Animu.Image.c_str());
-				SetXMLValue(my_id,Animu.MyId);
-				SetXMLValue(my_watched_episodes,Animu.WatchedEpisodes);
-				SetXMLValue(my_start_date,Animu.StartDate.c_str());
-				SetXMLValue(my_finish_date,Animu.EndDate.c_str());
-				SetXMLValue(my_score,Animu.Score);
-				SetXMLValue(my_status,Animu.Status);
-				SetXMLValue(my_rewatching,Animu.Rewatching);
-				SetXMLValue(my_rewatching_ep,Animu.RewatchingEp);
-				SetXMLValue(my_last_updated,Animu.LastUpdated.c_str());
+				SetXMLValue(animeDbId,Anime.Anime.Id);
+				SetXMLValue(series_title,Anime.Anime.Title.c_str());
+				SetXMLValue(series_synonyms,Anime.Anime.English.c_str());
+				SetXMLValue(series_type,Anime.Anime.Type);
+				SetXMLValue(series_episodes,Anime.Anime.EpisodeCount);
+				SetXMLValue(series_status,Anime.Anime.Status);
+				SetXMLValue(series_start,Anime.Anime.StartDate.c_str());
+				SetXMLValue(series_end,Anime.Anime.EndDate.c_str());
+				SetXMLValue(series_image,Anime.Anime.Image.c_str());
+				SetXMLValue(my_id,Anime.MyId);
+				SetXMLValue(my_watched_episodes,Anime.WatchedEpisodes);
+				SetXMLValue(my_start_date,Anime.StartDate.c_str());
+				SetXMLValue(my_finish_date,Anime.EndDate.c_str());
+				SetXMLValue(my_score,Anime.Score);
+				SetXMLValue(my_status,Anime.Status);
+				SetXMLValue(my_rewatching,Anime.Rewatching);
+				SetXMLValue(my_rewatching_ep,Anime.RewatchingEp);
+				SetXMLValue(my_last_updated,Anime.LastUpdated.c_str());
 
 			}
 			doc.save_file(dataFile.c_str());
@@ -448,12 +448,12 @@ namespace ChiikaApi
 			ChiikaApi::UserInfo ui;
 			ui.UserName = FromXMLValueToStd(userName);
 			ui.Pass = FromXMLValueToStd(pass);
-			ui.AnimeInfo.Watching = FromXMLValueToInt(watching);
-			ui.AnimeInfo.Completed = FromXMLValueToInt(Completed);
-			ui.AnimeInfo.OnHold = FromXMLValueToInt(OnHold);
-			ui.AnimeInfo.Dropped = FromXMLValueToInt(Dropped);
-			ui.AnimeInfo.PlanToWatch = FromXMLValueToInt(PlanToWatch);
-			ui.AnimeInfo.DaySpentAnime = FromXMLValueToFloat(DaySpentAnime);
+			ui.UserAnimeEntry.Watching = FromXMLValueToInt(watching);
+			ui.UserAnimeEntry.Completed = FromXMLValueToInt(Completed);
+			ui.UserAnimeEntry.OnHold = FromXMLValueToInt(OnHold);
+			ui.UserAnimeEntry.Dropped = FromXMLValueToInt(Dropped);
+			ui.UserAnimeEntry.PlanToWatch = FromXMLValueToInt(PlanToWatch);
+			ui.UserAnimeEntry.DaySpentAnime = FromXMLValueToFloat(DaySpentAnime);
 
 			ui.MangaInfo.Reading = FromXMLValueToInt(Reading);
 			ui.MangaInfo.Completed= FromXMLValueToInt(Read);
@@ -506,12 +506,12 @@ namespace ChiikaApi
 
 			userName.text().set(m_UserDetailedInfo.UserName.c_str());
 			pass.text().set(m_UserDetailedInfo.Pass.c_str());
-			watching.text().set(m_UserDetailedInfo.AnimeInfo.Watching);
-			Completed.text().set(m_UserDetailedInfo.AnimeInfo.Completed);
-			OnHold.text().set(m_UserDetailedInfo.AnimeInfo.OnHold);
-			Dropped.text().set(m_UserDetailedInfo.AnimeInfo.Dropped);
-			PlanToWatch.text().set(m_UserDetailedInfo.AnimeInfo.PlanToWatch);
-			DaySpentAnime.text().set(m_UserDetailedInfo.AnimeInfo.DaySpentAnime);
+			watching.text().set(m_UserDetailedInfo.UserAnimeEntry.Watching);
+			Completed.text().set(m_UserDetailedInfo.UserAnimeEntry.Completed);
+			OnHold.text().set(m_UserDetailedInfo.UserAnimeEntry.OnHold);
+			Dropped.text().set(m_UserDetailedInfo.UserAnimeEntry.Dropped);
+			PlanToWatch.text().set(m_UserDetailedInfo.UserAnimeEntry.PlanToWatch);
+			DaySpentAnime.text().set(m_UserDetailedInfo.UserAnimeEntry.DaySpentAnime);
 
 			Reading.text().set(m_UserDetailedInfo.MangaInfo.Reading);
 			Read.text().set(m_UserDetailedInfo.MangaInfo.Completed);
@@ -577,22 +577,22 @@ namespace ChiikaApi
 				pugi::xml_node  my_last_updated = anime.child("my_last_updated");
 				//pugi::xml_node  my_finish_date = anime.child("my_finish_date");
 
-				Anime animu;
-				animu.Id = FromXMLValueToInt(animeDbId);
-				animu.Title = FromXMLValueToStd(series_title);
-				animu.English = FromXMLValueToStd(series_synonyms);
-				animu.Type = (AnimeType)FromXMLValueToInt(series_type);
-				animu.EpisodeCount = FromXMLValueToInt(series_episodes);
+				Anime Anime;
+				Anime.Id = FromXMLValueToInt(animeDbId);
+				Anime.Title = FromXMLValueToStd(series_title);
+				Anime.English = FromXMLValueToStd(series_synonyms);
+				Anime.Type = (AnimeType)FromXMLValueToInt(series_type);
+				Anime.EpisodeCount = FromXMLValueToInt(series_episodes);
 
-				animu.Status = (AnimeStatus)FromXMLValueToInt(series_status);
-				animu.StartDate = FromXMLValueToStd(series_start);
-				animu.EndDate = FromXMLValueToStd(series_end);
-				animu.Image = FromXMLValueToStd(series_image);
+				Anime.Status = (AnimeStatus)FromXMLValueToInt(series_status);
+				Anime.StartDate = FromXMLValueToStd(series_start);
+				Anime.EndDate = FromXMLValueToStd(series_end);
+				Anime.Image = FromXMLValueToStd(series_image);
 
-				AnimeInfo info;
+				UserAnimeEntry info;
 				info.UpdateOperation = (CRUDOp)FromXMLValueToInt(Op);
 				info.WatchedEpisodes = FromXMLValueToInt(my_watched_episodes);
-				info.Animu = animu;
+				info.Anime = Anime;
 				info.MyId = FromXMLValueToInt(my_id);
 				info.StartDate = FromXMLValueToStd(my_start_date);
 				info.EndDate = FromXMLValueToStd(my_finish_date);
@@ -601,7 +601,7 @@ namespace ChiikaApi
 				info.Rewatching = FromXMLValueToInt(my_rewatching);
 				info.RewatchingEp = FromXMLValueToInt(my_rewatching_ep);
 				info.LastUpdated = FromXMLValueToStd(my_last_updated);
-				list.insert(AnimeList::value_type(animu.Id,info));
+				list.insert(AnimeList::value_type(Anime.Id,info));
 			}
 			MalManager::Get().AddAnimeUpdateList(list);
 #pragma endregion
@@ -690,7 +690,7 @@ namespace ChiikaApi
 			AnimeList::iterator It;
 			for(It = list.begin(); It != list.end(); ++It)
 			{
-				AnimeInfo Animu = It->second;
+				UserAnimeEntry Anime = It->second;
 
 
 				pugi::xml_node  anime = MAL.append_child("anime");
@@ -714,25 +714,25 @@ namespace ChiikaApi
 				pugi::xml_node  my_rewatching_ep = anime.append_child("my_rewatching_ep");
 				pugi::xml_node  my_last_updated = anime.append_child("my_last_updated");
 
-				SetXMLValue(animeDbId,Animu.Animu.Id);
-				SetXMLValue(Op,Animu.UpdateOperation);
-				SetXMLValue(series_title,Animu.Animu.Title.c_str());
-				SetXMLValue(series_synonyms,Animu.Animu.English.c_str());
-				SetXMLValue(series_type,Animu.Animu.Type);
-				SetXMLValue(series_episodes,Animu.Animu.EpisodeCount);
-				SetXMLValue(series_status,Animu.Animu.Status);
-				SetXMLValue(series_start,Animu.Animu.StartDate.c_str());
-				SetXMLValue(series_end,Animu.Animu.EndDate.c_str());
-				SetXMLValue(series_image,Animu.Animu.Image.c_str());
-				SetXMLValue(my_id,Animu.MyId);
-				SetXMLValue(my_watched_episodes,Animu.WatchedEpisodes);
-				SetXMLValue(my_start_date,Animu.StartDate.c_str());
-				SetXMLValue(my_finish_date,Animu.EndDate.c_str());
-				SetXMLValue(my_score,Animu.Score);
-				SetXMLValue(my_status,Animu.Status);
-				SetXMLValue(my_rewatching,Animu.Rewatching);
-				SetXMLValue(my_rewatching_ep,Animu.RewatchingEp);
-				SetXMLValue(my_last_updated,Animu.LastUpdated.c_str());
+				SetXMLValue(animeDbId,Anime.Anime.Id);
+				SetXMLValue(Op,Anime.UpdateOperation);
+				SetXMLValue(series_title,Anime.Anime.Title.c_str());
+				SetXMLValue(series_synonyms,Anime.Anime.English.c_str());
+				SetXMLValue(series_type,Anime.Anime.Type);
+				SetXMLValue(series_episodes,Anime.Anime.EpisodeCount);
+				SetXMLValue(series_status,Anime.Anime.Status);
+				SetXMLValue(series_start,Anime.Anime.StartDate.c_str());
+				SetXMLValue(series_end,Anime.Anime.EndDate.c_str());
+				SetXMLValue(series_image,Anime.Anime.Image.c_str());
+				SetXMLValue(my_id,Anime.MyId);
+				SetXMLValue(my_watched_episodes,Anime.WatchedEpisodes);
+				SetXMLValue(my_start_date,Anime.StartDate.c_str());
+				SetXMLValue(my_finish_date,Anime.EndDate.c_str());
+				SetXMLValue(my_score,Anime.Score);
+				SetXMLValue(my_status,Anime.Status);
+				SetXMLValue(my_rewatching,Anime.Rewatching);
+				SetXMLValue(my_rewatching_ep,Anime.RewatchingEp);
+				SetXMLValue(my_last_updated,Anime.LastUpdated.c_str());
 
 			}
 #pragma endregion
@@ -847,16 +847,16 @@ namespace ChiikaApi
 					vProducers.push_back(producer.text().get());
 				}
 
-				AnimeInfo findAnime = MalManager::Get().GetAnimeById(FromXMLValueToInt(Id));
+				UserAnimeEntry findAnime = MalManager::Get().GetAnimeById(FromXMLValueToInt(Id));
 
-				if(findAnime.Animu.Id != 0)
+				if(findAnime.Anime.Id != 0)
 				{
-					ChiikaApi::AnimeDetails details = findAnime.Animu.ExtraDetails;
+					ChiikaApi::AnimeDetails details = findAnime.Anime.ExtraDetails;
 					details.Synopsis = syn.text().get();
 					details.DurationPerEpisode = duration.text().get();
 					details.Premiered = premiered.text().get();
 
-					ChiikaApi::AnimeStatistics stats = findAnime.Animu.Statistics;
+					ChiikaApi::AnimeStatistics stats = findAnime.Anime.Statistics;
 					stats.Popularity = atoi(popularity.text().get());
 					stats.Ranked = atoi(ranked.text().get());
 					stats.Score = atof(score.text().get());
@@ -873,8 +873,8 @@ namespace ChiikaApi
 					}
 
 
-					findAnime.Animu.ExtraDetails = details;
-					findAnime.Animu.Statistics = stats;
+					findAnime.Anime.ExtraDetails = details;
+					findAnime.Anime.Statistics = stats;
 					MalManager::Get().UpdateAnime(findAnime);
 				}
 
@@ -898,9 +898,9 @@ namespace ChiikaApi
 			ChiikaApi::AnimeList::iterator It;
 			for(It = list.begin(); It != list.end(); ++It)
 			{
-				AnimeInfo Animu = It->second;
-				ChiikaApi::AnimeDetails Details = It->second.Animu.ExtraDetails;
-				ChiikaApi::AnimeStatistics Statistics = It->second.Animu.Statistics;
+				UserAnimeEntry Anime = It->second;
+				ChiikaApi::AnimeDetails Details = It->second.Anime.ExtraDetails;
+				ChiikaApi::AnimeStatistics Statistics = It->second.Anime.Statistics;
 
 				pugi::xml_node  anime = MAL.append_child("anime");
 				pugi::xml_node  animeDbId = anime.append_child("Id");
@@ -915,7 +915,7 @@ namespace ChiikaApi
 				pugi::xml_node  popularity = anime.append_child("Popularity");
 
 
-				SetXMLValue(animeDbId,Animu.Animu.Id);
+				SetXMLValue(animeDbId,Anime.Anime.Id);
 				SetXMLValue(syn,Details.Synopsis.c_str());
 				SetXMLValue(premiered,Details.Premiered.c_str());
 				SetXMLValue(duration,Details.DurationPerEpisode.c_str());
@@ -1160,7 +1160,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void LocalDataManager::SetUserInfo(UserInfo i)
 	{
-		/*CHIKA_AUTO_MUTEX_LOCK*/
+		CHIKA_AUTO_MUTEX_LOCK
 		m_UserDetailedInfo = i;
 		m_UserInfoLoader->m_UserDetailedInfo = m_UserDetailedInfo;
 		SaveUserInfo();

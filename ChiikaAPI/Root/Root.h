@@ -48,10 +48,10 @@ namespace ChiikaApi
 
 
 		void RequestUserAnimeList();
-		void AddAnimeToList(const AnimeInfo& data);
-		void UpdateAnime(const AnimeInfo& data);
-		void DeleteAnime(const AnimeInfo& name);
-		void RequestAnimeScrape(const AnimeInfo& anime);
+		void AddAnimeToList(const UserAnimeEntry& data);
+		void UpdateAnime(const UserAnimeEntry& data);
+		void DeleteAnime(const UserAnimeEntry& name);
+		void RequestAnimeScrape(const UserAnimeEntry& anime);
 		
 
 		void RequestUserMangaList();
@@ -64,7 +64,7 @@ namespace ChiikaApi
 
 		void SearchAnilistAnime(const ChiString& name);
 
-		void DownloadAnimeImage(const AnimeInfo& anime);
+		void DownloadAnimeImage(const UserAnimeEntry& anime);
 		void RequestUserPageScrape();
 		void RequestSenpaiData();
 

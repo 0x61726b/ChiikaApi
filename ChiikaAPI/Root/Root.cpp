@@ -123,25 +123,25 @@ namespace ChiikaApi
 		m_pRequestManager->CreateVerifyRequest(this);
 	}
 	//----------------------------------------------------------------------------
-	void Root::AddAnimeToList(const AnimeInfo& info)
+	void Root::AddAnimeToList(const UserAnimeEntry& info)
 	{
-		AnimeInfo anime = info;
+		UserAnimeEntry anime = info;
 		anime.UpdateOperation = CRUDOp::Create;
 		m_pMalManager->AddAnimeToUpdates(anime);
 		m_pRequestManager->CreateCRUDRequest(this,anime,MangaInfo(),ChiikaApi::CRUDOp::Create,CRUDTarget::ANIME);
 	}
 	//----------------------------------------------------------------------------
-	void Root::UpdateAnime(const AnimeInfo& info)
+	void Root::UpdateAnime(const UserAnimeEntry& info)
 	{
-		AnimeInfo anime = info;
+		UserAnimeEntry anime = info;
 		anime.UpdateOperation = CRUDOp::Update;
 		m_pMalManager->AddAnimeToUpdates(anime);
 		m_pRequestManager->CreateCRUDRequest(this,info,MangaInfo(),ChiikaApi::CRUDOp::Update,CRUDTarget::ANIME);
 	}
 	//----------------------------------------------------------------------------
-	void Root::DeleteAnime(const AnimeInfo& info)
+	void Root::DeleteAnime(const UserAnimeEntry& info)
 	{
-		AnimeInfo anime = info;
+		UserAnimeEntry anime = info;
 		anime.UpdateOperation = CRUDOp::Delete;
 		m_pMalManager->AddAnimeToUpdates(anime);
 		m_pRequestManager->CreateCRUDRequest(this,info,MangaInfo(),ChiikaApi::CRUDOp::Delete,CRUDTarget::ANIME);
@@ -167,7 +167,7 @@ namespace ChiikaApi
 		m_pRequestManager->CreateGetAnimeListRequest(this);
 	}
 	//----------------------------------------------------------------------------
-	void Root::RequestAnimeScrape(const AnimeInfo& anime)
+	void Root::RequestAnimeScrape(const UserAnimeEntry& anime)
 	{
 		m_pRequestManager->CreateAnimePageScrapeRequest(this,anime);
 	}
@@ -200,7 +200,7 @@ namespace ChiikaApi
 		for(it;it != whole.end(); it++)
 		{
 			if(it->second.Status == status)
-				list.insert(AnimeList::value_type(it->second.Animu.Id,it->second));
+				list.insert(AnimeList::value_type(it->second.Anime.Id,it->second));
 		}
 		return list;
 	}
@@ -229,9 +229,9 @@ namespace ChiikaApi
 
 	}
 	//----------------------------------------------------------------------------
-	void Root::DownloadAnimeImage(const AnimeInfo& anime)
+	void Root::DownloadAnimeImage(const UserAnimeEntry& anime)
 	{
-		ChiString url = (anime.Animu.Image);
+		ChiString url = (anime.Anime.Image);
 		/*ChiString fileName = url.mid(url.lastIndexOf("/") + 1,url.size() - url.lastIndexOf("/")).toStdChiString();*/
 
 		/*m_pRequestManager->CreateImageDownloadRequest(this,url.toStdChiString(),fileName,anime);*/
@@ -245,8 +245,8 @@ namespace ChiikaApi
 		//VerifyUserLogin();
 
 		//m_pRecognizer->RecognizeAndCache("[Vivid] Amagi Brilliant Park - 01v2 [2F0A246D].mkv");
-		//AnimeInfo test;
-		//test.Animu.Id = 21;
+		//UserAnimeEntry test;
+		//test.Anime.Id = 21;
 		//test.WatchedEpisodes = 3;
 		//test.Score = 6;
 		//test.Status = AnimeUserStatus::Watching;
@@ -257,8 +257,8 @@ namespace ChiikaApi
 
 		//m_pMPRecognition->SetEnabled(false);
 
-		//AnimeInfo test;
-		//test.Animu.Id = 31318;
+		//UserAnimeEntry test;
+		//test.Anime.Id = 31318;
 
 		////m_pRequestManager->CreateUserPageScrapeRequest(this);
 
@@ -323,11 +323,11 @@ namespace ChiikaApi
 			//AnimeListIt it = copy.begin();
 			//for(it; it != copy.end(); it++)
 			//{
-			//	AnimeInfo anim = m_pMalManager->GetAnimeById(it->first);
+			//	UserAnimeEntry anim = m_pMalManager->GetAnimeById(it->first);
 
-			//	if(anim.Animu.Id != 0) //in the list
+			//	if(anim.Anime.Id != 0) //in the list
 			//	{
-			//		anim.Animu = it->second.Animu;
+			//		anim.Anime = it->second.Anime;
 			//		m_pMalManager->UpdateAnime(anim);
 			//	}
 			//}
@@ -345,7 +345,7 @@ namespace ChiikaApi
 	{
 		if(REQUEST_SUCCESS(r->m_Result.HttpCode))
 		{
-			m_pRequestManager->CreateImageDownloadRequest(this,LocalDataManager::Get().GetUserInfo().ImageLink,"UserAvatar.jpg",AnimeInfo());
+			m_pRequestManager->CreateImageDownloadRequest(this,LocalDataManager::Get().GetUserInfo().ImageLink,"UserAvatar.jpg",UserAnimeEntry());
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -371,7 +371,7 @@ namespace ChiikaApi
 				AnimeListIt It = AnimeUpdates.begin();
 				for(It;It != AnimeUpdates.end(); It++)
 				{
-					AnimeInfo anime = It->second;
+					UserAnimeEntry anime = It->second;
 
 					switch(anime.UpdateOperation)
 					{
@@ -434,17 +434,17 @@ namespace ChiikaApi
 					{
 					case CRUDOp::Create:
 					{
-						m_pRequestManager->CreateCRUDRequest(this,AnimeInfo(),manga,ChiikaApi::CRUDOp::Create,CRUDTarget::MANGA);
+						m_pRequestManager->CreateCRUDRequest(this,UserAnimeEntry(),manga,ChiikaApi::CRUDOp::Create,CRUDTarget::MANGA);
 					}
 					break;
 					case CRUDOp::Update:
 					{
-						m_pRequestManager->CreateCRUDRequest(this,AnimeInfo(),manga,ChiikaApi::CRUDOp::Update,CRUDTarget::MANGA);
+						m_pRequestManager->CreateCRUDRequest(this,UserAnimeEntry(),manga,ChiikaApi::CRUDOp::Update,CRUDTarget::MANGA);
 					}
 					break;
 					case CRUDOp::Delete:
 					{
-						m_pRequestManager->CreateCRUDRequest(this,AnimeInfo(),manga,ChiikaApi::CRUDOp::Delete,CRUDTarget::MANGA);
+						m_pRequestManager->CreateCRUDRequest(this,UserAnimeEntry(),manga,ChiikaApi::CRUDOp::Delete,CRUDTarget::MANGA);
 					}
 					break;
 					}

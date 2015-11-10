@@ -107,7 +107,7 @@ namespace ChiikaApi
 
 		Type = type;
 
-		CreateThread();
+		this->CreateThread();
 	}
 	//----------------------------------------------------------------------------
 	void ThreadedRequest::CreateThread()
@@ -131,7 +131,6 @@ namespace ChiikaApi
 		try
 		{
 #pragma region Boring CURL code
-			/*LOG(INFO) << "Processing " << ToStd(Name) <<  " request on " << m_pThread->get_thread_info()->id << "...";*/
 
 			CURLcode m_CurlRes;
 			//Each thread needs its own handle 
@@ -166,7 +165,7 @@ namespace ChiikaApi
 			else
 			{
 				m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_USERAGENT,"ChiikaMalApi");
-				LOG(INFO) << "Setting User-Agent to : ChiikaMalApi";
+				/*LOG(INFO) << "Setting User-Agent to : ChiikaMalApi";*/
 			}
 
 			struct curl_slist *chunk = NULL;
@@ -439,14 +438,14 @@ namespace ChiikaApi
 		r->AddListener(l);
 	}
 	//----------------------------------------------------------------------------
-	void RequestManager::CreateCRUDRequest(RequestListener* l,const AnimeInfo& anime,const MangaInfo& manga,CRUDOp operation,CRUDTarget target)
+	void RequestManager::CreateCRUDRequest(RequestListener* l,const UserAnimeEntry& anime,const MangaInfo& manga,CRUDOp operation,CRUDTarget target)
 	{
 		CurlConfigOption url;
 		CurlConfigOption method;
 		CurlConfigOption userName;
 		CurlConfigOption passWord;
 		CurlConfigOption xmlData;
-		ChiString animeId = std::to_string(anime.Animu.Id);
+		ChiString animeId = std::to_string(anime.Anime.Id);
 		ChiString mangaId = std::to_string(manga.Mango.Id);
 
 		ChiString op;
@@ -656,7 +655,7 @@ namespace ChiikaApi
 		r->AddListener(l);
 	}
 	//----------------------------------------------------------------------------
-	void RequestManager::CreateImageDownloadRequest(RequestListener* l,ChiString imageUrl,ChiString fileName,const AnimeInfo& anime)
+	void RequestManager::CreateImageDownloadRequest(RequestListener* l,ChiString imageUrl,ChiString fileName,const UserAnimeEntry& anime)
 	{
 		CurlConfigOption url;
 		CurlConfigOption method;
@@ -684,7 +683,7 @@ namespace ChiikaApi
 
 	}
 	//----------------------------------------------------------------------------
-	void RequestManager::CreateAnimePageScrapeRequest(RequestListener* l,const AnimeInfo& anime)
+	void RequestManager::CreateAnimePageScrapeRequest(RequestListener* l,const UserAnimeEntry& anime)
 	{
 		CurlConfigOption url;
 		CurlConfigOption method;
@@ -693,7 +692,7 @@ namespace ChiikaApi
 
 		url.Name = "Url";
 		url.Value = "http://myanimelist.net/anime/";
-		url.Value.append(std::to_string(anime.Animu.Id));
+		url.Value.append(std::to_string(anime.Anime.Id));
 
 		method.Name = "Method";
 		method.cUrlOpt = CURLOPT_HTTPGET;
@@ -771,7 +770,11 @@ namespace ChiikaApi
 		r->AddListener(l);
 	}
 	//----------------------------------------------------------------------------
-	ChiString RequestManager::GetAnimeXML(const AnimeInfo& anime)
+	void RequestManager::CreateTestRequest(ThreadedRequest* r,CurlConfigOptionMap options)
+	{
+		r->SetParameters(options,"Test");
+	}
+	ChiString RequestManager::GetAnimeXML(const UserAnimeEntry& anime)
 	{
 		pugi::xml_document doc;
 		pugi::xml_node entry = doc.append_child("entry");

@@ -29,10 +29,10 @@ namespace ChiikaApi
 		AnimeList ParseSearchResult(const ChiString& data);
 		AnimeList ParseGetUserAnimeList(const ChiString& data);
 		MangaList ParseGetUserMangaList(const ChiString& data);
-		const AnimeInfo& ParseCRUDAnime(const ChiString& data);
+		const UserAnimeEntry& ParseCRUDAnime(const ChiString& data);
 		ChiString ParseAnilistAuth(const ChiString& data);
 		void ParseAnilistSearchAnime(const ChiString& data);
-		AnimeInfo ParseAnimeScrape(const ChiString& data,int Id);
+		UserAnimeEntry ParseAnimeScrape(const ChiString& data,int Id);
 		void ParseUserPage(const ChiString& data);
 		void Parse(ThreadedRequest* r);
 

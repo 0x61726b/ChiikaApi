@@ -18,20 +18,14 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	typedef struct _CurlConfigOption
+	struct CurlConfigOption
 	{
 		ChiString Name;
 		ChiString Value;
 		int cUrlOpt;
 
-		_CurlConfigOption(): Name(""),Value(""),cUrlOpt(0) {}
-	} CurlConfigOption;
-
-	typedef struct _MALUserInfo
-	{
-		ChiString UserName;
-		ChiString Pass;
-	} MALUser;
+		CurlConfigOption(): Name(""),Value(""),cUrlOpt(0) {}
+	} ;
 
 
 	struct AnilistAuth
@@ -115,12 +109,12 @@ namespace ChiikaApi
 
 #pragma region Anime and Manga
 
-	typedef struct _Manga
+	struct Manga
 	{
 		int Id;
 		ChiString Title;
 		ChiString English;
-		MangaType Type; //We left off here boys
+		MangaType Type;
 		int Chapters;
 		int Volumes;
 		MangaStatus Status;
@@ -128,7 +122,7 @@ namespace ChiikaApi
 		ChiString EndDate;
 		ChiString Image;
 		ChiString Synopsis;
-		_Manga()
+		Manga()
 		{
 			Id = 0;
 			Title = "";
@@ -142,7 +136,7 @@ namespace ChiikaApi
 			Image = "";
 			Synopsis = "";
 		}
-	} Manga;
+	};
 
 	struct AnimeDetails
 	{
@@ -171,7 +165,7 @@ namespace ChiikaApi
 		}
 	};
 
-	typedef struct _Anime
+	struct Anime
 	{
 		int Id;
 		ChiString Title;
@@ -186,9 +180,9 @@ namespace ChiikaApi
 		//Experimental
 		AnimeDetails ExtraDetails;
 		AnimeStatistics Statistics;
-		_Anime()
+		Anime()
 		{
-			Id = 0;
+			Id = UnknownAnime;
 			Title = "";
 			English = "";
 			EpisodeCount = 0;
@@ -198,16 +192,18 @@ namespace ChiikaApi
 			EndDate = "";
 			Image = "";
 		}
-	} Anime;
+
+		static int UnknownAnime;
+	} ;
 
 	struct AnimeFileInfo
 	{
 		ChiString FolderPath;
 		std::vector<ChiString> EpisodePaths;
 	};
-	typedef struct _AnimeInfo
+	struct UserAnimeEntry
 	{
-		Anime Animu;
+		Anime Anime;
 		int MyId;
 		int WatchedEpisodes;
 		ChiString StartDate;
@@ -219,7 +215,7 @@ namespace ChiikaApi
 		ChiString LastUpdated;
 		CRUDOp UpdateOperation;
 
-		_AnimeInfo()
+		UserAnimeEntry()
 		{
 			MyId = 0;
 			Score = 0;
@@ -232,7 +228,7 @@ namespace ChiikaApi
 			LastUpdated = "";
 			UpdateOperation = CRUDOp::Nothing;
 		}
-	} AnimeInfo;
+	};
 	typedef struct _MangaInfo
 	{
 		Manga Mango;
@@ -311,7 +307,7 @@ namespace ChiikaApi
 
 
 #pragma region User
-	typedef struct _UserAnimeInfo
+	typedef struct _UserUserAnimeEntry
 	{
 		int Watching;
 		int Completed;
@@ -319,7 +315,7 @@ namespace ChiikaApi
 		int Dropped;
 		int PlanToWatch;
 		float DaySpentAnime;
-		_UserAnimeInfo()
+		_UserUserAnimeEntry()
 		{
 			Watching = 0;
 			Completed = 0;
@@ -327,7 +323,7 @@ namespace ChiikaApi
 			PlanToWatch = 0;
 			DaySpentAnime = 0.0f;
 		}
-	} UserAnimeInfo;
+	} UserUserAnimeEntry;
 	typedef struct _UserMangaInfo
 	{
 		int Reading;
@@ -354,7 +350,7 @@ namespace ChiikaApi
 		ChiString Pass;
 		ChiString ImageLink;
 
-		UserAnimeInfo AnimeInfo;
+		UserUserAnimeEntry UserAnimeEntry;
 		UserMangaInfo MangaInfo;
 	} UserInfo;
 #pragma endregion

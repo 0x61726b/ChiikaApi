@@ -64,8 +64,10 @@
 
 //C++11
 #include <chrono>
+
 #include <memory>
 #include <thread>
+#include <mutex>
 
 #ifdef __BORLANDC__
 namespace ChiikaApi

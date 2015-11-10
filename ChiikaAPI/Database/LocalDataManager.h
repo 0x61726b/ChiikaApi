@@ -106,7 +106,7 @@ namespace ChiikaApi
 	{
 	public:
 
-		//CHIKA_AUTO_MUTEX
+		CHIKA_AUTO_MUTEX
 
 		LocalDataManager();
 		~LocalDataManager();

@@ -13,5 +13,16 @@
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
-#include "api_string_unittest.h"
+#ifndef __Api_Mal_Search_UnitTest_h__
+#define __Api_Mal_Search_UnitTest_h__
 //----------------------------------------------------------------------------
+#include "gmock\gmock.h"
+#include "gtest/gtest.h"
+using ::testing::AtLeast;
+using ::testing::_;
+#include "Common\Required.h"
+//----------------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------------
+#endif

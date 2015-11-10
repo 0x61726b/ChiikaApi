@@ -82,7 +82,7 @@ namespace ChiikaApi
 		}
 		if(RequestName == "AnimeScrape")
 		{
-			AnimeInfo result = ParseAnimeScrape(request->m_sBuffer,request->m_Result.AnimeResult.Animu.Id);
+			UserAnimeEntry result = ParseAnimeScrape(request->m_sBuffer,request->m_Result.AnimeResult.Anime.Id);
 			request->m_Result.AnimeResult = result;
 		}
 		if(RequestName == "UserPageScrape")
@@ -158,7 +158,7 @@ namespace ChiikaApi
 		{
 			for(pugi::xml_node entry = anime.first_child();entry;entry = entry.next_sibling())
 			{
-				Anime animu;
+				Anime Anime;
 				pugi::xml_node  Id = entry.child("id");
 				pugi::xml_node  title = entry.child("title");
 				pugi::xml_node  english = entry.child("english");
@@ -169,19 +169,19 @@ namespace ChiikaApi
 				pugi::xml_node  end_date = entry.child("end_date");
 				pugi::xml_node  synopsis = entry.child("synopsis");
 				pugi::xml_node  image = entry.child("image");
-				animu.Id = FromXMLValueToInt(Id);
-				animu.Title = FromXMLValueToStd(title);
-				animu.English = FromXMLValueToStd(english);
-				//animu.Title = FromXMLValueToStd(synonyms); Add this later
-				animu.EpisodeCount = FromXMLValueToInt(episodes);
-				animu.Status = (AnimeStatus)FromXMLValueToInt(status);
-				animu.StartDate = FromXMLValueToStd(start_date);
-				animu.EndDate = FromXMLValueToStd(end_date);
-				animu.Image = FromXMLValueToStd(image);
-				animu.ExtraDetails.Synopsis = synopsis.text().get();
-				AnimeInfo ai;
-				ai.Animu = animu;
-				list.insert(AnimeList::value_type(animu.Id,ai));
+				Anime.Id = FromXMLValueToInt(Id);
+				Anime.Title = FromXMLValueToStd(title);
+				Anime.English = FromXMLValueToStd(english);
+				//Anime.Title = FromXMLValueToStd(synonyms); Add this later
+				Anime.EpisodeCount = FromXMLValueToInt(episodes);
+				Anime.Status = (AnimeStatus)FromXMLValueToInt(status);
+				Anime.StartDate = FromXMLValueToStd(start_date);
+				Anime.EndDate = FromXMLValueToStd(end_date);
+				Anime.Image = FromXMLValueToStd(image);
+				Anime.ExtraDetails.Synopsis = synopsis.text().get();
+				UserAnimeEntry ai;
+				ai.Anime = Anime;
+				list.insert(AnimeList::value_type(Anime.Id,ai));
 			}
 			return list;
 		}
@@ -214,12 +214,12 @@ namespace ChiikaApi
 
 		UserInfo ui = LocalDataManager::Get().GetUserInfo();
 		ui.UserName = ToStd(userName);
-		ui.AnimeInfo.Watching = FromXMLValueToInt(userWatching);
-		ui.AnimeInfo.Completed = FromXMLValueToInt(user_completed);
-		ui.AnimeInfo.OnHold = FromXMLValueToInt(user_onhold);
-		ui.AnimeInfo.Dropped = FromXMLValueToInt(user_dropped);
-		ui.AnimeInfo.PlanToWatch = FromXMLValueToInt(user_plantowatch);
-		ui.AnimeInfo.DaySpentAnime = FromXMLValueToFloat(user_days_spent_watching);
+		ui.UserAnimeEntry.Watching = FromXMLValueToInt(userWatching);
+		ui.UserAnimeEntry.Completed = FromXMLValueToInt(user_completed);
+		ui.UserAnimeEntry.OnHold = FromXMLValueToInt(user_onhold);
+		ui.UserAnimeEntry.Dropped = FromXMLValueToInt(user_dropped);
+		ui.UserAnimeEntry.PlanToWatch = FromXMLValueToInt(user_plantowatch);
+		ui.UserAnimeEntry.DaySpentAnime = FromXMLValueToFloat(user_days_spent_watching);
 
 		LocalDataManager::Get().SetUserInfo(ui);
 
@@ -249,20 +249,20 @@ namespace ChiikaApi
 			pugi::xml_node  my_last_updated = anime.child("my_last_updated");
 			//pugi::xml_node  my_finish_date = anime.child("my_finish_date");
 
-			Anime animu;
-			animu.Id = FromXMLValueToInt(animeDbId);
-			animu.Title = FromXMLValueToStd(series_title);
-			animu.English = FromXMLValueToStd(series_synonyms);
-			animu.Type = (AnimeType)FromXMLValueToInt(series_type);
-			animu.EpisodeCount = FromXMLValueToInt(series_episodes);
+			Anime Anime;
+			Anime.Id = FromXMLValueToInt(animeDbId);
+			Anime.Title = FromXMLValueToStd(series_title);
+			Anime.English = FromXMLValueToStd(series_synonyms);
+			Anime.Type = (AnimeType)FromXMLValueToInt(series_type);
+			Anime.EpisodeCount = FromXMLValueToInt(series_episodes);
 
-			animu.Status = (AnimeStatus)FromXMLValueToInt(series_status);
-			animu.StartDate = FromXMLValueToStd(series_start);
-			animu.EndDate = FromXMLValueToStd(series_end);
-			animu.Image = FromXMLValueToStd(series_image);
+			Anime.Status = (AnimeStatus)FromXMLValueToInt(series_status);
+			Anime.StartDate = FromXMLValueToStd(series_start);
+			Anime.EndDate = FromXMLValueToStd(series_end);
+			Anime.Image = FromXMLValueToStd(series_image);
 
-			AnimeInfo info;
-			info.Animu = animu;
+			UserAnimeEntry info;
+			info.Anime = Anime;
 			info.MyId = FromXMLValueToInt(my_id);
 			info.WatchedEpisodes = FromXMLValueToInt(my_watched_episodes);
 			info.StartDate = FromXMLValueToStd(my_start_date);
@@ -273,7 +273,7 @@ namespace ChiikaApi
 			info.RewatchingEp = FromXMLValueToInt(my_rewatching_ep);
 			info.LastUpdated = FromXMLValueToStd(my_last_updated);
 
-			list.insert(AnimeList::value_type(animu.Id,info));
+			list.insert(AnimeList::value_type(Anime.Id,info));
 			animeCount++;
 		}
 
@@ -377,12 +377,12 @@ namespace ChiikaApi
 		return list;
 	}
 	//----------------------------------------------------------------------------
-	const AnimeInfo& ParsingManager::ParseCRUDAnime(const ChiString& data)
+	const UserAnimeEntry& ParsingManager::ParseCRUDAnime(const ChiString& data)
 	{
-		return AnimeInfo();
+		return UserAnimeEntry();
 	}
 	//----------------------------------------------------------------------------
-	AnimeInfo ParsingManager::ParseAnimeScrape(const ChiString& data,int Id)
+	UserAnimeEntry ParsingManager::ParseAnimeScrape(const ChiString& data,int Id)
 	{
 		//Oh The Good Ol' html parsing
 		//What a time to be alive
@@ -472,9 +472,9 @@ namespace ChiikaApi
 		end = "<br />";
 		ChiString synopsis = ParseWebPage(qData,search,end);
 
-		AnimeInfo animeFromList = MalManager::Get().GetAnimeById(Id);
-		AnimeDetails details = animeFromList.Animu.ExtraDetails;
-		AnimeStatistics statistics = animeFromList.Animu.Statistics;
+		UserAnimeEntry animeFromList = MalManager::Get().GetAnimeById(Id);
+		AnimeDetails details = animeFromList.Anime.ExtraDetails;
+		AnimeStatistics statistics = animeFromList.Anime.Statistics;
 		if(ANIME_IN_LIST(animeFromList))
 		{
 			details.DurationPerEpisode = duration;
@@ -487,8 +487,8 @@ namespace ChiikaApi
 			statistics.Ranked = atoi(ranked.c_str());
 			statistics.Score = atof(score.c_str());
 
-			animeFromList.Animu.ExtraDetails = details;
-			animeFromList.Animu.Statistics = statistics;
+			animeFromList.Anime.ExtraDetails = details;
+			animeFromList.Anime.Statistics = statistics;
 			MalManager::Get().UpdateAnime(animeFromList);
 		}
 
