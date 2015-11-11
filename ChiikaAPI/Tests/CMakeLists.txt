@@ -4,8 +4,8 @@ set(TEST_SOURCES
     all_tests.cpp
     api_string_unittest.h
     api_string_unittest.cpp
-	api_mal_search.h
-	api_mal_search.cpp)
+	api_mal_requests.h
+	api_mal_requests.cpp)
 add_executable(TestRunner ${CMAKE_CURRENT_SOURCE_DIR}//test_runner.cpp ${TEST_SOURCES})
 add_executable(HelloWorld ${CMAKE_CURRENT_SOURCE_DIR}//api_test_helloworld.cpp)
 
