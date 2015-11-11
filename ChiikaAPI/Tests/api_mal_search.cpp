@@ -62,16 +62,16 @@ namespace
 	{
 	public:
 		Parser(ThreadedRequest* r, LocalDataManager* d)
-			: _request(r),_database(d) {}
-		void Parse()
+			: _request(r), _database(d) {}
+		bool Parse()
 		{
 			if (!_request)
 			{
-				return;
+				return false;
 			}
 			if (_request->Name == "Verify")
 			{
-				ParseUserVerify();
+				return ParseUserVerify();
 			}
 		}
 		bool ParseUserVerify()
@@ -79,11 +79,27 @@ namespace
 			std::string response = _request->GetResponse();
 			_database->GetUserInfo();
 
-			//ToDo(arkenthear): Parse now.
+			//ToDo(arkenthera): Parse now.
+
+			if (response == "Invalid Credentials")
+			{
+				return false;
+			}
+
+			pugi::xml_document doc;
+
+			bool b = doc.load(response.c_str());
+
+			if (!b)
+				return false;
+
+			pugi::xml_node  user = doc.child("user");
+			ChiString userName = user.child("username").text().get();
+			ChiString id = user.child("id").text().get();
 
 			UserInfo ui;
-			ui.UserName = testUserName;
-			ui.UserId = testUserId;
+			ui.UserName = userName;
+			ui.UserId = atoi(id.c_str());
 			_database->SetUserInfo(ui);
 
 			ResultUser = ui;
@@ -119,7 +135,7 @@ TEST(MalTest, UserVerify)
 	expectedUserInfo.UserId = 4987289;
 
 	RequestMock mockRequest;
-	
+
 	mockRequest.Name = "Verify";
 
 	MockDatabase mockDb;
@@ -128,7 +144,7 @@ TEST(MalTest, UserVerify)
 	MockRequestManager mockReqManager;
 
 
-	
+
 	EXPECT_CALL(mockReqManager, ProcessRequest(_))
 		.Times(1);
 
@@ -137,14 +153,11 @@ TEST(MalTest, UserVerify)
 
 	//Procedure starts at Root
 	Root root;
-	root.PostRequest(&mockReqManager,&mockRequest);
+	root.PostRequest(&mockReqManager, &mockRequest);
 
 	//Initialize the process
 	RequestManager rm;
 	rm.ProcessRequest(&mockRequest);
-
-
-	
 
 	ON_CALL(mockDb, GetUserInfo())
 		.WillByDefault(Return(defaultUser));
@@ -159,19 +172,70 @@ TEST(MalTest, UserVerify)
 
 	EXPECT_CALL(mockDb, SetUserInfo(_)).Times(1);
 
-	
-	
 
-	Parser pr(&mockRequest,&mockDb);
-	pr.Parse();
+
+
+	Parser pr(&mockRequest, &mockDb);
+	EXPECT_EQ(true, pr.Parse());
+
+
+	EXPECT_EQ(expectedUserInfo.UserName, pr.ResultUser.UserName);
+	EXPECT_EQ(expectedUserInfo.UserId, pr.ResultUser.UserId);
+}
+TEST(MalTest, WrongUsername)
+{
+	UserInfo inputUser;
+	inputUser.UserName = testUserName;
+
+	UserInfo defaultUser;
+	defaultUser.UserName = "default";
+
+	std::string response = "Invalid Credentials";
+
+	UserInfo expectedUserInfo;
+	expectedUserInfo.UserName = testUserName;
+	expectedUserInfo.UserId = 4987289;
+
+	RequestMock mockRequest;
+
+	mockRequest.Name = "Verify";
+
+	MockDatabase mockDb;
+	mockDb.m_UserDetailedInfo = (inputUser);
+
+	MockRequestManager mockReqManager;
+
+
+
+	EXPECT_CALL(mockReqManager, ProcessRequest(_))
+		.Times(1);
+
+	EXPECT_CALL(mockRequest, Initialize())
+		.Times(1);
+
+	//Procedure starts at Root
+	Root root;
+	root.PostRequest(&mockReqManager, &mockRequest);
+
+	//Initialize the process
+	RequestManager rm;
+	rm.ProcessRequest(&mockRequest);
 
 	ON_CALL(mockDb, GetUserInfo())
-		.WillByDefault(Return(expectedUserInfo));
+		.WillByDefault(Return(defaultUser));
+
+	EXPECT_CALL(mockRequest, GetResponse()).Times(1)
+		.WillOnce(::Return(response));
+
+	ON_CALL(mockDb, GetUserInfo())
+		.WillByDefault(Return(defaultUser));
 
 	EXPECT_CALL(mockDb, GetUserInfo()).Times(AtLeast(1));
 
 
-	EXPECT_EQ(expectedUserInfo.UserName, mockDb.GetUserInfo().UserName);
-	EXPECT_EQ(expectedUserInfo.UserId, mockDb.GetUserInfo().UserId);
+
+
+	Parser pr(&mockRequest, &mockDb);
+	EXPECT_EQ(false, pr.Parse());
 
 }
