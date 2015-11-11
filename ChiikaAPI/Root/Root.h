@@ -27,9 +27,11 @@ namespace ChiikaApi
 	class MalApiExport Root : public RequestListener,public GeneralAllocatedObject
 	{
 	public:
-		Root(const ChiString& modulePath);
+		Root();
 		~Root();
 
+		void Initialize(const ChiString& modulePath);
+		void Destroy();
 
 		void SetAnimeFolderPath(ChiString path);
 		ChiString GetAnimeFolderPath();
@@ -52,6 +54,8 @@ namespace ChiikaApi
 		void UpdateAnime(const UserAnimeEntry& data);
 		void DeleteAnime(const UserAnimeEntry& name);
 		void RequestAnimeScrape(const UserAnimeEntry& anime);
+
+		void PostRequest(RequestManager* rm,ThreadedRequest* r);
 		
 
 		void RequestUserMangaList();

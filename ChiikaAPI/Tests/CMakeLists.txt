@@ -21,7 +21,16 @@ set_target_properties( ${TEST_EXECS}
 )
 get_property(TESTS_OUT_DIR TARGET TestRunner PROPERTY LIBRARY_OUTPUT_DIRECTORY)
 add_custom_command(
-    TARGET ${TEST_EXECS}
+    TARGET TestRunner
+    PRE_BUILD
+    # Copy the CEF framework into the Frameworks directory.
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_BINARY_DIR}/bin"
+            "${TESTS_OUT_DIR}"
+    VERBATIM
+    )
+add_custom_command(
+    TARGET HelloWorld
     PRE_BUILD
     # Copy the CEF framework into the Frameworks directory.
     COMMAND ${CMAKE_COMMAND} -E copy_directory

@@ -13,6 +13,9 @@
 *.dylib
 
 Msvc
+version.h
+version.py
+SHORTLICENSE
 
 # Qt-es
 

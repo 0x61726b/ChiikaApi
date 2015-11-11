@@ -18,7 +18,7 @@
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
 #include "Common/Singleton.h"
-#include "pugixml.hpp"
+#include "ThirdParty\pugixml\src\pugixml.hpp"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -38,7 +38,7 @@ namespace ChiikaApi
 			SenpaiJSON
 		};
 
-		FileLoader(ChiString filePath,FileType type);
+		FileLoader(ChiString filePath, FileType type);
 
 		virtual void Save() = 0;
 		virtual void Load() = 0;
@@ -69,7 +69,7 @@ namespace ChiikaApi
 	class MalApiExport UserInfoLoader : public FileLoader
 	{
 	public:
-		UserInfoLoader(ChiString path,ChiikaApi::UserInfo ui);
+		UserInfoLoader(ChiString path, ChiikaApi::UserInfo ui);
 
 		void Save();
 		void Load();
@@ -102,14 +102,25 @@ namespace ChiikaApi
 		void Save();
 		void Load();
 	};
-	class MalApiExport LocalDataManager : public Singleton<LocalDataManager>
+	class MalApiExport LocalDataInterface
+	{
+	public:
+		LocalDataInterface() { };
+		virtual ~LocalDataInterface() { };
+
+		virtual UserInfo GetUserInfo() = 0;
+		virtual void SetUserInfo(UserInfo) = 0;
+	};
+	class MalApiExport LocalDataManager : public LocalDataInterface
 	{
 	public:
 
 		CHIKA_AUTO_MUTEX
 
-		LocalDataManager();
-		~LocalDataManager();
+			LocalDataManager();
+		virtual ~LocalDataManager();
+
+		void Initialize();
 
 	public:
 		void SaveAnimeList();
@@ -134,13 +145,15 @@ namespace ChiikaApi
 		void LoadSenpaiData();
 	public:
 
-		void SetUserNamePass(ChiString userName,ChiString pass);
+		void SetUserNamePass(ChiString userName, ChiString pass);
 
-		const UserInfo& GetUserInfo();
+		UserInfo GetUserInfo() override;
 		void SetUserInfo(UserInfo i);
 
-	private:
+
+	public:
 		UserInfo m_UserDetailedInfo;
+
 	private:
 		ChiString m_sAnimeListFilePath;
 		ChiString m_sMangaListFilePath;

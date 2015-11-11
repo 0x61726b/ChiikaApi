@@ -344,15 +344,26 @@ namespace ChiikaApi
 		}
 	} UserMangaInfo;
 
-	typedef struct _User
+	struct UserInfo
 	{
+		int UserId;
 		ChiString UserName;
 		ChiString Pass;
 		ChiString ImageLink;
 
 		UserUserAnimeEntry UserAnimeEntry;
 		UserMangaInfo MangaInfo;
-	} UserInfo;
+
+		static int UnknownUser;
+
+		UserInfo()
+		{
+			UserId = 0;
+			UserName = "";
+			Pass = "";
+			ImageLink = "";
+		}
+	};
 #pragma endregion
 }
 

@@ -24,33 +24,46 @@
 #include "Recognition/MediaPlayerRecognitionManager.h"
 #include "Recognition/AnimeRecognition.h"
 #include "Seasons/SeasonManager.h"
+#include "Request\ParsingManager.h"
 #include "json/json.h"
 #include "Logging\FileHelper.h"
 #include "Logging\ChiString.h"
 namespace ChiikaApi
 {
 	//----------------------------------------------------------------------------
-	Root::Root(const ChiString& modulePath)
+	Root::Root()
 	{
-		m_pSettings = ChiikaNew AppSettings("Chiika.cfg",modulePath);
+		InitializeNULL(m_pSettings);
+		InitializeNULL(m_pLogManager);
+		InitializeNULL(m_pMalManager);
+		InitializeNULL(m_pSeasonManager);
+		InitializeNULL(m_pMPRecognition);
+		InitializeNULL(m_pRequestManager);
+		InitializeNULL(m_pRecognizer);
+		InitializeNULL(m_pLocalData);
+	}
+	//----------------------------------------------------------------------------
+	void Root::Initialize(const ChiString& modulePath)
+	{
+		m_pSettings = ChiikaNew AppSettings("Chiika.cfg", modulePath);
 		m_pLogManager = ChiikaNew LogManager;
 
-		ChiString version = std::to_string(CHIIKAAPI_VERSION_MAJOR) + "." + std::to_string(CHIIKAAPI_VERSION_MINOR) + "." + std::to_string(CHIIKAAPI_VERSION_PATCH);;
+		ChiString version = std::to_string(ChiikaApi_VERSION_MAJOR) + "." + std::to_string(ChiikaApi_VERSION_MINOR) + "." + std::to_string(ChiikaApi_VERSION_PATCH);;
 		m_sVersion = version;
-		m_sCommitHash = CHIIKAAPI_COMMIT_HASH;
+		m_sCommitHash = ChiikaApi_COMMIT_HASH;
 
 
-		m_pLogManager->CreateLog(m_pSettings->GetDataPath() + "\\Chiika.log",true,false,false)->
+		m_pLogManager->CreateLog(m_pSettings->GetDataPath() + "\\Chiika.log", true, true, false)->
 			SetLogDetail((LoggingLevel)m_pSettings->GetIntegerOption(API_LOG_LEVEL));
 
-		m_pLogManager->CreateLog("DebuggerOutput",false,true,true)->
+		m_pLogManager->CreateLog("DebuggerOutput", false, true, true)->
 			SetLogDetail(LoggingLevel::LOG_LEVEL_EVERYTHING); //This is used to see messages on debug window,rather than printing to file. Use LOGD rather than LOG
 
 		LOG(Bore) << "Chiika Api is initializing. Version: " << (m_sVersion);
 
 		LOG(INFO) << "Creating MyAnimeList Manager";
 		m_pMalManager = ChiikaNew MalManager;
-		
+
 		LOG(INFO) << "Creating Season Manager";
 		m_pSeasonManager = ChiikaNew SeasonManager;
 
@@ -60,27 +73,34 @@ namespace ChiikaApi
 		LOG(INFO) << "Creating RequestManager Manager";
 		m_pRequestManager = ChiikaNew RequestManager;
 
+
 		LOG(INFO) << "Creating AnimeRecognition Manager";
 		m_pRecognizer = ChiikaNew AnimeRecognition;
 
 		LOG(INFO) << "Creating LocalData Manager";
 		m_pLocalData = ChiikaNew LocalDataManager;
 
-		ChiString p = "Nine pineapples";
-		ChiString y = GetMiddle(p,5,4);
-		ChiString z = GetMiddle(p,5,-1);
-		
+
+		//Very important!
+		m_pRequestManager->Initialize();
+		m_pLocalData->Initialize();
+
 	}
 	//----------------------------------------------------------------------------
 	Root::~Root()
 	{
-		LOG(Bore) << "Exiting Api..";
-		delete m_pSettings;
-		delete m_pMalManager;
-		delete m_pRequestManager;
-		delete m_pLogManager;
-		delete m_pLocalData;
-		delete m_pRecognizer;
+
+	}
+	//----------------------------------------------------------------------------
+	void Root::Destroy()
+	{
+		TryDelete(m_pSettings);
+		TryDelete(m_pMalManager);
+		TryDestroy(m_pRequestManager);
+		TryDelete(m_pRequestManager);
+		TryDelete(m_pLogManager);
+		TryDelete(m_pLocalData);
+		TryDelete(m_pRecognizer);
 	}
 	//----------------------------------------------------------------------------
 	void Root::SetAnimeFolderPath(ChiString path)
@@ -121,6 +141,11 @@ namespace ChiikaApi
 	void Root::VerifyUserLogin()
 	{
 		m_pRequestManager->CreateVerifyRequest(this);
+	}
+	//----------------------------------------------------------------------------
+	void Root::PostRequest(RequestManager* rm,ThreadedRequest* r)
+	{
+		rm->ProcessRequest(r);
 	}
 	//----------------------------------------------------------------------------
 	void Root::AddAnimeToList(const UserAnimeEntry& info)

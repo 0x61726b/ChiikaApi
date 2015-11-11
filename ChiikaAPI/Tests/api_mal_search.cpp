@@ -14,85 +14,164 @@
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
 #include "api_mal_search.h"
+#include "Common/Required.h"
 #include "Request\RequestManager.h"
+
+#include "Database\LocalDataManager.h"
+
+#include "Root\Root.h"
 //----------------------------------------------------------------------------
+#include <chrono>
+#include <thread>
+using ::testing::Not;
+using ::testing::FloatEq;
+using ::testing::Eq;
+using ::testing::_;
+using ::testing::Return;
 using namespace ChiikaApi;
 
 namespace
 {
 	std::string SearchKeywordAnime = "Oregairu";
-	std::string testUserName = "arkenthera";
-	std::string testPass = "123asd456";
-
-	CurlConfigOption url;
-	CurlConfigOption method;
-	CurlConfigOption userName;
-	CurlConfigOption passWord;
-	CurlConfigOptionMap options;
-
-
-
-	class MockEventListener : public ChiikaApi::RequestListener
+	std::string testUserName = "chiikatestacc1";
+	std::string testPass = "chiikatest%&";
+	int			testUserId = 4987289;
+}
+namespace
+{
+	class RequestMock : public ThreadedRequest
 	{
 	public:
-		MOCK_METHOD1(Notify,void(ChiikaApi::ThreadedRequest*));
+		MOCK_METHOD0(GetResponse, ChiString());
+		MOCK_METHOD0(Work, void());
+		MOCK_METHOD0(Initialize, void());
+		MOCK_METHOD0(CreateThread, void());
 	};
-	class MockRequest : public ChiikaApi::ThreadedRequest
+	class MockDatabase : public LocalDataManager
 	{
 	public:
-		MOCK_METHOD0(CreateThread,void());
-		MOCK_METHOD0(DeleteThread,void());
-		MOCK_METHOD0(Work,void());
+		MOCK_METHOD0(GetUserInfo, UserInfo());
+		MOCK_METHOD1(SetUserInfo, void(UserInfo i));
 	};
-	void SetParams()
+	class MockRequestManager : public RequestManager
 	{
-		url.Name = "Url";
-		ChiString k = (SearchKeywordAnime);
-		/*k.replace(" ","+");*/
-		url.Value = "http://myanimelist.net/api/anime/search.xml?q=" + k;
+	public:
+		MOCK_METHOD1(ProcessRequest, void(ThreadedRequest*));
+	};
+	class Parser
+	{
+	public:
+		Parser(ThreadedRequest* r, LocalDataManager* d)
+			: _request(r),_database(d) {}
+		void Parse()
+		{
+			if (!_request)
+			{
+				return;
+			}
+			if (_request->Name == "Verify")
+			{
+				ParseUserVerify();
+			}
+		}
+		bool ParseUserVerify()
+		{
+			std::string response = _request->GetResponse();
+			_database->GetUserInfo();
 
-		method.Name = "Method";
-		method.cUrlOpt = 80;
+			//ToDo(arkenthear): Parse now.
 
-		userName.Name = "UserName";
-		userName.Value = testUserName;
+			UserInfo ui;
+			ui.UserName = testUserName;
+			ui.UserId = testUserId;
+			_database->SetUserInfo(ui);
 
-		passWord.Name = "PassWord";
-		passWord.Value = testPass;
+			ResultUser = ui;
 
+			return true;
+		}
+		UserInfo ResultUser;
+		ThreadedRequest* _request;
+		LocalDataManager* _database;
 
+	};
 
-		options.insert(std::make_pair(url.Name,url));
-		options.insert(std::make_pair(method.Name,method));
-		options.insert(std::make_pair(userName.Name,userName));
-		options.insert(std::make_pair(passWord.Name,passWord));
-	}
 }
-CONDITION_VARIABLE OperationNotReady;
-CRITICAL_SECTION   OperationLock;
-void WaitFinished()
+
+//Fetch login
+//Write expected result
+TEST(MalTest, UserVerify)
 {
-	WakeConditionVariable(&OperationNotReady);
-}
-TEST(DISABLED_MalApiTests,SearchAnime)
-{
-	MockEventListener mockListener;
-	EXPECT_CALL(mockListener,Notify(_)).Times(1);
+	UserInfo inputUser;
+	inputUser.UserName = testUserName;
 
-	MockRequest request;
-	SetParams();
+	UserInfo defaultUser;
+	defaultUser.UserName = "default";
 
+	std::string response = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+		"<user>"
+		"<id>4987289</id>"
+		"<username>chiikatestacc1</username>"
+		"</user>";
 
-	EXPECT_CALL(request,CreateThread()).Times(AtLeast(1));
-	EXPECT_CALL(request,DeleteThread()).Times(AtLeast(1));
-	EXPECT_CALL(request,Work()).Times(AtLeast(1));
-	request.AddListener(&mockListener);
+	UserInfo expectedUserInfo;
+	expectedUserInfo.UserName = testUserName;
+	expectedUserInfo.UserId = 4987289;
+
+	RequestMock mockRequest;
 	
+	mockRequest.Name = "Verify";
+
+	MockDatabase mockDb;
+	mockDb.m_UserDetailedInfo = (inputUser);
+
+	MockRequestManager mockReqManager;
+
+
+	
+	EXPECT_CALL(mockReqManager, ProcessRequest(_))
+		.Times(1);
+
+	EXPECT_CALL(mockRequest, Initialize())
+		.Times(1);
+
+	//Procedure starts at Root
+	Root root;
+	root.PostRequest(&mockReqManager,&mockRequest);
+
+	//Initialize the process
 	RequestManager rm;
-	rm.CreateTestRequest(&request,options);
+	rm.ProcessRequest(&mockRequest);
 
-	BOOL res = SleepConditionVariableCS(&OperationNotReady,&OperationLock,10000);
-	EXPECT_EQ(TRUE,res);
 
-	//Continue this test later
+	
+
+	ON_CALL(mockDb, GetUserInfo())
+		.WillByDefault(Return(defaultUser));
+
+	EXPECT_CALL(mockRequest, GetResponse()).Times(1)
+		.WillOnce(::Return(response));
+
+	ON_CALL(mockDb, GetUserInfo())
+		.WillByDefault(Return(defaultUser));
+
+	EXPECT_CALL(mockDb, GetUserInfo()).Times(AtLeast(1));
+
+	EXPECT_CALL(mockDb, SetUserInfo(_)).Times(1);
+
+	
+	
+
+	Parser pr(&mockRequest,&mockDb);
+	pr.Parse();
+
+	ON_CALL(mockDb, GetUserInfo())
+		.WillByDefault(Return(expectedUserInfo));
+
+	EXPECT_CALL(mockDb, GetUserInfo()).Times(AtLeast(1));
+
+
+	EXPECT_EQ(expectedUserInfo.UserName, mockDb.GetUserInfo().UserName);
+	EXPECT_EQ(expectedUserInfo.UserId, mockDb.GetUserInfo().UserId);
+
 }

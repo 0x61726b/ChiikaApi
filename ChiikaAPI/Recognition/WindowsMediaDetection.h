@@ -19,7 +19,7 @@
 #include "Common/Required.h"
 #include "MPRecognitionInterface.h"
 #include "MediaPlayerList.h"
-#include <Windows.h>
+//#include <Windows.h>
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

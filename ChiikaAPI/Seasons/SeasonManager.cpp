@@ -18,7 +18,7 @@
 #include "Request/MalManager.h"
 
 #ifdef YUME_PLATFORM_WIN32
-#include <Windows.h>
+//#include <Windows.h>
 #endif
 tm* GetTimeinfo()
 {

@@ -13,15 +13,24 @@
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
-
-
-// THIS FILE IS AUTO-GENERATED. DONT EDIT
-#ifndef CHIIKAAPI_VERSION_H
-#define CHIIKAAPI_VERSION_H
-#define CHIIKAAPI_COMMIT_HASH "g0091d16"
-#define CHIIKAAPI_VERSION_MAJOR 0
-#define CHIIKAAPI_VERSION_MINOR 1
-#define CHIIKAAPI_VERSION_PATCH 149
 
 
-#endif
+
+
+// THIS FILE IS AUTO-GENERATED. DONT EDIT
+
+#ifndef ChiikaApi_VERSION_H
+#define ChiikaApi_VERSION_H
+
+#define ChiikaApi_COMMIT_HASH "gbd36c6c"
+
+#define ChiikaApi_VERSION_MAJOR 0
+
+#define ChiikaApi_VERSION_MINOR 1
+
+#define ChiikaApi_VERSION_PATCH 15
+
+
+
+#endif
+

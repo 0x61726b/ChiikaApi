@@ -24,7 +24,7 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	FileLoader::FileLoader(ChiString path,FileType type)
+	FileLoader::FileLoader(ChiString path, FileType type)
 	{
 		m_sPath = path;
 		m_eType = type;
@@ -36,21 +36,21 @@ namespace ChiikaApi
 	{
 		ChiString dataFile = m_sPath;
 
-		
+
 
 		FileReader file(dataFile);
-		if(file.Open())
+		if (file.Open())
 			return;
 
 		FileWriter fr(dataFile);
-		if(m_eType != FileType::SenpaiJSON)
+		if (m_eType != FileType::SenpaiJSON)
 		{
-			if(fr.Open())
+			if (fr.Open())
 			{
 				pugi::xml_document doc;
 				pugi::xml_node  root = doc.append_child("Chiika");
 
-				switch(m_eType)
+				switch (m_eType)
 				{
 				case FileLoader::FileType::AnimeList:
 				{
@@ -83,7 +83,7 @@ namespace ChiikaApi
 			}
 			else
 			{
-				CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't create file!","FileLoader::Create")
+				CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't create file!", "FileLoader::Create")
 			}
 		}
 		else
@@ -95,7 +95,7 @@ namespace ChiikaApi
 	}
 	//----------------------------------------------------------------------------
 	AnimeFileLoader::AnimeFileLoader(ChiString path)
-		: FileLoader(path,FileLoader::FileType::AnimeList)
+		: FileLoader(path, FileLoader::FileType::AnimeList)
 	{
 
 	}
@@ -106,7 +106,7 @@ namespace ChiikaApi
 		FileReader file(dataFile);
 
 
-		if(file.Open())
+		if (file.Open())
 		{
 			pugi::xml_document doc;
 			ChiString fileData = file.Read();
@@ -117,7 +117,7 @@ namespace ChiikaApi
 			pugi::xml_node  myanimelist = root.child("MyAnimeList");
 
 			ChiikaApi::AnimeList list;
-			for(pugi::xml_node anime = myanimelist.child("anime");anime;anime = anime.next_sibling())
+			for (pugi::xml_node anime = myanimelist.child("anime"); anime; anime = anime.next_sibling())
 			{
 
 				pugi::xml_node  animeDbId = anime.child("series_animedb_id");
@@ -163,7 +163,7 @@ namespace ChiikaApi
 				info.Rewatching = FromXMLValueToInt(my_rewatching);
 				info.RewatchingEp = FromXMLValueToInt(my_rewatching_ep);
 				info.LastUpdated = FromXMLValueToStd(my_last_updated);
-				list.insert(AnimeList::value_type(Anime.Id,info));
+				list.insert(AnimeList::value_type(Anime.Id, info));
 			}
 			MalManager::Get().AddAnimeList(list);
 			//LOG("Anime list loaded succesfully!")
@@ -174,7 +174,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't open AnimeList file!","AnimeFileLoader::Load")
+			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open AnimeList file!", "AnimeFileLoader::Load")
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -184,7 +184,7 @@ namespace ChiikaApi
 		FileWriter file(dataFile);
 
 
-		if(file.Open())
+		if (file.Open())
 		{
 			pugi::xml_document doc;
 
@@ -193,7 +193,7 @@ namespace ChiikaApi
 
 			ChiikaApi::AnimeList list = MalManager::Get().GetAnimeList();
 			ChiikaApi::AnimeList::iterator It;
-			for(It = list.begin(); It != list.end(); ++It)
+			for (It = list.begin(); It != list.end(); ++It)
 			{
 				UserAnimeEntry Anime = It->second;
 
@@ -219,24 +219,24 @@ namespace ChiikaApi
 				pugi::xml_node  my_rewatching_ep = anime.append_child("my_rewatching_ep");
 				pugi::xml_node  my_last_updated = anime.append_child("my_last_updated");
 
-				SetXMLValue(animeDbId,Anime.Anime.Id);
-				SetXMLValue(series_title,Anime.Anime.Title.c_str());
-				SetXMLValue(series_synonyms,Anime.Anime.English.c_str());
-				SetXMLValue(series_type,Anime.Anime.Type);
-				SetXMLValue(series_episodes,Anime.Anime.EpisodeCount);
-				SetXMLValue(series_status,Anime.Anime.Status);
-				SetXMLValue(series_start,Anime.Anime.StartDate.c_str());
-				SetXMLValue(series_end,Anime.Anime.EndDate.c_str());
-				SetXMLValue(series_image,Anime.Anime.Image.c_str());
-				SetXMLValue(my_id,Anime.MyId);
-				SetXMLValue(my_watched_episodes,Anime.WatchedEpisodes);
-				SetXMLValue(my_start_date,Anime.StartDate.c_str());
-				SetXMLValue(my_finish_date,Anime.EndDate.c_str());
-				SetXMLValue(my_score,Anime.Score);
-				SetXMLValue(my_status,Anime.Status);
-				SetXMLValue(my_rewatching,Anime.Rewatching);
-				SetXMLValue(my_rewatching_ep,Anime.RewatchingEp);
-				SetXMLValue(my_last_updated,Anime.LastUpdated.c_str());
+				SetXMLValue(animeDbId, Anime.Anime.Id);
+				SetXMLValue(series_title, Anime.Anime.Title.c_str());
+				SetXMLValue(series_synonyms, Anime.Anime.English.c_str());
+				SetXMLValue(series_type, Anime.Anime.Type);
+				SetXMLValue(series_episodes, Anime.Anime.EpisodeCount);
+				SetXMLValue(series_status, Anime.Anime.Status);
+				SetXMLValue(series_start, Anime.Anime.StartDate.c_str());
+				SetXMLValue(series_end, Anime.Anime.EndDate.c_str());
+				SetXMLValue(series_image, Anime.Anime.Image.c_str());
+				SetXMLValue(my_id, Anime.MyId);
+				SetXMLValue(my_watched_episodes, Anime.WatchedEpisodes);
+				SetXMLValue(my_start_date, Anime.StartDate.c_str());
+				SetXMLValue(my_finish_date, Anime.EndDate.c_str());
+				SetXMLValue(my_score, Anime.Score);
+				SetXMLValue(my_status, Anime.Status);
+				SetXMLValue(my_rewatching, Anime.Rewatching);
+				SetXMLValue(my_rewatching_ep, Anime.RewatchingEp);
+				SetXMLValue(my_last_updated, Anime.LastUpdated.c_str());
 
 			}
 			doc.save_file(dataFile.c_str());
@@ -247,12 +247,12 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't open AnimeList file!","AnimeFileLoader::Save")
+			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open AnimeList file!", "AnimeFileLoader::Save")
 		}
 	}
 	//----------------------------------------------------------------------------
 	MangaFileLoader::MangaFileLoader(ChiString path)
-		: FileLoader(path,FileLoader::FileType::MangaList)
+		: FileLoader(path, FileLoader::FileType::MangaList)
 	{
 
 	}
@@ -263,7 +263,7 @@ namespace ChiikaApi
 		FileReader file(dataFile);
 
 
-		if(file.Open())
+		if (file.Open())
 		{
 			pugi::xml_document doc;
 			ChiString fileData = file.Read();
@@ -273,7 +273,7 @@ namespace ChiikaApi
 			pugi::xml_node  mymangalist = root.child("MangaList");
 
 			ChiikaApi::MangaList list;
-			for(pugi::xml_node manga = mymangalist.child("manga");manga;manga = manga.next_sibling())
+			for (pugi::xml_node manga = mymangalist.child("manga"); manga; manga = manga.next_sibling())
 			{
 
 				pugi::xml_node  series_mangadb_id = manga.child("series_mangadb_id");
@@ -323,7 +323,7 @@ namespace ChiikaApi
 				info.Rereading = FromXMLValueToInt(my_rereading);
 				info.RereadChapters = FromXMLValueToInt(my_rereading_chap);
 				info.LastUpdated = FromXMLValueToStd(my_last_updated);
-				list.insert(MangaList::value_type(mango.Id,info));
+				list.insert(MangaList::value_type(mango.Id, info));
 			}
 			MalManager::Get().AddMangaList(list);
 			//LOG("Manga list file loaded successfully!")
@@ -331,7 +331,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't open manga file!","ConfigManager::LoadMyMangaList")
+			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open manga file!", "ConfigManager::LoadMyMangaList")
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -340,7 +340,7 @@ namespace ChiikaApi
 		ChiString dataFile = m_sPath;
 		FileWriter file(dataFile);
 
-		if(file.Open())
+		if (file.Open())
 		{
 			pugi::xml_document doc;
 
@@ -351,7 +351,7 @@ namespace ChiikaApi
 			ChiikaApi::MangaList list = MalManager::Get().GetMangaList();
 
 			MangaList::iterator It;
-			for(It = list.begin(); It != list.end(); ++It)
+			for (It = list.begin(); It != list.end(); ++It)
 			{
 				MangaInfo Mango = It->second;
 
@@ -378,26 +378,26 @@ namespace ChiikaApi
 				pugi::xml_node  my_rereading_chap = manga.append_child("my_rereading_chap");
 				pugi::xml_node  my_last_updated = manga.append_child("my_last_updated");
 
-				SetXMLValue(series_mangadb_id,Mango.Mango.Id);
-				SetXMLValue(series_title,Mango.Mango.Title.c_str());
-				SetXMLValue(series_synonyms,Mango.Mango.English.c_str());
-				SetXMLValue(series_type,Mango.Mango.Type);
-				SetXMLValue(series_chapters,Mango.Mango.Chapters);
-				SetXMLValue(series_volumes,Mango.Mango.Volumes);
-				SetXMLValue(series_status,Mango.Mango.Status);
-				SetXMLValue(series_start,Mango.Mango.StartDate.c_str());
-				SetXMLValue(series_end,Mango.Mango.EndDate.c_str());
-				SetXMLValue(series_image,Mango.Mango.Image.c_str());
-				SetXMLValue(my_id,Mango.MyId);
-				SetXMLValue(my_read_chapters,Mango.ReadChapters);
-				SetXMLValue(my_read_volumes,Mango.ReadVolumes);
-				SetXMLValue(my_start_date,Mango.StartDate.c_str());
-				SetXMLValue(my_finish_date,Mango.EndDate.c_str());
-				SetXMLValue(my_score,Mango.Score);
-				SetXMLValue(my_status,Mango.Status);
-				SetXMLValue(my_rereading,Mango.Rereading);
-				SetXMLValue(my_rereading_chap,Mango.RereadChapters);
-				SetXMLValue(my_last_updated,Mango.LastUpdated.c_str());
+				SetXMLValue(series_mangadb_id, Mango.Mango.Id);
+				SetXMLValue(series_title, Mango.Mango.Title.c_str());
+				SetXMLValue(series_synonyms, Mango.Mango.English.c_str());
+				SetXMLValue(series_type, Mango.Mango.Type);
+				SetXMLValue(series_chapters, Mango.Mango.Chapters);
+				SetXMLValue(series_volumes, Mango.Mango.Volumes);
+				SetXMLValue(series_status, Mango.Mango.Status);
+				SetXMLValue(series_start, Mango.Mango.StartDate.c_str());
+				SetXMLValue(series_end, Mango.Mango.EndDate.c_str());
+				SetXMLValue(series_image, Mango.Mango.Image.c_str());
+				SetXMLValue(my_id, Mango.MyId);
+				SetXMLValue(my_read_chapters, Mango.ReadChapters);
+				SetXMLValue(my_read_volumes, Mango.ReadVolumes);
+				SetXMLValue(my_start_date, Mango.StartDate.c_str());
+				SetXMLValue(my_finish_date, Mango.EndDate.c_str());
+				SetXMLValue(my_score, Mango.Score);
+				SetXMLValue(my_status, Mango.Status);
+				SetXMLValue(my_rereading, Mango.Rereading);
+				SetXMLValue(my_rereading_chap, Mango.RereadChapters);
+				SetXMLValue(my_last_updated, Mango.LastUpdated.c_str());
 
 
 			}
@@ -407,12 +407,12 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't open manga file!","ConfigManager::SaveMangaList")
+			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open manga file!", "ConfigManager::SaveMangaList")
 		}
 	}
 	//----------------------------------------------------------------------------
-	UserInfoLoader::UserInfoLoader(ChiString path,ChiikaApi::UserInfo)
-		: FileLoader(path,FileLoader::FileType::UserInfo)
+	UserInfoLoader::UserInfoLoader(ChiString path, ChiikaApi::UserInfo)
+		: FileLoader(path, FileLoader::FileType::UserInfo)
 	{
 	}
 	//----------------------------------------------------------------------------
@@ -421,14 +421,14 @@ namespace ChiikaApi
 		ChiString dataFile = m_sPath;
 		FileReader file(dataFile);
 
-		if(file.Open())
+		if (file.Open())
 		{
 			pugi::xml_document doc;
 			ChiString fileData = file.Read();
 			doc.load(fileData.c_str());
 
 			pugi::xml_node  root = doc.child("Chiika");
-			pugi::xml_node  info  = root.child("UserInfo");
+			pugi::xml_node  info = root.child("UserInfo");
 			pugi::xml_node  userName = info.child("UserName");
 			pugi::xml_node  pass = info.child("Pass");
 			pugi::xml_node  watching = info.child("Watching");
@@ -456,11 +456,11 @@ namespace ChiikaApi
 			ui.UserAnimeEntry.DaySpentAnime = FromXMLValueToFloat(DaySpentAnime);
 
 			ui.MangaInfo.Reading = FromXMLValueToInt(Reading);
-			ui.MangaInfo.Completed= FromXMLValueToInt(Read);
+			ui.MangaInfo.Completed = FromXMLValueToInt(Read);
 			ui.MangaInfo.OnHold = FromXMLValueToInt(MangaOnHold);
 			ui.MangaInfo.Dropped = FromXMLValueToInt(MangaDropped);
-			ui.MangaInfo.PlanToRead= FromXMLValueToInt(PlanToRead);
-			ui.MangaInfo.DaysSpentReading= FromXMLValueToFloat(DaySpentReading);
+			ui.MangaInfo.PlanToRead = FromXMLValueToInt(PlanToRead);
+			ui.MangaInfo.DaysSpentReading = FromXMLValueToFloat(DaySpentReading);
 
 			m_UserDetailedInfo = ui;
 			//LOG("User info file loaded successfully!")
@@ -469,7 +469,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't open user info file!","ConfigManager::SaveUserInfo")
+			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open user info file!", "ConfigManager::SaveUserInfo")
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -478,12 +478,12 @@ namespace ChiikaApi
 		ChiString dataFile = m_sPath;
 		FileWriter file(dataFile);
 
-		if(file.Open())
+		if (file.Open())
 		{
 			pugi::xml_document doc;
 
 			pugi::xml_node  root = doc.append_child("Chiika");
-			pugi::xml_node  UserInfo  = root.append_child("UserInfo");
+			pugi::xml_node  UserInfo = root.append_child("UserInfo");
 			pugi::xml_node  userName = UserInfo.append_child("UserName");
 			pugi::xml_node  pass = UserInfo.append_child("Pass");
 			pugi::xml_node  watching = UserInfo.append_child("Watching");
@@ -527,12 +527,12 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't open user info file!","ConfigManager::SaveUserInfo")
+			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open user info file!", "ConfigManager::SaveUserInfo")
 		}
 	}
 	//----------------------------------------------------------------------------
 	UpdateListLoader::UpdateListLoader(ChiString path)
-		: FileLoader(path,FileType::UpdateList)
+		: FileLoader(path, FileType::UpdateList)
 	{
 
 	}
@@ -543,7 +543,7 @@ namespace ChiikaApi
 		FileReader file(dataFile);
 
 
-		if(file.Open())
+		if (file.Open())
 		{
 			pugi::xml_document doc;
 			ChiString fileData = file.Read();
@@ -553,7 +553,7 @@ namespace ChiikaApi
 			pugi::xml_node  updateList = root.child("UpdateList");
 #pragma region AnimeList
 			ChiikaApi::AnimeList list;
-			for(pugi::xml_node anime = updateList.child("anime");anime;anime = anime.next_sibling())
+			for (pugi::xml_node anime = updateList.child("anime"); anime; anime = anime.next_sibling())
 			{
 
 				pugi::xml_node  animeDbId = anime.child("series_animedb_id");
@@ -601,13 +601,13 @@ namespace ChiikaApi
 				info.Rewatching = FromXMLValueToInt(my_rewatching);
 				info.RewatchingEp = FromXMLValueToInt(my_rewatching_ep);
 				info.LastUpdated = FromXMLValueToStd(my_last_updated);
-				list.insert(AnimeList::value_type(Anime.Id,info));
+				list.insert(AnimeList::value_type(Anime.Id, info));
 			}
 			MalManager::Get().AddAnimeUpdateList(list);
 #pragma endregion
 #pragma region MangaList
 			ChiikaApi::MangaList mangaList;
-			for(pugi::xml_node manga = updateList.child("manga");manga;manga = manga.next_sibling())
+			for (pugi::xml_node manga = updateList.child("manga"); manga; manga = manga.next_sibling())
 			{
 
 				pugi::xml_node  series_mangadb_id = manga.child("series_mangadb_id");
@@ -657,7 +657,7 @@ namespace ChiikaApi
 				info.Rereading = FromXMLValueToInt(my_rereading);
 				info.RereadChapters = FromXMLValueToInt(my_rereading_chap);
 				info.LastUpdated = FromXMLValueToStd(my_last_updated);
-				mangaList.insert(MangaList::value_type(mango.Id,info));
+				mangaList.insert(MangaList::value_type(mango.Id, info));
 			}
 			MalManager::Get().AddMangaUpdateList(mangaList);
 			//LOG("Update list file loaded successfully!")
@@ -666,7 +666,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't open update file!","ConfigManager::LoadUpdateList")
+			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open update file!", "ConfigManager::LoadUpdateList")
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -676,7 +676,7 @@ namespace ChiikaApi
 		FileWriter file(dataFile);
 
 
-		if(file.Open())
+		if (file.Open())
 		{
 			pugi::xml_document doc;
 
@@ -688,7 +688,7 @@ namespace ChiikaApi
 
 			ChiikaApi::AnimeList list = MalManager::Get().GetAnimeUpdateList();
 			AnimeList::iterator It;
-			for(It = list.begin(); It != list.end(); ++It)
+			for (It = list.begin(); It != list.end(); ++It)
 			{
 				UserAnimeEntry Anime = It->second;
 
@@ -714,25 +714,25 @@ namespace ChiikaApi
 				pugi::xml_node  my_rewatching_ep = anime.append_child("my_rewatching_ep");
 				pugi::xml_node  my_last_updated = anime.append_child("my_last_updated");
 
-				SetXMLValue(animeDbId,Anime.Anime.Id);
-				SetXMLValue(Op,Anime.UpdateOperation);
-				SetXMLValue(series_title,Anime.Anime.Title.c_str());
-				SetXMLValue(series_synonyms,Anime.Anime.English.c_str());
-				SetXMLValue(series_type,Anime.Anime.Type);
-				SetXMLValue(series_episodes,Anime.Anime.EpisodeCount);
-				SetXMLValue(series_status,Anime.Anime.Status);
-				SetXMLValue(series_start,Anime.Anime.StartDate.c_str());
-				SetXMLValue(series_end,Anime.Anime.EndDate.c_str());
-				SetXMLValue(series_image,Anime.Anime.Image.c_str());
-				SetXMLValue(my_id,Anime.MyId);
-				SetXMLValue(my_watched_episodes,Anime.WatchedEpisodes);
-				SetXMLValue(my_start_date,Anime.StartDate.c_str());
-				SetXMLValue(my_finish_date,Anime.EndDate.c_str());
-				SetXMLValue(my_score,Anime.Score);
-				SetXMLValue(my_status,Anime.Status);
-				SetXMLValue(my_rewatching,Anime.Rewatching);
-				SetXMLValue(my_rewatching_ep,Anime.RewatchingEp);
-				SetXMLValue(my_last_updated,Anime.LastUpdated.c_str());
+				SetXMLValue(animeDbId, Anime.Anime.Id);
+				SetXMLValue(Op, Anime.UpdateOperation);
+				SetXMLValue(series_title, Anime.Anime.Title.c_str());
+				SetXMLValue(series_synonyms, Anime.Anime.English.c_str());
+				SetXMLValue(series_type, Anime.Anime.Type);
+				SetXMLValue(series_episodes, Anime.Anime.EpisodeCount);
+				SetXMLValue(series_status, Anime.Anime.Status);
+				SetXMLValue(series_start, Anime.Anime.StartDate.c_str());
+				SetXMLValue(series_end, Anime.Anime.EndDate.c_str());
+				SetXMLValue(series_image, Anime.Anime.Image.c_str());
+				SetXMLValue(my_id, Anime.MyId);
+				SetXMLValue(my_watched_episodes, Anime.WatchedEpisodes);
+				SetXMLValue(my_start_date, Anime.StartDate.c_str());
+				SetXMLValue(my_finish_date, Anime.EndDate.c_str());
+				SetXMLValue(my_score, Anime.Score);
+				SetXMLValue(my_status, Anime.Status);
+				SetXMLValue(my_rewatching, Anime.Rewatching);
+				SetXMLValue(my_rewatching_ep, Anime.RewatchingEp);
+				SetXMLValue(my_last_updated, Anime.LastUpdated.c_str());
 
 			}
 #pragma endregion
@@ -740,7 +740,7 @@ namespace ChiikaApi
 			ChiikaApi::MangaList mangaList = MalManager::Get().GetMangaUpdateList();
 
 			MangaList::iterator ItManga;
-			for(ItManga = mangaList.begin(); ItManga != mangaList.end(); ++ItManga)
+			for (ItManga = mangaList.begin(); ItManga != mangaList.end(); ++ItManga)
 			{
 				MangaInfo Mango = ItManga->second;
 
@@ -768,27 +768,27 @@ namespace ChiikaApi
 				pugi::xml_node  my_rereading_chap = manga.append_child("my_rereading_chap");
 				pugi::xml_node  my_last_updated = manga.append_child("my_last_updated");
 
-				SetXMLValue(series_mangadb_id,Mango.Mango.Id);
-				SetXMLValue(Op,Mango.UpdateOperation);
-				SetXMLValue(series_title,Mango.Mango.Title.c_str());
-				SetXMLValue(series_synonyms,Mango.Mango.English.c_str());
-				SetXMLValue(series_type,Mango.Mango.Type);
-				SetXMLValue(series_chapters,Mango.Mango.Chapters);
-				SetXMLValue(series_volumes,Mango.Mango.Volumes);
-				SetXMLValue(series_status,Mango.Mango.Status);
-				SetXMLValue(series_start,Mango.Mango.StartDate.c_str());
-				SetXMLValue(series_end,Mango.Mango.EndDate.c_str());
-				SetXMLValue(series_image,Mango.Mango.Image.c_str());
-				SetXMLValue(my_id,Mango.MyId);
-				SetXMLValue(my_read_chapters,Mango.ReadChapters);
-				SetXMLValue(my_read_volumes,Mango.ReadVolumes);
-				SetXMLValue(my_start_date,Mango.StartDate.c_str());
-				SetXMLValue(my_finish_date,Mango.EndDate.c_str());
-				SetXMLValue(my_score,Mango.Score);
-				SetXMLValue(my_status,Mango.Status);
-				SetXMLValue(my_rereading,Mango.Rereading);
-				SetXMLValue(my_rereading_chap,Mango.RereadChapters);
-				SetXMLValue(my_last_updated,Mango.LastUpdated.c_str());
+				SetXMLValue(series_mangadb_id, Mango.Mango.Id);
+				SetXMLValue(Op, Mango.UpdateOperation);
+				SetXMLValue(series_title, Mango.Mango.Title.c_str());
+				SetXMLValue(series_synonyms, Mango.Mango.English.c_str());
+				SetXMLValue(series_type, Mango.Mango.Type);
+				SetXMLValue(series_chapters, Mango.Mango.Chapters);
+				SetXMLValue(series_volumes, Mango.Mango.Volumes);
+				SetXMLValue(series_status, Mango.Mango.Status);
+				SetXMLValue(series_start, Mango.Mango.StartDate.c_str());
+				SetXMLValue(series_end, Mango.Mango.EndDate.c_str());
+				SetXMLValue(series_image, Mango.Mango.Image.c_str());
+				SetXMLValue(my_id, Mango.MyId);
+				SetXMLValue(my_read_chapters, Mango.ReadChapters);
+				SetXMLValue(my_read_volumes, Mango.ReadVolumes);
+				SetXMLValue(my_start_date, Mango.StartDate.c_str());
+				SetXMLValue(my_finish_date, Mango.EndDate.c_str());
+				SetXMLValue(my_score, Mango.Score);
+				SetXMLValue(my_status, Mango.Status);
+				SetXMLValue(my_rereading, Mango.Rereading);
+				SetXMLValue(my_rereading_chap, Mango.RereadChapters);
+				SetXMLValue(my_last_updated, Mango.LastUpdated.c_str());
 
 
 			}
@@ -798,12 +798,12 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't open update file!","ConfigManager::LoadUpdateList")
+			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open update file!", "ConfigManager::LoadUpdateList")
 		}
 	}
 	//----------------------------------------------------------------------------
 	AnimeDetailsLoader::AnimeDetailsLoader(ChiString path)
-		: FileLoader(path,FileType::AnimeDetails)
+		: FileLoader(path, FileType::AnimeDetails)
 	{
 	}
 	//----------------------------------------------------------------------------
@@ -813,7 +813,7 @@ namespace ChiikaApi
 		FileReader file(dataFile);
 
 
-		if(file.Open())
+		if (file.Open())
 		{
 			pugi::xml_document doc;
 			ChiString fileData = file.Read();
@@ -822,7 +822,7 @@ namespace ChiikaApi
 			pugi::xml_node  root = doc.child("Chiika");
 			pugi::xml_node  animeDetails = root.child("AnimeDetails");
 
-			for(pugi::xml_node anime = animeDetails.child("anime");anime;anime = anime.next_sibling())
+			for (pugi::xml_node anime = animeDetails.child("anime"); anime; anime = anime.next_sibling())
 			{
 				pugi::xml_node  Id = anime.child("Id");
 				pugi::xml_node  syn = anime.child("Synopsis");
@@ -836,20 +836,20 @@ namespace ChiikaApi
 				pugi::xml_node  popularity = anime.child("Popularity");
 
 				std::vector<ChiString> vTags;
-				for(pugi::xml_node tag = tags.child("Tag");tag;tag= tag.next_sibling())
+				for (pugi::xml_node tag = tags.child("Tag"); tag; tag = tag.next_sibling())
 				{
 					vTags.push_back(tag.text().get());
 				}
 
 				std::vector<ChiString> vProducers;
-				for(pugi::xml_node producer = producers.child("Producer");producer;producer= producer.next_sibling())
+				for (pugi::xml_node producer = producers.child("Producer"); producer; producer = producer.next_sibling())
 				{
 					vProducers.push_back(producer.text().get());
 				}
 
 				UserAnimeEntry findAnime = MalManager::Get().GetAnimeById(FromXMLValueToInt(Id));
 
-				if(findAnime.Anime.Id != 0)
+				if (findAnime.Anime.Id != 0)
 				{
 					ChiikaApi::AnimeDetails details = findAnime.Anime.ExtraDetails;
 					details.Synopsis = syn.text().get();
@@ -861,12 +861,12 @@ namespace ChiikaApi
 					stats.Ranked = atoi(ranked.text().get());
 					stats.Score = atof(score.text().get());
 
-					for(int i=0; i < vTags.size(); i++)
+					for (int i = 0; i < vTags.size(); i++)
 					{
 						ChiString tag = vTags[i];
 						details.Tags.push_back(tag);
 					}
-					for(int i=0; i < vProducers.size(); i++)
+					for (int i = 0; i < vProducers.size(); i++)
 					{
 						ChiString producer = vProducers[i];
 						details.Producers.push_back(producer);
@@ -888,7 +888,7 @@ namespace ChiikaApi
 		ChiString dataFile = m_sPath;
 		FileWriter file(dataFile);
 
-		if(file.Open())
+		if (file.Open())
 		{
 			pugi::xml_document doc;
 			pugi::xml_node  root = doc.append_child("Chiika");
@@ -896,7 +896,7 @@ namespace ChiikaApi
 
 			ChiikaApi::AnimeList list = MalManager::Get().GetAnimeList();
 			ChiikaApi::AnimeList::iterator It;
-			for(It = list.begin(); It != list.end(); ++It)
+			for (It = list.begin(); It != list.end(); ++It)
 			{
 				UserAnimeEntry Anime = It->second;
 				ChiikaApi::AnimeDetails Details = It->second.Anime.ExtraDetails;
@@ -915,28 +915,28 @@ namespace ChiikaApi
 				pugi::xml_node  popularity = anime.append_child("Popularity");
 
 
-				SetXMLValue(animeDbId,Anime.Anime.Id);
-				SetXMLValue(syn,Details.Synopsis.c_str());
-				SetXMLValue(premiered,Details.Premiered.c_str());
-				SetXMLValue(duration,Details.DurationPerEpisode.c_str());
+				SetXMLValue(animeDbId, Anime.Anime.Id);
+				SetXMLValue(syn, Details.Synopsis.c_str());
+				SetXMLValue(premiered, Details.Premiered.c_str());
+				SetXMLValue(duration, Details.DurationPerEpisode.c_str());
 
-				SetXMLValue(score,Statistics.Score);
-				SetXMLValue(ranked,Statistics.Ranked);
-				SetXMLValue(popularity,Statistics.Popularity);
+				SetXMLValue(score, Statistics.Score);
+				SetXMLValue(ranked, Statistics.Ranked);
+				SetXMLValue(popularity, Statistics.Popularity);
 
-				for(int i=0; i < Details.Producers.size(); i++)
+				for (int i = 0; i < Details.Producers.size(); i++)
 				{
 					ChiString p = Details.Producers[i];
 					pugi::xml_node pNode = producers.append_child("Producer");
-					SetXMLValue(pNode,p.c_str());
+					SetXMLValue(pNode, p.c_str());
 				}
 
 
-				for(int i=0; i < Details.Tags.size(); i++)
+				for (int i = 0; i < Details.Tags.size(); i++)
 				{
 					ChiString tag = Details.Tags[i];
 					pugi::xml_node  tagNode = tags.append_child("Tag");
-					SetXMLValue(tagNode,tag.c_str());
+					SetXMLValue(tagNode, tag.c_str());
 				}
 			}
 			doc.save_file(dataFile.c_str());
@@ -945,7 +945,7 @@ namespace ChiikaApi
 	}
 	//----------------------------------------------------------------------------
 	SenpaiLoader::SenpaiLoader(ChiString path)
-		: FileLoader(path,FileType::SenpaiJSON)
+		: FileLoader(path, FileType::SenpaiJSON)
 	{
 	}
 	//----------------------------------------------------------------------------
@@ -955,15 +955,15 @@ namespace ChiikaApi
 		FileReader file(dataFile);
 
 
-		if(file.Open())
+		if (file.Open())
 		{
 			Json::Value root;
 			Json::Reader reader;
 			ChiString fileData = file.Read();
 
-			bool b = reader.parse(fileData,root);
+			bool b = reader.parse(fileData, root);
 
-			if(b)
+			if (b)
 			{
 				//Root
 				const Json::Value meta = root["meta"];
@@ -975,7 +975,7 @@ namespace ChiikaApi
 				Json::Value::const_iterator It = tz.begin();
 
 				TimezoneMap list;
-				for(It;It != tz.end(); It++)
+				for (It; It != tz.end(); It++)
 				{
 					Json::Value inner = *It;
 
@@ -984,7 +984,7 @@ namespace ChiikaApi
 					tz.TimezoneIdentifier = (It.name());
 					tz.Offset = (inner["offset"].asString());
 
-					list.insert(TimezoneMap::value_type(tz.TimezoneIdentifier,tz));
+					list.insert(TimezoneMap::value_type(tz.TimezoneIdentifier, tz));
 				}
 				SeasonManager::Get().SetTimezones(list);
 
@@ -996,7 +996,7 @@ namespace ChiikaApi
 				Json::Value::const_iterator itemsIt = items.begin();
 				SenpaiData sd;
 
-				for(itemsIt;itemsIt != items.end();itemsIt++)
+				for (itemsIt; itemsIt != items.end(); itemsIt++)
 				{
 					Json::Value v = *itemsIt;
 
@@ -1017,9 +1017,9 @@ namespace ChiikaApi
 					const Json::Value airdates = v["airdates"];
 
 					Json::Value::const_iterator adIt = airdates.begin();
-					Map<ChiString,Airdate>::type airdateList;
+					Map<ChiString, Airdate>::type airdateList;
 
-					ForEachOnStd(adIt,airdates)
+					ForEachOnStd(adIt, airdates)
 					{
 						Json::Value t = *adIt;
 
@@ -1033,7 +1033,7 @@ namespace ChiikaApi
 						ad.Weekday = t["weekday"].asInt();
 						ad.RdWeekday = JsToQ(t["rd_weekday"]);
 
-						airdateList.insert(std::make_pair(ad.TimeZone.TimezoneIdentifier,ad));
+						airdateList.insert(std::make_pair(ad.TimeZone.TimezoneIdentifier, ad));
 					}
 					si.Airdates = airdateList;
 					sd.push_back(si);
@@ -1054,6 +1054,18 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	LocalDataManager::LocalDataManager()
 	{
+		m_AnimeLoader = NULL;
+		m_MangaLoader = NULL;
+		m_UserInfoLoader = NULL;
+		m_UpdateListLoader = NULL;
+		m_AnimeDetailsLoader = NULL;
+		m_SenpaiLoader = NULL;
+
+		m_UserDetailedInfo.UserName = "Chitanda";
+	}
+	//----------------------------------------------------------------------------
+	void LocalDataManager::Initialize()
+	{
 		m_sAnimeListFilePath = AppSettings::Get().GetChiStringOption(LIBRARY_ANIME_LIST_PATH);
 		m_sMangaListFilePath = AppSettings::Get().GetChiStringOption(LIBRARY_MANGA_LIST_PATH);
 		m_sUserInfoPath = AppSettings::Get().GetChiStringOption(LIBRARY_USER_INFO_PATH);
@@ -1064,7 +1076,7 @@ namespace ChiikaApi
 
 		m_AnimeLoader = new AnimeFileLoader(m_sAnimeListFilePath);
 		m_MangaLoader = new MangaFileLoader(m_sMangaListFilePath);
-		m_UserInfoLoader = new UserInfoLoader(m_sUserInfoPath,m_UserDetailedInfo);
+		m_UserInfoLoader = new UserInfoLoader(m_sUserInfoPath, m_UserDetailedInfo);
 		m_UpdateListLoader = new UpdateListLoader(m_sUpdateListPath);
 		m_AnimeDetailsLoader = new AnimeDetailsLoader(m_sAnimeDetailsPath);
 		m_SenpaiLoader = new SenpaiLoader(m_sSenpaiPath);
@@ -1076,14 +1088,15 @@ namespace ChiikaApi
 		LoadSenpaiData();
 
 	}
-	//----------------------------------------------------------------------------
+
 	LocalDataManager::~LocalDataManager()
 	{
-		delete m_AnimeLoader;
-		delete m_MangaLoader;
-		delete m_UserInfoLoader;
-		delete m_UpdateListLoader;
-		delete m_AnimeDetailsLoader;
+		TryDelete(m_AnimeLoader);
+		TryDelete(m_MangaLoader);
+		TryDelete(m_UserInfoLoader);
+		TryDelete(m_UpdateListLoader);
+		TryDelete(m_AnimeDetailsLoader);
+		TryDelete(m_SenpaiLoader);
 	}
 	//----------------------------------------------------------------------------
 	void LocalDataManager::SaveAnimeList()
@@ -1117,7 +1130,7 @@ namespace ChiikaApi
 		m_UpdateListLoader->Load();
 	}
 	//----------------------------------------------------------------------------
-	void LocalDataManager::SetUserNamePass(ChiString u,ChiString p)
+	void LocalDataManager::SetUserNamePass(ChiString u, ChiString p)
 	{
 		m_UserDetailedInfo.UserName = u;
 		m_UserDetailedInfo.Pass = p;
@@ -1160,18 +1173,17 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void LocalDataManager::SetUserInfo(UserInfo i)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
 		m_UserDetailedInfo = i;
 		m_UserInfoLoader->m_UserDetailedInfo = m_UserDetailedInfo;
-		SaveUserInfo();
+		/*SaveUserInfo();*/
 	}
 	//----------------------------------------------------------------------------
-	const UserInfo& LocalDataManager::GetUserInfo()
+	UserInfo LocalDataManager::GetUserInfo()
 	{
 		return m_UserDetailedInfo;
 	}
 	//----------------------------------------------------------------------------
-	template<> LocalDataManager* Singleton<LocalDataManager>::msSingleton = 0;
+	LocalDataManager* msSingleton = 0;
 	LocalDataManager& LocalDataManager::Get(void)
 	{
 		/*assert(msSingleton); */ return (*msSingleton);

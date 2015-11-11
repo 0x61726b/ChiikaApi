@@ -22,7 +22,14 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	class MalApiExport ParsingManager : public Singleton<ParsingManager>
+	class MalApiExport ParserInterface
+	{
+	public:
+		virtual bool ParseVerifyRequest(const ChiString& data) = 0;
+
+		virtual ~ParserInterface();
+	};
+	class MalApiExport ParsingManager : public Singleton<ParsingManager>,public ParserInterface
 	{
 	public:
 		bool ParseVerifyRequest(const ChiString& data);
@@ -34,10 +41,14 @@ namespace ChiikaApi
 		void ParseAnilistSearchAnime(const ChiString& data);
 		UserAnimeEntry ParseAnimeScrape(const ChiString& data,int Id);
 		void ParseUserPage(const ChiString& data);
-		void Parse(ThreadedRequest* r);
+		void Parse();
 
+		ThreadedRequest* m_pRequest;
 
 		void ParseSenpai(const ChiString& data);
+
+		ParsingManager(ThreadedRequest*);
+		
 
 		std::vector<ChiString> GetItemsSeperatedBy(ChiString data,ChiString seperator);
 		ChiString ParseWebPage(ChiString data,ChiString searchStart,ChiString searchEnd);

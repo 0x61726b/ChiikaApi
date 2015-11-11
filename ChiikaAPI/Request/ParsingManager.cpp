@@ -37,61 +37,73 @@ namespace ChiikaApi
 		return msSingleton;
 	}
 	//----------------------------------------------------------------------------
-	void ParsingManager::Parse(ThreadedRequest* request)
+	ParsingManager::ParsingManager(ThreadedRequest* r)
+		: m_pRequest(r)
 	{
-		ChiString RequestName = request->Name;
+		
+	}
+	//----------------------------------------------------------------------------
+	ParserInterface::~ParserInterface()
+	{
+		//base destructor
+	}
+	void ParsingManager::Parse()
+	{
+		if (m_pRequest)
+			return;
+		ChiString RequestName = m_pRequest->Name;
 
 		if(RequestName == "Verify")
 		{
-			bool result = ParseVerifyRequest(request->m_sBuffer);
+			bool result = this->ParseVerifyRequest(m_pRequest->GetResponse());
 
 			if(result)
-				request->m_Result.Code = RequestCodes::VERIFY_SUCCESS;
+				m_pRequest->m_Result.Code = RequestCodes::VERIFY_SUCCESS;
 			else
-				request->m_Result.Code = RequestCodes::VERIFY_ERROR;
+				m_pRequest->m_Result.Code = RequestCodes::VERIFY_ERROR;
 		}
 		if(RequestName == "SearchAnime")
 		{
-			AnimeList result = ParseSearchResult(request->m_sBuffer);
+			AnimeList result = ParseSearchResult(m_pRequest->GetResponse());
 
-			request->m_Result.m_AnimeList = result;
-			request->m_Result.Code = RequestCodes::SEARCH_SUCCESS;
+			m_pRequest->m_Result.m_AnimeList = result;
+			m_pRequest->m_Result.Code = RequestCodes::SEARCH_SUCCESS;
 		}
 		if(RequestName == "GetAnimeList")
 		{
-			AnimeList result = ParseGetUserAnimeList(request->m_sBuffer);
+			AnimeList result = ParseGetUserAnimeList(m_pRequest->GetResponse());
 
-			request->m_Result.m_AnimeList = result;
-			request->m_Result.Code = RequestCodes::SEARCH_SUCCESS;
+			m_pRequest->m_Result.m_AnimeList = result;
+			m_pRequest->m_Result.Code = RequestCodes::SEARCH_SUCCESS;
 		}
 		if(RequestName == "GetMangaList")
 		{
-			MangaList result = ParseGetUserMangaList(request->m_sBuffer);
+			MangaList result = ParseGetUserMangaList(m_pRequest->GetResponse());
 
-			request->m_Result.m_MangaList = result;
-			request->m_Result.Code = RequestCodes::SEARCH_SUCCESS;
+			m_pRequest->m_Result.m_MangaList = result;
+			m_pRequest->m_Result.Code = RequestCodes::SEARCH_SUCCESS;
 		}
 		if(RequestName == "AnilistAuth")
 		{
-			ChiString accessToken = ParseAnilistAuth(request->m_sBuffer);
-			request->m_Result.AnilistAuthCode = accessToken;
+			ChiString accessToken = ParseAnilistAuth(m_pRequest->GetResponse());
+			m_pRequest->m_Result.AnilistAuthCode = accessToken;
 		}
 		if(RequestName == "AnilistSearchAnime")
 		{
-			ParseAnilistSearchAnime(request->m_sBuffer);
+			ParseAnilistSearchAnime(m_pRequest->m_sBuffer);
 		}
 		if(RequestName == "AnimeScrape")
 		{
-			UserAnimeEntry result = ParseAnimeScrape(request->m_sBuffer,request->m_Result.AnimeResult.Anime.Id);
-			request->m_Result.AnimeResult = result;
+			UserAnimeEntry result = ParseAnimeScrape(m_pRequest->GetResponse(), m_pRequest->m_Result.AnimeResult.Anime.Id);
+			m_pRequest->m_Result.AnimeResult = result;
 		}
 		if(RequestName == "UserPageScrape")
 		{
-			ParseUserPage(request->m_sBuffer);
+			ParseUserPage(m_pRequest->GetResponse());
 		}
 		if(RequestName == "SenpaiMoeData")
 		{
-			ParseSenpai(request->m_sBuffer);
+			ParseSenpai(m_pRequest->GetResponse());
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -136,6 +148,7 @@ namespace ChiikaApi
 		{
 			return true;
 		}
+		ui.UserId = UserInfo::UnknownUser;
 		return false;
 	}
 	//----------------------------------------------------------------------------

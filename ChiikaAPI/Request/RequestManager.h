@@ -59,13 +59,20 @@ namespace ChiikaApi
 		virtual void Notify(ThreadedRequest* thread) = 0;
 		virtual ~RequestListener() { }
 	};
-
 	//----------------------------------------------------------------------------
-	class MalApiExport ThreadedRequest
+	class MalApiExport RequestBase
 	{
 	public:
-		
-
+		virtual ChiString GetResponse() = 0;
+		virtual void Work() = 0;
+		virtual void CreateThread() = 0;
+		virtual ~RequestBase() { }
+		virtual void Initialize() = 0;
+	};
+	//----------------------------------------------------------------------------
+	class MalApiExport ThreadedRequest : public RequestBase
+	{
+	public:
 		ThreadedRequest();
 		virtual ~ThreadedRequest();
 
@@ -73,9 +80,12 @@ namespace ChiikaApi
 		void CreateThread();
 		void DeleteThread();
 
+		void Initialize();
 		void Work();
 		void Join();
 
+
+		ChiString GetResponse();
 		ThreadOptions m_ThreadOptions;
 
 
@@ -111,11 +121,24 @@ namespace ChiikaApi
 	};
 	
 	//----------------------------------------------------------------------------
-	class MalApiExport RequestManager : public Singleton<RequestManager>
+	class MalApiExport RequestManagerBase
+	{
+	public:
+		virtual ~RequestManagerBase() { }
+
+		virtual void ProcessRequest(ThreadedRequest*) = 0;
+	};
+	//----------------------------------------------------------------------------
+	class MalApiExport RequestManager : public Singleton<RequestManager>, public RequestManagerBase
 	{
 	public:
 		RequestManager();
-		~RequestManager();
+		virtual ~RequestManager();
+
+		void Initialize();
+		void Destroy();
+
+		void ProcessRequest(ThreadedRequest*);
 
 		void CreateVerifyRequest(RequestListener* l);
 
@@ -146,9 +169,6 @@ namespace ChiikaApi
 
 
 		void CreateSenpaiMoeDataRequest(RequestListener* l);
-
-		void CreateTestRequest(ThreadedRequest*,CurlConfigOptionMap);
-
 
 		
 		static RequestManager& Get();

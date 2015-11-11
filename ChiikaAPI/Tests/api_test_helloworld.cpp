@@ -13,11 +13,32 @@
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
-#include <windows.h>
+#include "Root\Root.h"
+//----------------------------------------------------------------------------
+using namespace ChiikaApi;
+std::string SearchKeywordAnime = "Oregairu";
+std::string testUserName = "chiikatestacc1";
+std::string testPass = "chiikatest%&";
 
 int main()
 {
-    // <-- Program logic here
+	TCHAR szFileName[MAX_PATH];
+
+	GetModuleFileName(NULL, szFileName, MAX_PATH);
+
+	std::string pathToExecutable = szFileName;
+	std::string dir = pathToExecutable.substr(0, pathToExecutable.find_last_of("\\"));
+
+	Root r;
+	r.Initialize(dir);
+	UserInfo ui;
+	ui.UserName = testUserName;
+	ui.Pass = testPass;
+	r.SetUserInfo(ui);
+
+	r.RequestUserAnimeList();
+
+	
 
 	while(true)
 	{

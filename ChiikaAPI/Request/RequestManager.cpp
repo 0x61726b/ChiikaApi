@@ -31,15 +31,15 @@ namespace ChiikaApi
 		FILE *stream;
 	};
 	//----------------------------------------------------------------------------
-	int ThreadedRequest::CallbackFunc(char* data,size_t size,size_t nmemb,ChiString* buffer)
+	int ThreadedRequest::CallbackFunc(char* data, size_t size, size_t nmemb, ChiString* buffer)
 	{
 		// What we will return
 		int result = 0;
 
 		// Is there anything in the buffer?
-		if(buffer != NULL) {
+		if (buffer != NULL) {
 			// Append the data to the buffer
-			buffer->append(data,size * nmemb);
+			buffer->append(data, size * nmemb);
 
 			// How much did we write?
 			result = size * nmemb;
@@ -48,7 +48,7 @@ namespace ChiikaApi
 		return result;
 	}
 	//----------------------------------------------------------------------------
-	int ThreadedRequest::ReadCallbackFunc(void *ptr,size_t size,size_t nmemb,void *userp)
+	int ThreadedRequest::ReadCallbackFunc(void *ptr, size_t size, size_t nmemb, void *userp)
 	{
 		//struct WriteThis *pooh = (struct WriteThis *)userp;
 
@@ -65,20 +65,20 @@ namespace ChiikaApi
 		return 0;                          /* no more data left to deliver */
 	}
 	//----------------------------------------------------------------------------
-	size_t ThreadedRequest::Curlfwrite(void *buffer,size_t size,size_t nmemb,void *stream)
+	size_t ThreadedRequest::Curlfwrite(void *buffer, size_t size, size_t nmemb, void *stream)
 	{
-		struct FtpFile *out=(struct FtpFile *)stream;
+		struct FtpFile *out = (struct FtpFile *)stream;
 
-		if(out && !out->stream)
+		if (out && !out->stream)
 		{
 			/* open file for writing */
-			ChiString path = AppSettings::Get().GetDataPath() + "/Images/" + out->filename ;
+			ChiString path = AppSettings::Get().GetDataPath() + "/Images/" + out->filename;
 			/*path.replace(path.find("/"),"\\\\");*/
-			out->stream=fopen(path.c_str(),"wb");
-			if(!out->stream)
+			out->stream = fopen(path.c_str(), "wb");
+			if (!out->stream)
 				return -1; /* failure, can't open file to write */
 		}
-		return fwrite(buffer,size,nmemb,out->stream);
+		return fwrite(buffer, size, nmemb, out->stream);
 
 	}
 	//----------------------------------------------------------------------------
@@ -94,31 +94,29 @@ namespace ChiikaApi
 
 	}
 	//----------------------------------------------------------------------------
-	void ThreadedRequest::SetParameters(CurlConfigOptionMap opts,const ChiString& name,const RequestType& type)
+	void ThreadedRequest::SetParameters(CurlConfigOptionMap opts, const ChiString& name, const RequestType& type)
 	{
 		m_sUrl = opts.find("Url")->second.Value;
-		if(opts.find("UserName") != opts.end() && opts.find("PassWord") != opts.end())
+		if (opts.find("UserName") != opts.end() && opts.find("PassWord") != opts.end())
 			m_sUsrPwd = opts.find("UserName")->second.Value + ":" + opts.find("PassWord")->second.Value;
-		m_iMethod = opts.find("Method") != opts.end() ? opts.find("Method")->second.cUrlOpt: 0;
+		m_iMethod = opts.find("Method") != opts.end() ? opts.find("Method")->second.cUrlOpt : 0;
 		xmlData = opts.find("XML") != opts.end() ? opts.find("XML")->second.Value : "";
 		Options = opts;
 
 		Name = name;
 
 		Type = type;
-
-		this->CreateThread();
 	}
 	//----------------------------------------------------------------------------
 	void ThreadedRequest::CreateThread()
 	{
-		m_pThread = new std::thread(std::bind(&ThreadedRequest::Work,this));
-		LOG(INFO) << "Creating a thread for " << ToStd(Name) << " request!";
+		LOG(INFO) << "Starting reqeust " << ToStd(Name);
+		m_pThread = new std::thread(std::bind(&ThreadedRequest::Work, this));
 	}
 	//----------------------------------------------------------------------------
 	void ThreadedRequest::DeleteThread()
 	{
-		if(m_pThread)
+		if (m_pThread)
 		{
 			/*LOG(INFO) << "Exiting thread " << m_pThread->get_thread_info()->id << "...";*/
 			delete m_pThread;
@@ -130,109 +128,105 @@ namespace ChiikaApi
 		struct FtpFile ftpfile;
 		try
 		{
-#pragma region Boring CURL code
-
 			CURLcode m_CurlRes;
-			//Each thread needs its own handle 
-
 			CURL* m_pCurl = curl_easy_init();
-			m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_HTTPAUTH,CURLAUTH_BASIC);
-			m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_USERPWD,m_sUsrPwd.c_str());
+			m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+			m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_USERPWD, m_sUsrPwd.c_str());
 
-			m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_TIMEOUT,7L);
-			if(Options.find("Image") != Options.end())
+			m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_TIMEOUT, 7L);
+			if (Options.find("Image") != Options.end())
 			{
 				CurlConfigOptionMap::iterator it = Options.find("Image");
-				ftpfile={
+				ftpfile = {
 					it->second.Value.c_str(), /* name to store the file as if successful */
 					NULL
 				};
 
-				m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_WRITEFUNCTION,Curlfwrite);
-				m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_WRITEDATA,&ftpfile);
+				m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_WRITEFUNCTION, Curlfwrite);
+				m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_WRITEDATA, &ftpfile);
 			}
 			else
 			{
-				m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_WRITEDATA,&m_sBuffer);
-				m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_WRITEFUNCTION,CallbackFunc);
+				m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_WRITEDATA, &m_sBuffer);
+				m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_WRITEFUNCTION, CallbackFunc);
 			}
 
-			if(Options.find("Ua") != Options.end())
+			if (Options.find("Ua") != Options.end())
 			{
-				m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_USERAGENT,Options.find("Ua")->second.Value.c_str());
+				m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_USERAGENT, Options.find("Ua")->second.Value.c_str());
 				LOG(INFO) << "Setting User-Agent to : " << Options.find("Ua")->second.Value.c_str();
 			}
 			else
 			{
-				m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_USERAGENT,"ChiikaMalApi");
-				/*LOG(INFO) << "Setting User-Agent to : ChiikaMalApi";*/
+				m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_USERAGENT, "ChiikaMalApi");
+				LOG(INFO) << "Setting User-Agent to:	ChiikaMalApi";
 			}
 
 			struct curl_slist *chunk = NULL;
 
-			if(Type == RequestType::Anilist)
+			if (Type == RequestType::Anilist)
 			{
-				chunk = curl_slist_append(chunk,"ContentTtype: application/x-www-form-urlencoded");
+				chunk = curl_slist_append(chunk, "ContentType: application/x-www-form-urlencoded");
 			}
 
 
-			curl_easy_setopt(m_pCurl,CURLOPT_HTTPHEADER,chunk);
+			curl_easy_setopt(m_pCurl, CURLOPT_HTTPHEADER, chunk);
 
-			m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_URL,m_sUrl.c_str());
-			LOG(INFO) << "Setting URL : " << m_sUrl.c_str();
+			m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_URL, m_sUrl.c_str());
+			LOG(INFO) << "Setting URL :	" << std::endl << m_sUrl.c_str();
 			/*curl_easy_setopt(m_pCurl,CURLOPT_VERBOSE,1L);*/
-			curl_easy_setopt(m_pCurl,CURLOPT_TIMEOUT,100);
+			curl_easy_setopt(m_pCurl, CURLOPT_TIMEOUT, 100);
 
 
-			if(m_iMethod == 10024)
+			if (m_iMethod == 10024)
 			{
-				LOG(INFO) << "Setting method : POST";
-				if(Type == RequestType::MyAnimeList)
+				LOG(INFO) << "Setting method :	POST";
+				if (Type == RequestType::MyAnimeList)
 				{
-					if(xmlData.size() > 0)
+					if (xmlData.size() > 0)
 					{
 						const char* data = xmlData.c_str();
 						ChiString append = "data=";
 						append.append(data);
 
-						curl_easy_setopt(m_pCurl,CURLOPT_POST,1L);
-						curl_easy_setopt(m_pCurl,CURLOPT_POSTFIELDS,append.c_str());
-						curl_easy_setopt(m_pCurl,CURLOPT_POSTFIELDSIZE,append.length());
+						curl_easy_setopt(m_pCurl, CURLOPT_POST, 1L);
+						curl_easy_setopt(m_pCurl, CURLOPT_POSTFIELDS, append.c_str());
+						curl_easy_setopt(m_pCurl, CURLOPT_POSTFIELDSIZE, append.length());
 						m_CurlRes = curl_easy_perform(m_pCurl);
 					}
 				}
-				if(Type == RequestType::Anilist)
+				if (Type == RequestType::Anilist)
 				{
 					CurlConfigOptionMap::iterator It = Options.begin();
 
 					int paramCount = 0;
 					ChiString postData = "";
-					for(It;It != Options.end(); It++)
+					for (It; It != Options.end(); It++)
 					{
-						if(paramCount != 0)
+						if (paramCount != 0)
 							postData.append("&");
-						if(It->second.Name == "GrantType")
+						if (It->second.Name == "GrantType")
 						{
 							postData.append("grant_type=");
 							postData.append(It->second.Value);
 							paramCount++;
 						}
-						if(It->second.Name == "ClientID")
+						if (It->second.Name == "ClientID")
 						{
 							postData.append("client_id=");
 							postData.append(It->second.Value);
 							paramCount++;
 						}
-						if(It->second.Name == "SecretID")
+						if (It->second.Name == "SecretID")
 						{
 							postData.append("client_secret=");
 							postData.append(It->second.Value);
 							paramCount++;
 						}
 					}
-					curl_easy_setopt(m_pCurl,CURLOPT_POST,1L);
-					curl_easy_setopt(m_pCurl,CURLOPT_POSTFIELDS,postData.c_str());
-					curl_easy_setopt(m_pCurl,CURLOPT_POSTFIELDSIZE,postData.length());
+					curl_easy_setopt(m_pCurl, CURLOPT_POST, 1L);
+					curl_easy_setopt(m_pCurl, CURLOPT_POSTFIELDS, postData.c_str());
+					curl_easy_setopt(m_pCurl, CURLOPT_POSTFIELDSIZE, postData.length());
 					m_CurlRes = curl_easy_perform(m_pCurl);
 				}
 
@@ -247,20 +241,20 @@ namespace ChiikaApi
 				}
 
 				*/
-				LOG(INFO) << "Setting method : GET";
-				m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_URL,m_sUrl.c_str());
+				LOG(INFO) << "Setting method :	GET";
+				m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_URL, m_sUrl.c_str());
 				m_CurlRes = curl_easy_perform(m_pCurl);
 			}
 
 			long http_code = 0;
-			curl_easy_getinfo(m_pCurl,CURLINFO_RESPONSE_CODE,&http_code);
+			curl_easy_getinfo(m_pCurl, CURLINFO_RESPONSE_CODE, &http_code);
 			m_Result.HttpCode = http_code;
 
-			if((http_code == 200 || http_code == 201 || http_code == 204)&& m_CurlRes != CURLE_ABORTED_BY_CALLBACK)
+			if ((http_code == 200 || http_code == 201 || http_code == 204) && m_CurlRes != CURLE_ABORTED_BY_CALLBACK)
 			{
 				//Success
-				LOG(INFO) << "Request " << Name.c_str() << " has ben successful with the HTTP code "<< http_code << "!";
-				if(Options.find("Image") != Options.end())
+				LOG(INFO) << "Request " << Name.c_str() << " has ben successful with the HTTP code " << http_code << "!";
+				if (Options.find("Image") != Options.end())
 				{
 					fclose(ftpfile.stream);
 					LOG(INFO) << "Closed image stream.";
@@ -278,11 +272,16 @@ namespace ChiikaApi
 
 			delete this; // ?
 		}
-		catch(Exception&)
+		catch (Exception&)
 		{
-			CHIKA_EXCEPTION(Exception::ERR_THREADING,"Boost thread failed to execute.","ThreadedRequest::Work")
+			CHIKA_EXCEPTION(Exception::ERR_THREADING, "Thread failed to execute.", "ThreadedRequest::Work")
 		}
-#pragma endregion
+
+	}
+	//----------------------------------------------------------------------------
+	ChiString ThreadedRequest::GetResponse()
+	{
+		return m_sBuffer;
 	}
 	//----------------------------------------------------------------------------
 	void ThreadedRequest::Join()
@@ -290,18 +289,24 @@ namespace ChiikaApi
 		m_pThread->join();
 	}
 	//----------------------------------------------------------------------------
+	void ThreadedRequest::Initialize()
+	{
+		CreateThread();
+	}
+	//----------------------------------------------------------------------------
 	void ThreadedRequest::OnWorkFinished(ChiString data)
 	{
-		if(m_Result.Code != RequestCodes::REQUEST_ERROR)
+		if (m_Result.Code != RequestCodes::REQUEST_ERROR)
 		{
-			ParsingManager::Get().Parse(this);
+			ParsingManager pr(this);
+			pr.Parse();
 		}
 		NotifyListeners();
 	}
 	//----------------------------------------------------------------------------
 	void ThreadedRequest::AddListener(RequestListener* listener)
 	{
-		if(listener)
+		if (listener)
 			m_vListeners.push_back(listener);
 	}
 	//----------------------------------------------------------------------------
@@ -309,9 +314,9 @@ namespace ChiikaApi
 	{
 		RequestListener* listener;
 		int index;
-		for(unsigned int i=0; i < m_vListeners.size(); i++)
+		for (unsigned int i = 0; i < m_vListeners.size(); i++)
 		{
-			if(m_vListeners[i] == l)
+			if (m_vListeners[i] == l)
 			{
 				listener = l;
 				index = i;
@@ -324,7 +329,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void ThreadedRequest::NotifyListeners()
 	{
-		for(unsigned int i=0; i < m_vListeners.size();i++)
+		for (unsigned int i = 0; i < m_vListeners.size(); i++)
 		{
 			m_vListeners[i]->Notify(this);
 		}
@@ -332,12 +337,27 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	RequestManager::RequestManager()
 	{
-		curl_global_init(CURL_GLOBAL_ALL);
+		
 	}
 	//----------------------------------------------------------------------------
 	RequestManager::~RequestManager()
 	{
+		
+	}
+	//----------------------------------------------------------------------------
+	void RequestManager::Initialize()
+	{
+		curl_global_init(CURL_GLOBAL_ALL);
+	}
+	//----------------------------------------------------------------------------
+	void RequestManager::Destroy()
+	{
 		curl_global_cleanup();
+	}
+	//----------------------------------------------------------------------------
+	void RequestManager::ProcessRequest(ThreadedRequest* request)
+	{
+		request->Initialize();		
 	}
 	//----------------------------------------------------------------------------
 	void RequestManager::CreateVerifyRequest(RequestListener* l)
@@ -361,18 +381,19 @@ namespace ChiikaApi
 
 		CurlConfigOptionMap options;
 
-		options.insert(CurlConfigOptionMap::value_type(url.Name,url));
-		options.insert(CurlConfigOptionMap::value_type(method.Name,method));
-		options.insert(CurlConfigOptionMap::value_type(userName.Name,userName));
-		options.insert(CurlConfigOptionMap::value_type(passWord.Name,passWord));
+		options.insert(CurlConfigOptionMap::value_type(url.Name, url));
+		options.insert(CurlConfigOptionMap::value_type(method.Name, method));
+		options.insert(CurlConfigOptionMap::value_type(userName.Name, userName));
+		options.insert(CurlConfigOptionMap::value_type(passWord.Name, passWord));
 
 
 		RequestThread r = CreateRequest;
-		r->SetParameters(options,"Verify");
 		r->AddListener(l);
+		r->SetParameters(options, "Verify");
+		r->Initialize();
 	}
 	//----------------------------------------------------------------------------
-	void RequestManager::CreateAnimeSearchRequest(RequestListener* l,ChiString keyword)
+	void RequestManager::CreateAnimeSearchRequest(RequestListener* l, ChiString keyword)
 	{
 		CurlConfigOption url;
 		CurlConfigOption method;
@@ -395,14 +416,15 @@ namespace ChiikaApi
 
 		CurlConfigOptionMap options;
 
-		options.insert(CurlConfigOptionMap::value_type(url.Name,url));
-		options.insert(CurlConfigOptionMap::value_type(method.Name,method));
-		options.insert(CurlConfigOptionMap::value_type(userName.Name,userName));
-		options.insert(CurlConfigOptionMap::value_type(passWord.Name,passWord));
+		options.insert(CurlConfigOptionMap::value_type(url.Name, url));
+		options.insert(CurlConfigOptionMap::value_type(method.Name, method));
+		options.insert(CurlConfigOptionMap::value_type(userName.Name, userName));
+		options.insert(CurlConfigOptionMap::value_type(passWord.Name, passWord));
 
 		RequestThread r = CreateRequest;
-		r->SetParameters(options,"SearchAnime");
+		r->SetParameters(options, "SearchAnime");
 		r->AddListener(l);
+		r->Initialize();
 	}
 	//----------------------------------------------------------------------------
 	void RequestManager::CreateGetAnimeListRequest(RequestListener* l)
@@ -424,21 +446,22 @@ namespace ChiikaApi
 		passWord.Name = "PassWord";
 		passWord.Value = LocalDataManager::Get().GetUserInfo().Pass;
 
-		url.Value = "http://myanimelist.net/malappinfo.php?u="+userName.Value+"&type=anime&status=all";
+		url.Value = "http://myanimelist.net/malappinfo.php?u=" + userName.Value + "&type=anime&status=all";
 
 		CurlConfigOptionMap options;
 
-		options.insert(CurlConfigOptionMap::value_type(url.Name,url));
-		options.insert(CurlConfigOptionMap::value_type(method.Name,method));
-		options.insert(CurlConfigOptionMap::value_type(userName.Name,userName));
-		options.insert(CurlConfigOptionMap::value_type(passWord.Name,passWord));
+		options.insert(CurlConfigOptionMap::value_type(url.Name, url));
+		options.insert(CurlConfigOptionMap::value_type(method.Name, method));
+		options.insert(CurlConfigOptionMap::value_type(userName.Name, userName));
+		options.insert(CurlConfigOptionMap::value_type(passWord.Name, passWord));
 
 		RequestThread r = CreateRequest;
-		r->SetParameters(options,"GetAnimeList");
+		r->SetParameters(options, "GetAnimeList");
 		r->AddListener(l);
+		r->Initialize();
 	}
 	//----------------------------------------------------------------------------
-	void RequestManager::CreateCRUDRequest(RequestListener* l,const UserAnimeEntry& anime,const MangaInfo& manga,CRUDOp operation,CRUDTarget target)
+	void RequestManager::CreateCRUDRequest(RequestListener* l, const UserAnimeEntry& anime, const MangaInfo& manga, CRUDOp operation, CRUDTarget target)
 	{
 		CurlConfigOption url;
 		CurlConfigOption method;
@@ -460,43 +483,43 @@ namespace ChiikaApi
 		xmlData.Name = "XML";
 
 		url.Name = "Url";
-		if(target == CRUDTarget::ANIME)
+		if (target == CRUDTarget::ANIME)
 		{
 			sTarget = "Anime";
 			xmlData.Value = GetAnimeXML(anime);
-			if(operation == CRUDOp::Create)
+			if (operation == CRUDOp::Create)
 			{
-				url.Value = "http://myanimelist.net/api/animelist/add/"+animeId+".xml";
+				url.Value = "http://myanimelist.net/api/animelist/add/" + animeId + ".xml";
 				op = "Create";
 			}
-			if(operation == CRUDOp::Update)
+			if (operation == CRUDOp::Update)
 			{
-				url.Value = "http://myanimelist.net/api/animelist/update/"+animeId+".xml";
+				url.Value = "http://myanimelist.net/api/animelist/update/" + animeId + ".xml";
 				op = "Update";
 			}
-			if(operation == CRUDOp::Delete)
+			if (operation == CRUDOp::Delete)
 			{
-				url.Value = "http://myanimelist.net/api/animelist/delete/"+animeId+".xml";
+				url.Value = "http://myanimelist.net/api/animelist/delete/" + animeId + ".xml";
 				op = "Delete";
 			}
 		}
-		if(target == CRUDTarget::MANGA)
+		if (target == CRUDTarget::MANGA)
 		{
 			sTarget = "Manga";
 			xmlData.Value = GetMangaXML(manga);
-			if(operation == CRUDOp::Create)
+			if (operation == CRUDOp::Create)
 			{
-				url.Value = "http://myanimelist.net/api/mangalist/add/"+mangaId+".xml";
+				url.Value = "http://myanimelist.net/api/mangalist/add/" + mangaId + ".xml";
 				op = "Create";
 			}
-			if(operation == CRUDOp::Update)
+			if (operation == CRUDOp::Update)
 			{
-				url.Value = "http://myanimelist.net/api/mangalist/update/"+mangaId+".xml";
+				url.Value = "http://myanimelist.net/api/mangalist/update/" + mangaId + ".xml";
 				op = "Update";
 			}
-			if(operation == CRUDOp::Delete)
+			if (operation == CRUDOp::Delete)
 			{
-				url.Value = "http://myanimelist.net/api/mangalist/delete/"+mangaId+".xml";
+				url.Value = "http://myanimelist.net/api/mangalist/delete/" + mangaId + ".xml";
 				op = "Delete";
 			}
 		}
@@ -510,17 +533,18 @@ namespace ChiikaApi
 
 		CurlConfigOptionMap options;
 
-		options.insert(CurlConfigOptionMap::value_type(url.Name,url));
-		options.insert(CurlConfigOptionMap::value_type(method.Name,method));
-		options.insert(CurlConfigOptionMap::value_type(userName.Name,userName));
-		options.insert(CurlConfigOptionMap::value_type(passWord.Name,passWord));
-		options.insert(CurlConfigOptionMap::value_type(xmlData.Name,xmlData));
+		options.insert(CurlConfigOptionMap::value_type(url.Name, url));
+		options.insert(CurlConfigOptionMap::value_type(method.Name, method));
+		options.insert(CurlConfigOptionMap::value_type(userName.Name, userName));
+		options.insert(CurlConfigOptionMap::value_type(passWord.Name, passWord));
+		options.insert(CurlConfigOptionMap::value_type(xmlData.Name, xmlData));
 
 		RequestThread r = CreateRequest;
-		r->SetParameters(options,op + sTarget);
+		r->SetParameters(options, op + sTarget);
 		r->m_Result.AnimeResult = anime;
 		r->m_Result.MangaResult = manga;
 		r->AddListener(l);
+		r->Initialize();
 	}
 	//----------------------------------------------------------------------------
 	void RequestManager::CreateGetMangaListRequest(RequestListener* l)
@@ -541,19 +565,20 @@ namespace ChiikaApi
 		passWord.Name = "PassWord";
 		passWord.Value = LocalDataManager::Get().GetUserInfo().Pass;
 
-		url.Value = "http://myanimelist.net/malappinfo.php?u="+userName.Value+"&type=manga&status=all";
+		url.Value = "http://myanimelist.net/malappinfo.php?u=" + userName.Value + "&type=manga&status=all";
 
 		CurlConfigOptionMap options;
 
-		options.insert(CurlConfigOptionMap::value_type(url.Name,url));
-		options.insert(CurlConfigOptionMap::value_type(method.Name,method));
-		options.insert(CurlConfigOptionMap::value_type(userName.Name,userName));
-		options.insert(CurlConfigOptionMap::value_type(passWord.Name,passWord));
+		options.insert(CurlConfigOptionMap::value_type(url.Name, url));
+		options.insert(CurlConfigOptionMap::value_type(method.Name, method));
+		options.insert(CurlConfigOptionMap::value_type(userName.Name, userName));
+		options.insert(CurlConfigOptionMap::value_type(passWord.Name, passWord));
 
 
 		RequestThread r = CreateRequest;
-		r->SetParameters(options,"GetMangaList");
+		r->SetParameters(options, "GetMangaList");
 		r->AddListener(l);
+		r->Initialize();
 	}
 	//----------------------------------------------------------------------------
 	void RequestManager::CreateAnilistRequest()
@@ -617,18 +642,19 @@ namespace ChiikaApi
 
 		CurlConfigOptionMap options;
 
-		options.insert(CurlConfigOptionMap::value_type(url.Name,url));
-		options.insert(CurlConfigOptionMap::value_type(method.Name,method));
-		options.insert(CurlConfigOptionMap::value_type(grant_typeOpt.Name,grant_typeOpt));
-		options.insert(CurlConfigOptionMap::value_type(client_idOpt.Name,client_idOpt));
-		options.insert(CurlConfigOptionMap::value_type(client_secretOp.Name,client_secretOp));
+		options.insert(CurlConfigOptionMap::value_type(url.Name, url));
+		options.insert(CurlConfigOptionMap::value_type(method.Name, method));
+		options.insert(CurlConfigOptionMap::value_type(grant_typeOpt.Name, grant_typeOpt));
+		options.insert(CurlConfigOptionMap::value_type(client_idOpt.Name, client_idOpt));
+		options.insert(CurlConfigOptionMap::value_type(client_secretOp.Name, client_secretOp));
 
 		RequestThread r = CreateRequest;
-		r->SetParameters(options,"AnilistAuth",RequestType::Anilist);
+		r->SetParameters(options, "AnilistAuth", RequestType::Anilist);
 		r->AddListener(l);
+		r->Initialize();
 	}
 	//----------------------------------------------------------------------------
-	void RequestManager::CreateAnilistSearchAnime(RequestListener* l,ChiString keyword)
+	void RequestManager::CreateAnilistSearchAnime(RequestListener* l, ChiString keyword)
 	{
 		CreateAnilistRequest();
 
@@ -646,16 +672,17 @@ namespace ChiikaApi
 
 		CurlConfigOptionMap options;
 
-		options.insert(CurlConfigOptionMap::value_type(url.Name,url));
-		options.insert(CurlConfigOptionMap::value_type(method.Name,method));
+		options.insert(CurlConfigOptionMap::value_type(url.Name, url));
+		options.insert(CurlConfigOptionMap::value_type(method.Name, method));
 
 
 		RequestThread r = CreateRequest;
-		r->SetParameters(options,"AnilistSearchAnime",RequestType::Anilist);
+		r->SetParameters(options, "AnilistSearchAnime", RequestType::Anilist);
 		r->AddListener(l);
+		r->Initialize();
 	}
 	//----------------------------------------------------------------------------
-	void RequestManager::CreateImageDownloadRequest(RequestListener* l,ChiString imageUrl,ChiString fileName,const UserAnimeEntry& anime)
+	void RequestManager::CreateImageDownloadRequest(RequestListener* l, ChiString imageUrl, ChiString fileName, const UserAnimeEntry& anime)
 	{
 		CurlConfigOption url;
 		CurlConfigOption method;
@@ -672,18 +699,18 @@ namespace ChiikaApi
 
 		CurlConfigOptionMap options;
 
-		options.insert(CurlConfigOptionMap::value_type(url.Name,url));
-		options.insert(CurlConfigOptionMap::value_type(method.Name,method));
-		options.insert(CurlConfigOptionMap::value_type(misc.Name,misc));
+		options.insert(CurlConfigOptionMap::value_type(url.Name, url));
+		options.insert(CurlConfigOptionMap::value_type(method.Name, method));
+		options.insert(CurlConfigOptionMap::value_type(misc.Name, misc));
 
 		RequestThread r = CreateRequest;
-		r->SetParameters(options,"ImageDownload");
+		r->SetParameters(options, "ImageDownload");
 		r->m_Result.AnimeResult = anime;
 		r->AddListener(l);
-
+		r->Initialize();
 	}
 	//----------------------------------------------------------------------------
-	void RequestManager::CreateAnimePageScrapeRequest(RequestListener* l,const UserAnimeEntry& anime)
+	void RequestManager::CreateAnimePageScrapeRequest(RequestListener* l, const UserAnimeEntry& anime)
 	{
 		CurlConfigOption url;
 		CurlConfigOption method;
@@ -702,15 +729,16 @@ namespace ChiikaApi
 
 		CurlConfigOptionMap options;
 
-		options.insert(CurlConfigOptionMap::value_type(url.Name,url));
-		options.insert(CurlConfigOptionMap::value_type(method.Name,method));
-		options.insert(CurlConfigOptionMap::value_type(misc.Name,misc));
-		options.insert(CurlConfigOptionMap::value_type(userAgent.Name,userAgent));
+		options.insert(CurlConfigOptionMap::value_type(url.Name, url));
+		options.insert(CurlConfigOptionMap::value_type(method.Name, method));
+		options.insert(CurlConfigOptionMap::value_type(misc.Name, misc));
+		options.insert(CurlConfigOptionMap::value_type(userAgent.Name, userAgent));
 
 		RequestThread r = CreateRequest;
-		r->SetParameters(options,"AnimeScrape");
+		r->SetParameters(options, "AnimeScrape");
 		r->AddListener(l);
 		r->m_Result.AnimeResult = anime;
+		r->Initialize();
 	}
 	//----------------------------------------------------------------------------
 	void RequestManager::CreateUserPageScrapeRequest(RequestListener* l)
@@ -736,14 +764,15 @@ namespace ChiikaApi
 
 		CurlConfigOptionMap options;
 
-		options.insert(CurlConfigOptionMap::value_type(url.Name,url));
-		options.insert(CurlConfigOptionMap::value_type(method.Name,method));
-		options.insert(CurlConfigOptionMap::value_type(misc.Name,misc));
-		options.insert(CurlConfigOptionMap::value_type(userAgent.Name,userAgent));
+		options.insert(CurlConfigOptionMap::value_type(url.Name, url));
+		options.insert(CurlConfigOptionMap::value_type(method.Name, method));
+		options.insert(CurlConfigOptionMap::value_type(misc.Name, misc));
+		options.insert(CurlConfigOptionMap::value_type(userAgent.Name, userAgent));
 
 		RequestThread r = CreateRequest;
-		r->SetParameters(options,"UserPageScrape");
+		r->SetParameters(options, "UserPageScrape");
 		r->AddListener(l);
+		r->Initialize();
 	}
 	//----------------------------------------------------------------------------
 	void RequestManager::CreateSenpaiMoeDataRequest(RequestListener* l)
@@ -762,18 +791,15 @@ namespace ChiikaApi
 
 		CurlConfigOptionMap options;
 
-		options.insert(CurlConfigOptionMap::value_type(url.Name,url));
-		options.insert(CurlConfigOptionMap::value_type(method.Name,method));
+		options.insert(CurlConfigOptionMap::value_type(url.Name, url));
+		options.insert(CurlConfigOptionMap::value_type(method.Name, method));
 
 		RequestThread r = CreateRequest;
-		r->SetParameters(options,"SenpaiMoeData");
+		r->SetParameters(options, "SenpaiMoeData");
 		r->AddListener(l);
+		r->Initialize();
 	}
 	//----------------------------------------------------------------------------
-	void RequestManager::CreateTestRequest(ThreadedRequest* r,CurlConfigOptionMap options)
-	{
-		r->SetParameters(options,"Test");
-	}
 	ChiString RequestManager::GetAnimeXML(const UserAnimeEntry& anime)
 	{
 		pugi::xml_document doc;
@@ -833,10 +859,10 @@ namespace ChiikaApi
 		decl.append_attribute("version") = "1.0";
 		decl.append_attribute("encoding") = "UTF-8";
 
-		SetXMLValue(status,MangaUserStatus::PlanToRead);
-		SetXMLValue(chapters,manga.ReadChapters);
-		SetXMLValue(volume,manga.ReadVolumes);
-		SetXMLValue(score,manga.Score);
+		SetXMLValue(status, MangaUserStatus::PlanToRead);
+		SetXMLValue(chapters, manga.ReadChapters);
+		SetXMLValue(volume, manga.ReadVolumes);
+		SetXMLValue(score, manga.Score);
 
 		ChiStringStream str;
 		doc.save(str);

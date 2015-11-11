@@ -15,6 +15,9 @@
 //----------------------------------------------------------------------------
 #ifndef __Required_h__
 #define __Required_h__
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
 //----------------------------------------------------------------------------
 #include "PlatformInformation.h"
 //----------------------------------------------------------------------------
@@ -38,6 +41,8 @@ namespace ChiikaApi
 	class AbstractNativeEventFilterHelper;
 	class MediaPlayerRecognitionManager;
 	class SeasonManager;
+	class ParserInerface;
+	class ParsingManager;
 
 	class MPRecognitionInterface;
 	class AnimeRecognition;

@@ -75,7 +75,7 @@ private:
     int severity;
 public:
     ~LogStream() {
-        ChiikaApi::LogManager::Get().LogMessage(this->str(),(ChiikaApi::LogMessageLevel)severity,false);
+        //ChiikaApi::LogManager::Get().LogMessage(this->str(),(ChiikaApi::LogMessageLevel)severity,false);
     }
 };
 #define INFO 0

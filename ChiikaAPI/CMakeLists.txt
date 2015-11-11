@@ -17,6 +17,7 @@ set(ChiikaApi_Common_Src
   Common/Stable.h
   Common/StdHeaders.h
   Common/UtilityDefines.h
+  Common/ApiVersion.h
   )
 source_group(ChiikaApi\\\\Common FILES ${ChiikaApi_Common_Src})
 
@@ -165,6 +166,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\Common) #This is for Vs2013 so 
 target_link_libraries(ChiikaApi libcurl)
 #Include CURL
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\curl\\include\\curl)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}\\ThirdParty\\curl\\include\\curl)
 
 #Jsoncpp
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\jsoncpp\\include\\json)

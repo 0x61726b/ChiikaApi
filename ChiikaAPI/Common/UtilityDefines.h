@@ -44,7 +44,9 @@
 #	define AddIntegerOption(x,y) AddToMap(MakePair(x,MakeShared<IntegerOption>(x,y)),m_Settings)
 #	define RequestThread ThreadedRequest*
 #	define CreateRequest  new ThreadedRequest
-
+#	define TryDelete(x) if(x) delete x
+#	define InitializeNULL(x) x = NULL
+#	define TryDestroy(x) if(x) x->Destroy();
 //----------------------------------------------------------------------------
 #endif // CHIIKAUTILITYDEFINES
 //----------------------------------------------------------------------------
