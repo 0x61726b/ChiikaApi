@@ -28,7 +28,10 @@ Some libraries are edited for enchanced use.
 
 ## Building
 
-To build this project,you will need [Cmake](https://cmake.org/)
+To build this project,you will need
+- [Cmake](https://cmake.org/)
+- MSVC ( Should be at least VS2013 Update 5 ) or GCC
+- OpenSSL or WinSSL if on Windows
 
 ```
 git clone https://github.com/arkenthera/ChiikaApi.git
@@ -46,3 +49,4 @@ BUILD_CURL_TESTS uncheck
 BUILD_STATIC_LIBS uncheck
 JSON_CPP_WITH_TESTS uncheck
 ```
+On Windows,you should turn off WinSSL or OpenSSL or you will get redefinitons errors.
