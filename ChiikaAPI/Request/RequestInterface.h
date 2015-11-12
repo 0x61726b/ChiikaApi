@@ -13,40 +13,24 @@
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
-#ifndef __RequestManager_h__
-#define __RequestManager_h__
-//----------------------------------------------------------------------------
-#include "Common/Required.h"
-#include "Common/Singleton.h"
+#include "Common\Required.h"
+#include "Request\CurlRequest.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-
-	//----------------------------------------------------------------------------
-	class MalApiExport RequestManagerBase
+	class MalApiExport RequestInterface
 	{
 	public:
-		virtual ~RequestManagerBase() { }
+		virtual void OnSuccess();
+		virtual void OnError();
 
-		virtual void ProcessRequest(ThreadedRequest*) = 0;
-	};
-	//----------------------------------------------------------------------------
-	class MalApiExport RequestManager : public Singleton<RequestManager>,public RequestManagerBase
-	{
-	public:
-		RequestManager();
-		virtual ~RequestManager();
+		virtual void Initialize() = 0;
+		virtual void SetOptions() = 0;
 
-		void Initialize();
-		void Destroy();
+		virtual void Initiate() = 0;
 
-		void ProcessRequest(ThreadedRequest*);
-
-		void VerifyUser(const UserInfo& info);
-
-		static RequestManager& Get();
-		static RequestManager* GetPtr();
+	protected:
+		ChiString m_sName;
+		CurlRequest m_Curl;
 	};
 }
-//----------------------------------------------------------------------------
-#endif

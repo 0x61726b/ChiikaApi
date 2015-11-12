@@ -111,7 +111,7 @@ namespace ChiikaApi
 		virtual UserInfo GetUserInfo() = 0;
 		virtual void SetUserInfo(UserInfo) = 0;
 	};
-	class MalApiExport LocalDataManager : public LocalDataInterface
+	class MalApiExport LocalDataManager : public Singleton<LocalDataManager>, public LocalDataInterface
 	{
 	public:
 
@@ -144,6 +144,9 @@ namespace ChiikaApi
 		void SaveSenpaiData();
 		void LoadSenpaiData();
 	public:
+
+	public:
+		void SaveAll();
 
 		void SetUserNamePass(ChiString userName, ChiString pass);
 

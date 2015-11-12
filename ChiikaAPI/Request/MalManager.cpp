@@ -46,21 +46,25 @@ namespace ChiikaApi
 
 	}
 	//----------------------------------------------------------------------------
-	void MalManager::AddAnimeList(const AnimeList& list)
+	void MalManager::AddAnimeList(const UserAnimeList& list)
 	{
-		std::mutex m;
-		std::lock_guard<std::mutex> guard(m);
-		std::unique_lock<std::mutex> l(m,std::try_to_lock);
+		CHIKA_AUTO_MUTEX_LOCK;
 
-		m_vAnimeList.clear();
-		m_vAnimeList = list;
+		m_vUserAnimeList.clear();
+		m_vUserAnimeList = list;
 
 	}
 	//----------------------------------------------------------------------------
-	void MalManager::AddAnimeUpdateList(const AnimeList& list)
+	void MalManager::AddAnimeList(AnimeList list)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			m_vAnimeUpdateList.clear();
+		m_vAnimeList.clear();
+		m_vAnimeList = list;
+	}
+	//----------------------------------------------------------------------------
+	void MalManager::AddAnimeUpdateList(const UserAnimeList& list)
+	{
+		CHIKA_AUTO_MUTEX_LOCK;
+		m_vAnimeUpdateList.clear();
 		m_vAnimeUpdateList= list;
 	}
 	//----------------------------------------------------------------------------
@@ -81,19 +85,19 @@ namespace ChiikaApi
 	void MalManager::AddAnime(const UserAnimeEntry& anime)
 	{
 		CHIKA_AUTO_MUTEX_LOCK
-			m_vAnimeList.insert(AnimeList::value_type(anime.Anime.Id,anime));
+			m_vUserAnimeList.insert(UserAnimeList::value_type(anime.Anime.Id,anime));
 	}
 	//----------------------------------------------------------------------------
 	void MalManager::AddAnimeToUpdates(const UserAnimeEntry& anime)
 	{
 		CHIKA_AUTO_MUTEX_LOCK
-			m_vAnimeUpdateList.insert(AnimeList::value_type(anime.Anime.Id,anime));
+			m_vAnimeUpdateList.insert(UserAnimeList::value_type(anime.Anime.Id,anime));
 	}
 	//----------------------------------------------------------------------------
 	void MalManager::DeleteAnime(const UserAnimeEntry& anime)
 	{
 		CHIKA_AUTO_MUTEX_LOCK
-			m_vAnimeList.erase(anime.Anime.Id);
+			m_vUserAnimeList.erase(anime.Anime.Id);
 	}
 	//----------------------------------------------------------------------------
 	void MalManager::DeleteAnimeFromUpdates(const UserAnimeEntry& anime)
@@ -105,7 +109,7 @@ namespace ChiikaApi
 	void MalManager::UpdateAnime(const UserAnimeEntry& anime)
 	{
 		CHIKA_AUTO_MUTEX_LOCK
-			AnimeList::iterator It = m_vAnimeList.find(anime.Anime.Id);
+			UserAnimeList::iterator It = m_vUserAnimeList.find(anime.Anime.Id);
 
 		//UserAnimeEntry copy = It->second;
 		//It->second = anime;
@@ -151,12 +155,12 @@ namespace ChiikaApi
 			It->second = manga;
 	}
 	//----------------------------------------------------------------------------
-	const AnimeList& MalManager::GetAnimeList() const
+	const UserAnimeList& MalManager::GetAnimeList() const
 	{
-		return m_vAnimeList;
+		return m_vUserAnimeList;
 	}
 	//----------------------------------------------------------------------------
-	const AnimeList& MalManager::GetAnimeUpdateList() const
+	const UserAnimeList& MalManager::GetAnimeUpdateList() const
 	{
 
 		return m_vAnimeUpdateList;
@@ -183,22 +187,22 @@ namespace ChiikaApi
 	{
 		CHIKA_AUTO_MUTEX_LOCK
 
-			AnimeListIt it = m_vAnimeList.find(Id);
-		if(it != m_vAnimeList.end())
+			AnimeListIt it = m_vUserAnimeList.find(Id);
+		if(it != m_vUserAnimeList.end())
 			return it->second;
 		else
 			return UserAnimeEntry();
 	}
 	//----------------------------------------------------------------------------
-	void MalManager::UpdateAnimeList(const AnimeList& list)
+	void MalManager::UpdateAnimeList(const UserAnimeList& list)
 	{
-		AnimeList copy = list;
+		UserAnimeList copy = list;
 		AnimeListIt it = copy.begin();
 		for(it; it != copy.end(); it++)
 		{
-			AnimeListIt f = m_vAnimeList.find(it->first);
+			AnimeListIt f = m_vUserAnimeList.find(it->first);
 
-			if(f != m_vAnimeList.end())
+			if(f != m_vUserAnimeList.end())
 			{
 				UpdateAnime(f->second);
 			}

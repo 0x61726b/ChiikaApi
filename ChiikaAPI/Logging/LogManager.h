@@ -51,8 +51,8 @@ namespace ChiikaApi
 			bool maskDebug = false);
 
 		void LogMessage(LogMessageLevel lml, const ChiString& message,
-			bool maskDebug = false) {
-			Log(message, lml, maskDebug);
+			bool maskDebug) {
+			Log(message,true,false);
 		}
 
         Log::Stream stream(LogMessageLevel lml = LOG_LEVEL_INFO,
@@ -75,12 +75,12 @@ private:
     int severity;
 public:
     ~LogStream() {
-        //ChiikaApi::LogManager::Get().LogMessage(this->str(),(ChiikaApi::LogMessageLevel)severity,false);
+        ChiikaApi::LogManager::Get().LogMessage(this->str(),(ChiikaApi::LogMessageLevel)severity,false);
     }
 };
 #define INFO 0
 #define WARNING 1
-#define ERROR 2
+#define ERROR_ 2
 #define Bore 42 //Will log no matter what
 
 #define LOGD LogDebugStream()

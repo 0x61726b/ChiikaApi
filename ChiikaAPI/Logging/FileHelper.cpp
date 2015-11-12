@@ -92,7 +92,11 @@ namespace ChiikaApi
 	{
 		if(CheckIfDirectoryExists(path))
 			return false;
-		return CreateDirectory(path.c_str(),NULL);
+		if(CreateDirectory(path.c_str(),NULL))
+			return true;
+		else 
+			return false;
+		return false;
 	}
 	//----------------------------------------------------------------------------
 	template<> FileUtil* Singleton<FileUtil>::msSingleton = 0;

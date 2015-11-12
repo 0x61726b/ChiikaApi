@@ -69,6 +69,8 @@
 #include <thread>
 #include <mutex>
 
+#include <type_traits>
+
 #ifdef __BORLANDC__
 namespace ChiikaApi
 {

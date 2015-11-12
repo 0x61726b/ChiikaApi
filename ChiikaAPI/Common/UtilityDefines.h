@@ -22,7 +22,7 @@
 #	define Q_(x) /*ChiString::fromStdChiString(x)*/
 #	define FromStdToInt(x) /*ChiString::fromStdChiString(x).toInt()*/
 #	define FromXMLValueToInt(x) atoi(x.text().get()) /*ChiString::fromStdChiString(x.text().get()).toInt()*/
-#	define FromXMLValueToFloat(x) atof(x.text().get()) /* ChiString::fromStdChiString(x.text().get()).toFloat()*/
+#	define FromXMLValueToFloat(x) atof(x.text().get())
 #	define FromXMLValueToStd(x)  x.text().get()
 #	define JsToQ(x) (x.asString())
 #	define SetXMLValue(x,y) x.text().set(y)

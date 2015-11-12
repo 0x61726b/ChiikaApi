@@ -60,16 +60,21 @@ namespace ChiikaApi
 	SenpaiItem SeasonManager::GetSenpaiDataFromMalId(int malid)
 	{
 		SenpaiData::iterator It = m_SenpaiData.begin();
+		SenpaiItem si;
 		ForEachOnStd(It,m_SenpaiData)
 		{
 			if(It->MalID == malid)
-				return *It;
+			{
+				si = *It;
+				break;
+			}
 		}
+		return si;
 	}
 	//----------------------------------------------------------------------------
 	SenpaiData SeasonManager::GetSenpaiData()
 	{
-		AnimeList list = MalManager::Get().GetAnimeList();
+		UserAnimeList list = MalManager::Get().GetAnimeList();
 
 		SenpaiData sd;
 

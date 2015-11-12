@@ -14,10 +14,12 @@
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
 #include "Root\Root.h"
+#include "Request\RequestManager.h"
+#include "Request\GetAnimeList.h"
 //----------------------------------------------------------------------------
 using namespace ChiikaApi;
 std::string SearchKeywordAnime = "Oregairu";
-std::string testUserName = "chiikatestacc1";
+std::string testUserName = "xxx";
 std::string testPass = "chiikatest%&";
 
 int main()
@@ -31,18 +33,24 @@ int main()
 
 	Root r;
 	r.Initialize(dir);
-	UserInfo ui;
-	ui.UserName = testUserName;
-	ui.Pass = testPass;
-	r.SetUserInfo(ui);
-
-	r.RequestUserAnimeList();
-
 	
+	//GetAnimeListRequest req;
+	//req.Initialize();
+	//req.SetOptions();
+	//req.Initiate();
+
+
+
+
+
+
+
 
 	while(true)
 	{
 
 	}
+	r.Destroy();
+
     return 0;
 }

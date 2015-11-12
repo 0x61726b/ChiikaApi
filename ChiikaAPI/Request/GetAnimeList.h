@@ -1,5 +1,5 @@
 //----------------------------------------------------------------------------
-//Chiika
+//Chiika Api
 //Copyright (C) 2015  Alperen Gezer
 //This program is free software; you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -13,15 +13,21 @@
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
-#ifndef __ChiikaConfig_h__
-#define __ChiikaConfig_h__
-//----------------------------------------------------------------------------
-//#define CHIIKA_STD_CONTAINERS_CUSTOM_MEMORY_ALLOCATOR
-#define CHIIKA_MEMORY_ALLOCATOR_STD 1
-#define CHIIKA_MEMORY_ALLOCATOR_NEEDPOOLING 4
-#define CHIIKA_MEMORY_ALLOCATOR 1
-#define CHIIKA_DEBUG_MODE
-#define CHIIKA_NUM_THREADS 4
-//----------------------------------------------------------------------------
-#endif // CHIIKADEFINES
+#include "Common\Required.h"
+#include "RequestInterface.h"
+//---------------------------------------------------------------------------
+namespace ChiikaApi
+{
+	class MalApiExport GetAnimeListRequest : public RequestInterface,public CurlEventListener
+	{
+	public:
+		GetAnimeListRequest();
+		virtual ~GetAnimeListRequest();
+		void OnSuccess();
+		void OnError() ;
 
+		void Initialize();
+		void Initiate();
+		void SetOptions();
+	};
+}

@@ -116,7 +116,8 @@ namespace ChiikaApi
 			pugi::xml_node  root = doc.child("Chiika");
 			pugi::xml_node  myanimelist = root.child("MyAnimeList");
 
-			ChiikaApi::AnimeList list;
+			UserAnimeList list;
+			ChiikaApi::AnimeList animeList;
 			for (pugi::xml_node anime = myanimelist.child("anime"); anime; anime = anime.next_sibling())
 			{
 
@@ -151,6 +152,7 @@ namespace ChiikaApi
 				Anime.StartDate = FromXMLValueToStd(series_start);
 				Anime.EndDate = FromXMLValueToStd(series_end);
 				Anime.Image = FromXMLValueToStd(series_image);
+				animeList.insert(ChiikaApi::AnimeList::value_type(Anime.Id,Anime));
 
 				UserAnimeEntry info;
 				info.WatchedEpisodes = FromXMLValueToInt(my_watched_episodes);
@@ -163,14 +165,10 @@ namespace ChiikaApi
 				info.Rewatching = FromXMLValueToInt(my_rewatching);
 				info.RewatchingEp = FromXMLValueToInt(my_rewatching_ep);
 				info.LastUpdated = FromXMLValueToStd(my_last_updated);
-				list.insert(AnimeList::value_type(Anime.Id, info));
+				list.insert(UserAnimeList::value_type(Anime.Id, info));
 			}
 			MalManager::Get().AddAnimeList(list);
-			//LOG("Anime list loaded succesfully!")
-
-
-			//LOG("Loading animelist took " + ChiString::number(stopwatch.GetDuration()) +" micro seconds");
-
+			MalManager::Get().AddAnimeList(animeList);
 		}
 		else
 		{
@@ -191,8 +189,8 @@ namespace ChiikaApi
 			pugi::xml_node  root = doc.append_child("Chiika");
 			pugi::xml_node  MAL = root.append_child("MyAnimeList");
 
-			ChiikaApi::AnimeList list = MalManager::Get().GetAnimeList();
-			ChiikaApi::AnimeList::iterator It;
+			ChiikaApi::UserAnimeList list = MalManager::Get().GetAnimeList();
+			ChiikaApi::UserAnimeList::iterator It;
 			for (It = list.begin(); It != list.end(); ++It)
 			{
 				UserAnimeEntry Anime = It->second;
@@ -241,9 +239,6 @@ namespace ChiikaApi
 			}
 			doc.save_file(dataFile.c_str());
 			file.Close();
-			//LOG("Anime list saved succesfully!")
-
-			//LOG("Saving animelist took " + ChiString::number(st.GetDuration()) +" micro seconds");
 		}
 		else
 		{
@@ -448,12 +443,12 @@ namespace ChiikaApi
 			ChiikaApi::UserInfo ui;
 			ui.UserName = FromXMLValueToStd(userName);
 			ui.Pass = FromXMLValueToStd(pass);
-			ui.UserAnimeEntry.Watching = FromXMLValueToInt(watching);
-			ui.UserAnimeEntry.Completed = FromXMLValueToInt(Completed);
-			ui.UserAnimeEntry.OnHold = FromXMLValueToInt(OnHold);
-			ui.UserAnimeEntry.Dropped = FromXMLValueToInt(Dropped);
-			ui.UserAnimeEntry.PlanToWatch = FromXMLValueToInt(PlanToWatch);
-			ui.UserAnimeEntry.DaySpentAnime = FromXMLValueToFloat(DaySpentAnime);
+			ui.AnimeStats.Watching = FromXMLValueToInt(watching);
+			ui.AnimeStats.Completed = FromXMLValueToInt(Completed);
+			ui.AnimeStats.OnHold = FromXMLValueToInt(OnHold);
+			ui.AnimeStats.Dropped = FromXMLValueToInt(Dropped);
+			ui.AnimeStats.PlanToWatch = FromXMLValueToInt(PlanToWatch);
+			ui.AnimeStats.DaySpentAnime = FromXMLValueToFloat(DaySpentAnime);
 
 			ui.MangaInfo.Reading = FromXMLValueToInt(Reading);
 			ui.MangaInfo.Completed = FromXMLValueToInt(Read);
@@ -506,12 +501,12 @@ namespace ChiikaApi
 
 			userName.text().set(m_UserDetailedInfo.UserName.c_str());
 			pass.text().set(m_UserDetailedInfo.Pass.c_str());
-			watching.text().set(m_UserDetailedInfo.UserAnimeEntry.Watching);
-			Completed.text().set(m_UserDetailedInfo.UserAnimeEntry.Completed);
-			OnHold.text().set(m_UserDetailedInfo.UserAnimeEntry.OnHold);
-			Dropped.text().set(m_UserDetailedInfo.UserAnimeEntry.Dropped);
-			PlanToWatch.text().set(m_UserDetailedInfo.UserAnimeEntry.PlanToWatch);
-			DaySpentAnime.text().set(m_UserDetailedInfo.UserAnimeEntry.DaySpentAnime);
+			watching.text().set(m_UserDetailedInfo.AnimeStats.Watching);
+			Completed.text().set(m_UserDetailedInfo.AnimeStats.Completed);
+			OnHold.text().set(m_UserDetailedInfo.AnimeStats.OnHold);
+			Dropped.text().set(m_UserDetailedInfo.AnimeStats.Dropped);
+			PlanToWatch.text().set(m_UserDetailedInfo.AnimeStats.PlanToWatch);
+			DaySpentAnime.text().set(m_UserDetailedInfo.AnimeStats.DaySpentAnime);
 
 			Reading.text().set(m_UserDetailedInfo.MangaInfo.Reading);
 			Read.text().set(m_UserDetailedInfo.MangaInfo.Completed);
@@ -552,7 +547,7 @@ namespace ChiikaApi
 			pugi::xml_node  root = doc.child("Chiika");
 			pugi::xml_node  updateList = root.child("UpdateList");
 #pragma region AnimeList
-			ChiikaApi::AnimeList list;
+			ChiikaApi::UserAnimeList list;
 			for (pugi::xml_node anime = updateList.child("anime"); anime; anime = anime.next_sibling())
 			{
 
@@ -601,7 +596,7 @@ namespace ChiikaApi
 				info.Rewatching = FromXMLValueToInt(my_rewatching);
 				info.RewatchingEp = FromXMLValueToInt(my_rewatching_ep);
 				info.LastUpdated = FromXMLValueToStd(my_last_updated);
-				list.insert(AnimeList::value_type(Anime.Id, info));
+				list.insert(UserAnimeList::value_type(Anime.Id, info));
 			}
 			MalManager::Get().AddAnimeUpdateList(list);
 #pragma endregion
@@ -686,8 +681,8 @@ namespace ChiikaApi
 
 #pragma region Anime
 
-			ChiikaApi::AnimeList list = MalManager::Get().GetAnimeUpdateList();
-			AnimeList::iterator It;
+			ChiikaApi::UserAnimeList list = MalManager::Get().GetAnimeUpdateList();
+			UserAnimeList::iterator It;
 			for (It = list.begin(); It != list.end(); ++It)
 			{
 				UserAnimeEntry Anime = It->second;
@@ -835,13 +830,13 @@ namespace ChiikaApi
 				pugi::xml_node  ranked = anime.child("Ranked");
 				pugi::xml_node  popularity = anime.child("Popularity");
 
-				std::vector<ChiString> vTags;
+				StringVector vTags;
 				for (pugi::xml_node tag = tags.child("Tag"); tag; tag = tag.next_sibling())
 				{
 					vTags.push_back(tag.text().get());
 				}
 
-				std::vector<ChiString> vProducers;
+				StringVector vProducers;
 				for (pugi::xml_node producer = producers.child("Producer"); producer; producer = producer.next_sibling())
 				{
 					vProducers.push_back(producer.text().get());
@@ -861,12 +856,12 @@ namespace ChiikaApi
 					stats.Ranked = atoi(ranked.text().get());
 					stats.Score = atof(score.text().get());
 
-					for (int i = 0; i < vTags.size(); i++)
+					for (StringVectorSize i = 0; i < vTags.size(); i++)
 					{
 						ChiString tag = vTags[i];
 						details.Tags.push_back(tag);
 					}
-					for (int i = 0; i < vProducers.size(); i++)
+					for (StringVectorSize i = 0; i < vProducers.size(); i++)
 					{
 						ChiString producer = vProducers[i];
 						details.Producers.push_back(producer);
@@ -894,8 +889,8 @@ namespace ChiikaApi
 			pugi::xml_node  root = doc.append_child("Chiika");
 			pugi::xml_node  MAL = root.append_child("AnimeDetails");
 
-			ChiikaApi::AnimeList list = MalManager::Get().GetAnimeList();
-			ChiikaApi::AnimeList::iterator It;
+			ChiikaApi::UserAnimeList list = MalManager::Get().GetAnimeList();
+			ChiikaApi::UserAnimeList::iterator It;
 			for (It = list.begin(); It != list.end(); ++It)
 			{
 				UserAnimeEntry Anime = It->second;
@@ -924,7 +919,7 @@ namespace ChiikaApi
 				SetXMLValue(ranked, Statistics.Ranked);
 				SetXMLValue(popularity, Statistics.Popularity);
 
-				for (int i = 0; i < Details.Producers.size(); i++)
+				for (StringVectorSize i = 0; i < Details.Producers.size(); i++)
 				{
 					ChiString p = Details.Producers[i];
 					pugi::xml_node pNode = producers.append_child("Producer");
@@ -932,7 +927,7 @@ namespace ChiikaApi
 				}
 
 
-				for (int i = 0; i < Details.Tags.size(); i++)
+				for (StringVectorSize i = 0; i < Details.Tags.size(); i++)
 				{
 					ChiString tag = Details.Tags[i];
 					pugi::xml_node  tagNode = tags.append_child("Tag");
@@ -1171,6 +1166,16 @@ namespace ChiikaApi
 		m_SenpaiLoader->Load();
 	}
 	//----------------------------------------------------------------------------
+	void LocalDataManager::SaveAll()
+	{
+		m_AnimeLoader->Save();
+		m_MangaLoader->Save();
+		m_UserInfoLoader->Save();
+		m_UpdateListLoader->Save();
+		m_AnimeDetailsLoader->Save();
+		m_SenpaiLoader->Save();
+	}
+	//----------------------------------------------------------------------------
 	void LocalDataManager::SetUserInfo(UserInfo i)
 	{
 		m_UserDetailedInfo = i;
@@ -1183,7 +1188,7 @@ namespace ChiikaApi
 		return m_UserDetailedInfo;
 	}
 	//----------------------------------------------------------------------------
-	LocalDataManager* msSingleton = 0;
+	template<> LocalDataManager* Singleton<LocalDataManager>::msSingleton = 0;
 	LocalDataManager& LocalDataManager::Get(void)
 	{
 		/*assert(msSingleton); */ return (*msSingleton);

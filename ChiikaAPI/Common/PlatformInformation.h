@@ -17,6 +17,7 @@
 #define __ChiikaPlatformInformation_h__
 //----------------------------------------------------------------------------
 #include "Common/Config.h"
+//----------------------------------------------------------------------------
 namespace ChiikaApi
 {
 	//--------------------------------------------------------------------------------
@@ -182,6 +183,21 @@ namespace ChiikaApi
 	#endif
 
 	#define YUME_SIMD_ALIGNED_DECL(type, var)   YUME_ALIGNED_DECL(type, var, YUME_SIMD_ALIGNMENT)
+
+	#define _CRT_SECURE_NO_WARNINGS
+	#define _SCL_SECURE_NO_WARNINGS
+
+	#if YUME_PLATFORM == YUME_PLATFORM_WIN32
+
+		//Long std templates
+		#pragma warning (disable : 4786)
+		#pragma warning (disable : 4503)
+		//Templates might be requiring DLL-Linkage,not everything is public MSVC !!
+		#pragma warning(disable:4251)
+		#pragma warning (disable : 4275)
+		#pragma warning (disable : 4100)
+
+	#endif
 }
 
 //----------------------------------------------------------------------------

@@ -62,6 +62,7 @@ namespace ChiikaApi
 				return It->first;
 			}
 		}
+		return OptionsEnum::UNKNOWN;
 	}
 }
 //----------------------------------------------------------------------------
@@ -398,7 +399,7 @@ namespace ChiikaApi
 
 					OptionsType type;
 
-					if(nodeAttr == "ChiString")
+					if(nodeAttr == "String")
 					{
 						type = OptionsType::Str;
 					}

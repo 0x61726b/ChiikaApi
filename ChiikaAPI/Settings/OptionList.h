@@ -29,6 +29,7 @@ namespace ChiikaApi
 	*/
 	enum OptionsEnum
 	{
+		UNKNOWN,
 		/* Api Settings*/
 		API_LOG_LEVEL,
 		/* Library Setttings*/

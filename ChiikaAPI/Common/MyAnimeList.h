@@ -141,9 +141,9 @@ namespace ChiikaApi
 	struct AnimeDetails
 	{
 		ChiString Synopsis;
-		std::vector<ChiString> Tags;
+		StringVector Tags;
 		ChiString Premiered;
-		std::vector<ChiString> Producers;
+		StringVector Producers;
 		ChiString DurationPerEpisode;
 
 		AnimeDetails()
@@ -153,7 +153,7 @@ namespace ChiikaApi
 	};
 	struct AnimeStatistics
 	{
-		float Score;
+		double Score;
 		int Ranked;
 		int Popularity;
 
@@ -307,23 +307,24 @@ namespace ChiikaApi
 
 
 #pragma region User
-	typedef struct _UserUserAnimeEntry
+	struct UserAnimeStats
 	{
 		int Watching;
 		int Completed;
 		int OnHold;
 		int Dropped;
 		int PlanToWatch;
-		float DaySpentAnime;
-		_UserUserAnimeEntry()
+		double DaySpentAnime;
+		UserAnimeStats()
 		{
 			Watching = 0;
 			Completed = 0;
 			Dropped = 0;
 			PlanToWatch = 0;
-			DaySpentAnime = 0.0f;
+			OnHold = 0;
+			DaySpentAnime = 0.0;
 		}
-	} UserUserAnimeEntry;
+	} ;
 	typedef struct _UserMangaInfo
 	{
 		int Reading;
@@ -331,7 +332,7 @@ namespace ChiikaApi
 		int OnHold;
 		int Dropped;
 		int PlanToRead;
-		float DaysSpentReading;
+		double DaysSpentReading;
 
 		_UserMangaInfo()
 		{
@@ -340,7 +341,7 @@ namespace ChiikaApi
 			OnHold = 0;
 			Dropped = 0;
 			PlanToRead = 0;
-			DaysSpentReading = 0.0f;
+			DaysSpentReading = 0.0;
 		}
 	} UserMangaInfo;
 
@@ -351,7 +352,7 @@ namespace ChiikaApi
 		ChiString Pass;
 		ChiString ImageLink;
 
-		UserUserAnimeEntry UserAnimeEntry;
+		UserAnimeStats AnimeStats;
 		UserMangaInfo MangaInfo;
 
 		static int UnknownUser;
@@ -365,6 +366,18 @@ namespace ChiikaApi
 		}
 	};
 #pragma endregion
+
+	typedef Map<int,UserAnimeEntry>::type UserAnimeList;
+
+	typedef Map<int,MangaInfo>::type MangaList;
+
+	typedef UserAnimeList::iterator AnimeListIt;
+
+	typedef Map<int,Anime>::type AnimeList;
+
+	typedef MangaList::iterator MangaListIt;
+
+	typedef MultiMap<ChiString,CurlConfigOption>::type CurlConfigOptionMap;
 }
 
 //----------------------------------------------------------------------------

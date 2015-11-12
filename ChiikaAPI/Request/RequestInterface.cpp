@@ -13,40 +13,29 @@
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
-#ifndef __RequestManager_h__
-#define __RequestManager_h__
-//----------------------------------------------------------------------------
-#include "Common/Required.h"
-#include "Common/Singleton.h"
+#include "Stable.h"
+#include "RequestInterface.h"
+#include "Database\LocalDataManager.h"
+#include "Logging\LogManager.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-
 	//----------------------------------------------------------------------------
-	class MalApiExport RequestManagerBase
+	void RequestInterface::OnSuccess()
 	{
-	public:
-		virtual ~RequestManagerBase() { }
-
-		virtual void ProcessRequest(ThreadedRequest*) = 0;
-	};
+		LocalDataManager::Get().SaveAll();
+	}
 	//----------------------------------------------------------------------------
-	class MalApiExport RequestManager : public Singleton<RequestManager>,public RequestManagerBase
+	void RequestInterface::OnError()
 	{
-	public:
-		RequestManager();
-		virtual ~RequestManager();
+		//
+		int error = m_Curl.GetRequestResult();
 
-		void Initialize();
-		void Destroy();
+		if( error & RequestCodes::UNAUTHORIZED )
+		{
+			LOG(INFO) << "Authorization error.";
+		}
 
-		void ProcessRequest(ThreadedRequest*);
-
-		void VerifyUser(const UserInfo& info);
-
-		static RequestManager& Get();
-		static RequestManager* GetPtr();
-	};
+		//ToDo(arkenthera): Implements others sometime.
+	}
 }
-//----------------------------------------------------------------------------
-#endif

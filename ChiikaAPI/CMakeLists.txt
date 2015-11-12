@@ -88,6 +88,14 @@ set(ChiikaApi_Request_Src
   Request/ParsingManager.h
   Request/RequestManager.cpp
   Request/RequestManager.h
+  Request/RequestInterface.h
+  Request/RequestInterface.cpp
+  Request/CurlRequest.h
+  Request/CurlRequest.cpp
+  Request/AccountVerify.h
+  Request/AccountVerify.cpp
+  Request/GetAnimeList.h
+  Request/GetAnimeList.cpp
   )
 source_group(ChiikaApi\\\\Request FILES ${ChiikaApi_Request_Src})
 

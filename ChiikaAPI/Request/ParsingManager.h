@@ -32,7 +32,7 @@ namespace ChiikaApi
 	class MalApiExport ParsingManager : public Singleton<ParsingManager>,public ParserInterface
 	{
 	public:
-		bool ParseVerifyRequest(const ChiString& data);
+		/*bool ParseVerifyRequest(const ChiString& data);
 		AnimeList ParseSearchResult(const ChiString& data);
 		AnimeList ParseGetUserAnimeList(const ChiString& data);
 		MangaList ParseGetUserMangaList(const ChiString& data);
@@ -46,15 +46,15 @@ namespace ChiikaApi
 		ThreadedRequest* m_pRequest;
 
 		void ParseSenpai(const ChiString& data);
-
+*/
 		ParsingManager(ThreadedRequest*);
-		
+		//
 
-		std::vector<ChiString> GetItemsSeperatedBy(ChiString data,ChiString seperator);
-		ChiString ParseWebPage(ChiString data,ChiString searchStart,ChiString searchEnd);
-		ChiString RemoveLink(ChiString data);
-		ChiString RemoveHTMLElements(ChiString data);
-		bool CheckValidLink(ChiString s);
+		//std::vector<ChiString> GetItemsSeperatedBy(ChiString data,ChiString seperator);
+		//ChiString ParseWebPage(ChiString data,ChiString searchStart,ChiString searchEnd);
+		//ChiString RemoveLink(ChiString data);
+		//ChiString RemoveHTMLElements(ChiString data);
+		//bool CheckValidLink(ChiString s);
 		//Singleton Interface
 	public:
 		static ParsingManager& Get();

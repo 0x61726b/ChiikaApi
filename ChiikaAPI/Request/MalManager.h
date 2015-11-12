@@ -31,8 +31,9 @@ namespace ChiikaApi
 
 		
 
-		void AddAnimeList(const AnimeList& list);
-		void AddAnimeUpdateList(const AnimeList& list);
+		void AddAnimeList(const UserAnimeList& list);
+		void AddAnimeUpdateList(const UserAnimeList& list);
+		void AddAnimeList(AnimeList list);
 
 		void AddMangaList(const MangaList& list);
 		void AddMangaUpdateList(const MangaList& list);
@@ -44,7 +45,7 @@ namespace ChiikaApi
 		void DeleteAnime(const UserAnimeEntry& anime);
 		void UpdateAnime(const UserAnimeEntry& anime);
 
-		void UpdateAnimeList(const AnimeList& list);
+		void UpdateAnimeList(const UserAnimeList& list);
 
 		void AddManga(const MangaInfo& anime);
 		void AddMangaToUpdates(const MangaInfo& anime);
@@ -54,8 +55,8 @@ namespace ChiikaApi
 		void UpdateManga(const MangaInfo& anime);
 
 
-		const AnimeList& GetAnimeList() const;
-		const AnimeList& GetAnimeUpdateList() const;
+		const UserAnimeList& GetAnimeList() const;
+		const UserAnimeList& GetAnimeUpdateList() const;
 
 		const MangaList& GetMangaList() const;
 		const MangaList& GetMangaUpdateList() const;
@@ -71,8 +72,10 @@ namespace ChiikaApi
 		static MalManager* GetPtr();
 
 	private:
-		AnimeList m_vAnimeList;
-		AnimeList m_vAnimeUpdateList;
+		UserAnimeList m_vUserAnimeList;
+		AnimeList	  m_vAnimeList;
+
+		UserAnimeList m_vAnimeUpdateList;
 
 		MangaList m_vMangaList;
 		MangaList m_vMangaUpdateList;

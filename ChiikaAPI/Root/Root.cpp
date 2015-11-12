@@ -96,51 +96,13 @@ namespace ChiikaApi
 	{
 		TryDelete(m_pSettings);
 		TryDelete(m_pMalManager);
+
 		TryDestroy(m_pRequestManager);
 		TryDelete(m_pRequestManager);
+
 		TryDelete(m_pLogManager);
 		TryDelete(m_pLocalData);
 		TryDelete(m_pRecognizer);
-	}
-	//----------------------------------------------------------------------------
-	void Root::SetAnimeFolderPath(ChiString path)
-	{
-		AppSettings::Get().SetAnimeFolderPath(path);
-	}
-	//----------------------------------------------------------------------------
-	ChiString Root::GetAnimeFolderPath()
-	{
-		return AppSettings::Get().GetChiStringOption(LIBRARY_ANIME_FOLDER_PATH);
-	}
-	//----------------------------------------------------------------------------
-	ChiString Root::GetDataPath()
-	{
-		return AppSettings::Get().GetDataPath();
-	}
-	//----------------------------------------------------------------------------
-	ChiString Root::GetImageFolderPath()
-	{
-		return AppSettings::Get().GetImagePath();
-	}
-	//----------------------------------------------------------------------------
-	const UserInfo& Root::GetUserInfo() const
-	{
-		return m_pLocalData->GetUserInfo();
-	}
-	//----------------------------------------------------------------------------
-	void Root::SearchAnime(const ChiString& name)
-	{
-		m_pRequestManager->CreateAnimeSearchRequest(this,name);
-	}
-	//----------------------------------------------------------------------------
-	void Root::SearchManga(const ChiString& name)
-	{
-
-	}
-	//----------------------------------------------------------------------------
-	void Root::VerifyUserLogin()
-	{
-		m_pRequestManager->CreateVerifyRequest(this);
 	}
 	//----------------------------------------------------------------------------
 	void Root::PostRequest(RequestManager* rm,ThreadedRequest* r)
@@ -150,26 +112,26 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void Root::AddAnimeToList(const UserAnimeEntry& info)
 	{
-		UserAnimeEntry anime = info;
-		anime.UpdateOperation = CRUDOp::Create;
-		m_pMalManager->AddAnimeToUpdates(anime);
-		m_pRequestManager->CreateCRUDRequest(this,anime,MangaInfo(),ChiikaApi::CRUDOp::Create,CRUDTarget::ANIME);
+		//UserAnimeEntry anime = info;
+		//anime.UpdateOperation = CRUDOp::Create;
+		//m_pMalManager->AddAnimeToUpdates(anime);
+		//m_pRequestManager->CreateCRUDRequest(this,anime,MangaInfo(),ChiikaApi::CRUDOp::Create,CRUDTarget::ANIME);
 	}
 	//----------------------------------------------------------------------------
 	void Root::UpdateAnime(const UserAnimeEntry& info)
 	{
-		UserAnimeEntry anime = info;
-		anime.UpdateOperation = CRUDOp::Update;
-		m_pMalManager->AddAnimeToUpdates(anime);
-		m_pRequestManager->CreateCRUDRequest(this,info,MangaInfo(),ChiikaApi::CRUDOp::Update,CRUDTarget::ANIME);
+		//UserAnimeEntry anime = info;
+		//anime.UpdateOperation = CRUDOp::Update;
+		//m_pMalManager->AddAnimeToUpdates(anime);
+		//m_pRequestManager->CreateCRUDRequest(this,info,MangaInfo(),ChiikaApi::CRUDOp::Update,CRUDTarget::ANIME);
 	}
 	//----------------------------------------------------------------------------
 	void Root::DeleteAnime(const UserAnimeEntry& info)
 	{
-		UserAnimeEntry anime = info;
-		anime.UpdateOperation = CRUDOp::Delete;
-		m_pMalManager->AddAnimeToUpdates(anime);
-		m_pRequestManager->CreateCRUDRequest(this,info,MangaInfo(),ChiikaApi::CRUDOp::Delete,CRUDTarget::ANIME);
+		//UserAnimeEntry anime = info;
+		//anime.UpdateOperation = CRUDOp::Delete;
+		//m_pMalManager->AddAnimeToUpdates(anime);
+		//m_pRequestManager->CreateCRUDRequest(this,info,MangaInfo(),ChiikaApi::CRUDOp::Delete,CRUDTarget::ANIME);
 	}
 	//----------------------------------------------------------------------------
 	void Root::AddMangaToList(const MangaInfo& info)
@@ -182,86 +144,87 @@ namespace ChiikaApi
 
 	}
 	//----------------------------------------------------------------------------
-	void Root::DeleteManga(const MangaInfo& info)
-	{
+	//----------------------------------------------------------------------------
+	//void Root::DeleteManga(const MangaInfo& info)
+	//{
 
-	}
-	//----------------------------------------------------------------------------
-	void Root::RequestUserAnimeList()
-	{
-		m_pRequestManager->CreateGetAnimeListRequest(this);
-	}
-	//----------------------------------------------------------------------------
-	void Root::RequestAnimeScrape(const UserAnimeEntry& anime)
-	{
-		m_pRequestManager->CreateAnimePageScrapeRequest(this,anime);
-	}
-	//----------------------------------------------------------------------------
-	void Root::RequestUserPageScrape()
-	{
-		m_pRequestManager->CreateUserPageScrapeRequest(this);
-	}
-	//----------------------------------------------------------------------------
-	void Root::RequestUserMangaList()
-	{
-		m_pRequestManager->CreateGetMangaListRequest(this);
-	}
-	//----------------------------------------------------------------------------
-	void Root::RequestSenpaiData()
-	{
-		m_pRequestManager->CreateSenpaiMoeDataRequest(this);
-	}
-	//----------------------------------------------------------------------------
-	void Root::SearchAnilistAnime(const ChiString& name)
-	{
-		m_pRequestManager->CreateAnilistSearchAnime(this,name);
-	}
-	//----------------------------------------------------------------------------
-	AnimeList Root::GetAnimeList(const AnimeUserStatus& status)
-	{
-		AnimeList whole = m_pMalManager->GetAnimeList();
-		AnimeList list;
-		AnimeListIt it = whole.begin();
-		for(it;it != whole.end(); it++)
-		{
-			if(it->second.Status == status)
-				list.insert(AnimeList::value_type(it->second.Anime.Id,it->second));
-		}
-		return list;
-	}
-	//----------------------------------------------------------------------------
-	AnimeList Root::GetAnimeList()
-	{
-		AnimeList whole = m_pMalManager->GetAnimeList();
-		return whole;
-	}
-	//----------------------------------------------------------------------------
-	MangaList Root::GetMangaList(const MangaUserStatus& status)
-	{
-		MangaList whole = m_pMalManager->GetMangaList();
-		MangaList list;
-		MangaListIt it = whole.begin();
-		for(it;it != whole.end(); it++)
-		{
-			if(it->second.Status == status)
-				list.insert(MangaList::value_type(it->second.Mango.Id,it->second));
-		}
-		return list;
-	}
-	//----------------------------------------------------------------------------
-	void Root::ScanAnimeFolder(int animeId)
-	{
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::RequestUserAnimeList()
+	//{
+	//	m_pRequestManager->CreateGetAnimeListRequest(this);
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::RequestAnimeScrape(const UserAnimeEntry& anime)
+	//{
+	//	m_pRequestManager->CreateAnimePageScrapeRequest(this,anime);
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::RequestUserPageScrape()
+	//{
+	//	m_pRequestManager->CreateUserPageScrapeRequest(this);
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::RequestUserMangaList()
+	//{
+	//	m_pRequestManager->CreateGetMangaListRequest(this);
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::RequestSenpaiData()
+	//{
+	//	m_pRequestManager->CreateSenpaiMoeDataRequest(this);
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::SearchAnilistAnime(const ChiString& name)
+	//{
+	//	m_pRequestManager->CreateAnilistSearchAnime(this,name);
+	//}
+	////----------------------------------------------------------------------------
+	//AnimeList Root::GetAnimeList(const AnimeUserStatus& status)
+	//{
+	//	AnimeList whole = m_pMalManager->GetAnimeList();
+	//	AnimeList list;
+	//	AnimeListIt it = whole.begin();
+	//	for(it;it != whole.end(); it++)
+	//	{
+	//		if(it->second.Status == status)
+	//			list.insert(AnimeList::value_type(it->second.Anime.Id,it->second));
+	//	}
+	//	return list;
+	//}
+	////----------------------------------------------------------------------------
+	//AnimeList Root::GetAnimeList()
+	//{
+	//	AnimeList whole = m_pMalManager->GetAnimeList();
+	//	return whole;
+	//}
+	////----------------------------------------------------------------------------
+	//MangaList Root::GetMangaList(const MangaUserStatus& status)
+	//{
+	//	MangaList whole = m_pMalManager->GetMangaList();
+	//	MangaList list;
+	//	MangaListIt it = whole.begin();
+	//	for(it;it != whole.end(); it++)
+	//	{
+	//		if(it->second.Status == status)
+	//			list.insert(MangaList::value_type(it->second.Mango.Id,it->second));
+	//	}
+	//	return list;
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::ScanAnimeFolder(int animeId)
+	//{
 
-	}
-	//----------------------------------------------------------------------------
-	void Root::DownloadAnimeImage(const UserAnimeEntry& anime)
-	{
-		ChiString url = (anime.Anime.Image);
-		/*ChiString fileName = url.mid(url.lastIndexOf("/") + 1,url.size() - url.lastIndexOf("/")).toStdChiString();*/
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::DownloadAnimeImage(const UserAnimeEntry& anime)
+	//{
+	//	ChiString url = (anime.Anime.Image);
+	//	/*ChiString fileName = url.mid(url.lastIndexOf("/") + 1,url.size() - url.lastIndexOf("/")).toStdChiString();*/
 
-		/*m_pRequestManager->CreateImageDownloadRequest(this,url.toStdChiString(),fileName,anime);*/
-	}
-	//----------------------------------------------------------------------------
+	//	/*m_pRequestManager->CreateImageDownloadRequest(this,url.toStdChiString(),fileName,anime);*/
+	//}
+	////----------------------------------------------------------------------------
 	void Root::InitializeApi(bool b
 		)
 	{
@@ -313,327 +276,327 @@ namespace ChiikaApi
 
 		/*m_pSeasonManager->GetClosest();*/
 	}
-	//----------------------------------------------------------------------------
-	void Root::OnAnilistAuthComplete(ThreadedRequest*r)
-	{
-		if(REQUEST_SUCCESS(r->m_Result.HttpCode))
-		{
+	////----------------------------------------------------------------------------
+	//void Root::OnAnilistAuthComplete(ThreadedRequest*r)
+	//{
+	//	if(REQUEST_SUCCESS(r->m_Result.HttpCode))
+	//	{
 
-		}
-		else
-		{
-		}
-	}
-	//----------------------------------------------------------------------------
-	void Root::OnAnilistSearchAnimeComplete(ThreadedRequest* r)
-	{
-		if(REQUEST_SUCCESS(r->m_Result.HttpCode))
-		{
+	//	}
+	//	else
+	//	{
+	//	}
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::OnAnilistSearchAnimeComplete(ThreadedRequest* r)
+	//{
+	//	if(REQUEST_SUCCESS(r->m_Result.HttpCode))
+	//	{
 
-		}
-		else
-		{
+	//	}
+	//	else
+	//	{
 
-		}
-	}
-	//----------------------------------------------------------------------------
-	void Root::OnAnimeSearchComplete(ThreadedRequest* r,const AnimeList& list)
-	{
-		if(REQUEST_SUCCESS(r->m_Result.HttpCode))
-		{
-			/*LOG("Anime search result returned " + ChiString::number(list.size()) + " entries")*/
+	//	}
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::OnAnimeSearchComplete(ThreadedRequest* r,const AnimeList& list)
+	//{
+	//	if(REQUEST_SUCCESS(r->m_Result.HttpCode))
+	//	{
+	//		/*LOG("Anime search result returned " + ChiString::number(list.size()) + " entries")*/
 
-			//
-			//AnimeList copy = list;
-			//AnimeListIt it = copy.begin();
-			//for(it; it != copy.end(); it++)
-			//{
-			//	UserAnimeEntry anim = m_pMalManager->GetAnimeById(it->first);
+	//		//
+	//		//AnimeList copy = list;
+	//		//AnimeListIt it = copy.begin();
+	//		//for(it; it != copy.end(); it++)
+	//		//{
+	//		//	UserAnimeEntry anim = m_pMalManager->GetAnimeById(it->first);
 
-			//	if(anim.Anime.Id != 0) //in the list
-			//	{
-			//		anim.Anime = it->second.Anime;
-			//		m_pMalManager->UpdateAnime(anim);
-			//	}
-			//}
-			//LocalDataManager::Get().SaveAnimeList();
-			//LocalDataManager::Get().SaveAnimeDetails();
-		}
-		else
-		{
+	//		//	if(anim.Anime.Id != 0) //in the list
+	//		//	{
+	//		//		anim.Anime = it->second.Anime;
+	//		//		m_pMalManager->UpdateAnime(anim);
+	//		//	}
+	//		//}
+	//		//LocalDataManager::Get().SaveAnimeList();
+	//		//LocalDataManager::Get().SaveAnimeDetails();
+	//	}
+	//	else
+	//	{
 
-		}
+	//	}
 
-	}
-	//----------------------------------------------------------------------------
-	void Root::OnUserPageScrapeComplete(ThreadedRequest* r)
-	{
-		if(REQUEST_SUCCESS(r->m_Result.HttpCode))
-		{
-			m_pRequestManager->CreateImageDownloadRequest(this,LocalDataManager::Get().GetUserInfo().ImageLink,"UserAvatar.jpg",UserAnimeEntry());
-		}
-	}
-	//----------------------------------------------------------------------------
-	void Root::OnAnimeScrapeComplete(ThreadedRequest* r)
-	{
-		if(REQUEST_SUCCESS(r->m_Result.HttpCode))
-		{
-			LocalDataManager::Get().SaveAnimeList();
-			LocalDataManager::Get().SaveAnimeDetails();
-		}
-	}
-	//----------------------------------------------------------------------------
-	void Root::OnGetAnimeListComplete(ThreadedRequest* r,const AnimeList& list)
-	{
-		if(REQUEST_SUCCESS(r->m_Result.HttpCode))
-		{
-			m_pLocalData->LoadUpdateList();
-			AnimeList AnimeUpdates = MalManager::Get().GetAnimeUpdateList();
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::OnUserPageScrapeComplete(ThreadedRequest* r)
+	//{
+	//	if(REQUEST_SUCCESS(r->m_Result.HttpCode))
+	//	{
+	//		m_pRequestManager->CreateImageDownloadRequest(this,LocalDataManager::Get().GetUserInfo().ImageLink,"UserAvatar.jpg",UserAnimeEntry());
+	//	}
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::OnAnimeScrapeComplete(ThreadedRequest* r)
+	//{
+	//	if(REQUEST_SUCCESS(r->m_Result.HttpCode))
+	//	{
+	//		LocalDataManager::Get().SaveAnimeList();
+	//		LocalDataManager::Get().SaveAnimeDetails();
+	//	}
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::OnGetAnimeListComplete(ThreadedRequest* r,const AnimeList& list)
+	//{
+	//	if(REQUEST_SUCCESS(r->m_Result.HttpCode))
+	//	{
+	//		m_pLocalData->LoadUpdateList();
+	//		AnimeList AnimeUpdates = MalManager::Get().GetAnimeUpdateList();
 
-			if(AnimeUpdates.size() > 0)
-			{
-				//R-r-resolve.. ?
-				AnimeListIt It = AnimeUpdates.begin();
-				for(It;It != AnimeUpdates.end(); It++)
-				{
-					UserAnimeEntry anime = It->second;
+	//		if(AnimeUpdates.size() > 0)
+	//		{
+	//			//R-r-resolve.. ?
+	//			AnimeListIt It = AnimeUpdates.begin();
+	//			for(It;It != AnimeUpdates.end(); It++)
+	//			{
+	//				UserAnimeEntry anime = It->second;
 
-					switch(anime.UpdateOperation)
-					{
-					case CRUDOp::Create:
-					{
-						m_pRequestManager->CreateCRUDRequest(this,anime,MangaInfo(),ChiikaApi::CRUDOp::Create,CRUDTarget::ANIME);
-					}
-					break;
-					case CRUDOp::Update:
-					{
-						m_pRequestManager->CreateCRUDRequest(this,anime,MangaInfo(),ChiikaApi::CRUDOp::Update,CRUDTarget::ANIME);
-					}
-					break;
-					case CRUDOp::Delete:
-					{
-						m_pRequestManager->CreateCRUDRequest(this,anime,MangaInfo(),ChiikaApi::CRUDOp::Delete,CRUDTarget::ANIME);
-					}
-					break;
-					}
-				}
-			}
-			else
-			{
-				//No queued update means we're in sync?
-				//Lets go with this until we find a bug
+	//				switch(anime.UpdateOperation)
+	//				{
+	//				case CRUDOp::Create:
+	//				{
+	//					m_pRequestManager->CreateCRUDRequest(this,anime,MangaInfo(),ChiikaApi::CRUDOp::Create,CRUDTarget::ANIME);
+	//				}
+	//				break;
+	//				case CRUDOp::Update:
+	//				{
+	//					m_pRequestManager->CreateCRUDRequest(this,anime,MangaInfo(),ChiikaApi::CRUDOp::Update,CRUDTarget::ANIME);
+	//				}
+	//				break;
+	//				case CRUDOp::Delete:
+	//				{
+	//					m_pRequestManager->CreateCRUDRequest(this,anime,MangaInfo(),ChiikaApi::CRUDOp::Delete,CRUDTarget::ANIME);
+	//				}
+	//				break;
+	//				}
+	//			}
+	//		}
+	//		else
+	//		{
+	//			//No queued update means we're in sync?
+	//			//Lets go with this until we find a bug
 
-				AnimeList aList = MalManager::Get().GetAnimeList();
-				//if(aList.size() == 0)
-				//	MalManager::Get().AddAnimeList(list);
-				//else
-				//	MalManager::Get().UpdateAnimeList(list);
-				MalManager::Get().AddAnimeList(list);
-				m_pLocalData->SaveAnimeList();
-				m_pLocalData->LoadAnimeDetails();
-				m_pLocalData->SaveUserInfo();
+	//			AnimeList aList = MalManager::Get().GetAnimeList();
+	//			//if(aList.size() == 0)
+	//			//	MalManager::Get().AddAnimeList(list);
+	//			//else
+	//			//	MalManager::Get().UpdateAnimeList(list);
+	//			MalManager::Get().AddAnimeList(list);
+	//			m_pLocalData->SaveAnimeList();
+	//			m_pLocalData->LoadAnimeDetails();
+	//			m_pLocalData->SaveUserInfo();
 
-			}
-		}
-		else
-		{
-		}
-	}
-	//----------------------------------------------------------------------------
-	void Root::OnGetMangaListComplete(ThreadedRequest* r,const MangaList& res)
-	{
-		if(REQUEST_SUCCESS(r->m_Result.HttpCode))
-		{
-			m_pLocalData->LoadUpdateList();
-			MangaList MangaUpdates = MalManager::Get().GetMangaUpdateList();
+	//		}
+	//	}
+	//	else
+	//	{
+	//	}
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::OnGetMangaListComplete(ThreadedRequest* r,const MangaList& res)
+	//{
+	//	if(REQUEST_SUCCESS(r->m_Result.HttpCode))
+	//	{
+	//		m_pLocalData->LoadUpdateList();
+	//		MangaList MangaUpdates = MalManager::Get().GetMangaUpdateList();
 
 
-			if(MangaUpdates.size() > 0)
-			{
-				MangaListIt MangaIt = MangaUpdates.begin();
-				for(MangaIt;MangaIt != MangaUpdates.end(); MangaIt++)
-				{
-					MangaInfo manga = MangaIt->second;
+	//		if(MangaUpdates.size() > 0)
+	//		{
+	//			MangaListIt MangaIt = MangaUpdates.begin();
+	//			for(MangaIt;MangaIt != MangaUpdates.end(); MangaIt++)
+	//			{
+	//				MangaInfo manga = MangaIt->second;
 
-					switch(manga.UpdateOperation)
-					{
-					case CRUDOp::Create:
-					{
-						m_pRequestManager->CreateCRUDRequest(this,UserAnimeEntry(),manga,ChiikaApi::CRUDOp::Create,CRUDTarget::MANGA);
-					}
-					break;
-					case CRUDOp::Update:
-					{
-						m_pRequestManager->CreateCRUDRequest(this,UserAnimeEntry(),manga,ChiikaApi::CRUDOp::Update,CRUDTarget::MANGA);
-					}
-					break;
-					case CRUDOp::Delete:
-					{
-						m_pRequestManager->CreateCRUDRequest(this,UserAnimeEntry(),manga,ChiikaApi::CRUDOp::Delete,CRUDTarget::MANGA);
-					}
-					break;
-					}
-				}
-			}
-			else
-			{
-				//No queued update means we're in sync?
-				//Lets go with this until we find a bug
-				MalManager::Get().AddMangaList(res);
-				m_pLocalData->SaveMangaList();
-				m_pLocalData->SaveUserInfo();
-			}
-		}
-	}
-	//----------------------------------------------------------------------------
-	void Root::OnCRUDComplete(ThreadedRequest* r,CRUDOp Op,CRUDTarget Target)
-	{
-		if(REQUEST_SUCCESS(r->m_Result.HttpCode))
-		{
-			//Success
-			if(Target == CRUDTarget::ANIME)
-			{
-				m_pMalManager->DeleteAnimeFromUpdates(r->m_Result.AnimeResult);
+	//				switch(manga.UpdateOperation)
+	//				{
+	//				case CRUDOp::Create:
+	//				{
+	//					m_pRequestManager->CreateCRUDRequest(this,UserAnimeEntry(),manga,ChiikaApi::CRUDOp::Create,CRUDTarget::MANGA);
+	//				}
+	//				break;
+	//				case CRUDOp::Update:
+	//				{
+	//					m_pRequestManager->CreateCRUDRequest(this,UserAnimeEntry(),manga,ChiikaApi::CRUDOp::Update,CRUDTarget::MANGA);
+	//				}
+	//				break;
+	//				case CRUDOp::Delete:
+	//				{
+	//					m_pRequestManager->CreateCRUDRequest(this,UserAnimeEntry(),manga,ChiikaApi::CRUDOp::Delete,CRUDTarget::MANGA);
+	//				}
+	//				break;
+	//				}
+	//			}
+	//		}
+	//		else
+	//		{
+	//			//No queued update means we're in sync?
+	//			//Lets go with this until we find a bug
+	//			MalManager::Get().AddMangaList(res);
+	//			m_pLocalData->SaveMangaList();
+	//			m_pLocalData->SaveUserInfo();
+	//		}
+	//	}
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::OnCRUDComplete(ThreadedRequest* r,CRUDOp Op,CRUDTarget Target)
+	//{
+	//	if(REQUEST_SUCCESS(r->m_Result.HttpCode))
+	//	{
+	//		//Success
+	//		if(Target == CRUDTarget::ANIME)
+	//		{
+	//			m_pMalManager->DeleteAnimeFromUpdates(r->m_Result.AnimeResult);
 
-				if(Op == CRUDOp::Create)
-					m_pMalManager->AddAnime(r->m_Result.AnimeResult);
-				if(Op == CRUDOp::Update)
-					m_pMalManager->UpdateAnime(r->m_Result.AnimeResult);
-				if(Op == CRUDOp::Delete)
-					m_pMalManager->DeleteAnime(r->m_Result.AnimeResult);
+	//			if(Op == CRUDOp::Create)
+	//				m_pMalManager->AddAnime(r->m_Result.AnimeResult);
+	//			if(Op == CRUDOp::Update)
+	//				m_pMalManager->UpdateAnime(r->m_Result.AnimeResult);
+	//			if(Op == CRUDOp::Delete)
+	//				m_pMalManager->DeleteAnime(r->m_Result.AnimeResult);
 
-				//SYNC now
-				RequestUserAnimeList();
-			}
-			if(Target == CRUDTarget::MANGA)
-			{
-				m_pMalManager->DeleteMangaFromUpdates(r->m_Result.MangaResult);
+	//			//SYNC now
+	//			RequestUserAnimeList();
+	//		}
+	//		if(Target == CRUDTarget::MANGA)
+	//		{
+	//			m_pMalManager->DeleteMangaFromUpdates(r->m_Result.MangaResult);
 
-				if(Op == CRUDOp::Create)
-					m_pMalManager->AddManga(r->m_Result.MangaResult);
-				if(Op == CRUDOp::Update)
-					m_pMalManager->UpdateManga(r->m_Result.MangaResult);
-				if(Op == CRUDOp::Delete)
-					m_pMalManager->DeleteManga(r->m_Result.MangaResult);
+	//			if(Op == CRUDOp::Create)
+	//				m_pMalManager->AddManga(r->m_Result.MangaResult);
+	//			if(Op == CRUDOp::Update)
+	//				m_pMalManager->UpdateManga(r->m_Result.MangaResult);
+	//			if(Op == CRUDOp::Delete)
+	//				m_pMalManager->DeleteManga(r->m_Result.MangaResult);
 
-				//SYNC now
-				RequestUserMangaList();
-			}
-		}
-		m_pLocalData->SaveUpdateList();
-		m_pLocalData->SaveAnimeList();
-		m_pLocalData->SaveMangaList();
-	}
-	//----------------------------------------------------------------------------
-	void Root::OnUserVerifyComplete(const RequestResult& r)
-	{
-		//
-	}
-	//----------------------------------------------------------------------------
-	void Root::Notify(ThreadedRequest* req)
-	{
-		ChiString RequestName = req->Name;
-		
-		if(RequestName == "AnilistAuth")
-		{
-			OnAnilistAuthComplete(req);
-		}
-		if(RequestName == "AnilistSearchAnime")
-		{
-			OnAnilistSearchAnimeComplete(req);
-		}
-		if(RequestName == "SearchAnime")
-		{
-			
-			OnAnimeSearchComplete(req,req->m_Result.m_AnimeList);
+	//			//SYNC now
+	//			RequestUserMangaList();
+	//		}
+	//	}
+	//	m_pLocalData->SaveUpdateList();
+	//	m_pLocalData->SaveAnimeList();
+	//	m_pLocalData->SaveMangaList();
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::OnUserVerifyComplete(const RequestResult& r)
+	//{
+	//	//
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::Notify(ThreadedRequest* req)
+	//{
+	//	ChiString RequestName = req->Name;
+	//	
+	//	if(RequestName == "AnilistAuth")
+	//	{
+	//		OnAnilistAuthComplete(req);
+	//	}
+	//	if(RequestName == "AnilistSearchAnime")
+	//	{
+	//		OnAnilistSearchAnimeComplete(req);
+	//	}
+	//	if(RequestName == "SearchAnime")
+	//	{
+	//		
+	//		OnAnimeSearchComplete(req,req->m_Result.m_AnimeList);
 
-		}
-		if(RequestName == "GetAnimeList")
-		{
-			
-			OnGetAnimeListComplete(req,req->m_Result.m_AnimeList);
-		}
-		if(RequestName == "GetMangaList")
-		{
-			
-			OnGetMangaListComplete(req,req->m_Result.m_MangaList);
-		}
-		if(RequestName == "CreateAnime")
-		{
-			
-			OnCRUDComplete(req,CRUDOp::Create,CRUDTarget::ANIME);
-		}
-		if(RequestName == "UpdateAnime")
-		{
-			
-			OnCRUDComplete(req,CRUDOp::Update,CRUDTarget::ANIME);
-		}
-		if(RequestName == "DeleteAnime")
-		{
-			
-			OnCRUDComplete(req,CRUDOp::Delete,CRUDTarget::ANIME);
-		}
-		if(RequestName == "CreateManga")
-		{
-			
-			OnCRUDComplete(req,CRUDOp::Create,CRUDTarget::MANGA);
-		}
-		if(RequestName == "UpdateManga")
-		{
-			OnCRUDComplete(req,CRUDOp::Update,CRUDTarget::MANGA);
-		}
-		if(RequestName == "DeleteManga")
-		{
-			
-			OnCRUDComplete(req,CRUDOp::Delete,CRUDTarget::MANGA);
-		}
-		if(RequestName == "Verify")
-		{
-			
-			OnUserVerifyComplete(req->m_Result);
-		}
-		if(RequestName == "ImageDownload")
-		{
-			
-		}
-		if(RequestName == "AnimeScrape")
-		{
-			OnAnimeScrapeComplete(req);
-			
-		}
-		if(RequestName == "UserPageScrape")
-		{
-			OnUserPageScrapeComplete(req);
-		}
-		if(RequestName == "SenpaiMoeData")
-		{
-			
-		}
-	}
-	//----------------------------------------------------------------------------
-	void Root::Exit()
-	{
-	}
-	//----------------------------------------------------------------------------
-	void Root::DoFastScan()
-	{
+	//	}
+	//	if(RequestName == "GetAnimeList")
+	//	{
+	//		
+	//		OnGetAnimeListComplete(req,req->m_Result.m_AnimeList);
+	//	}
+	//	if(RequestName == "GetMangaList")
+	//	{
+	//		
+	//		OnGetMangaListComplete(req,req->m_Result.m_MangaList);
+	//	}
+	//	if(RequestName == "CreateAnime")
+	//	{
+	//		
+	//		OnCRUDComplete(req,CRUDOp::Create,CRUDTarget::ANIME);
+	//	}
+	//	if(RequestName == "UpdateAnime")
+	//	{
+	//		
+	//		OnCRUDComplete(req,CRUDOp::Update,CRUDTarget::ANIME);
+	//	}
+	//	if(RequestName == "DeleteAnime")
+	//	{
+	//		
+	//		OnCRUDComplete(req,CRUDOp::Delete,CRUDTarget::ANIME);
+	//	}
+	//	if(RequestName == "CreateManga")
+	//	{
+	//		
+	//		OnCRUDComplete(req,CRUDOp::Create,CRUDTarget::MANGA);
+	//	}
+	//	if(RequestName == "UpdateManga")
+	//	{
+	//		OnCRUDComplete(req,CRUDOp::Update,CRUDTarget::MANGA);
+	//	}
+	//	if(RequestName == "DeleteManga")
+	//	{
+	//		
+	//		OnCRUDComplete(req,CRUDOp::Delete,CRUDTarget::MANGA);
+	//	}
+	//	if(RequestName == "Verify")
+	//	{
+	//		
+	//		OnUserVerifyComplete(req->m_Result);
+	//	}
+	//	if(RequestName == "ImageDownload")
+	//	{
+	//		
+	//	}
+	//	if(RequestName == "AnimeScrape")
+	//	{
+	//		OnAnimeScrapeComplete(req);
+	//		
+	//	}
+	//	if(RequestName == "UserPageScrape")
+	//	{
+	//		OnUserPageScrapeComplete(req);
+	//	}
+	//	if(RequestName == "SenpaiMoeData")
+	//	{
+	//		
+	//	}
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::Exit()
+	//{
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::DoFastScan()
+	//{
 
-	}
-	//----------------------------------------------------------------------------
-	AppSettings* Root::GetAppSettings()
-	{
-		return m_pSettings;
-	}
-	//----------------------------------------------------------------------------
-	void Root::SetUserInfo(const UserInfo& ui)
-	{
-		m_pLocalData->SetUserInfo(ui);
-	}
-	//----------------------------------------------------------------------------
-	AbstractNativeEventFilterHelper* Root::GetNativeEventFilterHelper()
-	{
-		return  NULL;
-	}
+	//}
+	////----------------------------------------------------------------------------
+	//AppSettings* Root::GetAppSettings()
+	//{
+	//	return m_pSettings;
+	//}
+	////----------------------------------------------------------------------------
+	//void Root::SetUserInfo(const UserInfo& ui)
+	//{
+	//	m_pLocalData->SetUserInfo(ui);
+	//}
+	////----------------------------------------------------------------------------
+	//AbstractNativeEventFilterHelper* Root::GetNativeEventFilterHelper()
+	//{
+	//	return  NULL;
+	//}
 	//----------------------------------------------------------------------------
 	ChiString Root::GetVersion()
 	{
