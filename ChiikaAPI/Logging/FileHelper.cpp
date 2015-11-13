@@ -15,6 +15,8 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "FileHelper.h"
+
+#include <Windows.h>
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -81,7 +83,7 @@ namespace ChiikaApi
 	bool FileUtil::CheckIfDirectoryExists(const ChiString& path)
 	{
 #ifdef YUME_PLATFORM_WIN32
-		DWORD dwAttrib = GetFileAttributes(path.c_str());
+		DWORD dwAttrib = GetFileAttributesA(path.c_str());
 
 		return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
 			(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
@@ -92,7 +94,7 @@ namespace ChiikaApi
 	{
 		if(CheckIfDirectoryExists(path))
 			return false;
-		if(CreateDirectory(path.c_str(),NULL))
+		if(CreateDirectoryA(path.c_str(),NULL))
 			return true;
 		else 
 			return false;

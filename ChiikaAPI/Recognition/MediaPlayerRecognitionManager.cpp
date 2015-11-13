@@ -16,9 +16,6 @@
 #include "Stable.h"
 #include "MediaPlayerRecognitionManager.h"
 
-#if YUME_PLATFORM == YUME_PLATFORM_WIN32
-#include <WinUser.h>
-#endif
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

@@ -17,7 +17,6 @@
 #include "Database/LocalDataManager.h"
 #include "Request/MalManager.h"
 #include "Settings/Settings.h"
-#include "Common/ExceptionManager.h"
 #include "Seasons/SeasonManager.h"
 #include "json\json.h"
 #include "Logging\FileHelper.h"
@@ -83,7 +82,7 @@ namespace ChiikaApi
 			}
 			else
 			{
-				CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't create file!", "FileLoader::Create")
+				
 			}
 		}
 		else
@@ -172,7 +171,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open AnimeList file!", "AnimeFileLoader::Load")
+			
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -242,7 +241,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open AnimeList file!", "AnimeFileLoader::Save")
+			
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -326,7 +325,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open manga file!", "ConfigManager::LoadMyMangaList")
+			
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -402,7 +401,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open manga file!", "ConfigManager::SaveMangaList")
+			
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -464,7 +463,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open user info file!", "ConfigManager::SaveUserInfo")
+			
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -522,7 +521,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open user info file!", "ConfigManager::SaveUserInfo")
+			
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -661,7 +660,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open update file!", "ConfigManager::LoadUpdateList")
+			
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -793,7 +792,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE, "Can't open update file!", "ConfigManager::LoadUpdateList")
+			
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -964,7 +963,6 @@ namespace ChiikaApi
 				const Json::Value meta = root["meta"];
 				ChiString season = (meta["season"].asString());
 				ChiString start = (meta["start"].asString());
-				float startU = (meta["start_u"].asFloat());
 
 				const Json::Value tz = meta["tz"];
 				Json::Value::const_iterator It = tz.begin();

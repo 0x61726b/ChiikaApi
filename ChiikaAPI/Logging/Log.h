@@ -22,7 +22,6 @@
 #include <fstream>
 #include <sstream>
 #include <chrono>
-#include <thread>
 #include <iomanip>
 //----------------------------------------------------------------------------
 namespace ChiikaApi

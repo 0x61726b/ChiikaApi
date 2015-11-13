@@ -20,7 +20,6 @@
 #include "Settings/Settings.h"
 #include "pugixml.hpp"
 #include "ParsingManager.h"
-#include "Common/ExceptionManager.h"
 #include "Database/LocalDataManager.h"
 #include "Logging/LogManager.h"
 

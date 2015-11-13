@@ -17,7 +17,6 @@
 #include "ParsingManager.h"
 #include "Request/MalManager.h"
 #include "RequestManager.h"
-#include "Common/ExceptionManager.h"
 #include "Database/LocalDataManager.h"
 #include "Settings/Settings.h"
 #include "json\json.h"
@@ -139,8 +138,8 @@ namespace ChiikaApi
 	//		CHIKA_EXCEPTION(Exception::ERR_XML_PARSING,"Can't parse XML data!","ParsingManager::ParseVerifyRequest")
 	//	}
 	//	pugi::xml_node  user = doc.child("user");
-	//	ChiString userName = user.child("username").text().get();
-	//	ChiString id = user.child("id").text().get();
+	//	ChiString userName = user.child(WIDEN("UserName")).text().get();
+	//	ChiString id = user.child(WIDEN("Id")).text().get();
 
 	//	UserInfo ui = LocalDataManager::Get().GetUserInfo();
 
@@ -165,14 +164,14 @@ namespace ChiikaApi
 	//	}
 
 
-	//	pugi::xml_node  anime = doc.child("anime");
+	//	pugi::xml_node  anime = doc.child(WIDEN("anime"));
 	//	AnimeList list;
 	//	if(!anime.empty())
 	//	{
 	//		for(pugi::xml_node entry = anime.first_child();entry;entry = entry.next_sibling())
 	//		{
 	//			Anime Anime;
-	//			pugi::xml_node  Id = entry.child("id");
+	//			pugi::xml_node  Id = entry.child(WIDEN("Id"));
 	//			pugi::xml_node  title = entry.child("title");
 	//			pugi::xml_node  english = entry.child("english");
 	//			pugi::xml_node  synonyms = entry.child("synonyms");
@@ -213,7 +212,7 @@ namespace ChiikaApi
 	//	//	CHIKA_EXCEPTION(Exception::ERR_XML_PARSING,"Can't parse XML data!","ParsingManager::ParseGetUserAnimeList")
 	//	//}
 
-	//	//pugi::xml_node  myanimelist = doc.child("myanimelist");
+	//	//pugi::xml_node  myanimelist = doc.child(WIDEN("MyAnimeList"));
 	//	//pugi::xml_node  user = myanimelist.child("myinfo");
 	//	//pugi::xml_node  userWatching = user.child("user_watching");
 	//	//pugi::xml_node  user_completed = user.child("user_completed");
@@ -241,27 +240,27 @@ namespace ChiikaApi
 
 	//	//int animeCount = 0;
 	//	//AnimeList list;
-	//	//for(pugi::xml_node anime = myanimelist.child("anime");anime;anime = anime.next_sibling())
+	//	//for(pugi::xml_node anime = myanimelist.child(WIDEN("anime"));anime;anime = anime.next_sibling())
 	//	//{
-	//	//	pugi::xml_node  animeDbId = anime.child("series_animedb_id");
-	//	//	pugi::xml_node  series_title = anime.child("series_title");
-	//	//	pugi::xml_node  series_synonyms = anime.child("series_synonyms");
-	//	//	pugi::xml_node  series_type = anime.child("series_type");
-	//	//	pugi::xml_node  series_episodes = anime.child("series_episodes");
-	//	//	pugi::xml_node  series_status = anime.child("series_status");
-	//	//	pugi::xml_node  series_start = anime.child("series_start");
-	//	//	pugi::xml_node  series_end = anime.child("series_end");
-	//	//	pugi::xml_node  series_image = anime.child("series_image");
-	//	//	pugi::xml_node  my_id = anime.child("my_id"); //What does this even mean?
-	//	//	pugi::xml_node  my_watched_episodes = anime.child("my_watched_episodes");
-	//	//	pugi::xml_node  my_start_date = anime.child("my_start_date");
-	//	//	pugi::xml_node  my_finish_date = anime.child("my_finish_date");
-	//	//	pugi::xml_node  my_score = anime.child("my_score");
-	//	//	pugi::xml_node  my_status = anime.child("my_status");
-	//	//	pugi::xml_node  my_rewatching = anime.child("my_rewatching");
-	//	//	pugi::xml_node  my_rewatching_ep = anime.child("my_rewatching_ep");
-	//	//	pugi::xml_node  my_last_updated = anime.child("my_last_updated");
-	//	//	//pugi::xml_node  my_finish_date = anime.child("my_finish_date");
+	//	//	pugi::xml_node  animeDbId = anime.child(WIDEN("series_animedb_id"));
+	//	//	pugi::xml_node  series_title = anime.child(WIDEN("series_title"));
+	//	//	pugi::xml_node  series_synonyms = anime.child(WIDEN("series_synonyms"));
+	//	//	pugi::xml_node  series_type = anime.child(WIDEN("series_type"));
+	//	//	pugi::xml_node  series_episodes = anime.child(WIDEN("series_episodes"));
+	//	//	pugi::xml_node  series_status = anime.child(WIDEN("series_status"));
+	//	//	pugi::xml_node  series_start = anime.child(WIDEN("series_start"));
+	//	//	pugi::xml_node  series_end = anime.child(WIDEN("series_end"));
+	//	//	pugi::xml_node  series_image = anime.child(WIDEN("series_image"));
+	//	//	pugi::xml_node  my_id = anime.child(WIDEN("my_id")); //What does this even mean?
+	//	//	pugi::xml_node  my_watched_episodes = anime.child(WIDEN("my_watched_episodes"));
+	//	//	pugi::xml_node  my_start_date = anime.child(WIDEN("my_start_date"));
+	//	//	pugi::xml_node  my_finish_date = anime.child(WIDEN("my_finish_date"));
+	//	//	pugi::xml_node  my_score = anime.child(WIDEN("my_score"));
+	//	//	pugi::xml_node  my_status = anime.child(WIDEN("my_status"));
+	//	//	pugi::xml_node  my_rewatching = anime.child(WIDEN("my_rewatching"));
+	//	//	pugi::xml_node  my_rewatching_ep = anime.child(WIDEN("my_rewatching_ep"));
+	//	//	pugi::xml_node  my_last_updated = anime.child(WIDEN("my_last_updated"));
+	//	//	//pugi::xml_node  my_finish_date = anime.child(WIDEN("my_finish_date"));
 
 	//	//	Anime Anime;
 	//	//	Anime.Id = FromXMLValueToInt(animeDbId);
@@ -309,7 +308,7 @@ namespace ChiikaApi
 	//		CHIKA_EXCEPTION(Exception::ERR_XML_PARSING,"Can't parse XML data!","ParsingManager::ParseGetUserMangaList")
 	//	}
 
-	//	pugi::xml_node  myanimelist = doc.child("myanimelist");
+	//	pugi::xml_node  myanimelist = doc.child(WIDEN("MyAnimeList"));
 
 	//	pugi::xml_node  user = myanimelist.child("myinfo");
 	//	pugi::xml_node  user_reading = user.child("user_reading");
@@ -335,28 +334,28 @@ namespace ChiikaApi
 
 	//	MangaList list;
 
-	//	for(pugi::xml_node manga = myanimelist.child("manga");manga;manga = manga.next_sibling())
+	//	for(pugi::xml_node manga = myanimelist.child(WIDEN("manga"));manga;manga = manga.next_sibling())
 	//	{
-	//		pugi::xml_node  series_mangadb_id = manga.child("series_mangadb_id");
-	//		pugi::xml_node  series_title = manga.child("series_title");
-	//		pugi::xml_node  series_synonyms = manga.child("series_synonyms");
-	//		pugi::xml_node  series_type = manga.child("series_type");
-	//		pugi::xml_node  series_chapters = manga.child("series_chapters");
-	//		pugi::xml_node  series_volumes = manga.child("series_volumes");
-	//		pugi::xml_node  series_status = manga.child("series_status");
-	//		pugi::xml_node  series_start = manga.child("series_start");
-	//		pugi::xml_node  series_end = manga.child("series_end");
-	//		pugi::xml_node  series_image = manga.child("series_image");
-	//		pugi::xml_node  my_id = manga.child("my_id"); //What does this even mean?
-	//		pugi::xml_node  my_read_chapters = manga.child("my_read_chapters");
-	//		pugi::xml_node  my_read_volumes = manga.child("my_read_volumes");
-	//		pugi::xml_node  my_start_date = manga.child("my_start_date");
-	//		pugi::xml_node  my_finish_date = manga.child("my_finish_date");
-	//		pugi::xml_node  my_score = manga.child("my_score");
-	//		pugi::xml_node  my_status = manga.child("my_status");
+	//		pugi::xml_node  series_mangadb_id = manga.child(WIDEN("series_mangadb_id"));
+	//		pugi::xml_node  series_title = manga.child(WIDEN("series_title"));
+	//		pugi::xml_node  series_synonyms = manga.child(WIDEN("series_synonyms"));
+	//		pugi::xml_node  series_type = manga.child(WIDEN("series_type"));
+	//		pugi::xml_node  series_chapters = manga.child(WIDEN("series_chapters"));
+	//		pugi::xml_node  series_volumes = manga.child(WIDEN("series_volumes"));
+	//		pugi::xml_node  series_status = manga.child(WIDEN("series_status"));
+	//		pugi::xml_node  series_start = manga.child(WIDEN("series_start"));
+	//		pugi::xml_node  series_end = manga.child(WIDEN("series_end"));
+	//		pugi::xml_node  series_image = manga.child(WIDEN("series_image"));
+	//		pugi::xml_node  my_id = manga.child(WIDEN("my_id")); //What does this even mean?
+	//		pugi::xml_node  my_read_chapters = manga.child(WIDEN("my_read_chapters"));
+	//		pugi::xml_node  my_read_volumes = manga.child(WIDEN("my_read_volumes"));
+	//		pugi::xml_node  my_start_date = manga.child(WIDEN("my_start_date"));
+	//		pugi::xml_node  my_finish_date = manga.child(WIDEN("my_finish_date"));
+	//		pugi::xml_node  my_score = manga.child(WIDEN("my_score"));
+	//		pugi::xml_node  my_status = manga.child(WIDEN("my_status"));
 	//		pugi::xml_node  my_rereading = manga.child("my_rereadingg");
 	//		pugi::xml_node  my_rereading_chap = manga.child("my_rereading_chap");
-	//		pugi::xml_node  my_last_updated = manga.child("my_last_updated");
+	//		pugi::xml_node  my_last_updated = manga.child(WIDEN("my_last_updated"));
 
 
 	//		Manga mango;

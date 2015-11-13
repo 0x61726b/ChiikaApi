@@ -17,8 +17,8 @@
 #include "Seasons/SeasonManager.h"
 #include "Request/MalManager.h"
 
-#ifdef YUME_PLATFORM_WIN32
-//#include <Windows.h>
+#if YUME_PLATFORM == YUME_PLATFORM_WIN32
+#include <Windows.h>
 #endif
 tm* GetTimeinfo()
 {

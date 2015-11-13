@@ -20,24 +20,12 @@
     #define __STD_ALGORITHM
 #endif
 //
-
-#include <cassert>
-#include <cstdio>
-#include <cstdlib>
-#include <ctime>
-#include <cstring>
-#include <cstdarg>
-#include <cmath>
+#define _HAS_EXCEPTIONS 0
 
 // STL containers
 #include <vector>
 #include <map>
 #include <string>
-#include <set>
-#include <list>
-#include <deque>
-#include <queue>
-#include <bitset>
 
 // Note - not in the original STL, but exists in SGI STL and STLport
 // For gcc 4.3 see http://gcc.gnu.org/gcc-4.3/changes.html
@@ -51,12 +39,6 @@
 #   endif
 #endif 
 
-// STL algorithms & functions
-#include <algorithm>
-#include <functional>
-#include <limits>
-
-// C++ Stream stuff
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -66,10 +48,9 @@
 #include <chrono>
 
 #include <memory>
-#include <thread>
-#include <mutex>
-
+#include <functional>
 #include <type_traits>
+#include <codecvt>
 
 #ifdef __BORLANDC__
 namespace ChiikaApi
@@ -78,12 +59,6 @@ namespace ChiikaApi
 }
 #endif
 
-extern "C" {
-
-#   include <sys/types.h>
-#   include <sys/stat.h>
-
-}
 
 #if YUME_PLATFORM == YUME_PLATFORM_WIN32 || YUME_PLATFORM == YUME_PLATFORM_WINRT
 #  undef min

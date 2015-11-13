@@ -237,7 +237,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void CurlRequest::RemoveListener(CurlEventListener* l)
 	{
-		CurlEventListener* listener;
+		CurlEventListener* listener = 0;
 		int index;
 		for(unsigned int i = 0; i < m_vListeners.size(); i++)
 		{
@@ -249,7 +249,7 @@ namespace ChiikaApi
 		}
 
 		m_vListeners.erase(m_vListeners.begin() + index);
-		delete listener;
+		TryDelete(listener);
 	}
 	//----------------------------------------------------------------------------
 	int CurlRequest::GetRequestResult()

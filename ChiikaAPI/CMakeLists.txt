@@ -1,15 +1,15 @@
-#
-#
-add_definitions(-DChiikaApiShared)
+
+
+set(TARGET_NAME "ChiikaApi")
 
 #
 #Common
 #
 set(ChiikaApi_Common_Src
-  Common/ExceptionManager.cpp
+  #Common/ExceptionManager.cpp
   Common/Stable.cpp
   Common/Config.h
-  Common/ExceptionManager.h
+  #Common/ExceptionManager.h
   Common/MyAnimeList.h
   Common/PlatformInformation.h
   Common/Required.h
@@ -135,7 +135,6 @@ source_group(ChiikaApi\\\\Settings FILES ${ChiikaApi_Settings_Src})
 # Tests/Mock_ThreadedRequest.h
 #  )
 #source_group(ChiikaApi\\\\Tests FILES ${ChiikaApi_Tests_Src})
-add_subdirectory(ThirdParty)
 
 
 set(CHIIKA_API_DIR ${CMAKE_CURRENT_SOURCE_DIR})
@@ -143,18 +142,20 @@ set(CHIIKA_THIRD_PARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}//ThirdParty)
 
 
 set(CHIIKA_LIBRARIES libcurl)
-set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib)
 set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} pugixml)
 set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} Anitomy)
-set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} gmock)
+if(IncludeGoogleMock)
+  set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} gmock)
+  add_subdirectory(Tests)
+else()
 
-add_subdirectory(Tests)
+endif()  
 
-add_library(ChiikaApi SHARED
+add_library(${TARGET_NAME} ${CHI_LIBTYPE}
   ${ChiikaApi_Common_Src}
   ${ChiikaApi_Database_Src}
   ${ChiikaApi_Logging_Src}
-  ${ChiikaApi_Memory_Src}
+#  ${ChiikaApi_Memory_Src}
   ${ChiikaApi_Recognition_Src}
   ${ChiikaApi_Request_Src}
   ${ChiikaApi_Root_Src}
@@ -172,20 +173,35 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\Common) #This is for Vs2013 so 
 
 #Link CURL
 target_link_libraries(ChiikaApi libcurl)
+target_compile_options(libcurl PRIVATE "/MT$<$<CONFIG:Debug>:d>")
+target_compile_definitions(libcurl PRIVATE "-DUNICODE -D_UNICODE")
 #Include CURL
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\curl\\include\\curl)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}\\ThirdParty\\curl\\include\\curl)
 
 #Jsoncpp
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\jsoncpp\\include\\json)
-target_link_libraries(ChiikaApi jsoncpp_lib)
+if(BUILD_SHARED_LIBS)
+  target_link_libraries(ChiikaApi jsoncpp_lib)
+  set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib)
+
+endif()
+if(BUILD_STATIC_LIBS)
+  target_compile_definitions(jsoncpp_lib_static PRIVATE -DJSON_DLL)
+  target_link_libraries(ChiikaApi jsoncpp_lib_static)
+  set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib_static)
+
+endif()
+
 
 #Pugixml
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\pugixml\\src)
+target_compile_definitions(pugixml PRIVATE -D_DLL)
 target_link_libraries(ChiikaApi pugixml)
 
 #Anitomy
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\anitomy)
+
 target_link_libraries(ChiikaApi Anitomy)
 
 
@@ -195,8 +211,8 @@ set(TESTS_OUTPUT_DIR ${CMAKE_BINARY_DIR}//Tests )
 
 set_target_properties( ChiikaApi ${CHIIKA_LIBRARIES}
     PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 

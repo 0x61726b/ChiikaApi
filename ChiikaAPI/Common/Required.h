@@ -50,12 +50,11 @@ namespace ChiikaApi
 }
 //----------------------------------------------------------------------------
 #include "StdHeaders.h"
-#include "Memory\MemoryAllocator.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
 	//----------------------------------------------------------------------------
-	template <typename K,typename V,typename P = std::less<K>,typename A = STLAllocator<std::pair<const K,V>,GeneralAllocPolicy> >
+	template <typename K,typename V,typename P = std::less<K> >
 	struct Map
 	{
 #ifdef CHIIKA_STD_CONTAINERS_CUSTOM_MEMORY_ALLOCATOR
@@ -69,7 +68,7 @@ namespace ChiikaApi
 #endif
 	};
 	//----------------------------------------------------------------------------
-	template <typename K,typename V,typename P = std::less<K>,typename A = STLAllocator<std::pair<const K,V>,GeneralAllocPolicy> >
+	template <typename K,typename V,typename P = std::less<K> >
 	struct MultiMap
 	{
 #ifdef CHIIKA_STD_CONTAINERS_CUSTOM_MEMORY_ALLOCATOR
@@ -83,7 +82,7 @@ namespace ChiikaApi
 #endif
 	};
 	//----------------------------------------------------------------------------
-	template <typename T,typename A = STLAllocator<T,GeneralAllocPolicy> >
+	template <typename T >
 	struct Vector
 	{
 #ifdef CHIIKA_STD_CONTAINERS_CUSTOM_MEMORY_ALLOCATOR
@@ -131,7 +130,7 @@ namespace ChiikaApi
 {
 	enum RequestCodes
 	{
-		REQUEST_ERROR = 0x1 << 0 ,
+		REQUEST_ERROR = 0x1 << 0,
 		REQUEST_SUCCESS = 0x1 << 1,
 		RETURNED_EMPTY = 0x1 << 2,
 		POST_SUCCESS = 0x1 << 3,
@@ -145,8 +144,8 @@ namespace ChiikaApi
 
 	//----------------------------------------------------------------------------
 #	define CHIKA_AUTO_MUTEX_NAME chitanda
-#	define CHIKA_AUTO_MUTEX /*mutable boost::recursive_mutex CHIKA_AUTO_MUTEX_NAME;*/ std::mutex CHIKA_AUTO_MUTEX_NAME;
-#	define CHIKA_AUTO_MUTEX_LOCK /*boost::recursive_mutex::scoped_lock AutoMutexLock(CHIKA_AUTO_MUTEX_NAME);*/ std::unique_lock<std::mutex> AutoLock(CHIKA_AUTO_MUTEX_NAME,std::try_to_lock) ;
+#	define CHIKA_AUTO_MUTEX /*mutable boost::recursive_mutex CHIKA_AUTO_MUTEX_NAME;*/ 
+#	define CHIKA_AUTO_MUTEX_LOCK /*boost::recursive_mutex::scoped_lock AutoMutexLock(CHIKA_AUTO_MUTEX_NAME);*/ 
 }
 //----------------------------------------------------------------------------
 #	include "Common/MyAnimeList.h"
@@ -154,14 +153,25 @@ namespace ChiikaApi
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
+	std::wstring s2ws(const std::string& str)
+	{
+		typedef std::codecvt_utf8<wchar_t> convert_typeX;
+		std::wstring_convert<convert_typeX,wchar_t> converterX;
 
+		return converterX.from_bytes(str);
+	}
+	std::string ws2s(const std::wstring& wstr)
+	{
+		typedef std::codecvt_utf8<wchar_t> convert_typeX;
+		std::wstring_convert<convert_typeX,wchar_t> converterX;
+
+		return converterX.to_bytes(wstr);
+	}
 }
-#ifdef YUME_PLATFORM_WIN32
-#include "windows.h"
-#include "winbase.h"
-#endif
 //----------------------------------------------------------------------------
 #define ApiDebugMode
 //#define ApiShowXMLOutput
+
+
 
 #endif // __Required_h__

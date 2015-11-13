@@ -15,7 +15,6 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "Settings/Settings.h"
-#include "Common/ExceptionManager.h"
 #include "pugixml.hpp"
 #include "Logging\Log.h"
 #include "Logging\FileHelper.h"
@@ -224,7 +223,7 @@ namespace ChiikaApi
 		{
 			if(!FileUtil::Get().CreateDir(dataPath))
 			{
-				CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't create Data directory!","AppSettings::Initialize")
+				
 					m_bFirstLaunch = true;
 			}
 		}
@@ -233,7 +232,9 @@ namespace ChiikaApi
 		if(!FileUtil::Get().CheckIfDirectoryExists(imageDir))
 		{
 			if(!FileUtil::Get().CreateDir(imageDir))
-				CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't create Images directory!","AppSettings::Initialize")
+			{
+			}
+				
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -325,7 +326,6 @@ namespace ChiikaApi
 		{
 			pugi::xml_document doc;
 
-			pugi::xml_node  root = doc.append_child("Chiika");
 			pugi::xml_node  settings = root.append_child("Settings");
 
 			//pugi::xml_node  _iterator It;
@@ -347,7 +347,7 @@ namespace ChiikaApi
 					case OptionsType::Str:
 					{
 						SetXMLValue(node,(GetChiStringOption(It->first).c_str()));
-						SetXMLAttrType(node,"ChiString");
+						SetXMLAttrType(node,"String");
 					}
 					break;
 					case OptionsType::Boolean:
@@ -370,7 +370,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't save settings file!","AppSettings::Save")
+			
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -383,7 +383,6 @@ namespace ChiikaApi
 			ChiString fileData = file.Read();
 			doc.load(fileData.c_str());
 
-			pugi::xml_node  root = doc.child("Chiika");
 			pugi::xml_node  settings = root.child("Settings");
 
 			pugi::xml_node::iterator It;
@@ -439,7 +438,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			CHIKA_EXCEPTION(Exception::ERR_CANNOT_WRITE_TO_FILE,"Can't open settings file!","AppSettings::Load")
+			
 		}
 	}
 	//----------------------------------------------------------------------------

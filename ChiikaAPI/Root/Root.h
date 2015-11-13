@@ -24,7 +24,7 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	class MalApiExport Root :public GeneralAllocatedObject
+	class MalApiExport Root 
 	{
 	public:
 		Root();

@@ -4,7 +4,9 @@
 #
 #Curl
 #
-add_subdirectory(curl)
+#add_subdirectory(curl)
+#To not override compiler flags for curl we dont add it here
+
 
 #
 #JsonCpp
@@ -24,5 +26,7 @@ add_subdirectory(anitomy)
 #
 #
 #To-do add build test 
-add_subdirectory(googletest\\googlemock)
+if(IncludeGoogleMock)
+	add_subdirectory(googletest\\googlemock)
+endif()	
 
