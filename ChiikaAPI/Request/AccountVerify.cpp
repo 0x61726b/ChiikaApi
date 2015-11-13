@@ -31,20 +31,16 @@ namespace ChiikaApi
 	void AccountVerifyRequest::OnSuccess()
 	{
 		pugi::xml_document doc;
-		try
-		{
-			doc.load(m_Curl.GetResponse().c_str());
-		}
-		catch(...)
-		{
-			//Post error
-		}
-		pugi::xml_node  user = doc.child("user");
-		ChiString userName = user.child("username").text().get();
-		ChiString id = user.child("id").text().get();
+
+		doc.load(m_Curl.GetResponse().c_str());
+
+		pugi::xml_node  user = doc.child(("user"));
+		ChiString userName = user.child(("username")).text().as_string();
+		ChiString id = user.child(("id")).text().get();
 
 		if(userInfo.UserName == userName)
 		{
+			
 			userInfo.UserId = atoi(ToStd(id));
 			userInfo.UserName = userName;
 
@@ -80,7 +76,7 @@ namespace ChiikaApi
 		ChiString userName;
 		ChiString passWord;
 
-		url = "http://myanimelist.net/api/account/verify_credentials.xml";
+		url = ("http://myanimelist.net/api/account/verify_credentials.xml");
 		method = CURLOPT_HTTPGET;
 		userName = userInfo.UserName;
 		passWord = userInfo.Pass;

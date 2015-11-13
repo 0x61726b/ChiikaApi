@@ -19,7 +19,6 @@
 #include "Settings/Settings.h"
 #include "Request/RequestManager.h"
 #include "Logging/LogManager.h"
-#include "Common/ExceptionManager.h"
 #include "Database/LocalDataManager.h"
 #include "Recognition/MediaPlayerRecognitionManager.h"
 #include "Recognition/AnimeRecognition.h"
@@ -45,12 +44,12 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void Root::Initialize(const ChiString& modulePath)
 	{
-		m_pSettings = ChiikaNew AppSettings("Chiika.cfg", modulePath);
-		m_pLogManager = ChiikaNew LogManager;
+		m_pSettings = new AppSettings("Chiika.cfg", modulePath);
+		m_pLogManager = new LogManager;
 
 		ChiString version = std::to_string(ChiikaApi_VERSION_MAJOR) + "." + std::to_string(ChiikaApi_VERSION_MINOR) + "." + std::to_string(ChiikaApi_VERSION_PATCH);;
 		m_sVersion = version;
-		m_sCommitHash = ChiikaApi_COMMIT_HASH;
+		m_sCommitHash = (char)ChiikaApi_COMMIT_HASH;
 
 
 		m_pLogManager->CreateLog(m_pSettings->GetDataPath() + "\\Chiika.log", true, true, false)->
@@ -62,23 +61,23 @@ namespace ChiikaApi
 		LOG(Bore) << "Chiika Api is initializing. Version: " << (m_sVersion);
 
 		LOG(INFO) << "Creating MyAnimeList Manager";
-		m_pMalManager = ChiikaNew MalManager;
+		m_pMalManager = new MalManager;
 
 		LOG(INFO) << "Creating Season Manager";
-		m_pSeasonManager = ChiikaNew SeasonManager;
+		m_pSeasonManager = new SeasonManager;
 
 		LOG(INFO) << "Creating MediaPlayerRecognition Manager";
-		m_pMPRecognition = ChiikaNew MediaPlayerRecognitionManager;
+		m_pMPRecognition = new MediaPlayerRecognitionManager;
 
 		LOG(INFO) << "Creating RequestManager Manager";
-		m_pRequestManager = ChiikaNew RequestManager;
+		m_pRequestManager = new RequestManager;
 
 
 		LOG(INFO) << "Creating AnimeRecognition Manager";
-		m_pRecognizer = ChiikaNew AnimeRecognition;
+		m_pRecognizer = new AnimeRecognition;
 
 		LOG(INFO) << "Creating LocalData Manager";
-		m_pLocalData = ChiikaNew LocalDataManager;
+		m_pLocalData = new LocalDataManager;
 
 
 		//Very important!

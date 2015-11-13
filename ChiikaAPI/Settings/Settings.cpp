@@ -326,6 +326,7 @@ namespace ChiikaApi
 		{
 			pugi::xml_document doc;
 
+			pugi::xml_node  root = doc.append_child(("Chiika"));
 			pugi::xml_node  settings = root.append_child("Settings");
 
 			//pugi::xml_node  _iterator It;
@@ -383,6 +384,7 @@ namespace ChiikaApi
 			ChiString fileData = file.Read();
 			doc.load(fileData.c_str());
 
+			pugi::xml_node  root = doc.child(("Chiika"));
 			pugi::xml_node  settings = root.child("Settings");
 
 			pugi::xml_node::iterator It;
