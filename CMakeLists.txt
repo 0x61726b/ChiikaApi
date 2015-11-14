@@ -74,7 +74,6 @@ include("macros")
 
 # Source include directory.
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-add_subdirectory(ChiikaAPI/ThirdParty/curl)
 
 #
 # Linux configuration.
@@ -277,7 +276,7 @@ if(OS_WINDOWS)
 endif()
 
 
-option(IncludeGoogleMock "Include Google Mock/Test" OFF)
+option(IncludeGoogleMock "Include Google Mock/Test" ON)
 
 set(BUILD_CURL_EXE OFF CACHE BOOL "" FORCE)
 set(BUILD_CURL_TESTS OFF CACHE BOOL "" FORCE)
@@ -298,7 +297,11 @@ if(IncludeGoogleMock)
   set(gtest_build_tests OFF CACHE BOOL "" FORCE)
   set(gtest_build_samples OFF CACHE BOOL "" FORCE)
 endif()
-
+if(IncludeGoogleMock)
+  add_subdirectory(ChiikaAPI/ThirdParty/googletest/googlemock)
+  add_subdirectory(ChiikaAPI/Tests)
+  target_compile_definitions(gmock PRIVATE -D_HAS_EXCEPTIONS=0)
+endif()
 
 set(CMAKE_C_FLAGS                     "${CHI_COMPILER_FLAGS} ${CHI_C_COMPILER_FLAGS}")
 set(CMAKE_C_FLAGS_DEBUG               "${CHI_COMPILER_FLAGS_DEBUG} ${CHI_C_COMPILER_FLAGS_DEBUG}")
@@ -315,7 +318,6 @@ set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CHI_LINKER_FLAGS_RELEASE} ${CHI_SHARED_
 
 add_subdirectory(ChiikaAPI/ThirdParty)
 add_subdirectory(ChiikaAPI)
-
 
 message(STATUS "*** CONFIGURATION SETTINGS ***")
 message(STATUS "Generator:                    ${CMAKE_GENERATOR}")

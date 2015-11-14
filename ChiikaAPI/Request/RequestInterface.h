@@ -18,9 +18,17 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
+	class MalApiExport RequestListener
+	{
+	public:
+		virtual void OnSuccess(RequestInterface*) = 0;
+		virtual void OnError(RequestInterface*) = 0;
+	};
 	class MalApiExport RequestInterface
 	{
 	public:
+		RequestInterface(LocalDataManager*);
+		virtual ~RequestInterface();
 		virtual void OnSuccess();
 		virtual void OnError();
 
@@ -29,8 +37,15 @@ namespace ChiikaApi
 
 		virtual void Initiate() = 0;
 
+	public:
+		void AddListener(RequestListener* listener);
+		void RemoveListener(RequestListener* listener);
+
+		Vector<RequestListener*>::type m_vListeners;
+
 	protected:
 		ChiString m_sName;
 		CurlRequest m_Curl;
+		LocalDataManager* m_pLocalData;
 	};
 }

@@ -19,7 +19,8 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	AccountVerifyRequest::AccountVerifyRequest()
+	AccountVerifyRequest::AccountVerifyRequest(LocalDataManager* ldm)
+		: RequestInterface(ldm)
 	{
 		m_sName = "Verify";
 	}
@@ -44,7 +45,7 @@ namespace ChiikaApi
 			userInfo.UserId = atoi(ToStd(id));
 			userInfo.UserName = userName;
 
-			LocalDataManager::Get().SetUserInfo(userInfo);
+			m_pLocalData->SetUserInfo(userInfo);
 			RequestInterface::OnSuccess();
 		}
 	}
@@ -53,7 +54,7 @@ namespace ChiikaApi
 	{
 		UserInfo ui;
 		ui.UserId = UserInfo::UnknownUser;
-		LocalDataManager::Get().SetUserInfo(userInfo);
+		m_pLocalData->SetUserInfo(userInfo);
 
 		RequestInterface::OnError();
 	}

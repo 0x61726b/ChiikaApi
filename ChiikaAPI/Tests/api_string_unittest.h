@@ -66,7 +66,7 @@ TEST(ApiStringTest,ApiStringGetMiddle)
 {
 	std::string str = "Out of the silent planet.";
 	std::size_t pos = 0;
-	std::size_t n = 5; //Out o
+	int n = 5; //Out o
 
 
 
@@ -81,59 +81,6 @@ TEST(ApiStringTest,ApiStringGetMiddle)
 
 	EXPECT_EQ(str,GetMiddleTest(str,pos,n));
 }
-//----------------------------------------------------------------------------
-TEST(ApiStringTest,ApiStringGetLeft)
-{
-	std::string str = "Dreams of desolation.";
-	std::size_t n = 4; //Drea
 
-
-	EXPECT_EQ("Drea",GetLeft(str,n));
-
-	n = -1;
-
-	EXPECT_EQ(str,GetLeft(str,n));
-
-	n = str.size() + 10;
-
-	EXPECT_EQ(str,GetLeft(str,n));
-}
-//----------------------------------------------------------------------------
-TEST(ApiStringTest,ApiStringGetRight)
-{
-	std::string str = "Come the demons of creation.";
-	std::size_t n = 10; //Drea
-
-	EXPECT_EQ(" creation.",GetRight(str,n));
-
-	n = -1;
-
-	EXPECT_EQ(str,GetRight(str,n));
-
-	n = str.size() + 10;
-
-	EXPECT_EQ(str,GetRight(str,n));
-}
-//----------------------------------------------------------------------------
-TEST(ApiStringTest,ApiStringTrim)
-{
-	std::string expectedValue = "The killing fields, the grinding wheels crushed by equilibrium";
-	std::string input = "The killing fields, the grinding wheels crushed by equilibrium ";
-	EXPECT_EQ(expectedValue,Trim(input));
-
-	input = " The killing fields, the grinding wheels crushed by equilibrium ";
-	EXPECT_EQ(expectedValue,Trim(input));
-
-	input = "    The killing fields, the grinding wheels crushed by equilibrium   ";
-	EXPECT_EQ(expectedValue,Trim(input));
-
-	input = "    The killing fields, the grinding wheels crushed by equilibrium   ";
-	EXPECT_EQ(expectedValue,Trim(input));
-
-	input = "       The killing fields, the grinding wheels crushed by equilibrium         ";
-	EXPECT_EQ(expectedValue,Trim(input));
-
-
-}
 #endif
 //----------------------------------------------------------------------------

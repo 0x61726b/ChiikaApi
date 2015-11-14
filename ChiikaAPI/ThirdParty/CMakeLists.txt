@@ -26,7 +26,5 @@ add_subdirectory(anitomy)
 #
 #
 #To-do add build test 
-if(IncludeGoogleMock)
-	add_subdirectory(googletest\\googlemock)
-endif()	
+
 

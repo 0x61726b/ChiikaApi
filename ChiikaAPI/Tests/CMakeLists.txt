@@ -15,36 +15,21 @@ target_link_libraries(HelloWorld ChiikaApi)
 
 set_target_properties( ${TEST_EXECS}
     PROPERTIES
-    EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/Tests/"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Tests"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Tests"
+    EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/Chiika/"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
 )
-get_property(TESTS_OUT_DIR TARGET TestRunner PROPERTY LIBRARY_OUTPUT_DIRECTORY)
-add_custom_command(
-    TARGET TestRunner
-    PRE_BUILD
-    # Copy the CEF framework into the Frameworks directory.
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${CMAKE_BINARY_DIR}/bin"
-            "${TESTS_OUT_DIR}"
-    VERBATIM
-    )
-add_custom_command(
-    TARGET HelloWorld
-    PRE_BUILD
-    # Copy the CEF framework into the Frameworks directory.
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${CMAKE_BINARY_DIR}/bin"
-            "${TESTS_OUT_DIR}"
-    VERBATIM
-    )
-include_directories(${CHIIKA_API_DIR})
-include_directories(${CHIIKA_THIRD_PARTY_DIR})
+include_directories(${CHIIKA_INCLUDE_DIR})
 
 
 #gmock
-include_directories(${CHIIKA_API_DIR}\\ThirdParty\\googletest\\googlemock\\include)
-include_directories(${CHIIKA_API_DIR}\\ThirdParty\\googletest\\googletest\\include)
+include_directories(${CHIIKA_INCLUDE_DIR}\\ThirdParty\\googletest\\googlemock\\include)
+include_directories(${CHIIKA_INCLUDE_DIR}\\ThirdParty\\googletest\\googletest\\include)
+
+
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/../ThirdParty/curl/include/curl)
+
+
 target_link_libraries(TestRunner gmock)
 target_link_libraries(HelloWorld gmock)
 

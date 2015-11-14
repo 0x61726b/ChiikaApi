@@ -158,7 +158,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void RequestManager::VerifyUser(const UserInfo& info)
 	{
-		AccountVerifyRequest req;
+		AccountVerifyRequest req(NULL);
 		req.SetUserInfo(info);
 		req.Initialize();
 		req.SetOptions();

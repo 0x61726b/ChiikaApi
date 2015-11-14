@@ -15,31 +15,53 @@
 //----------------------------------------------------------------------------
 #include "Root\Root.h"
 #include "Request\RequestManager.h"
+#include "Database\LocalDataManager.h"
 #include "Request\GetAnimeList.h"
 //----------------------------------------------------------------------------
 using namespace ChiikaApi;
 std::string SearchKeywordAnime = "Oregairu";
-std::string testUserName = "xxx";
+std::string testUserName = "chiikatestacc1";
 std::string testPass = "chiikatest%&";
+
+class TestEventListener : public RequestListener
+{
+public:
+	void OnSuccess(RequestInterface*)
+	{
+
+	}
+	void OnError(RequestInterface*)
+	{
+
+	}
+};
 
 int main()
 {
-	TCHAR szFileName[MAX_PATH];
+	char szFileName[MAX_PATH];
 
-	GetModuleFileName(NULL, szFileName, MAX_PATH);
+	GetModuleFileNameA(NULL, szFileName, MAX_PATH);
 
 	std::string pathToExecutable = szFileName;
 	std::string dir = pathToExecutable.substr(0, pathToExecutable.find_last_of("\\"));
 
 	Root r;
 	r.Initialize(dir);
+	UserInfo ui;
+	ui.UserName = testUserName;
+	ui.Pass = testPass;
+	r.m_pLocalData->SetUserInfo(ui);
 	
-	//GetAnimeListRequest req;
-	//req.Initialize();
-	//req.SetOptions();
-	//req.Initiate();
+	GetAnimeListRequest req(NULL);
+	req.Initialize();
+	req.SetOptions();
+	
+	
 
+	TestEventListener tel;
+	req.AddListener(&tel);
 
+	req.Initiate();
 
 
 
@@ -50,7 +72,7 @@ int main()
 	{
 
 	}
-	r.Destroy();
+	/*r.Destroy();*/
 
     return 0;
 }

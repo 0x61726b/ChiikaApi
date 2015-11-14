@@ -21,7 +21,7 @@ namespace ChiikaApi
 	class MalApiExport GetAnimeListRequest : public RequestInterface,public CurlEventListener
 	{
 	public:
-		GetAnimeListRequest();
+		GetAnimeListRequest(LocalDataManager*);
 		virtual ~GetAnimeListRequest();
 		void OnSuccess();
 		void OnError() ;

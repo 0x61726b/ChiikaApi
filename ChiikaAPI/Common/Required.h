@@ -139,7 +139,9 @@ namespace ChiikaApi
 		NOT_IMPLEMENTED = 0x1 << 6,
 		UNAUTHORIZED = 0x1 << 7,
 		NOT_KNOWN = 0x1 << 8,
-		RETURNED_GOOD = 0x1 << 9
+		RETURNED_GOOD = 0x1 << 9,
+		CANT_RESOLVE_HOST_OR_PROXY = 0x1 << 10,
+		CANT_CONNECT = 0x1 << 11
 	};
 
 	//----------------------------------------------------------------------------

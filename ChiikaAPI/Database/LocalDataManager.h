@@ -109,7 +109,7 @@ namespace ChiikaApi
 		virtual ~LocalDataInterface() { };
 
 		virtual UserInfo GetUserInfo() = 0;
-		virtual void SetUserInfo(UserInfo) = 0;
+		virtual void SetUserInfo(const UserInfo&) = 0;
 	};
 	class MalApiExport LocalDataManager : public Singleton<LocalDataManager>, public LocalDataInterface
 	{
@@ -150,8 +150,8 @@ namespace ChiikaApi
 
 		void SetUserNamePass(ChiString userName, ChiString pass);
 
-		UserInfo GetUserInfo() override;
-		void SetUserInfo(UserInfo i);
+		UserInfo GetUserInfo();
+		void SetUserInfo(const UserInfo& i);
 
 
 	public:

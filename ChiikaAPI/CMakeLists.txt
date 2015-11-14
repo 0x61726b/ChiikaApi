@@ -144,12 +144,6 @@ set(CHIIKA_THIRD_PARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}//ThirdParty)
 set(CHIIKA_LIBRARIES libcurl)
 set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} pugixml)
 set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} Anitomy)
-if(IncludeGoogleMock)
-  set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} gmock)
-  add_subdirectory(Tests)
-else()
-
-endif()  
 
 add_library(${TARGET_NAME} ${CHI_LIBTYPE}
   ${ChiikaApi_Common_Src}
@@ -174,14 +168,14 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\Common) #This is for Vs2013 so 
 #Link CURL
 target_link_libraries(ChiikaApi libcurl)
 target_compile_options(libcurl PRIVATE "/MT$<$<CONFIG:Debug>:d>")
-target_compile_definitions(libcurl PRIVATE "-DUNICODE -D_UNICODE")
+target_compile_definitions(libcurl PRIVATE -DUNICODE)
 #Include CURL
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\curl\\include\\curl)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}\\ThirdParty\\curl\\include\\curl)
 
 #Jsoncpp
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\jsoncpp\\include\\json)
-if(BUILD_SHARED_LIBS)
+if(NOT BUILD_STATIC_LIBS)
   target_link_libraries(ChiikaApi jsoncpp_lib)
   set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib)
 
@@ -190,7 +184,14 @@ if(BUILD_STATIC_LIBS)
   target_compile_definitions(jsoncpp_lib_static PRIVATE -DJSON_DLL)
   target_link_libraries(ChiikaApi jsoncpp_lib_static)
   set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib_static)
-
+endif()
+if(IncludeGoogleMock)
+  set_target_properties( gmock
+    PROPERTIES
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
+)
 endif()
 
 
@@ -206,8 +207,6 @@ target_link_libraries(ChiikaApi Anitomy)
 
 
 #Tests
-
-set(TESTS_OUTPUT_DIR ${CMAKE_BINARY_DIR}//Tests )
 
 set_target_properties( ChiikaApi ${CHIIKA_LIBRARIES}
     PROPERTIES

@@ -173,6 +173,15 @@ namespace ChiikaApi
 
 		LOG(INFO) << "Request returned HTTP code " << http_code << "...";
 
+		if(m_CurlRes == CURLE_COULDNT_CONNECT)
+		{
+			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::CANT_CONNECT;
+		}
+		if(m_CurlRes == CURLE_COULDNT_RESOLVE_HOST || m_CurlRes == CURLE_COULDNT_RESOLVE_PROXY)
+		{
+			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::CANT_RESOLVE_HOST_OR_PROXY;
+		}
+
 		if(http_code == 200)
 		{
 			m_iRequestResult = RequestCodes::REQUEST_SUCCESS | RequestCodes::RETURNED_GOOD;
@@ -200,10 +209,6 @@ namespace ChiikaApi
 		else if(http_code == 501)
 		{
 			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::NOT_IMPLEMENTED;
-		}
-		else
-		{
-			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::NOT_KNOWN;
 		}
 		if(m_iRequestResult & RequestCodes::REQUEST_SUCCESS)
 		{

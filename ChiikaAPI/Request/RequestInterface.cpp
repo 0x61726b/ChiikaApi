@@ -20,9 +20,31 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
+	RequestInterface::RequestInterface(LocalDataManager* ldm)
+	{
+		if(!ldm)
+		{
+			m_pLocalData = LocalDataManager::GetPtr();
+		}
+		else
+		{
+			m_pLocalData = ldm;
+		}
+
+	}
+	//----------------------------------------------------------------------------
+	RequestInterface::~RequestInterface()
+	{
+
+	}
 	//----------------------------------------------------------------------------
 	void RequestInterface::OnSuccess()
 	{
+		for(size_t i = 0; i < m_vListeners.size(); i++)
+		{
+			m_vListeners[i]->OnSuccess(this);
+		}
+
 		LocalDataManager::Get().SaveAll();
 	}
 	//----------------------------------------------------------------------------
@@ -31,11 +53,50 @@ namespace ChiikaApi
 		//
 		int error = m_Curl.GetRequestResult();
 
-		if( error & RequestCodes::UNAUTHORIZED )
+		if(error & RequestCodes::UNAUTHORIZED)
 		{
-			LOG(INFO) << "Authorization error.";
+			LOG(ERROR) << "Authorization error.";
+		}
+
+		if(error & RequestCodes::CANT_CONNECT)
+		{
+			LOG(ERROR) << "Connection couldnt be made.";
+		}
+
+		if(error & RequestCodes::CANT_RESOLVE_HOST_OR_PROXY)
+		{
+			LOG(ERROR) << "Can't resolve host or proxy.Probably there is no internet connection.";
+		}
+
+		for(size_t i = 0; i < m_vListeners.size(); i++)
+		{
+			m_vListeners[i]->OnError(this);
 		}
 
 		//ToDo(arkenthera): Implements others sometime.
 	}
+	//----------------------------------------------------------------------------
+	void RequestInterface::AddListener(RequestListener* listener)
+	{
+		if(listener)
+			m_vListeners.push_back(listener);
+	}
+	//----------------------------------------------------------------------------
+	void RequestInterface::RemoveListener(RequestListener* l)
+	{
+		RequestListener* listener = 0;
+		int index;
+		for(unsigned int i = 0; i < m_vListeners.size(); i++)
+		{
+			if(m_vListeners[i] == l)
+			{
+				listener = l;
+				index = i;
+			}
+		}
+
+		m_vListeners.erase(m_vListeners.begin() + index);
+		TryDelete(listener);
+	}
+	//----------------------------------------------------------------------------
 }

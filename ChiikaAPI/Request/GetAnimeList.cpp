@@ -20,7 +20,8 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	GetAnimeListRequest::GetAnimeListRequest()
+	GetAnimeListRequest::GetAnimeListRequest(LocalDataManager* ldm)
+		: RequestInterface(ldm)
 	{
 		m_sName = "GetAnimeList";
 	}
@@ -38,7 +39,7 @@ namespace ChiikaApi
 		if(!parse)
 			return;
 
-
+		
 		pugi::xml_node  myanimelist = doc.child("myanimelist");
 		pugi::xml_node  user = myanimelist.child("myinfo");
 		pugi::xml_node  userWatching = user.child("user_watching");
@@ -51,7 +52,7 @@ namespace ChiikaApi
 		ChiString userName = user.child("user_name").text().get();
 		ChiString id = user.child("user_id").text().get();
 
-		UserInfo ui = LocalDataManager::Get().GetUserInfo();
+		UserInfo ui = m_pLocalData->GetUserInfo();
 		ui.UserName = ToStd(userName);
 		ui.AnimeStats.Watching = FromXMLValueToInt(userWatching);
 		ui.AnimeStats.Completed = FromXMLValueToInt(user_completed);
@@ -61,7 +62,7 @@ namespace ChiikaApi
 		ui.AnimeStats.DaySpentAnime = FromXMLValueToFloat(user_days_spent_watching);
 
 
-		LocalDataManager::Get().SetUserInfo(ui);
+		m_pLocalData->SetUserInfo(ui);
 
 		int animeCount = 0;
 		UserAnimeList list;
@@ -138,8 +139,8 @@ namespace ChiikaApi
 	{
 		ChiString url;
 		int method;
-		ChiString userName = LocalDataManager::Get().GetUserInfo().UserName;
-		ChiString passWord =  LocalDataManager::Get().GetUserInfo().Pass;
+		ChiString userName = m_pLocalData->GetUserInfo().UserName;
+		ChiString passWord =  m_pLocalData->GetUserInfo().Pass;
 
 		url = "http://myanimelist.net/malappinfo.php?u=" + userName + "&type=anime&status=all";
 		method = CURLOPT_HTTPGET;
