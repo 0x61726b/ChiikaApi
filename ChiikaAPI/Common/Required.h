@@ -141,7 +141,8 @@ namespace ChiikaApi
 		NOT_KNOWN = 0x1 << 8,
 		RETURNED_GOOD = 0x1 << 9,
 		CANT_RESOLVE_HOST_OR_PROXY = 0x1 << 10,
-		CANT_CONNECT = 0x1 << 11
+		CANT_CONNECT = 0x1 << 11,
+		BAD_PARAMETER = 0x1 << 12
 	};
 
 	//----------------------------------------------------------------------------
@@ -155,20 +156,7 @@ namespace ChiikaApi
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	std::wstring s2ws(const std::string& str)
-	{
-		typedef std::codecvt_utf8<wchar_t> convert_typeX;
-		std::wstring_convert<convert_typeX,wchar_t> converterX;
 
-		return converterX.from_bytes(str);
-	}
-	std::string ws2s(const std::wstring& wstr)
-	{
-		typedef std::codecvt_utf8<wchar_t> convert_typeX;
-		std::wstring_convert<convert_typeX,wchar_t> converterX;
-
-		return converterX.to_bytes(wstr);
-	}
 }
 //----------------------------------------------------------------------------
 #define ApiDebugMode

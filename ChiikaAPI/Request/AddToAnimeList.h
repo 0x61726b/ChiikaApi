@@ -18,11 +18,11 @@
 //---------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	class MalApiExport GetAnimeListRequest : public RequestInterface,public CurlEventListener
+	class MalApiExport AddToAnimeListRequest : public RequestInterface,public CurlEventListener
 	{
 	public:
-		GetAnimeListRequest(LocalDataManager*);
-		virtual ~GetAnimeListRequest();
+		AddToAnimeListRequest(LocalDataManager*);
+		virtual ~AddToAnimeListRequest();
 		void OnSuccess();
 		void OnError() ;
 
@@ -31,5 +31,9 @@ namespace ChiikaApi
 		void SetOptions();
 
 		void SetPostData();
+		void SetAnimeData(const UserAnimeEntry& anime);
+
+	private:
+		UserAnimeEntry m_Anime;
 	};
 }

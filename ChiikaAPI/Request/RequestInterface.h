@@ -37,6 +37,10 @@ namespace ChiikaApi
 
 		virtual void Initiate() = 0;
 
+		virtual void SetPostData() = 0;
+
+		ChiString GetAnimeXML(const UserAnimeEntry& anime);
+
 	public:
 		void AddListener(RequestListener* listener);
 		void RemoveListener(RequestListener* listener);

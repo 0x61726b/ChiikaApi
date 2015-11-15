@@ -16,7 +16,7 @@
 #include "Root\Root.h"
 #include "Request\RequestManager.h"
 #include "Database\LocalDataManager.h"
-#include "Request\GetAnimeList.h"
+#include "Request\AddToAnimeList.h"
 //----------------------------------------------------------------------------
 using namespace ChiikaApi;
 std::string SearchKeywordAnime = "Oregairu";
@@ -52,9 +52,16 @@ int main()
 	ui.Pass = testPass;
 	r.m_pLocalData->SetUserInfo(ui);
 	
-	GetAnimeListRequest req(NULL);
+
+	AddToAnimeListRequest req(NULL);
 	req.Initialize();
+
+	UserAnimeEntry test;
+	test.Anime.Id = 21;
+	req.SetAnimeData(test);
 	req.SetOptions();
+	req.SetPostData();
+	
 	
 	
 

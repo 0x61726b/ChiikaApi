@@ -39,7 +39,7 @@ namespace ChiikaApi
 		void SetVerbose(bool);
 		void Perform();
 		void SetWriteFunction(std::function<size_t(void *buffer,size_t size,size_t nmemb,void *stream)>*);
-
+		void SetErrorCode(int optional);
 
 	public:
 		void AddListener(CurlEventListener* listener);

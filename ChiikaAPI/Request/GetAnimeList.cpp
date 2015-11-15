@@ -135,6 +135,11 @@ namespace ChiikaApi
 		m_Curl.AddListener(this);
 	}
 	//----------------------------------------------------------------------------
+	void GetAnimeListRequest::SetPostData()
+	{
+
+	}
+	//----------------------------------------------------------------------------
 	void GetAnimeListRequest::SetOptions()
 	{
 		ChiString url;

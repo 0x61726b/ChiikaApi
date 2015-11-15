@@ -47,6 +47,7 @@
 #	define TryDelete(x) if(x) delete x
 #	define InitializeNULL(x) x = NULL
 #	define TryDestroy(x) if(x) x->Destroy();
+
 //----------------------------------------------------------------------------
 #endif // CHIIKAUTILITYDEFINES
 //----------------------------------------------------------------------------

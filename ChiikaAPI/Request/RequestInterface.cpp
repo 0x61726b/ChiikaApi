@@ -18,6 +18,14 @@
 #include "Database\LocalDataManager.h"
 #include "Logging\LogManager.h"
 //----------------------------------------------------------------------------
+struct xml_string_writer : pugi::xml_writer
+{
+	std::string result;
+	virtual void write(const void* data,size_t size)
+	{
+		result += std::string(static_cast<const char*>(data),size);
+	}
+};
 namespace ChiikaApi
 {
 	RequestInterface::RequestInterface(LocalDataManager* ldm)
@@ -52,6 +60,11 @@ namespace ChiikaApi
 	{
 		//
 		int error = m_Curl.GetRequestResult();
+
+		if(error == 0)
+		{
+			LOG(ERROR) << "Wow something went really wrong wtf.";
+		}
 
 		if(error & RequestCodes::UNAUTHORIZED)
 		{
@@ -99,4 +112,40 @@ namespace ChiikaApi
 		TryDelete(listener);
 	}
 	//----------------------------------------------------------------------------
+	ChiString RequestInterface::GetAnimeXML(const UserAnimeEntry& anime)
+	{
+		pugi::xml_document doc;
+		pugi::xml_node entry = doc.append_child("entry");
+		pugi::xml_node episode = entry.append_child("episode");
+		pugi::xml_node status = entry.append_child("status");
+		pugi::xml_node score = entry.append_child("score");
+		pugi::xml_node downloaded_episodes = entry.append_child("downloaded_episodes");
+		pugi::xml_node storage_type = entry.append_child("storage_type");
+		pugi::xml_node storage_value = entry.append_child("storage_value");
+		pugi::xml_node times_rewatched = entry.append_child("times_rewatched");
+		pugi::xml_node rewatch_value = entry.append_child("rewatch_value");
+		pugi::xml_node date_start = entry.append_child("date_start");
+		pugi::xml_node date_finish = entry.append_child("date_finish");
+		pugi::xml_node priority = entry.append_child("priority");
+		pugi::xml_node enable_discussion = entry.append_child("enable_discussion");
+		pugi::xml_node enable_rewatching = entry.append_child("enable_rewatching");
+		pugi::xml_node comments = entry.append_child("comments");
+		pugi::xml_node fansub_group = entry.append_child("fansub_group");
+		pugi::xml_node tags = entry.append_child("tags");
+
+		pugi::xml_node decl = doc.prepend_child(pugi::node_declaration);
+		decl.append_attribute("version") = "1.0";
+		decl.append_attribute("encoding") = "UTF-8";
+
+
+		episode.text().set(anime.WatchedEpisodes);
+		status.text().set(anime.Status);
+		score.text().set(anime.Score);
+		std::stringstream str;
+		xml_string_writer writer;
+
+		doc.save(writer);
+		return writer.result;
+	}
+
 }

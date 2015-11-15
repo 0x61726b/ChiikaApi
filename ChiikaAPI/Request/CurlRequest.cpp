@@ -71,7 +71,8 @@ namespace ChiikaApi
 	}
 	//----------------------------------------------------------------------------
 	CurlRequest::CurlRequest()
-		: m_bVerbose(false)
+		: m_bVerbose(false),
+		m_iRequestResult(0)
 	{
 	}
 	//----------------------------------------------------------------------------
@@ -160,6 +161,14 @@ namespace ChiikaApi
 		{
 			curl_easy_setopt(m_pCurl,CURLOPT_VERBOSE,1L);
 			LOG(INFO) << "VERBOSE enabled.";
+		}
+	}
+	//----------------------------------------------------------------------------
+	void CurlRequest::SetErrorCode(int optional)
+	{
+		if(optional != 0)
+		{
+			m_iRequestResult = RequestCodes::REQUEST_ERROR | optional;
 		}
 	}
 	//----------------------------------------------------------------------------
