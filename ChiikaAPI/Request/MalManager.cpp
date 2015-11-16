@@ -23,7 +23,6 @@ namespace ChiikaApi
 {
 	
 	int UserInfo::UnknownUser = -1;
-	int Anime::UnknownAnime = -1;
 	template<> MalManager* Singleton<MalManager>::msSingleton = 0;
 	MalManager& MalManager::Get(void)
 	{

@@ -54,9 +54,11 @@ namespace ChiikaApi
 		CURLcode m_CurlRes;
 		int m_iRequestResult;
 		bool m_bVerbose;
+		int m_iMethod;
 
 	private:
 		ChiString m_sBuffer;
+		ChiString m_sPostData;
 
 
 		static int CallbackFunc(char* data,size_t size,size_t nmemb,ChiString* buffer);

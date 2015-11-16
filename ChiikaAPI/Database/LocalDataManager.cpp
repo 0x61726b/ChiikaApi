@@ -906,7 +906,7 @@ namespace ChiikaApi
 
 				UserAnimeEntry findAnime = MalManager::Get().GetAnimeById(FromXMLValueToInt(Id));
 
-				if (findAnime.Anime.Id != Anime::UnknownAnime)
+				if (findAnime.Anime.Id != UnknownAnimeId)
 				{
 					ChiikaApi::AnimeDetails details = findAnime.Anime.ExtraDetails;
 					details.Synopsis = syn.text().get();

@@ -138,7 +138,7 @@ namespace ChiikaApi
 		}
 	};
 
-	struct AnimeDetails
+	struct MalApiExport AnimeDetails
 	{
 		ChiString Synopsis;
 		StringVector Tags;
@@ -151,7 +151,7 @@ namespace ChiikaApi
 
 		}
 	};
-	struct AnimeStatistics
+	struct MalApiExport AnimeStatistics
 	{
 		double Score;
 		int Ranked;
@@ -165,7 +165,7 @@ namespace ChiikaApi
 		}
 	};
 
-	struct Anime
+	struct MalApiExport Anime
 	{
 		int Id;
 		ChiString Title;
@@ -182,7 +182,7 @@ namespace ChiikaApi
 		AnimeStatistics Statistics;
 		Anime()
 		{
-			Id = UnknownAnime;
+			Id = UnknownAnimeId;
 			Title = "";
 			English = "";
 			EpisodeCount = 0;
@@ -192,8 +192,6 @@ namespace ChiikaApi
 			EndDate = "";
 			Image = "";
 		}
-
-		static int UnknownAnime;
 	} ;
 
 	struct AnimeFileInfo
@@ -201,7 +199,7 @@ namespace ChiikaApi
 		ChiString FolderPath;
 		std::vector<ChiString> EpisodePaths;
 	};
-	struct UserAnimeEntry
+	struct MalApiExport UserAnimeEntry
 	{
 		Anime Anime;
 		int MyId;

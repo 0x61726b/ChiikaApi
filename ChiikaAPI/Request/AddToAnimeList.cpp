@@ -16,6 +16,7 @@
 #include "Stable.h"
 #include "AddToAnimeList.h"
 #include "Database\LocalDataManager.h"
+#include "Logging\ChiString.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -64,21 +65,25 @@ namespace ChiikaApi
 		ChiString url;
 		int method;
 		ChiString userName = m_pLocalData->GetUserInfo().UserName;
-		ChiString passWord =  m_pLocalData->GetUserInfo().Pass;
+		ChiString passWord = m_pLocalData->GetUserInfo().Pass;
 
-		if(m_Anime.Anime.Id == Anime::UnknownAnime)
+		if (m_Anime.Anime.Id == UnknownAnimeId)
 		{
 			m_Curl.SetErrorCode(RequestCodes::BAD_PARAMETER);
 			RequestInterface::OnError();
 			return;
 		}
 		url = "http://myanimelist.net/api/animelist/add/" + std::to_string(m_Anime.Anime.Id) + ".xml";
-		method = CURLOPT_POST;
+		method = CURLOPT_HTTPPOST;
+
+		ChiStringUtil strUtil;
+		ChiString postData = (GetAnimeXML(m_Anime));
 
 		m_Curl.SetUrl(url);
 		m_Curl.SetAuth(userName + ":" + passWord);
-		m_Curl.SetMethod(method,GetAnimeXML(m_Anime));
 		m_Curl.SetWriteFunction(NULL);
+		m_Curl.SetVerbose(true);
+		m_Curl.SetMethod(method, postData);
 	}
 	//----------------------------------------------------------------------------
 	void AddToAnimeListRequest::Initiate()

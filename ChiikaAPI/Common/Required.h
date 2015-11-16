@@ -151,6 +151,11 @@ namespace ChiikaApi
 #	define CHIKA_AUTO_MUTEX_LOCK /*boost::recursive_mutex::scoped_lock AutoMutexLock(CHIKA_AUTO_MUTEX_NAME);*/ 
 }
 //----------------------------------------------------------------------------
+namespace //Move this to a header file later
+{
+	const int UnknownAnimeId = -1;
+}
+//----------------------------------------------------------------------------
 #	include "Common/MyAnimeList.h"
 #define ANIME_IN_LIST(x) (x.Anime.Id != 0)
 //----------------------------------------------------------------------------

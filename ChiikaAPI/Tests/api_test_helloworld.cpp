@@ -57,6 +57,8 @@ int main()
 	req.Initialize();
 
 	UserAnimeEntry test;
+	test.WatchedEpisodes = 1;
+	test.Score = 10;
 	test.Anime.Id = 21;
 	req.SetAnimeData(test);
 	req.SetOptions();

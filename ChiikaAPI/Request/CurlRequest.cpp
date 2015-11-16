@@ -19,15 +19,15 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	int CurlRequest::CallbackFunc(char* data,size_t size,size_t nmemb,ChiString* buffer)
+	int CurlRequest::CallbackFunc(char* data, size_t size, size_t nmemb, ChiString* buffer)
 	{
 		// What we will return
 		int result = 0;
 
 		// Is there anything in the buffer?
-		if(buffer != NULL) {
+		if (buffer != NULL) {
 			// Append the data to the buffer
-			buffer->append(data,size * nmemb);
+			buffer->append(data, size * nmemb);
 
 			// How much did we write?
 			result = size * nmemb;
@@ -36,7 +36,7 @@ namespace ChiikaApi
 		return result;
 	}
 	//----------------------------------------------------------------------------
-	int CurlRequest::ReadCallbackFunc(void *ptr,size_t size,size_t nmemb,void *userp)
+	int CurlRequest::ReadCallbackFunc(void *ptr, size_t size, size_t nmemb, void *userp)
 	{
 		//struct WriteThis *pooh = (struct WriteThis *)userp;
 
@@ -53,7 +53,7 @@ namespace ChiikaApi
 		return 0;                          /* no more data left to deliver */
 	}
 	//----------------------------------------------------------------------------
-	size_t CurlRequest::Curlfwrite(void *buffer,size_t size,size_t nmemb,void *stream)
+	size_t CurlRequest::Curlfwrite(void *buffer, size_t size, size_t nmemb, void *stream)
 	{
 		//struct FtpFile *out = (struct FtpFile *)stream;
 
@@ -89,84 +89,70 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void CurlRequest::SetAuth(const std::string& auth) //Should be username:pass
 	{
-		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_HTTPAUTH,CURLAUTH_BASIC);
-		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_USERPWD,ToStd(auth));
-		LOG(INFO) << "Setting authentication to " + auth.substr(0,5) + "..."; //Not posting everything
+		m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_USERPWD, ToStd(auth));
+		LOG(INFO) << "Setting authentication to " + auth.substr(0, 5) + "..."; //Not posting everything
 	}
 	//----------------------------------------------------------------------------
-	void CurlRequest::SetWriteFunction(std::function<size_t(void *buffer,size_t size,size_t nmemb,void *stream)>* curlCallback)
+	void CurlRequest::SetWriteFunction(std::function<size_t(void *buffer, size_t size, size_t nmemb, void *stream)>* curlCallback)
 	{
-		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_WRITEDATA,&m_sBuffer);
+		m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_WRITEDATA, &m_sBuffer);
 
-		if(!curlCallback)
+		if (!curlCallback)
 		{
-			m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_WRITEFUNCTION,CallbackFunc);
+			m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_WRITEFUNCTION, CallbackFunc);
 		}
 		else
 		{
-			m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_WRITEFUNCTION,curlCallback);
+			m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_WRITEFUNCTION, curlCallback);
 		}
 	}
 	//----------------------------------------------------------------------------
 	void CurlRequest::SetUrl(const ChiString& url)
 	{
-		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_URL,ToStd(url));
+		m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_URL, ToStd(url));
 		LOG(INFO) << "Setting URL to " + url + "..";
 	}
 	//----------------------------------------------------------------------------
 	void CurlRequest::SetUserAgent(const ChiString& ua)
 	{
-		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_USERAGENT,ua);
-		LOG(INFO) << "Setting User-Agent to " + ua+ "..";
+		m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_USERAGENT, ua);
+		LOG(INFO) << "Setting User-Agent to " + ua + "..";
 	}
 	//----------------------------------------------------------------------------
-	void CurlRequest::SetMethod(int method,const ChiString& xmlData)
+	void CurlRequest::SetMethod(int method, const ChiString& xmlData)
 	{
-		if(method == CURLOPT_HTTPGET)
+		m_iMethod = method;
+		if (method == CURLOPT_HTTPGET)
 		{
 			LOG(INFO) << "Setting method to GET";
 		}
 		else
 		{
-			if(xmlData.size() > 0)
-			{
-				LOG(INFO) << "Setting method to POST";
-
-				const char* data = xmlData.c_str();
-				ChiString append = "data=";
-				append.append(data);
-
-				m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_POST,1L);
-				m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_POSTFIELDS,append.c_str());
-				m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_POSTFIELDSIZE,append.length());
-
-				if(m_bVerbose)
-				{
-					LOG(INFO) << "POST Data = " + xmlData;
-				}
-			}
+			LOG(INFO) << "Setting method to POST";
+			m_sPostData = xmlData;
 		}
 	}
 	//----------------------------------------------------------------------------
 	void CurlRequest::SetTimeout(int time)
 	{
-		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_TIMEOUT,time);
+		m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_TIMEOUT, time);
 		LOG(INFO) << "Setting timeout to " << time << " seconds";
 	}
 	//----------------------------------------------------------------------------
 	void CurlRequest::SetVerbose(bool b)
 	{
 		m_bVerbose = b;
-		if(m_bVerbose)
+		if (m_bVerbose)
 		{
-			curl_easy_setopt(m_pCurl,CURLOPT_VERBOSE,1L);
+			curl_easy_setopt(m_pCurl, CURLOPT_VERBOSE, 1L);
 			LOG(INFO) << "VERBOSE enabled.";
 		}
 	}
 	//----------------------------------------------------------------------------
 	void CurlRequest::SetErrorCode(int optional)
 	{
-		if(optional != 0)
+		if (optional != 0)
 		{
 			m_iRequestResult = RequestCodes::REQUEST_ERROR | optional;
 		}
@@ -175,62 +161,81 @@ namespace ChiikaApi
 	void CurlRequest::Perform()
 	{
 		LOG(INFO) << "Initiaing request....";
-		m_CurlRes = curl_easy_perform(m_pCurl);
+
+		if (m_iMethod == CURLOPT_HTTPPOST)
+		{
+			const char* data = m_sPostData.c_str();
+			ChiString append = "data=";
+			append.append(data);
+
+			m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_POST, 1L);
+			m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_POSTFIELDS, append.c_str());
+			m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_POSTFIELDSIZE, append.length());
+			m_CurlRes = curl_easy_perform(m_pCurl);
+			if (m_bVerbose)
+			{
+				LOG(INFO) << "POST Data = " + append;
+			}
+		}
+		else
+		{
+			m_CurlRes = curl_easy_perform(m_pCurl);
+		}
 
 		long http_code = 0;
-		curl_easy_getinfo(m_pCurl,CURLINFO_RESPONSE_CODE,&http_code);
+		curl_easy_getinfo(m_pCurl, CURLINFO_RESPONSE_CODE, &http_code);
 
 		LOG(INFO) << "Request returned HTTP code " << http_code << "...";
 
-		if(m_CurlRes == CURLE_COULDNT_CONNECT)
+		if (m_CurlRes == CURLE_COULDNT_CONNECT)
 		{
 			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::CANT_CONNECT;
 		}
-		if(m_CurlRes == CURLE_COULDNT_RESOLVE_HOST || m_CurlRes == CURLE_COULDNT_RESOLVE_PROXY)
+		if (m_CurlRes == CURLE_COULDNT_RESOLVE_HOST || m_CurlRes == CURLE_COULDNT_RESOLVE_PROXY)
 		{
 			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::CANT_RESOLVE_HOST_OR_PROXY;
 		}
 
-		if(http_code == 200)
+		if (http_code == 200)
 		{
 			m_iRequestResult = RequestCodes::REQUEST_SUCCESS | RequestCodes::RETURNED_GOOD;
 		}
-		else if(http_code == 204)
+		else if (http_code == 204)
 		{
 			m_iRequestResult = RequestCodes::REQUEST_SUCCESS | RequestCodes::RETURNED_EMPTY;
 		}
-		else if(http_code == 201)
+		else if (http_code == 201)
 		{
 			m_iRequestResult = RequestCodes::REQUEST_SUCCESS | RequestCodes::POST_SUCCESS;
 		}
-		else if(http_code == 400)
+		else if (http_code == 400)
 		{
 			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::BAD_REQUEST;
 		}
-		else  if(http_code == 401)
+		else  if (http_code == 401)
 		{
 			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::UNAUTHORIZED;
 		}
-		else if(http_code == 500)
+		else if (http_code == 500)
 		{
 			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::INTERNAL_ERROR;
 		}
-		else if(http_code == 501)
+		else if (http_code == 501)
 		{
 			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::NOT_IMPLEMENTED;
 		}
-		if(m_iRequestResult & RequestCodes::REQUEST_SUCCESS)
+		if (m_iRequestResult & RequestCodes::REQUEST_SUCCESS)
 		{
 			LOG(INFO) << "Request successful.";
-			for(size_t i = 0; i < m_vListeners.size(); i++)
+			for (size_t i = 0; i < m_vListeners.size(); i++)
 			{
 				m_vListeners[i]->OnSuccess();
 			}
 		}
-		if(m_iRequestResult & RequestCodes::REQUEST_ERROR)
+		if (m_iRequestResult & RequestCodes::REQUEST_ERROR)
 		{
 			LOG(INFO) << "Request error.";
-			for(size_t i = 0; i < m_vListeners.size(); i++)
+			for (size_t i = 0; i < m_vListeners.size(); i++)
 			{
 				m_vListeners[i]->OnError();
 			}
@@ -245,7 +250,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void CurlRequest::AddListener(CurlEventListener* listener)
 	{
-		if(listener)
+		if (listener)
 			m_vListeners.push_back(listener);
 	}
 	//----------------------------------------------------------------------------
@@ -253,9 +258,9 @@ namespace ChiikaApi
 	{
 		CurlEventListener* listener = 0;
 		int index;
-		for(unsigned int i = 0; i < m_vListeners.size(); i++)
+		for (unsigned int i = 0; i < m_vListeners.size(); i++)
 		{
-			if(m_vListeners[i] == l)
+			if (m_vListeners[i] == l)
 			{
 				listener = l;
 				index = i;

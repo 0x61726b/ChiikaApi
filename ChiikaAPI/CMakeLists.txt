@@ -96,6 +96,8 @@ set(ChiikaApi_Request_Src
   Request/AccountVerify.cpp
   Request/GetAnimeList.h
   Request/GetAnimeList.cpp
+  Request/AddToAnimeList.h
+  Request/AddToAnimeList.cpp
   )
 source_group(ChiikaApi\\\\Request FILES ${ChiikaApi_Request_Src})
 
