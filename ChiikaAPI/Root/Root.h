@@ -30,6 +30,8 @@ namespace ChiikaApi
 		Root();
 		~Root();
 
+		static Root* Get();
+
 		void Initialize(const ChiString& modulePath);
 		void Destroy();
 
@@ -48,8 +50,8 @@ namespace ChiikaApi
 		//Api Related things
 		void InitializeApi(bool b);
 		void Exit();
-		ChiString GetVersion();
-		ChiString GetHash(); //debugging purposes
+		const ChiString& GetVersion();
+		const ChiString& GetHash(); //debugging purposes
 
 		MalManager* m_pMalManager;
 		RequestManager* m_pRequestManager;

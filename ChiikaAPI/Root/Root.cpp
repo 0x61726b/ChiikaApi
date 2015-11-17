@@ -27,6 +27,12 @@
 #include "json/json.h"
 #include "Logging\FileHelper.h"
 #include "Logging\ChiString.h"
+//----------------------------------------------------------------------------
+namespace
+{
+	ChiikaApi::Root* g_Root = NULL;
+}
+//----------------------------------------------------------------------------
 namespace ChiikaApi
 {
 	//----------------------------------------------------------------------------
@@ -40,6 +46,13 @@ namespace ChiikaApi
 		InitializeNULL(m_pRequestManager);
 		InitializeNULL(m_pRecognizer);
 		InitializeNULL(m_pLocalData);
+
+		g_Root = this;
+	}
+	//----------------------------------------------------------------------------
+	Root* Root::Get()
+	{
+		return g_Root;
 	}
 	//----------------------------------------------------------------------------
 	void Root::Initialize(const ChiString& modulePath)
@@ -104,7 +117,7 @@ namespace ChiikaApi
 		TryDelete(m_pRecognizer);
 	}
 	//----------------------------------------------------------------------------
-	void Root::PostRequest(RequestManager* rm,ThreadedRequest* r)
+	void Root::PostRequest(RequestManager* rm, ThreadedRequest* r)
 	{
 		rm->ProcessRequest(r);
 	}
@@ -597,12 +610,12 @@ namespace ChiikaApi
 	//	return  NULL;
 	//}
 	//----------------------------------------------------------------------------
-	ChiString Root::GetVersion()
+	const ChiString& Root::GetVersion()
 	{
 		return m_sVersion;
 	}
 	//----------------------------------------------------------------------------
-	ChiString Root::GetHash()
+	const ChiString& Root::GetHash()
 	{
 		return m_sCommitHash;
 	}
