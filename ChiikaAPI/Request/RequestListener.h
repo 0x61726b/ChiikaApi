@@ -13,42 +13,19 @@
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
-#ifndef __RequestInterface_h__
-#define __RequestInterface_h__
+#ifndef __RequestListener_h__
+#define __RequestListener_h__
 //----------------------------------------------------------------------------
 #include "Common\Required.h"
-#include "Request\CurlRequest.h"
-#include "Request\RequestListener.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	class MalApiExport RequestInterface
+	class MalApiExport RequestListener
 	{
 	public:
-		RequestInterface(LocalDataManager*);
-		virtual ~RequestInterface();
-		virtual void OnSuccess();
-		virtual void OnError();
-
-		virtual void Initialize() = 0;
-		virtual void SetOptions() = 0;
-
-		virtual void Initiate() = 0;
-
-		virtual void SetPostData() = 0;
-
-		ChiString GetAnimeXML(const UserAnimeEntry& anime);
-
-	public:
-		void AddListener(RequestListener* listener);
-		void RemoveListener(RequestListener* listener);
-
-		Vector<RequestListener*>::type m_vListeners;
-
-	protected:
-		ChiString m_sName;
-		CurlRequest m_Curl;
-		LocalDataManager* m_pLocalData;
+		virtual void OnSuccess(RequestInterface*) = 0;
+		virtual void OnError(RequestInterface*) = 0;
 	};
 }
+//----------------------------------------------------------------------------
 #endif
