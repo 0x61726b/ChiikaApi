@@ -243,7 +243,7 @@ namespace ChiikaApi
 		curl_easy_cleanup(m_pCurl);
 	}
 	//----------------------------------------------------------------------------
-	ChiString CurlRequest::GetResponse()
+	const ChiString& CurlRequest::GetResponse()
 	{
 		return m_sBuffer;
 	}

@@ -353,8 +353,6 @@ namespace ChiikaApi
 		UserAnimeStats AnimeStats;
 		UserMangaInfo MangaInfo;
 
-		static int UnknownUser;
-
 		UserInfo()
 		{
 			UserId = 0;

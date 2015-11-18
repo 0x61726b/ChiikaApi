@@ -26,7 +26,7 @@ namespace ChiikaApi
 	class MalApiExport RequestInterface
 	{
 	public:
-		RequestInterface(LocalDataManager*);
+		RequestInterface(LocalDataManager* ldm = NULL);
 		virtual ~RequestInterface();
 		virtual void OnSuccess();
 		virtual void OnError();
@@ -37,6 +37,8 @@ namespace ChiikaApi
 		virtual void Initiate() = 0;
 
 		virtual void SetPostData();
+
+		const std::string& GetResponse();
 
 		const std::string& GetName();
 

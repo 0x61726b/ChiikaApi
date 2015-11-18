@@ -74,7 +74,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	SenpaiData SeasonManager::GetSenpaiData()
 	{
-		UserAnimeList list = MalManager::Get().GetAnimeList();
+		UserAnimeList list = MalManager::Get()->GetAnimeList();
 
 		SenpaiData sd;
 

@@ -47,7 +47,7 @@ namespace ChiikaApi
 
 		Vector<CurlEventListener*>::type m_vListeners;
 
-		ChiString GetResponse();
+		const ChiString& GetResponse();
 		int GetRequestResult();
 	private:
 		CURL* m_pCurl;

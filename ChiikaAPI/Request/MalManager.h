@@ -17,15 +17,16 @@
 #define __MALUtility_h__
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
-#include "Common/Singleton.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	class MalApiExport MalManager : public Singleton<MalManager>
+	class MalApiExport MalManager
 	{
 	public:
 		MalManager();
 		~MalManager();
+
+		static MalManager* Get();
 
 		CHIKA_AUTO_MUTEX
 
@@ -66,10 +67,6 @@ namespace ChiikaApi
 		UserAnimeEntry GetAnimeById(int Id);
 
 
-
-	public:
-		static MalManager& Get();
-		static MalManager* GetPtr();
 
 	private:
 		UserAnimeList m_vUserAnimeList;

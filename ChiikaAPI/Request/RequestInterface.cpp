@@ -26,6 +26,7 @@ struct xml_string_writer : pugi::xml_writer
 		result += std::string(static_cast<const char*>(data),size);
 	}
 };
+//----------------------------------------------------------------------------
 namespace ChiikaApi
 {
 	const ChiString& GetRequest(Requests r)
@@ -37,6 +38,7 @@ namespace ChiikaApi
 		else
 			return requestList.find(Requests::Unknown)->second;
 	}
+	//----------------------------------------------------------------------------
 	RequestInterface::RequestInterface(LocalDataManager* ldm)
 	{
 		if(!ldm)
@@ -129,6 +131,11 @@ namespace ChiikaApi
 	const std::string& RequestInterface::GetName()
 	{
 		return m_sName;
+	}
+	//----------------------------------------------------------------------------
+	const std::string& RequestInterface::GetResponse()
+	{
+		return m_Curl.GetResponse();
 	}
 	//----------------------------------------------------------------------------
 	ChiString RequestInterface::GetAnimeXML(const UserAnimeEntry& anime)

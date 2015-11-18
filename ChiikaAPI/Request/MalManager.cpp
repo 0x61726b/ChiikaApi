@@ -19,24 +19,18 @@
 #include "pugixml.hpp"
 #include <sstream>
 //----------------------------------------------------------------------------
+ChiikaApi::MalManager* gMalManager = NULL;
+//----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	
-	int UserInfo::UnknownUser = -1;
-	template<> MalManager* Singleton<MalManager>::msSingleton = 0;
-	MalManager& MalManager::Get(void)
+	MalManager* MalManager::Get()
 	{
-		/*assert(msSingleton); */ return (*msSingleton);
+		return gMalManager;
 	}
 	//----------------------------------------------------------------------------
-	MalManager* MalManager::GetPtr(void)
-	{
-		return msSingleton;
-	}
-
 	MalManager::MalManager()
 	{
-
+		gMalManager = this;
 	}
 	//----------------------------------------------------------------------------
 	MalManager::~MalManager()

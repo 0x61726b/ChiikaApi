@@ -22,6 +22,7 @@ namespace ChiikaApi
 	{
 	public:
 		GetAnimeListRequest(LocalDataManager*);
+		GetAnimeListRequest();
 		virtual ~GetAnimeListRequest();
 		void OnSuccess();
 		void OnError() ;

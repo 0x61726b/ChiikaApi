@@ -58,7 +58,7 @@ namespace ChiikaApi
 	void AccountVerifyRequest::OnError()
 	{
 		UserInfo ui;
-		ui.UserId = UserInfo::UnknownUser;
+		ui.UserId = -1;
 		m_pLocalData->SetUserInfo(userInfo);
 
 		RequestInterface::OnError();

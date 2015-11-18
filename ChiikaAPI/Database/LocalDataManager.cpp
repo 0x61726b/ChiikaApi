@@ -231,8 +231,8 @@ namespace ChiikaApi
 				info.LastUpdated = FromXMLValueToStd(my_last_updated);
 				list.insert(UserAnimeList::value_type(Anime.Id, info));
 			}
-			MalManager::Get().AddAnimeList(list);
-			MalManager::Get().AddAnimeList(animeList);
+			MalManager::Get()->AddAnimeList(list);
+			MalManager::Get()->AddAnimeList(animeList);
 		}
 		else
 		{
@@ -253,7 +253,7 @@ namespace ChiikaApi
 			pugi::xml_node  root = doc.append_child(kChiika);
 			pugi::xml_node  MAL = root.append_child(kMyAnimeList);
 
-			ChiikaApi::UserAnimeList list = MalManager::Get().GetAnimeList();
+			ChiikaApi::UserAnimeList list = MalManager::Get()->GetAnimeList();
 			ChiikaApi::UserAnimeList::iterator It;
 			for (It = list.begin(); It != list.end(); ++It)
 			{
@@ -262,24 +262,24 @@ namespace ChiikaApi
 
 				pugi::xml_node  anime = MAL.append_child(kAnime);
 
-				pugi::xml_node  animeDbId = anime.child(kSeriesAnimedbId);
-				pugi::xml_node  series_title = anime.child(kSeriesTitle);
-				pugi::xml_node  series_synonyms = anime.child(kSeriesSynonyms);
-				pugi::xml_node  series_type = anime.child(kSeriesType);
-				pugi::xml_node  series_episodes = anime.child(kSeriesEpisodes);
-				pugi::xml_node  series_status = anime.child(kSeriesStatus);
-				pugi::xml_node  series_start = anime.child(kSeriesStart);
-				pugi::xml_node  series_end = anime.child(kSeriesEnd);
-				pugi::xml_node  series_image = anime.child(kSeriesImage);
-				pugi::xml_node  my_id = anime.child(kMyId); //What does this even mean?
-				pugi::xml_node  my_watched_episodes = anime.child(kMyWatchedEpisodes);
-				pugi::xml_node  my_start_date = anime.child(kMyStartDate);
-				pugi::xml_node  my_finish_date = anime.child(kMyFinishDate);
-				pugi::xml_node  my_score = anime.child(kMyScore);
-				pugi::xml_node  my_status = anime.child(kMyStatus);
-				pugi::xml_node  my_rewatching = anime.child(kMyRewatching);
-				pugi::xml_node  my_rewatching_ep = anime.child(kMyRewatchingEp);
-				pugi::xml_node  my_last_updated = anime.child(kMyLastUpdated);
+				pugi::xml_node  animeDbId = anime.append_child(kSeriesAnimedbId);
+				pugi::xml_node  series_title = anime.append_child(kSeriesTitle);
+				pugi::xml_node  series_synonyms = anime.append_child(kSeriesSynonyms);
+				pugi::xml_node  series_type = anime.append_child(kSeriesType);
+				pugi::xml_node  series_episodes = anime.append_child(kSeriesEpisodes);
+				pugi::xml_node  series_status = anime.append_child(kSeriesStatus);
+				pugi::xml_node  series_start = anime.append_child(kSeriesStart);
+				pugi::xml_node  series_end = anime.append_child(kSeriesEnd);
+				pugi::xml_node  series_image = anime.append_child(kSeriesImage);
+				pugi::xml_node  my_id = anime.append_child(kMyId); //What does this even mean?
+				pugi::xml_node  my_watched_episodes = anime.append_child(kMyWatchedEpisodes);
+				pugi::xml_node  my_start_date = anime.append_child(kMyStartDate);
+				pugi::xml_node  my_finish_date = anime.append_child(kMyFinishDate);
+				pugi::xml_node  my_score = anime.append_child(kMyScore);
+				pugi::xml_node  my_status = anime.append_child(kMyStatus);
+				pugi::xml_node  my_rewatching = anime.append_child(kMyRewatching);
+				pugi::xml_node  my_rewatching_ep = anime.append_child(kMyRewatchingEp);
+				pugi::xml_node  my_last_updated = anime.append_child(kMyLastUpdated);
 
 				SetXMLValue(animeDbId, Anime.Anime.Id);
 				SetXMLValue(series_title, Anime.Anime.Title.c_str());
@@ -384,7 +384,7 @@ namespace ChiikaApi
 				info.LastUpdated = FromXMLValueToStd(my_last_updated);
 				list.insert(MangaList::value_type(mango.Id, info));
 			}
-			MalManager::Get().AddMangaList(list);
+			MalManager::Get()->AddMangaList(list);
 			//LOG("Manga list file loaded successfully!")
 			file.Close();
 		}
@@ -407,7 +407,7 @@ namespace ChiikaApi
 
 			pugi::xml_node  MAL = root.append_child(kMangaList);
 
-			ChiikaApi::MangaList list = MalManager::Get().GetMangaList();
+			ChiikaApi::MangaList list = MalManager::Get()->GetMangaList();
 
 			MangaList::iterator It;
 			for (It = list.begin(); It != list.end(); ++It)
@@ -662,7 +662,7 @@ namespace ChiikaApi
 				info.LastUpdated = FromXMLValueToStd(my_last_updated);
 				list.insert(UserAnimeList::value_type(Anime.Id, info));
 			}
-			MalManager::Get().AddAnimeUpdateList(list);
+			MalManager::Get()->AddAnimeUpdateList(list);
 #pragma endregion
 #pragma region MangaList
 			ChiikaApi::MangaList mangaList;
@@ -718,7 +718,7 @@ namespace ChiikaApi
 				info.LastUpdated = FromXMLValueToStd(my_last_updated);
 				mangaList.insert(MangaList::value_type(mango.Id, info));
 			}
-			MalManager::Get().AddMangaUpdateList(mangaList);
+			MalManager::Get()->AddMangaUpdateList(mangaList);
 			//LOG("Update list file loaded successfully!")
 			file.Close();
 #pragma endregion
@@ -745,7 +745,7 @@ namespace ChiikaApi
 
 #pragma region Anime
 
-			ChiikaApi::UserAnimeList list = MalManager::Get().GetAnimeUpdateList();
+			ChiikaApi::UserAnimeList list = MalManager::Get()->GetAnimeUpdateList();
 			UserAnimeList::iterator It;
 			for (It = list.begin(); It != list.end(); ++It)
 			{
@@ -796,7 +796,7 @@ namespace ChiikaApi
 			}
 #pragma endregion
 #pragma region Manga
-			ChiikaApi::MangaList mangaList = MalManager::Get().GetMangaUpdateList();
+			ChiikaApi::MangaList mangaList = MalManager::Get()->GetMangaUpdateList();
 
 			MangaList::iterator ItManga;
 			for (ItManga = mangaList.begin(); ItManga != mangaList.end(); ++ItManga)
@@ -906,7 +906,7 @@ namespace ChiikaApi
 					vProducers.push_back(producer.text().get());
 				}
 
-				UserAnimeEntry findAnime = MalManager::Get().GetAnimeById(FromXMLValueToInt(Id));
+				UserAnimeEntry findAnime = MalManager::Get()->GetAnimeById(FromXMLValueToInt(Id));
 
 				if (findAnime.Anime.Id != UnknownAnimeId)
 				{
@@ -934,7 +934,7 @@ namespace ChiikaApi
 
 					findAnime.Anime.ExtraDetails = details;
 					findAnime.Anime.Statistics = stats;
-					MalManager::Get().UpdateAnime(findAnime);
+					MalManager::Get()->UpdateAnime(findAnime);
 				}
 
 			}
@@ -953,7 +953,7 @@ namespace ChiikaApi
 			pugi::xml_node  root = doc.append_child(kChiika);
 			pugi::xml_node  MAL = root.append_child(kAnimeDetails);
 
-			ChiikaApi::UserAnimeList list = MalManager::Get().GetAnimeList();
+			ChiikaApi::UserAnimeList list = MalManager::Get()->GetAnimeList();
 			ChiikaApi::UserAnimeList::iterator It;
 			for (It = list.begin(); It != list.end(); ++It)
 			{

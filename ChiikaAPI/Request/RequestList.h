@@ -21,11 +21,13 @@ namespace ChiikaApi
 	static enum Requests
 	{
 		VerifyUser,
+		GetAnimelistRequest,
 		Unknown
 	};
 	static std::map<enum Requests,ChiString> requestList =
 	{
 		std::make_pair(Requests::VerifyUser,"VerifyUser"),
+		std::make_pair(Requests::GetAnimelistRequest,"GetAnimelistRequest"),
 		std::make_pair(Requests::Unknown, "Unkown")
 	};
 	const MalApiExport ChiString& GetRequest(Requests r);
