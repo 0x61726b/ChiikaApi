@@ -17,7 +17,6 @@
 #define __ChiikaLocalDataManager_h__
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
-#include "Common/Singleton.h"
 #include "ThirdParty\pugixml\src\pugixml.hpp"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
@@ -108,17 +107,19 @@ namespace ChiikaApi
 		LocalDataInterface() { };
 		virtual ~LocalDataInterface() { };
 
-		virtual UserInfo GetUserInfo() = 0;
+		virtual const UserInfo& GetUserInfo() = 0;
 		virtual void SetUserInfo(const UserInfo&) = 0;
 	};
-	class MalApiExport LocalDataManager : public Singleton<LocalDataManager>, public LocalDataInterface
+	class MalApiExport LocalDataManager : public LocalDataInterface
 	{
 	public:
 
-		CHIKA_AUTO_MUTEX
+		CHIKA_AUTO_MUTEX;
 
-			LocalDataManager();
+		LocalDataManager();
 		virtual ~LocalDataManager();
+
+		static LocalDataManager* Get();
 
 		void Initialize();
 
@@ -150,7 +151,7 @@ namespace ChiikaApi
 
 		void SetUserNamePass(ChiString userName, ChiString pass);
 
-		UserInfo GetUserInfo();
+		const UserInfo& GetUserInfo();
 		void SetUserInfo(const UserInfo& i);
 
 
@@ -172,10 +173,6 @@ namespace ChiikaApi
 		UpdateListLoader* m_UpdateListLoader;
 		AnimeDetailsLoader* m_AnimeDetailsLoader;
 		SenpaiLoader* m_SenpaiLoader;
-
-	public:
-		static LocalDataManager& Get();
-		static LocalDataManager* GetPtr();
 	};
 }
 //----------------------------------------------------------------------------

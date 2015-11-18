@@ -13,25 +13,22 @@
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
-#include "RequestInterface.h"
-//---------------------------------------------------------------------------
+#ifndef __RequestList_h__
+#define __RequestList_h__
+//----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	class MalApiExport AccountVerifyRequest : public RequestInterface,public CurlEventListener
+	static enum Requests
 	{
-	public:
-		AccountVerifyRequest(LocalDataManager*); //For testing purposes
-		AccountVerifyRequest();
-		virtual ~AccountVerifyRequest();
-		void OnSuccess();
-		void OnError() ;
-
-		void Initialize();
-		void Initiate();
-		void SetOptions();
-
-		void SetUserInfo(const UserInfo& user);
-		UserInfo userInfo;
+		VerifyUser,
+		Unknown
 	};
+	static std::map<enum Requests,ChiString> requestList =
+	{
+		std::make_pair(Requests::VerifyUser,"VerifyUser"),
+		std::make_pair(Requests::Unknown, "Unkown")
+	};
+	const MalApiExport ChiString& GetRequest(Requests r);
 }
+//----------------------------------------------------------------------------
+#endif

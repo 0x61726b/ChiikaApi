@@ -19,6 +19,7 @@
 #include "Common\Required.h"
 #include "Request\CurlRequest.h"
 #include "Request\RequestListener.h"
+#include "Request\RequestList.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -35,7 +36,9 @@ namespace ChiikaApi
 
 		virtual void Initiate() = 0;
 
-		virtual void SetPostData() = 0;
+		virtual void SetPostData();
+
+		const std::string& GetName();
 
 		ChiString GetAnimeXML(const UserAnimeEntry& anime);
 

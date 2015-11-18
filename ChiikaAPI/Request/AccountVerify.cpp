@@ -22,9 +22,14 @@ namespace ChiikaApi
 	AccountVerifyRequest::AccountVerifyRequest(LocalDataManager* ldm)
 		: RequestInterface(ldm)
 	{
-		m_sName = "Verify";
+		m_sName = GetRequest(Requests::VerifyUser); 
 	}
 	//----------------------------------------------------------------------------
+	AccountVerifyRequest::AccountVerifyRequest()
+		: RequestInterface(NULL)
+	{
+		m_sName = GetRequest(Requests::VerifyUser);
+	}
 	AccountVerifyRequest::~AccountVerifyRequest()
 	{
 	}
@@ -65,7 +70,7 @@ namespace ChiikaApi
 		m_Curl.AddListener(this);
 	}
 	//----------------------------------------------------------------------------
-	void AccountVerifyRequest::SetUserInfo(UserInfo user)
+	void AccountVerifyRequest::SetUserInfo(const UserInfo& user)
 	{
 		userInfo = user;
 	}

@@ -89,6 +89,8 @@ namespace
 	const char* kProducer = "Producer";
 }
 //----------------------------------------------------------------------------
+ChiikaApi::LocalDataManager* gLdm = NULL;
+//----------------------------------------------------------------------------
 namespace ChiikaApi
 {
 	FileLoader::FileLoader(ChiString path, FileType type)
@@ -1118,6 +1120,8 @@ namespace ChiikaApi
 		m_SenpaiLoader = NULL;
 
 		m_UserDetailedInfo.UserName = "Chitanda";
+
+		gLdm = this;
 	}
 	//----------------------------------------------------------------------------
 	void LocalDataManager::Initialize()
@@ -1244,20 +1248,14 @@ namespace ChiikaApi
 		/*SaveUserInfo();*/
 	}
 	//----------------------------------------------------------------------------
-	UserInfo LocalDataManager::GetUserInfo()
+	const UserInfo& LocalDataManager::GetUserInfo()
 	{
 		return m_UserDetailedInfo;
 	}
 	//----------------------------------------------------------------------------
-	template<> LocalDataManager* Singleton<LocalDataManager>::msSingleton = 0;
-	LocalDataManager& LocalDataManager::Get(void)
+	LocalDataManager* LocalDataManager::Get()
 	{
-		/*assert(msSingleton); */ return (*msSingleton);
-	}
-	//----------------------------------------------------------------------------
-	LocalDataManager* LocalDataManager::GetPtr(void)
-	{
-		return msSingleton;
+		return gLdm;
 	}
 	//----------------------------------------------------------------------------
 }

@@ -28,11 +28,20 @@ struct xml_string_writer : pugi::xml_writer
 };
 namespace ChiikaApi
 {
+	const ChiString& GetRequest(Requests r)
+	{
+		std::map<enum Requests, ChiString>::iterator It = requestList.find(r);
+
+		if (It != requestList.end())
+			return It->second;
+		else
+			return requestList.find(Requests::Unknown)->second;
+	}
 	RequestInterface::RequestInterface(LocalDataManager* ldm)
 	{
 		if(!ldm)
 		{
-			m_pLocalData = LocalDataManager::GetPtr();
+			m_pLocalData = LocalDataManager::Get();
 		}
 		else
 		{
@@ -53,7 +62,12 @@ namespace ChiikaApi
 			m_vListeners[i]->OnSuccess(this);
 		}
 
-		LocalDataManager::Get().SaveAll();
+		LocalDataManager::Get()->SaveAll();
+	}
+	//----------------------------------------------------------------------------
+	void RequestInterface::SetPostData()
+	{
+
 	}
 	//----------------------------------------------------------------------------
 	void RequestInterface::OnError()
@@ -110,6 +124,11 @@ namespace ChiikaApi
 
 		m_vListeners.erase(m_vListeners.begin() + index);
 		TryDelete(listener);
+	}
+	//----------------------------------------------------------------------------
+	const std::string& RequestInterface::GetName()
+	{
+		return m_sName;
 	}
 	//----------------------------------------------------------------------------
 	ChiString RequestInterface::GetAnimeXML(const UserAnimeEntry& anime)
