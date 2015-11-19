@@ -73,7 +73,6 @@ namespace ChiikaApi
 		UserMangaInfo MangaInfo;
 
 		void SetKeyValue(const std::string&, const std::string&);
-		static Vector<const std::string>::type GetKeys();
 	};
 }
 #endif

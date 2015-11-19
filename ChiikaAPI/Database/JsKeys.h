@@ -87,8 +87,49 @@ namespace
 	const char* kPopularity = "Popularity";
 	const char* kTag = "Tag";
 	const char* kProducer = "Producer";
-}
 
+	typedef ChiikaApi::Vector<std::string>::type KeyList;
+
+	void GetAnimeKeys(KeyList& keys)
+	{
+		keys.push_back(kSeriesAnimedbId);
+		keys.push_back(kSeriesTitle);
+		keys.push_back(kSeriesSynonyms);
+		keys.push_back(kSeriesEpisodes);
+		keys.push_back(kSeriesType);
+		keys.push_back(kSeriesStatus);
+		keys.push_back(kSeriesStart);
+		keys.push_back(kSeriesEnd);
+		keys.push_back(kSeriesImage);
+	}
+	void GetUserAnimeEntryKeys(KeyList& keys)
+	{
+		keys.push_back(kMyId);
+		keys.push_back(kMyWatchedEpisodes);
+		keys.push_back(kMyRewatchingEp);
+		keys.push_back(kMyScore);
+		keys.push_back(kMyRewatching);
+		keys.push_back(kSeriesStatus);
+		keys.push_back(kMyStartDate);
+		keys.push_back(kMyFinishDate);
+		keys.push_back(kMyLastUpdated);
+	}
+	void GetUserInfoKeys(KeyList& keys)
+	{
+		keys.push_back(kUserId);
+		keys.push_back(kUserName);
+		keys.push_back(kUserWatching);
+		keys.push_back(kUserCompleted);
+		keys.push_back(kUserOnhold);
+		keys.push_back(kUserDropped);
+		keys.push_back(kUserPtw);
+		keys.push_back(kUserDaysSpentWatching);
+		keys.push_back(kUserReading);
+		keys.push_back(kUserPtr);
+		keys.push_back(kUserDaysSpentReading);
+	}
+
+}
 
 //----------------------------------------------------------------------------
 #endif

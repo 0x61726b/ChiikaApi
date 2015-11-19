@@ -73,8 +73,6 @@ namespace ChiikaApi
 		Anime();
 		void SetKeyValue(const std::string&, const std::string&);
 
-		typedef Vector<const std::string>::type KeyList;
-		static Vector<const std::string>::type GetKeys();
 		const std::string& GetKeyValue(const std::string&);
 		bool ContainsKey(const std::string&);
 
@@ -111,8 +109,6 @@ namespace ChiikaApi
 		ChiString LastUpdated;
 		CRUDOp UpdateOperation;
 
-		typedef Vector<const std::string>::type KeyList;
-		static Vector<const std::string>::type GetKeys();
 		void SetKeyValue(const std::string&, const std::string&);
 		const std::string& GetKeyValue(const std::string&);
 		bool ContainsKey(const std::string&);

@@ -44,43 +44,44 @@ namespace ChiikaApi
 
 		bool parse = doc.load(m_Curl.GetResponse().c_str());
 
-		if (!parse)
+		if(!parse)
 			return;
 
-		UserInfo::KeyList keys = UserInfo::GetKeys();
+		KeyList keys;
+		::GetUserAnimeEntryKeys(keys);
 
 		UserInfo ui = m_pLocalData->GetUserInfo();
 
 		pugi::xml_node  myanimelist = doc.child("myanimelist");
 		pugi::xml_node  user = myanimelist.child("myinfo");
 
-		for (pugi::xml_node userChild = user.first_child(); userChild; userChild = userChild.next_sibling())
+		for(pugi::xml_node userChild = user.first_child(); userChild; userChild = userChild.next_sibling())
 		{
 			const char* name = userChild.name();
 			const char* val = userChild.text().get();
 
-			ui.SetKeyValue(name, val);
+			ui.SetKeyValue(name,val);
 
 		}
 		m_pLocalData->SetUserInfo(ui);
 
 		UserAnimeList list;
 		AnimeList animeList;
-		for (pugi::xml_node anime = myanimelist.child(kAnime); anime; anime = anime.next_sibling())
+		for(pugi::xml_node anime = myanimelist.child(kAnime); anime; anime = anime.next_sibling())
 		{
 			Anime Anime;
 			UserAnimeEntry info;
-			for (pugi::xml_node animeChild = anime.first_child(); animeChild; animeChild = animeChild.next_sibling())
+			for(pugi::xml_node animeChild = anime.first_child(); animeChild; animeChild = animeChild.next_sibling())
 			{
 				const char* name = animeChild.name();
 				const char* val = animeChild.text().get();
 
-				Anime.SetKeyValue(name, val);
-				info.SetKeyValue(name, val);
+				Anime.SetKeyValue(name,val);
+				info.SetKeyValue(name,val);
 			}
-			animeList.insert(ChiikaApi::AnimeList::value_type(Anime.Id, Anime));
+			animeList.insert(ChiikaApi::AnimeList::value_type(Anime.Id,Anime));
 			info.Anime = Anime;
-			list.insert(UserAnimeList::value_type(Anime.Id, info));
+			list.insert(UserAnimeList::value_type(Anime.Id,info));
 		}
 		MalManager::Get()->AddAnimeList(list);
 		MalManager::Get()->AddAnimeList(animeList);
@@ -116,7 +117,7 @@ namespace ChiikaApi
 
 		m_Curl.SetUrl(url);
 		m_Curl.SetAuth(userName + ":" + passWord);
-		m_Curl.SetMethod(method, "");
+		m_Curl.SetMethod(method,"");
 		m_Curl.SetWriteFunction(NULL);
 	}
 	//----------------------------------------------------------------------------

@@ -31,79 +31,62 @@ namespace ChiikaApi
 		StartDate = "";
 		EndDate = "";
 		Image = "";
-		
+
 	}
 	//----------------------------------------------------------------------------
-	void Anime::SetKeyValue(const std::string& key, const std::string& value)
+	void Anime::SetKeyValue(const std::string& key,const std::string& value)
 	{
-		if (key == kSeriesAnimedbId)
+		if(key == kSeriesAnimedbId)
 		{
 			Id = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kSeriesTitle)
+		if(key == kSeriesTitle)
 		{
 			Title = value;
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kSeriesSynonyms)
+		if(key == kSeriesSynonyms)
 		{
 			English = value;
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kSeriesType)
+		if(key == kSeriesType)
 		{
 			Type = (AnimeType)atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kSeriesEpisodes)
+		if(key == kSeriesEpisodes)
 		{
 			EpisodeCount = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kSeriesStatus)
+		if(key == kSeriesStatus)
 		{
 			Status = (AnimeStatus)atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kSeriesStart)
+		if(key == kSeriesStart)
 		{
 			StartDate = value;
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kSeriesEnd)
+		if(key == kSeriesEnd)
 		{
 			EndDate = value;
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kSeriesImage)
+		if(key == kSeriesImage)
 		{
 			Image = value;
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-	}
-	//----------------------------------------------------------------------------
-	Vector<const std::string>::type Anime::GetKeys()
-	{
-		Vector<const std::string>::type keys;
-
-		keys.push_back(kSeriesAnimedbId);
-		keys.push_back(kSeriesTitle);
-		keys.push_back(kSeriesSynonyms);
-		keys.push_back(kSeriesEpisodes);
-		keys.push_back(kSeriesType);
-		keys.push_back(kSeriesStatus);
-		keys.push_back(kSeriesStart);
-		keys.push_back(kSeriesEnd);
-		keys.push_back(kSeriesImage);
-
-		return keys;
 	}
 	//----------------------------------------------------------------------------
 	const std::string& Anime::GetKeyValue(const std::string& key)
 	{
 		KeyMap::iterator It = m_KeyMap.find(key);
-		if (It != m_KeyMap.end())
+		if(It != m_KeyMap.end())
 		{
 			return m_KeyMap.find(key)->second;
 		}
@@ -114,7 +97,7 @@ namespace ChiikaApi
 	{
 		KeyMap::iterator It = m_KeyMap.find(key);
 
-		if (It != m_KeyMap.end())
+		if(It != m_KeyMap.end())
 			return true;
 		return false;
 	}
@@ -133,77 +116,60 @@ namespace ChiikaApi
 		UpdateOperation = CRUDOp::Nothing;
 	}
 	//----------------------------------------------------------------------------
-	void UserAnimeEntry::SetKeyValue(const std::string& key, const std::string& value)
+	void UserAnimeEntry::SetKeyValue(const std::string& key,const std::string& value)
 	{
-		if (key == kMyId)
+		if(key == kMyId)
 		{
 			MyId = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kMyWatchedEpisodes)
+		if(key == kMyWatchedEpisodes)
 		{
 			WatchedEpisodes = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kMyRewatchingEp)
+		if(key == kMyRewatchingEp)
 		{
 			RewatchingEp = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kMyScore)
+		if(key == kMyScore)
 		{
 			Score = (AnimeType)atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kMyRewatching)
+		if(key == kMyRewatching)
 		{
 			Rewatching = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kSeriesStatus)
+		if(key == kSeriesStatus)
 		{
 			Status = (AnimeUserStatus)atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kMyStartDate)
+		if(key == kMyStartDate)
 		{
 			StartDate = value;
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kMyFinishDate)
+		if(key == kMyFinishDate)
 		{
 			EndDate = value;
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if (key == kMyLastUpdated)
+		if(key == kMyLastUpdated)
 		{
 			LastUpdated = value;
-			m_KeyMap.insert(KeyMap::value_type(key, value));
+			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
 
-	}
-	//----------------------------------------------------------------------------
-	Vector<const std::string>::type UserAnimeEntry::GetKeys()
-	{
-		Vector<const std::string>::type keys;
-
-		keys.push_back(kMyId);
-		keys.push_back(kMyWatchedEpisodes);
-		keys.push_back(kMyRewatchingEp);
-		keys.push_back(kMyScore);
-		keys.push_back(kMyRewatching);
-		keys.push_back(kSeriesStatus);
-		keys.push_back(kMyStartDate);
-		keys.push_back(kMyFinishDate);
-		keys.push_back(kMyLastUpdated);
-
-		return keys;
 	}
 	//----------------------------------------------------------------------------
 	const std::string& UserAnimeEntry::GetKeyValue(const std::string& key)
 	{
 		KeyMap::iterator It = m_KeyMap.find(key);
-		if (It != m_KeyMap.end())
+		if(It != m_KeyMap.end())
 		{
 			return m_KeyMap.find(key)->second;
 		}
@@ -214,7 +180,7 @@ namespace ChiikaApi
 	{
 		KeyMap::iterator It = m_KeyMap.find(key);
 
-		if (It != m_KeyMap.end())
+		if(It != m_KeyMap.end())
 			return true;
 		return false;
 	}

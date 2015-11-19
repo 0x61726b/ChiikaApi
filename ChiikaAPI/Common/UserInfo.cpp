@@ -28,25 +28,6 @@ namespace ChiikaApi
 		ImageLink = "";
 	}
 	//----------------------------------------------------------------------------
-	Vector<const std::string>::type UserInfo::GetKeys()
-	{
-		Vector<const std::string>::type keys;
-
-		keys.push_back(kUserId);
-		keys.push_back(kUserName);
-		keys.push_back(kUserWatching);
-		keys.push_back(kUserCompleted);
-		keys.push_back(kUserOnhold);
-		keys.push_back(kUserDropped);
-		keys.push_back(kUserPtw);
-		keys.push_back(kUserDaysSpentWatching);
-		keys.push_back(kUserReading);
-		keys.push_back(kUserPtr);
-		keys.push_back(kUserDaysSpentReading);
-
-		return keys;
-	}
-	//----------------------------------------------------------------------------
 	void UserInfo::SetKeyValue(const std::string& key, const std::string& value)
 	{
 		if (key == kUserId)

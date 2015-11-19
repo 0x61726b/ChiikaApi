@@ -18,6 +18,10 @@ set(ChiikaApi_Common_Src
   Common/StdHeaders.h
   Common/UtilityDefines.h
   Common/ApiVersion.h
+  Common/UserInfo.h
+  Common/UserInfo.cpp
+  Common/Anime.h
+  Common/Anime.cpp
   )
 source_group(ChiikaApi\\\\Common FILES ${ChiikaApi_Common_Src})
 
