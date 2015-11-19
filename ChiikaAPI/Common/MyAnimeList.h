@@ -46,12 +46,7 @@ namespace ChiikaApi
 
 
 #pragma region Enums
-	enum AnimeType
-	{
-		TV = 1,
-		OVA = 2,
-		Movie = 3
-	};
+	
 	enum MangaType
 	{
 		Normal = 1,
@@ -60,20 +55,6 @@ namespace ChiikaApi
 		Doujinshi = 4,
 		Manwha = 5,
 		Manhua = 6
-	};
-	enum AnimeStatus
-	{
-		NotAired,
-		Airing,
-		AnimeFinished
-	};
-	enum AnimeUserStatus
-	{
-		Watching = 1,
-		AnimeCompleted = 2,
-		AnimeOnHold = 3,
-		AnimeDropped = 4,
-		PlanToWatch = 6
 	};
 	enum MangaUserStatus
 	{
@@ -138,95 +119,13 @@ namespace ChiikaApi
 		}
 	};
 
-	struct MalApiExport AnimeDetails
-	{
-		ChiString Synopsis;
-		StringVector Tags;
-		ChiString Premiered;
-		StringVector Producers;
-		ChiString DurationPerEpisode;
-
-		AnimeDetails()
-		{
-
-		}
-	};
-	struct MalApiExport AnimeStatistics
-	{
-		double Score;
-		int Ranked;
-		int Popularity;
-
-		AnimeStatistics()
-		{
-			Score = 0;
-			Ranked = 0;
-			Popularity = 0;
-		}
-	};
-
-	struct MalApiExport Anime
-	{
-		int Id;
-		ChiString Title;
-		ChiString English;
-		int EpisodeCount;
-		AnimeType Type;
-		AnimeStatus Status;
-		ChiString StartDate;
-		ChiString EndDate;
-		ChiString Image;
-
-		//Experimental
-		AnimeDetails ExtraDetails;
-		AnimeStatistics Statistics;
-		Anime()
-		{
-			Id = UnknownAnimeId;
-			Title = "";
-			English = "";
-			EpisodeCount = 0;
-			Type = AnimeType::TV;
-			Status = AnimeStatus::NotAired;
-			StartDate = "";
-			EndDate = "";
-			Image = "";
-		}
-	} ;
 
 	struct AnimeFileInfo
 	{
 		ChiString FolderPath;
 		std::vector<ChiString> EpisodePaths;
 	};
-	struct MalApiExport UserAnimeEntry
-	{
-		Anime Anime;
-		int MyId;
-		int WatchedEpisodes;
-		ChiString StartDate;
-		ChiString EndDate;
-		int Score;
-		AnimeUserStatus Status;
-		int Rewatching;
-		int RewatchingEp;
-		ChiString LastUpdated;
-		CRUDOp UpdateOperation;
-
-		UserAnimeEntry()
-		{
-			MyId = 0;
-			Score = 0;
-			WatchedEpisodes = 0;
-			StartDate = "";
-			EndDate = "";
-			Status = AnimeUserStatus::PlanToWatch;
-			Rewatching = 0;
-			RewatchingEp = 0;
-			LastUpdated = "";
-			UpdateOperation = CRUDOp::Nothing;
-		}
-	};
+	
 	typedef struct _MangaInfo
 	{
 		Manga Mango;
@@ -299,82 +198,23 @@ namespace ChiikaApi
 		ChiString AirDateOriginal;
 		Map<ChiString,Airdate>::type Airdates;
 	};
-	
+}
+#include "Anime.h"
+#include "UserInfo.h"
 
+namespace ChiikaApi
+{
+	typedef Map<int, UserAnimeEntry>::type UserAnimeList;
 
-
-
-#pragma region User
-	struct UserAnimeStats
-	{
-		int Watching;
-		int Completed;
-		int OnHold;
-		int Dropped;
-		int PlanToWatch;
-		double DaySpentAnime;
-		UserAnimeStats()
-		{
-			Watching = 0;
-			Completed = 0;
-			Dropped = 0;
-			PlanToWatch = 0;
-			OnHold = 0;
-			DaySpentAnime = 0.0;
-		}
-	} ;
-	typedef struct _UserMangaInfo
-	{
-		int Reading;
-		int Completed;
-		int OnHold;
-		int Dropped;
-		int PlanToRead;
-		double DaysSpentReading;
-
-		_UserMangaInfo()
-		{
-			Reading = 0;
-			Completed = 0;
-			OnHold = 0;
-			Dropped = 0;
-			PlanToRead = 0;
-			DaysSpentReading = 0.0;
-		}
-	} UserMangaInfo;
-
-	struct UserInfo
-	{
-		int UserId;
-		ChiString UserName;
-		ChiString Pass;
-		ChiString ImageLink;
-
-		UserAnimeStats AnimeStats;
-		UserMangaInfo MangaInfo;
-
-		UserInfo()
-		{
-			UserId = 0;
-			UserName = "";
-			Pass = "";
-			ImageLink = "";
-		}
-	};
-#pragma endregion
-
-	typedef Map<int,UserAnimeEntry>::type UserAnimeList;
-
-	typedef Map<int,MangaInfo>::type MangaList;
+	typedef Map<int, MangaInfo>::type MangaList;
 
 	typedef UserAnimeList::iterator AnimeListIt;
 
-	typedef Map<int,Anime>::type AnimeList;
+	typedef Map<int, Anime>::type AnimeList;
 
 	typedef MangaList::iterator MangaListIt;
 
-	typedef MultiMap<ChiString,CurlConfigOption>::type CurlConfigOptionMap;
+	typedef MultiMap<ChiString, CurlConfigOption>::type CurlConfigOptionMap;
 }
-
 //----------------------------------------------------------------------------
 #endif

@@ -16,12 +16,12 @@
 #include "Root\Root.h"
 #include "Request\RequestManager.h"
 #include "Database\LocalDataManager.h"
-#include "Request\AddToAnimeList.h"
+#include "Request\GetAnimeList.h"
 //----------------------------------------------------------------------------
 using namespace ChiikaApi;
 std::string SearchKeywordAnime = "Oregairu";
-std::string testUserName = "chiikatestacc1";
-std::string testPass = "chiikatest%&";
+std::string testUserName = "arkenthera";
+std::string testPass = "123asd456";
 
 class TestEventListener : public RequestListener
 {
@@ -52,29 +52,11 @@ int main()
 	ui.Pass = testPass;
 	r.m_pLocalData->SetUserInfo(ui);
 	
-
-	AddToAnimeListRequest req(NULL);
+	GetAnimeListRequest req;
 	req.Initialize();
-
-	UserAnimeEntry test;
-	test.WatchedEpisodes = 1;
-	test.Score = 10;
-	test.Anime.Id = 21;
-	req.SetAnimeData(test);
 	req.SetOptions();
-	req.SetPostData();
-	
-	
-	
-
-	TestEventListener tel;
-	req.AddListener(&tel);
-
 	req.Initiate();
-
-
-
-
+	
 
 
 	while(true)

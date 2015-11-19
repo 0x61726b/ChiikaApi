@@ -21,73 +21,7 @@
 #include "json\json.h"
 #include "Logging\FileHelper.h"
 //----------------------------------------------------------------------------
-namespace
-{
-	const char* kChiika = "Chiika";
-	const char* kMyAnimeList = "MyAnimeList";
-	const char* kUserInfo = "UserInfo";
-	const char* kMangaList = "MangaList";
-	const char* kUpdateList = "UpdateList";
-	const char* kAnimeDetails = "AnimeDetails";
-	const char* kAnime = "anime";
-	const char* kManga = "manga";
-	const char* kSeriesAnimedbId = "series_animedb_id";
-	const char* kSeriesTitle = "series_title";
-	const char* kSeriesSynonyms = "series_synonyms";
-	const char* kSeriesType = "series_type";
-	const char* kSeriesEpisodes = "series_episodes";
-	const char* kSeriesStatus = "series_status";
-	const char* kSeriesStart = "series_start";
-	const char* kSeriesEnd = "series_end";
-	const char* kSeriesImage = "series_image";
-	const char* kMyId = "my_id";
-	const char* kMyWatchedEpisodes = "my_watched_episodes";
-	const char* kMyStartDate = "my_start_date";
-	const char* kMyFinishDate = "my_finish_date";
-	const char* kMyScore = "my_score";
-	const char* kMyStatus = "my_status";
-	const char* kMyRewatching = "my_rewatching";
-	const char* kMyRewatchingEp = "my_rewatching_ep";
-	const char* kMyLastUpdated = "my_last_updated";
-	const char* kSeriesMangadbId = "series_mangadb_id";
-	const char* kSeriesChapters = "series_chapters";
-	const char* kSeriesVolumes = "series_volumes";
-
-	const char* kMyReadChapters = "my_read_chapters";
-	const char* kMyRereading = "my_rereading";
-	const char* kMyReadVolumes = "my_read_volumes";
-	const char* kMyRereadingChap = "my_rereading_chap";
-
-
-	const char* kUserName = "UserName";
-	const char* kPass = "Pass";
-	const char* kWatching = "Watching";
-	const char* kCompleted = "Completed";
-	const char* kOnHold = "OnHold";
-	const char* kDropped = "Dropped";
-	const char* kPlanToWatch = "PlanToWatch";
-	const char* kDaySpentAnime = "DaySpentAnime";
-	const char* kReading = "Reading";
-
-	const char* kRead = "Read";
-	const char* kMangaOnHold = "MangaOnHold";
-	const char* kMangaDropped = "MangaDropped";
-	const char* kPlanToRead = "PlanToRead";
-	const char* kDaySpentReading = "DaySpentReading";
-	const char* kOperation = "Operation";
-
-	const char* kId = "Id";
-	const char* kSynopsis = "Synopsis";
-	const char* kTags = "Tags";
-	const char* kPremiered = "Premiered";
-	const char* kProducers = "Producers";
-	const char* kDurationPerEpisode = "DurationPerEpisode";
-	const char* kScore = "Score";
-	const char* kRanked = "Ranked";
-	const char* kPopularity = "Popularity";
-	const char* kTag = "Tag";
-	const char* kProducer = "Producer";
-}
+#include "JsKeys.h"
 //----------------------------------------------------------------------------
 ChiikaApi::LocalDataManager* gLdm = NULL;
 //----------------------------------------------------------------------------
@@ -149,7 +83,7 @@ namespace ChiikaApi
 			}
 			else
 			{
-				
+
 			}
 		}
 		else
@@ -184,51 +118,18 @@ namespace ChiikaApi
 			ChiikaApi::AnimeList animeList;
 			for (pugi::xml_node anime = myanimelist.child(kAnime); anime; anime = anime.next_sibling())
 			{
-
-				pugi::xml_node  animeDbId = anime.child(kSeriesAnimedbId);
-				pugi::xml_node  series_title = anime.child(kSeriesTitle);
-				pugi::xml_node  series_synonyms = anime.child(kSeriesSynonyms);
-				pugi::xml_node  series_type = anime.child(kSeriesType);
-				pugi::xml_node  series_episodes = anime.child(kSeriesEpisodes);
-				pugi::xml_node  series_status = anime.child(kSeriesStatus);
-				pugi::xml_node  series_start = anime.child(kSeriesStart);
-				pugi::xml_node  series_end = anime.child(kSeriesEnd);
-				pugi::xml_node  series_image = anime.child(kSeriesImage);
-				pugi::xml_node  my_id = anime.child(kMyId); //What does this even mean?
-				pugi::xml_node  my_watched_episodes = anime.child(kMyWatchedEpisodes);
-				pugi::xml_node  my_start_date = anime.child(kMyStartDate);
-				pugi::xml_node  my_finish_date = anime.child(kMyFinishDate);
-				pugi::xml_node  my_score = anime.child(kMyScore);
-				pugi::xml_node  my_status = anime.child(kMyStatus);
-				pugi::xml_node  my_rewatching = anime.child(kMyRewatching);
-				pugi::xml_node  my_rewatching_ep = anime.child(kMyRewatchingEp);
-				pugi::xml_node  my_last_updated = anime.child(kMyLastUpdated);
-				//pugi::xml_node  my_finish_date = anime.child(kMyFinishDate);
-
 				Anime Anime;
-				Anime.Id = FromXMLValueToInt(animeDbId);
-				Anime.Title = FromXMLValueToStd(series_title);
-				Anime.English = FromXMLValueToStd(series_synonyms);
-				Anime.Type = (AnimeType)FromXMLValueToInt(series_type);
-				Anime.EpisodeCount = FromXMLValueToInt(series_episodes);
-
-				Anime.Status = (AnimeStatus)FromXMLValueToInt(series_status);
-				Anime.StartDate = FromXMLValueToStd(series_start);
-				Anime.EndDate = FromXMLValueToStd(series_end);
-				Anime.Image = FromXMLValueToStd(series_image);
-				animeList.insert(ChiikaApi::AnimeList::value_type(Anime.Id,Anime));
-
 				UserAnimeEntry info;
-				info.WatchedEpisodes = FromXMLValueToInt(my_watched_episodes);
+				for (pugi::xml_node animeChild = anime.first_child(); animeChild; animeChild = animeChild.next_sibling())
+				{
+					const char* name = animeChild.name();
+					const char* val = animeChild.text().get();
+
+					Anime.SetKeyValue(name, val);
+					info.SetKeyValue(name, val);
+				}
+				animeList.insert(ChiikaApi::AnimeList::value_type(Anime.Id, Anime));
 				info.Anime = Anime;
-				info.MyId = FromXMLValueToInt(my_id);
-				info.StartDate = FromXMLValueToStd(my_start_date);
-				info.EndDate = FromXMLValueToStd(my_finish_date);
-				info.Score = FromXMLValueToInt(my_score);
-				info.Status = (AnimeUserStatus)FromXMLValueToInt(my_status);
-				info.Rewatching = FromXMLValueToInt(my_rewatching);
-				info.RewatchingEp = FromXMLValueToInt(my_rewatching_ep);
-				info.LastUpdated = FromXMLValueToStd(my_last_updated);
 				list.insert(UserAnimeList::value_type(Anime.Id, info));
 			}
 			MalManager::Get()->AddAnimeList(list);
@@ -236,7 +137,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			
+
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -262,51 +163,28 @@ namespace ChiikaApi
 
 				pugi::xml_node  anime = MAL.append_child(kAnime);
 
-				pugi::xml_node  animeDbId = anime.append_child(kSeriesAnimedbId);
-				pugi::xml_node  series_title = anime.append_child(kSeriesTitle);
-				pugi::xml_node  series_synonyms = anime.append_child(kSeriesSynonyms);
-				pugi::xml_node  series_type = anime.append_child(kSeriesType);
-				pugi::xml_node  series_episodes = anime.append_child(kSeriesEpisodes);
-				pugi::xml_node  series_status = anime.append_child(kSeriesStatus);
-				pugi::xml_node  series_start = anime.append_child(kSeriesStart);
-				pugi::xml_node  series_end = anime.append_child(kSeriesEnd);
-				pugi::xml_node  series_image = anime.append_child(kSeriesImage);
-				pugi::xml_node  my_id = anime.append_child(kMyId); //What does this even mean?
-				pugi::xml_node  my_watched_episodes = anime.append_child(kMyWatchedEpisodes);
-				pugi::xml_node  my_start_date = anime.append_child(kMyStartDate);
-				pugi::xml_node  my_finish_date = anime.append_child(kMyFinishDate);
-				pugi::xml_node  my_score = anime.append_child(kMyScore);
-				pugi::xml_node  my_status = anime.append_child(kMyStatus);
-				pugi::xml_node  my_rewatching = anime.append_child(kMyRewatching);
-				pugi::xml_node  my_rewatching_ep = anime.append_child(kMyRewatchingEp);
-				pugi::xml_node  my_last_updated = anime.append_child(kMyLastUpdated);
+				Anime::KeyList keys = Anime::GetKeys();
 
-				SetXMLValue(animeDbId, Anime.Anime.Id);
-				SetXMLValue(series_title, Anime.Anime.Title.c_str());
-				SetXMLValue(series_synonyms, Anime.Anime.English.c_str());
-				SetXMLValue(series_type, Anime.Anime.Type);
-				SetXMLValue(series_episodes, Anime.Anime.EpisodeCount);
-				SetXMLValue(series_status, Anime.Anime.Status);
-				SetXMLValue(series_start, Anime.Anime.StartDate.c_str());
-				SetXMLValue(series_end, Anime.Anime.EndDate.c_str());
-				SetXMLValue(series_image, Anime.Anime.Image.c_str());
-				SetXMLValue(my_id, Anime.MyId);
-				SetXMLValue(my_watched_episodes, Anime.WatchedEpisodes);
-				SetXMLValue(my_start_date, Anime.StartDate.c_str());
-				SetXMLValue(my_finish_date, Anime.EndDate.c_str());
-				SetXMLValue(my_score, Anime.Score);
-				SetXMLValue(my_status, Anime.Status);
-				SetXMLValue(my_rewatching, Anime.Rewatching);
-				SetXMLValue(my_rewatching_ep, Anime.RewatchingEp);
-				SetXMLValue(my_last_updated, Anime.LastUpdated.c_str());
+				for (size_t i = 0; i < keys.size(); i++)
+				{
+					pugi::xml_node node = anime.append_child(ToStd(keys[i]));
+					SetXMLValue(node, ToStd(Anime.Anime.GetKeyValue(keys[i])));
+				}
 
+				UserAnimeEntry::KeyList uaeList = UserAnimeEntry::GetKeys();
+
+				for (size_t i = 0; i < uaeList.size(); i++)
+				{
+					pugi::xml_node node = anime.append_child(ToStd(uaeList[i]));
+					SetXMLValue(node, ToStd(Anime.GetKeyValue(uaeList[i])));
+				}
 			}
 			doc.save_file(dataFile.c_str());
 			file.Close();
 		}
 		else
 		{
-			
+
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -390,7 +268,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			
+
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -466,7 +344,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			
+
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -485,50 +363,26 @@ namespace ChiikaApi
 			pugi::xml_document doc;
 			ChiString fileData = file.Read();
 			doc.load(fileData.c_str());
-
+			
+			ChiikaApi::UserInfo ui;
 			pugi::xml_node  root = doc.child(kChiika);
 			pugi::xml_node  info = root.child(kUserInfo);
-			pugi::xml_node  userName = info.child(kUserName);
-			pugi::xml_node  pass = info.child(kPass);
-			pugi::xml_node  watching = info.child(kWatching);
-			pugi::xml_node  Completed = info.child(kCompleted);
-			pugi::xml_node  OnHold = info.child(kOnHold);
-			pugi::xml_node  Dropped = info.child(kDropped);
-			pugi::xml_node  PlanToWatch = info.child(kPlanToWatch);
-			pugi::xml_node  DaySpentAnime = info.child(kDaySpentAnime);
 
-			pugi::xml_node  Reading = info.child(kReading);
-			pugi::xml_node  Read = info.child(kRead);
-			pugi::xml_node  MangaOnHold = info.child(kMangaOnHold);
-			pugi::xml_node  MangaDropped = info.child(kMangaDropped);
-			pugi::xml_node  PlanToRead = info.child(kPlanToRead);
-			pugi::xml_node  DaySpentReading = info.child(kDaySpentReading);
+			for (pugi::xml_node infoChild = info.first_child(); infoChild; infoChild = infoChild.next_sibling())
+			{
+				const char* name = infoChild.name();
+				const char* val = infoChild.text().get();
 
-			ChiikaApi::UserInfo ui;
-			ui.UserName = FromXMLValueToStd(userName);
-			ui.Pass = FromXMLValueToStd(pass);
-			ui.AnimeStats.Watching = FromXMLValueToInt(watching);
-			ui.AnimeStats.Completed = FromXMLValueToInt(Completed);
-			ui.AnimeStats.OnHold = FromXMLValueToInt(OnHold);
-			ui.AnimeStats.Dropped = FromXMLValueToInt(Dropped);
-			ui.AnimeStats.PlanToWatch = FromXMLValueToInt(PlanToWatch);
-			ui.AnimeStats.DaySpentAnime = FromXMLValueToFloat(DaySpentAnime);
-
-			ui.MangaInfo.Reading = FromXMLValueToInt(Reading);
-			ui.MangaInfo.Completed = FromXMLValueToInt(Read);
-			ui.MangaInfo.OnHold = FromXMLValueToInt(MangaOnHold);
-			ui.MangaInfo.Dropped = FromXMLValueToInt(MangaDropped);
-			ui.MangaInfo.PlanToRead = FromXMLValueToInt(PlanToRead);
-			ui.MangaInfo.DaysSpentReading = FromXMLValueToFloat(DaySpentReading);
+				ui.SetKeyValue(name, val);
+			}
 
 			m_UserDetailedInfo = ui;
-			//LOG("User info file loaded successfully!")
 			file.Close();
 
 		}
 		else
 		{
-			
+
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -540,53 +394,22 @@ namespace ChiikaApi
 		if (file.Open())
 		{
 			pugi::xml_document doc;
-
 			pugi::xml_node  root = doc.append_child(kChiika);
 			pugi::xml_node  UserInfo = root.append_child(kUserInfo);
-			pugi::xml_node  userName = UserInfo.append_child(kUserName);
-			pugi::xml_node  pass = UserInfo.append_child(kPass);
-			pugi::xml_node  watching = UserInfo.append_child(kWatching);
-			pugi::xml_node  Completed = UserInfo.append_child(kCompleted);
-			pugi::xml_node  OnHold = UserInfo.append_child(kOnHold);
-			pugi::xml_node  Dropped = UserInfo.append_child(kDropped);
-			pugi::xml_node  PlanToWatch = UserInfo.append_child(kPlanToWatch);
-			pugi::xml_node  DaySpentAnime = UserInfo.append_child(kDaySpentAnime);
 
-			pugi::xml_node  Reading = UserInfo.append_child(kReading);
-			pugi::xml_node  Read = UserInfo.append_child(kRead);
-			pugi::xml_node  MangaOnHold = UserInfo.append_child(kMangaOnHold);
-			pugi::xml_node  MangaDropped = UserInfo.append_child(kMangaDropped);
-			pugi::xml_node  PlanToRead = UserInfo.append_child(kPlanToRead);
-			pugi::xml_node  DaySpentReading = UserInfo.append_child(kDaySpentReading);
-
-
-
-
-
-			userName.text().set(m_UserDetailedInfo.UserName.c_str());
-			pass.text().set(m_UserDetailedInfo.Pass.c_str());
-			watching.text().set(m_UserDetailedInfo.AnimeStats.Watching);
-			Completed.text().set(m_UserDetailedInfo.AnimeStats.Completed);
-			OnHold.text().set(m_UserDetailedInfo.AnimeStats.OnHold);
-			Dropped.text().set(m_UserDetailedInfo.AnimeStats.Dropped);
-			PlanToWatch.text().set(m_UserDetailedInfo.AnimeStats.PlanToWatch);
-			DaySpentAnime.text().set(m_UserDetailedInfo.AnimeStats.DaySpentAnime);
-
-			Reading.text().set(m_UserDetailedInfo.MangaInfo.Reading);
-			Read.text().set(m_UserDetailedInfo.MangaInfo.Completed);
-			MangaOnHold.text().set(m_UserDetailedInfo.MangaInfo.OnHold);
-			MangaDropped.text().set(m_UserDetailedInfo.MangaInfo.Dropped);
-			PlanToRead.text().set(m_UserDetailedInfo.MangaInfo.PlanToRead);
-			DaySpentReading.text().set(m_UserDetailedInfo.MangaInfo.DaysSpentReading);
-
-
+			UserInfo::KeyList keys = UserInfo::GetKeys();
+			for (size_t i = 0; i < keys.size(); i++)
+			{
+				pugi::xml_node node = UserInfo.append_child(ToStd(keys[i]));
+				SetXMLValue(node, ToStd(m_UserDetailedInfo.GetKeyValue(keys[i])));
+			}
 			doc.save_file(dataFile.c_str());
 			//LOG("User info file saved successfully!")
 			file.Close();
 		}
 		else
 		{
-			
+
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -725,7 +548,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			
+
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -857,7 +680,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			
+
 		}
 	}
 	//----------------------------------------------------------------------------

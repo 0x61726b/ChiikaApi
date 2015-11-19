@@ -47,6 +47,34 @@
 #	define TryDelete(x) if(x) delete x
 #	define InitializeNULL(x) x = NULL
 #	define TryDestroy(x) if(x) x->Destroy();
+namespace ChiikaApi
+{
+	class DictionaryBase
+	{
+	public:
+		typedef Vector<const std::string>::type KeyList;
+		virtual void SetKeyValue(const std::string&, const std::string&) = 0;
+		virtual const std::string& GetKeyValue(const std::string& key)
+		{
+			KeyMap::iterator It = m_KeyMap.find(key);
+			if (It != m_KeyMap.end())
+			{
+				return m_KeyMap.find(key)->second;
+			}
+			return key;
+		}
+		virtual bool ContainsKey(const std::string& key)
+		{
+			KeyMap::iterator It = m_KeyMap.find(key);
+
+			if (It != m_KeyMap.end())
+				return true;
+			return false;
+		}
+	protected:
+		KeyMap m_KeyMap;
+	};
+}
 
 //----------------------------------------------------------------------------
 #endif // CHIIKAUTILITYDEFINES

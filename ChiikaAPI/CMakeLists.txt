@@ -25,6 +25,7 @@ source_group(ChiikaApi\\\\Common FILES ${ChiikaApi_Common_Src})
 #Database
 #
 set(ChiikaApi_Database_Src
+  Database/JsKeys.h
   Database/LocalDataManager.cpp
   Database/LocalDataManager.h
   )

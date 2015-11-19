@@ -122,6 +122,8 @@ namespace ChiikaApi
 
 	typedef Vector<ChiString>::type StringVector;
 	typedef StringVector::size_type StringVectorSize;
+
+	typedef Map<std::string, std::string>::type KeyMap;
 }
 //----------------------------------------------------------------------------
 #	include "Common/UtilityDefines.h"
