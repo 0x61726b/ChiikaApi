@@ -36,8 +36,8 @@ include_directories(${CHIIKA_INCLUDE_DIR}\\ThirdParty\\googletest\\googletest\\i
 
 #Change this to your gmock library path
 #ToDo(arkenthera): Make a gtest module in the future
-set(GMOCK_LIBS ${CHIIKA_INCLUDE_DIR}\\ThirdParty\\googletest\\googlemock\\msvc\\2013\\Debug\\gmock.lib)
-set(GTEST_LIBS ${CHIIKA_INCLUDE_DIR}\\ThirdParty\\googletest\\googlemock\\msvc\\2013\\gtest\\Debug\\gtest.lib)
+set(GMOCK_LIBS ${CHIIKA_INCLUDE_DIR}\\ThirdParty\\gtest\\Debug\\gmock.lib)
+set(GTEST_LIBS ${CHIIKA_INCLUDE_DIR}\\ThirdParty\\gtest\\gtest\\Debug\\gtest.lib)
 
 target_link_libraries(TestRunner ${GMOCK_LIBS})
 
