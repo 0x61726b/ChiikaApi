@@ -72,7 +72,11 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	CurlRequest::CurlRequest()
 		: m_bVerbose(false),
-		m_iRequestResult(0)
+		m_iRequestResult(0),
+		m_pCurl(NULL),
+		m_iMethod(0),
+		m_sBuffer(""),
+		m_sPostData("")
 	{
 	}
 	//----------------------------------------------------------------------------

@@ -24,7 +24,7 @@ namespace ChiikaApi
 	{
 	public:
 		MalManager();
-		~MalManager();
+		virtual ~MalManager();
 
 		static MalManager* Get();
 

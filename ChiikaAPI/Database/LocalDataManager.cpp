@@ -1079,6 +1079,10 @@ namespace ChiikaApi
 		return m_UserDetailedInfo;
 	}
 	//----------------------------------------------------------------------------
+	void LocalDataManager::GetUserInfo(UserInfo& ui)
+	{
+		ui = m_UserDetailedInfo;
+	}
 	LocalDataManager* LocalDataManager::Get()
 	{
 		return gLdm;

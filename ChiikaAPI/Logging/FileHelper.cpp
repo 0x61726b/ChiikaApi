@@ -18,6 +18,7 @@
 
 #include <Windows.h>
 //----------------------------------------------------------------------------
+ChiikaApi::FileUtil* gFileUtil = NULL;
 namespace ChiikaApi
 {
 	ChiString GetMiddle(ChiString str,std::size_t pos,std::size_t count)
@@ -34,6 +35,11 @@ namespace ChiikaApi
 	FileReader::FileReader(const ChiString& file)
 	{
 		mFile = file;
+	}
+	//----------------------------------------------------------------------------
+	FileReader::~FileReader()
+	{
+
 	}
 	//----------------------------------------------------------------------------
 	bool FileReader::Open()
@@ -58,6 +64,17 @@ namespace ChiikaApi
 		return output.str();
 	}
 	//----------------------------------------------------------------------------
+	void FileReader::ReadRef(ChiString& outputStr)
+	{
+		std::ostringstream output;
+		ChiString line;
+		while(std::getline(mStream,line))
+		{
+			output << line;
+		}
+		outputStr = output.str();
+	}
+	//----------------------------------------------------------------------------
 	FileWriter::FileWriter(const ChiString& file)
 	{
 		mFile = file;
@@ -78,6 +95,11 @@ namespace ChiikaApi
 	{
 		mStream << s;
 		mStream.flush();
+	}
+	//----------------------------------------------------------------------------
+	FileUtil::FileUtil()
+	{
+		gFileUtil = this;
 	}
 	//----------------------------------------------------------------------------
 	bool FileUtil::CheckIfDirectoryExists(const ChiString& path)
@@ -101,14 +123,9 @@ namespace ChiikaApi
 		return false;
 	}
 	//----------------------------------------------------------------------------
-	template<> FileUtil* Singleton<FileUtil>::msSingleton = 0;
-	FileUtil* FileUtil::GetPtr(void)
+	FileUtil* FileUtil::Get()
 	{
-		return msSingleton;
-	}
-	FileUtil& FileUtil::Get(void)
-	{
-		/*assert(msSingleton); */ return (*msSingleton);
+		return gFileUtil ;
 	}
 	//-----------------------------------------------------------------------
 }

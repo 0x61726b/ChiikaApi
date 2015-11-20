@@ -34,6 +34,7 @@ namespace ChiikaApi
 	class Log;
 	class LogManager;
 	class AppSettings;
+	class LocalDataInterface;
 	class LocalDataManager;
 	class AbstractNativeEventFilterHelper;
 	class MediaPlayerRecognitionManager;

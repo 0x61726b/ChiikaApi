@@ -1,4 +1,13 @@
 
+cmake_minimum_required(VERSION 2.8.12.2)
+
+set(CMAKE_CONFIGURATION_TYPES Debug)
+
+project(ChiikaTests)
+
+set(CMAKE_MODULE_PATH "D:/Chiika/ChiikaCef/ChiikaApi/CMake/Modules")
+
+include(FindChiikaApi)
 #Sample Hello World application for testing
 set(TEST_SOURCES 
     all_tests.cpp
@@ -7,30 +16,32 @@ set(TEST_SOURCES
 	api_mal_requests.h
 	api_mal_requests.cpp)
 add_executable(TestRunner ${CMAKE_CURRENT_SOURCE_DIR}//test_runner.cpp ${TEST_SOURCES})
-add_executable(HelloWorld ${CMAKE_CURRENT_SOURCE_DIR}//api_test_helloworld.cpp)
 
-set(TEST_EXECS TestRunner HelloWorld)
-target_link_libraries(TestRunner ChiikaApi)
-target_link_libraries(HelloWorld ChiikaApi)
+target_link_libraries(TestRunner ${CHIIKA_LIBS})
 
-set_target_properties( ${TEST_EXECS}
+set_target_properties( TestRunner
     PROPERTIES
-    EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/Chiika/"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
+    EXECUTABLE_OUTPUT_PATH "${CHIIKA_LIB_HOME}/.."
+    LIBRARY_OUTPUT_DIRECTORY "${CHIIKA_LIB_HOME}/.."
+    RUNTIME_OUTPUT_DIRECTORY "${CHIIKA_LIB_HOME}/.."
 )
 include_directories(${CHIIKA_INCLUDE_DIR})
 
+target_compile_options( TestRunner 
+	PRIVATE "/MTd")
 
-#gmock
+# #gmock
 include_directories(${CHIIKA_INCLUDE_DIR}\\ThirdParty\\googletest\\googlemock\\include)
 include_directories(${CHIIKA_INCLUDE_DIR}\\ThirdParty\\googletest\\googletest\\include)
 
+#Change this to your gmock library path
+#ToDo(arkenthera): Make a gtest module in the future
+set(GMOCK_LIBS ${CHIIKA_INCLUDE_DIR}\\ThirdParty\\googletest\\googlemock\\msvc\\2013\\Debug\\gmock.lib)
+set(GTEST_LIBS ${CHIIKA_INCLUDE_DIR}\\ThirdParty\\googletest\\googlemock\\msvc\\2013\\gtest\\Debug\\gtest.lib)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/../ThirdParty/curl/include/curl)
+target_link_libraries(TestRunner ${GMOCK_LIBS})
 
 
-target_link_libraries(TestRunner gmock)
-target_link_libraries(HelloWorld gmock)
+include_directories(${CHIIKA_INCLUDE_DIR}\\..\\..\\Msvc\\ChiikaApi\\ChiikaAPI\\ThirdParty\\curl\\include\\curl)
 
-add_definitions(-DGTEST_LINKED_AS_SHARED_LIBRARY=1)
+# target_link_libraries(HelloWorld gmock)

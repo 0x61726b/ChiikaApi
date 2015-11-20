@@ -26,7 +26,7 @@ namespace ChiikaApi
 	class MalApiExport RequestInterface
 	{
 	public:
-		RequestInterface(LocalDataManager* ldm = NULL);
+		RequestInterface();
 		virtual ~RequestInterface();
 		virtual void OnSuccess();
 		virtual void OnError();
@@ -37,6 +37,10 @@ namespace ChiikaApi
 		virtual void Initiate() = 0;
 
 		virtual void SetPostData();
+
+		//For creating mock objects
+		void SetCURL(CurlRequestInterface* curl);
+		void SetDatabase(LocalDataInterface*);
 
 		const std::string& GetResponse();
 
@@ -52,8 +56,8 @@ namespace ChiikaApi
 
 	protected:
 		ChiString m_sName;
-		CurlRequest m_Curl;
-		LocalDataManager* m_pLocalData;
+		CurlRequestInterface* m_Curl;
+		LocalDataInterface* m_pLocalData;
 	};
 }
 #endif

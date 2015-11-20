@@ -19,17 +19,11 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	AccountVerifyRequest::AccountVerifyRequest(LocalDataManager* ldm)
-		: RequestInterface(ldm)
+	AccountVerifyRequest::AccountVerifyRequest()
 	{
 		m_sName = GetRequest(Requests::VerifyUser); 
 	}
 	//----------------------------------------------------------------------------
-	AccountVerifyRequest::AccountVerifyRequest()
-		: RequestInterface(NULL)
-	{
-		m_sName = GetRequest(Requests::VerifyUser);
-	}
 	AccountVerifyRequest::~AccountVerifyRequest()
 	{
 	}
@@ -38,7 +32,7 @@ namespace ChiikaApi
 	{
 		pugi::xml_document doc;
 
-		doc.load(m_Curl.GetResponse().c_str());
+		doc.load(m_Curl->GetResponse().c_str());
 
 		pugi::xml_node  user = doc.child(("user"));
 		ChiString userName = user.child(("username")).text().as_string();
@@ -66,8 +60,8 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AccountVerifyRequest::Initialize()
 	{
-		m_Curl.Initialize();
-		m_Curl.AddListener(this);
+		m_Curl->Initialize();
+		m_Curl->AddListener(this);
 	}
 	//----------------------------------------------------------------------------
 	void AccountVerifyRequest::SetUserInfo(const UserInfo& user)
@@ -87,15 +81,15 @@ namespace ChiikaApi
 		userName = userInfo.UserName;
 		passWord = userInfo.Pass;
 
-		m_Curl.SetUrl(url);
-		m_Curl.SetAuth(userName + ":" + passWord);
-		m_Curl.SetMethod(method,"");
-		m_Curl.SetWriteFunction(NULL);
+		m_Curl->SetUrl(url);
+		m_Curl->SetAuth(userName + ":" + passWord);
+		m_Curl->SetMethod(method,"");
+		m_Curl->SetWriteFunction(NULL);
 	}
 	//----------------------------------------------------------------------------
 	void AccountVerifyRequest::Initiate()
 	{
-		m_Curl.Perform();
+		m_Curl->Perform();
 	}
 	//----------------------------------------------------------------------------
 }

@@ -5,8 +5,8 @@
 #  LIBXML2_LIBRARIES - The libraries needed to use LibXml2
 #  LIBXML2_DEFINITIONS - Compiler switches required for using LibXml2
 
-set(CHIIKA_HOME "D:\\Chiika\\ChiikaApiGit\\ChiikaApi\\ChiikaAPI")
-set(CHIIKA_LIB_HOME "D:/Chiika/ChiikaApiGit/ChiikaApi/Msvc")
+set(CHIIKA_HOME "D:\\Chiika\\ChiikaCef\\ChiikaApi\\ChiikaAPI")
+set(CHIIKA_LIB_HOME "D:/Chiika/ChiikaCef/Msvc/Chiika/Debug")
 
 find_path(CHIIKA_INCLUDE_DIR "Common\\Required.h"
           HINTS ${CHIIKA_HOME}
@@ -15,7 +15,7 @@ find_path(CHIIKA_INCLUDE_DIR "Common\\Required.h"
 find_library(CHIIKA_LIB NAMES ChiikaApi
              HINTS ${CHIIKA_LIB_HOME})
 
-set(LIBRARIES ${LIBRARIES} ${CHIIKA_LIB} )
+set(CHIIKA_LIBS ${CHIIKA_LIB} )
 set(CHIIKA_INCLUDE_DIRS ${CHIIKA_INCLUDE_DIR} )
 
 include(FindPackageHandleStandardArgs)
@@ -23,5 +23,3 @@ include(FindPackageHandleStandardArgs)
 # if all listed variables are TRUE
 find_package_handle_standard_args(ChiikaApi  DEFAULT_MSG
                                   CHIIKA_LIB CHIIKA_INCLUDE_DIR)
-
-mark_as_advanced(CHIIKA_INCLUDE_DIR CHIIKA_LIB )

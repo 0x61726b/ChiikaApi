@@ -22,16 +22,9 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	GetAnimeListRequest::GetAnimeListRequest(LocalDataManager* ldm)
-		: RequestInterface(ldm)
-	{
-		m_sName = "GetAnimeList";
-	}
-	//----------------------------------------------------------------------------
 	GetAnimeListRequest::GetAnimeListRequest()
-		: RequestInterface(NULL)
 	{
-		m_sName = GetRequest(Requests::GetAnimelistRequest);
+		m_sName = GetRequest(Requests::GetAnimelistRequest); 
 	}
 	//----------------------------------------------------------------------------
 	GetAnimeListRequest::~GetAnimeListRequest()
@@ -42,7 +35,7 @@ namespace ChiikaApi
 	{
 		pugi::xml_document doc;
 
-		bool parse = doc.load(m_Curl.GetResponse().c_str());
+		bool parse = doc.load(m_Curl->GetResponse().c_str());
 
 		if(!parse)
 			return;
@@ -96,8 +89,9 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void GetAnimeListRequest::Initialize()
 	{
-		m_Curl.Initialize();
-		m_Curl.AddListener(this);
+		m_Curl = new CurlRequest;
+		m_Curl->Initialize();
+		m_Curl->AddListener(this);
 	}
 	//----------------------------------------------------------------------------
 	void GetAnimeListRequest::SetPostData()
@@ -109,21 +103,23 @@ namespace ChiikaApi
 	{
 		ChiString url;
 		int method;
-		ChiString userName = m_pLocalData->GetUserInfo().UserName;
-		ChiString passWord = m_pLocalData->GetUserInfo().Pass;
+		UserInfo ui;
+		m_pLocalData->GetUserInfo(ui);
+		ChiString userName = ui.UserName;
+		ChiString passWord = ui.Pass;
 
 		url = "http://myanimelist.net/malappinfo.php?u=" + userName + "&type=anime&status=all";
 		method = CURLOPT_HTTPGET;
 
-		m_Curl.SetUrl(url);
-		m_Curl.SetAuth(userName + ":" + passWord);
-		m_Curl.SetMethod(method,"");
-		m_Curl.SetWriteFunction(NULL);
+		m_Curl->SetUrl(url);
+		m_Curl->SetAuth(userName + ":" + passWord);
+		m_Curl->SetMethod(method,"");
+		m_Curl->SetWriteFunction(NULL);
 	}
 	//----------------------------------------------------------------------------
 	void GetAnimeListRequest::Initiate()
 	{
-		m_Curl.Perform();
+		m_Curl->Perform();
 	}
 	//----------------------------------------------------------------------------
 }

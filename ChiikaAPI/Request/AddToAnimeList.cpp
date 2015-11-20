@@ -20,8 +20,7 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	AddToAnimeListRequest::AddToAnimeListRequest(LocalDataManager* ldm)
-		: RequestInterface(ldm)
+	AddToAnimeListRequest::AddToAnimeListRequest()
 	{
 		m_sName = "AddToAnimeList";
 	}
@@ -34,7 +33,7 @@ namespace ChiikaApi
 	{
 		pugi::xml_document doc;
 
-		doc.load(m_Curl.GetResponse().c_str());
+		doc.load(m_Curl->GetResponse().c_str());
 
 
 	}
@@ -46,8 +45,8 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AddToAnimeListRequest::Initialize()
 	{
-		m_Curl.Initialize();
-		m_Curl.AddListener(this);
+		m_Curl->Initialize();
+		m_Curl->AddListener(this);
 	}
 	//----------------------------------------------------------------------------
 	void AddToAnimeListRequest::SetPostData()
@@ -69,7 +68,7 @@ namespace ChiikaApi
 
 		if (m_Anime.Anime.Id == UnknownAnimeId)
 		{
-			m_Curl.SetErrorCode(RequestCodes::BAD_PARAMETER);
+			m_Curl->SetErrorCode(RequestCodes::BAD_PARAMETER);
 			RequestInterface::OnError();
 			return;
 		}
@@ -79,16 +78,16 @@ namespace ChiikaApi
 		ChiStringUtil strUtil;
 		ChiString postData = (GetAnimeXML(m_Anime));
 
-		m_Curl.SetUrl(url);
-		m_Curl.SetAuth(userName + ":" + passWord);
-		m_Curl.SetWriteFunction(NULL);
-		m_Curl.SetVerbose(true);
-		m_Curl.SetMethod(method, postData);
+		m_Curl->SetUrl(url);
+		m_Curl->SetAuth(userName + ":" + passWord);
+		m_Curl->SetWriteFunction(NULL);
+		m_Curl->SetVerbose(true);
+		m_Curl->SetMethod(method, postData);
 	}
 	//----------------------------------------------------------------------------
 	void AddToAnimeListRequest::Initiate()
 	{
-		m_Curl.Perform();
+		m_Curl->Perform();
 	}
 	//----------------------------------------------------------------------------
 }

@@ -25,7 +25,30 @@ namespace ChiikaApi
 		virtual void OnError() = 0;
 	};
 	//----------------------------------------------------------------------------
-	class MalApiExport CurlRequest
+	class MalApiExport CurlRequestInterface
+	{
+	public:
+		virtual ~CurlRequestInterface()
+		{
+		};
+		virtual void Initialize() = 0;
+		virtual void SetUrl(const ChiString&) = 0;
+		virtual void SetAuth(const ChiString&) = 0;
+		virtual const ChiString& GetResponse() = 0;
+		virtual void SetMethod(int method,const ChiString& data) = 0;
+		virtual void SetWriteFunction(std::function<size_t(void *buffer,size_t size,size_t nmemb,void *stream)>*) = 0;
+		virtual void Perform() = 0;
+
+		virtual void SetErrorCode(int optional) = 0;
+		virtual void SetTimeout(int) = 0;
+		virtual void SetVerbose(bool) = 0;
+		virtual void AddListener(CurlEventListener* listener) = 0;
+		virtual void RemoveListener(CurlEventListener* listener) = 0;
+		virtual int GetRequestResult() = 0;
+
+	};
+	//----------------------------------------------------------------------------
+	class MalApiExport CurlRequest : public CurlRequestInterface
 	{
 	public:
 		CurlRequest();

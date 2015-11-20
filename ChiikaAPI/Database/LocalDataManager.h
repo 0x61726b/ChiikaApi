@@ -37,7 +37,7 @@ namespace ChiikaApi
 			SenpaiJSON
 		};
 
-		FileLoader(ChiString filePath, FileType type);
+		FileLoader(ChiString filePath,FileType type);
 
 		virtual void Save() = 0;
 		virtual void Load() = 0;
@@ -68,7 +68,7 @@ namespace ChiikaApi
 	class MalApiExport UserInfoLoader : public FileLoader
 	{
 	public:
-		UserInfoLoader(ChiString path, ChiikaApi::UserInfo ui);
+		UserInfoLoader(ChiString path,ChiikaApi::UserInfo ui);
 
 		void Save();
 		void Load();
@@ -104,11 +104,41 @@ namespace ChiikaApi
 	class MalApiExport LocalDataInterface
 	{
 	public:
-		LocalDataInterface() { };
 		virtual ~LocalDataInterface() { };
 
 		virtual const UserInfo& GetUserInfo() = 0;
+		virtual void GetUserInfo(UserInfo&) = 0;
 		virtual void SetUserInfo(const UserInfo&) = 0;
+
+		virtual void Initialize() = 0;
+
+	public:
+		virtual void SaveAnimeList() = 0;
+		virtual void LoadAnimeList() = 0;
+
+	public:
+		virtual void SaveUserInfo() = 0;
+		virtual void LoadUserInfo() = 0;
+
+	public:
+		virtual void SaveUpdateList() = 0;
+		virtual void LoadUpdateList() = 0;
+
+	public:
+		virtual void SaveMangaList() = 0;
+		virtual void LoadMangaList() = 0;
+	public:
+		virtual void SaveAnimeDetails() = 0;
+		virtual void LoadAnimeDetails() = 0;
+	public:
+		virtual void SaveSenpaiData() = 0;
+		virtual void LoadSenpaiData() = 0;
+	public:
+
+	public:
+		virtual void SaveAll() = 0;
+
+		virtual void SetUserNamePass(ChiString userName,ChiString pass) = 0;
 	};
 	class MalApiExport LocalDataManager : public LocalDataInterface
 	{
@@ -149,9 +179,10 @@ namespace ChiikaApi
 	public:
 		void SaveAll();
 
-		void SetUserNamePass(ChiString userName, ChiString pass);
+		void SetUserNamePass(ChiString userName,ChiString pass);
 
 		const UserInfo& GetUserInfo();
+		void GetUserInfo(UserInfo&);
 		void SetUserInfo(const UserInfo& i);
 
 

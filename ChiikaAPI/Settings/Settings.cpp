@@ -219,9 +219,9 @@ namespace ChiikaApi
 		ChiString dataPath = (m_sGlobalPath)+"/Data";
 		//Create folders here
 
-		if(!FileUtil::Get().CheckIfDirectoryExists(dataPath))
+		if(!FileUtil::Get()->CheckIfDirectoryExists(dataPath))
 		{
-			if(!FileUtil::Get().CreateDir(dataPath))
+			if(!FileUtil::Get()->CreateDir(dataPath))
 			{
 				
 					m_bFirstLaunch = true;
@@ -229,9 +229,9 @@ namespace ChiikaApi
 		}
 
 		ChiString imageDir = (dataPath + "/Images");
-		if(!FileUtil::Get().CheckIfDirectoryExists(imageDir))
+		if(!FileUtil::Get()->CheckIfDirectoryExists(imageDir))
 		{
-			if(!FileUtil::Get().CreateDir(imageDir))
+			if(!FileUtil::Get()->CreateDir(imageDir))
 			{
 			}
 				

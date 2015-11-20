@@ -71,6 +71,9 @@ namespace ChiikaApi
 				return true;
 			return false;
 		}
+		~DictionaryBase()
+		{
+		}
 	protected:
 		KeyMap m_KeyMap;
 	};

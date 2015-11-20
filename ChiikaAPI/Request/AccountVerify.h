@@ -21,7 +21,6 @@ namespace ChiikaApi
 	class MalApiExport AccountVerifyRequest : public RequestInterface,public CurlEventListener
 	{
 	public:
-		AccountVerifyRequest(LocalDataManager*); //For testing purposes
 		AccountVerifyRequest();
 		virtual ~AccountVerifyRequest();
 		void OnSuccess();

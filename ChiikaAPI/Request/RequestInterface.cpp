@@ -31,25 +31,17 @@ namespace ChiikaApi
 {
 	const ChiString& GetRequest(Requests r)
 	{
-		std::map<enum Requests, ChiString>::iterator It = requestList.find(r);
+		std::map<enum Requests,ChiString>::iterator It = requestList.find(r);
 
-		if (It != requestList.end())
+		if(It != requestList.end())
 			return It->second;
 		else
 			return requestList.find(Requests::Unknown)->second;
 	}
 	//----------------------------------------------------------------------------
-	RequestInterface::RequestInterface(LocalDataManager* ldm)
+	RequestInterface::RequestInterface()
 	{
-		if(!ldm)
-		{
-			m_pLocalData = LocalDataManager::Get();
-		}
-		else
-		{
-			m_pLocalData = ldm;
-		}
-
+		m_pLocalData = LocalDataManager::Get();
 	}
 	//----------------------------------------------------------------------------
 	RequestInterface::~RequestInterface()
@@ -64,7 +56,7 @@ namespace ChiikaApi
 			m_vListeners[i]->OnSuccess(this);
 		}
 
-		LocalDataManager::Get()->SaveAll();
+		m_pLocalData->SaveAll();
 	}
 	//----------------------------------------------------------------------------
 	void RequestInterface::SetPostData()
@@ -75,7 +67,7 @@ namespace ChiikaApi
 	void RequestInterface::OnError()
 	{
 		//
-		int error = m_Curl.GetRequestResult();
+		int error = m_Curl->GetRequestResult();
 
 		if(error == 0)
 		{
@@ -135,7 +127,17 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	const std::string& RequestInterface::GetResponse()
 	{
-		return m_Curl.GetResponse();
+		return m_Curl->GetResponse();
+	}
+	//----------------------------------------------------------------------------
+	void RequestInterface::SetCURL(CurlRequestInterface* curl)
+	{
+		m_Curl = curl;
+	}
+	//----------------------------------------------------------------------------
+	void RequestInterface::SetDatabase(LocalDataInterface* ldm)
+	{
+		m_pLocalData = ldm;
 	}
 	//----------------------------------------------------------------------------
 	ChiString RequestInterface::GetAnimeXML(const UserAnimeEntry& anime)

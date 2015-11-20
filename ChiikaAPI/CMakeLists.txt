@@ -166,10 +166,6 @@ add_library(${TARGET_NAME} ${CHI_LIBTYPE}
   ${ChiikaApi_Settings_Src}
   )
 
-use_precompiled_header(ChiikaApi 
-  "${CMAKE_CURRENT_SOURCE_DIR}/Common/Stable.h"
-  "${CMAKE_CURRENT_SOURCE_DIR}/Common/Stable.cpp"
-)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\Common) #This is for Vs2013 so Intellisense stops crying about precompiled header
 
@@ -194,15 +190,6 @@ if(BUILD_STATIC_LIBS)
   target_link_libraries(ChiikaApi jsoncpp_lib_static)
   set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib_static)
 endif()
-if(IncludeGoogleMock)
-  set_target_properties( gmock
-    PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
-)
-endif()
-
 
 #Pugixml
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\pugixml\\src)
@@ -214,6 +201,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\anitomy)
 
 target_link_libraries(ChiikaApi Anitomy)
 
+add_subdirectory(HelloWorld)
+add_subdirectory(Tests)
 
 #Tests
 
@@ -222,6 +211,11 @@ set_target_properties( ChiikaApi ${CHIIKA_LIBRARIES}
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
+)
+
+use_precompiled_header(ChiikaApi 
+  "${CMAKE_CURRENT_SOURCE_DIR}/Common/Stable.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/Common/Stable.cpp"
 )
 
 

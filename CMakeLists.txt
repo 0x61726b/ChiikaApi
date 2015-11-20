@@ -276,8 +276,6 @@ if(OS_WINDOWS)
 endif()
 
 
-option(IncludeGoogleMock "Include Google Mock/Test" ON)
-
 set(BUILD_CURL_EXE OFF CACHE BOOL "" FORCE)
 set(BUILD_CURL_TESTS OFF CACHE BOOL "" FORCE)
 set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
@@ -292,16 +290,6 @@ endif()
 
 set(JSONCPP_WITH_POST_BUILD_UNITTEST OFF CACHE BOOL "" FORCE)
 set(JSONCPP_WITH_TESTS OFF CACHE BOOL "" FORCE)
-
-if(IncludeGoogleMock)
-  set(gtest_build_tests OFF CACHE BOOL "" FORCE)
-  set(gtest_build_samples OFF CACHE BOOL "" FORCE)
-endif()
-if(IncludeGoogleMock)
-  add_subdirectory(ChiikaAPI/ThirdParty/googletest/googlemock)
-  add_subdirectory(ChiikaAPI/Tests)
-  target_compile_definitions(gmock PRIVATE -D_HAS_EXCEPTIONS=0)
-endif()
 
 set(CMAKE_C_FLAGS                     "${CHI_COMPILER_FLAGS} ${CHI_C_COMPILER_FLAGS}")
 set(CMAKE_C_FLAGS_DEBUG               "${CHI_COMPILER_FLAGS_DEBUG} ${CHI_C_COMPILER_FLAGS_DEBUG}")
