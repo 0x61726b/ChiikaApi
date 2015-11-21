@@ -66,27 +66,28 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void RequestInterface::OnError()
 	{
+		std::string errorResponse = m_Curl->GetResponse();
 		//
 		int error = m_Curl->GetRequestResult();
 
 		if(error == 0)
 		{
-			LOG(ERROR) << "Wow something went really wrong wtf.";
+			errorResponse = "Wow something went really wrong wtf.";
 		}
 
 		if(error & RequestCodes::UNAUTHORIZED)
 		{
-			LOG(ERROR) << "Authorization error.";
+			errorResponse = "Authorization error.";
 		}
 
 		if(error & RequestCodes::CANT_CONNECT)
 		{
-			LOG(ERROR) << "Connection couldnt be made.";
+			errorResponse = "Connection couldnt be made.";
 		}
 
 		if(error & RequestCodes::CANT_RESOLVE_HOST_OR_PROXY)
 		{
-			LOG(ERROR) << "Can't resolve host or proxy.Probably there is no internet connection.";
+			errorResponse = "Can't resolve host or proxy.Probably there is no internet connection.";
 		}
 
 		for(size_t i = 0; i < m_vListeners.size(); i++)

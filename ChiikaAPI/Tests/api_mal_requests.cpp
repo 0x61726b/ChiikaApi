@@ -22,6 +22,8 @@
 std::string testDataDirFromExecutable = "\\..\\..\\..\\ChiikaApi\\ChiikaAPI\\Tests\\json";
 #endif
 
+#include "Root\Root.h"
+#include "Request\MalManager.h"
 #include "Request\GetAnimeList.h"
 #include "Database\LocalDataManager.h"
 using namespace ChiikaApi;
@@ -90,9 +92,9 @@ namespace
 			GetModuleFileNameA(NULL,szFileName,MAX_PATH);
 
 			std::string pathToExecutable = szFileName;
-			std::string dir = pathToExecutable.substr(0,pathToExecutable.find_last_of("\\"));
+			moduleDir = pathToExecutable.substr(0,pathToExecutable.find_last_of("\\"));
 
-			dir = dir + testDataDirFromExecutable;
+			std::string dir = moduleDir+ testDataDirFromExecutable;
 			FileReader fr(dir + "\\getAnimeListResponse.xml");
 
 			if(fr.Open())
@@ -120,16 +122,17 @@ namespace
 			EXPECT_CALL(mockCurl,SetUrl(_)).Times(1);
 			EXPECT_CALL(mockCurl,SetAuth(_)).Times(1);
 			EXPECT_CALL(mockCurl,SetMethod(_,_)).Times(1);
-			EXPECT_CALL(mockDatabase,GetUserInfo(_)).Times(::AtLeast(1));
 
 			const std::string& r = GetAnimelistResponse;
 
-			
+
 			ON_CALL(mockCurl,GetResponse())
 				.WillByDefault(::testing::ReturnRef(r));
 
 			ON_CALL(mockDatabase,GetUserInfo())
 				.WillByDefault(::testing::ReturnRef(*ui));
+
+
 
 			EXPECT_CALL(mockCurl,GetResponse())
 				.Times(::AtLeast(1));
@@ -146,247 +149,49 @@ namespace
 		ChiikaApi::UserInfo* ui = new UserInfo();
 	public:
 		static std::string GetAnimelistResponse;
-
+		static std::string moduleDir;
 
 	};
 	std::string RequestTests::GetAnimelistResponse = "";
+	std::string RequestTests::moduleDir = "";
 }
-
-
-TEST_F(RequestTests,GetAnimeListRequestTest)
+TEST_F(RequestTests,GetAnimeListRequestErrorBehaviour)
 {
 	GetAnimeListRequest req;
 	req.SetCURL(&mockCurl);
 	req.SetDatabase(&mockDatabase);
+	
 	//req.Initialize(); Not calling this since we use mock
+
+
+	EXPECT_CALL(mockCurl,GetRequestResult())
+		.Times(::AtLeast(1));
+
+	ON_CALL(mockCurl,GetRequestResult())
+		.WillByDefault(::testing::Return(RequestCodes::REQUEST_ERROR | RequestCodes::CANT_RESOLVE_HOST_OR_PROXY));
+
+
 	req.SetOptions();
 	req.Initiate();
-
-	req.OnSuccess();
+	req.OnError();
 
 }
 
+TEST_F(RequestTests,GetAnimeListRequestSuccessBehaviour)
+{
+	GetAnimeListRequest req;
+	req.SetCURL(&mockCurl);
+	req.SetDatabase(&mockDatabase);
 
-//namespace
-//{
-//	std::string SearchKeywordAnime = "Oregairu";
-//	std::string testUserName = "chiikatestacc1";
-//	std::string testPass = "chiikatest%&";
-//	int			testUserId = 4987289;
-//}
-//namespace
-//{
-//	class RequestMock : public ThreadedRequest
-//	{
-//	public:
-//		MOCK_METHOD0(GetResponse,ChiString());
-//	};
-//	class MockDatabase : public LocalDataManager
-//	{
-//	public:
-//		MOCK_METHOD0(GetUserInfo,UserInfo());
-//		MOCK_METHOD1(SetUserInfo,void(UserInfo i));
-//	};
-//	class MockRequestManager : public RequestManager
-//	{
-//	public:
-//		MOCK_METHOD1(ProcessRequest,void(ThreadedRequest*));
-//	};
-//	class Parser
-//	{
-//	public:
-//		Parser(ThreadedRequest* r,LocalDataManager* d)
-//			: _request(r),_database(d) {}
-//		bool Parse()
-//		{
-//			if(!_request)
-//			{
-//				return false;
-//			}
-//			if(_request->Name == "Verify")
-//			{
-//				return ParseUserVerify();
-//			}
-//		}
-//		bool ParseUserVerify()
-//		{
-//			std::string response = _request->GetResponse();
-//			_database->GetUserInfo();
-//
-//			//ToDo(arkenthera): Parse now.
-//
-//			if(response == "Invalid Credentials")
-//			{
-//				return false;
-//			}
-//
-//			pugi::xml_document doc;
-//
-//			bool b = doc.load(response.c_str());
-//
-//			if(!b)
-//				return false;
-//
-//			pugi::xml_node  user = doc.child("user");
-//			ChiString userName = user.child("username").text().get();
-//			ChiString id = user.child("id").text().get();
-//
-//			UserInfo ui;
-//			ui.UserName = userName;
-//			ui.UserId = atoi(id.c_str());
-//			_database->SetUserInfo(ui);
-//
-//			ResultUser = ui;
-//
-//			return true;
-//		}
-//		UserInfo ResultUser;
-//		ThreadedRequest* _request;
-//		LocalDataManager* _database;
-//
-//	};
-//}
-//namespace
-//{
-//
-//	class RequestTests : public ::testing::Test
-//	{
-//	protected:
-//		// Per-test-case set-up.
-//		// Called before the first test in this test case.
-//		// Can be omitted if not needed.
-//		static void SetUpTestCase() {
-//
-//		}
-//
-//		// Per-test-case tear-down.
-//		// Called after the last test in this test case.
-//		// Can be omitted if not needed.
-//		static void TearDownTestCase() {
-//
-//		}
-//
-//		// You can define per-test set-up and tear-down logic as usual.
-//		virtual void SetUp()
-//		{
-//			//Default return val
-//			defaultUser.UserName = "default";
-//			inputUser.UserName = testUserName;
-//		}
-//
-//		virtual void TearDown()
-//		{
-//		}
-//	public:
-//		UserInfo inputUser;
-//		UserInfo defaultUser;
-//		UserInfo expectedUserInfo;
-//		RequestMock mockRequest;
-//		MockDatabase mockDb;
-//		MockRequestManager mockReqManager;
-//
-//		std::string Response;
-//	};
-//
-//
-//}
-//TEST_F(RequestTests,VerifySuccess)
-//{
-//	Response = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-//		"<user>"
-//		"<id>4987289</id>"
-//		"<username>chiikatestacc1</username>"
-//		"</user>";
-//
-//
-//	expectedUserInfo.UserName = testUserName;
-//	expectedUserInfo.UserId = 4987289;
-//
-//	mockDb.m_UserDetailedInfo = (inputUser);
-//	mockRequest.Name = "Verify";
-//
-//	RequestManager rm;
-//	rm.ProcessRequest(&mockRequest);
-//
-//	ON_CALL(mockDb,GetUserInfo())
-//		.WillByDefault(Return(mockDatabase));
-//
-//	EXPECT_CALL(mockRequest,GetResponse()).Times(1)
-//		.WillOnce(::Return(Response));
-//
-//	ON_CALL(mockDb,GetUserInfo())
-//		.WillByDefault(Return(defaultUser));
-//
-//	EXPECT_CALL(mockDb,GetUserInfo()).Times(AtLeast(1));
-//
-//	EXPECT_CALL(mockDb,SetUserInfo(_)).Times(1);
-//
-//
-//
-//
-//	Parser pr(&mockRequest,&mockDb);
-//	EXPECT_EQ(true,pr.Parse());
-//
-//
-//	EXPECT_EQ(expectedUserInfo.UserName,pr.ResultUser.UserName);
-//	EXPECT_EQ(expectedUserInfo.UserId,pr.ResultUser.UserId);
-//}
-//Initialize the process
+	//req.Initialize(); Not calling this since we use mock
 
-//TEST(MalTest,WrongUsername)
-//{
-//	UserInfo inputUser;
-//	inputUser.UserName = testUserName;
-//
-//	UserInfo defaultUser;
-//	defaultUser.UserName = "default";
-//
-//	std::string response = "Invalid Credentials";
-//
-//	UserInfo expectedUserInfo;
-//	expectedUserInfo.UserName = testUserName;
-//	expectedUserInfo.UserId = 4987289;
-//
-//	RequestMock mockRequest;
-//
-//	mockRequest.Name = "Verify";
-//
-//	MockDatabase mockDb;
-//	mockDb.m_UserDetailedInfo = (inputUser);
-//
-//	MockRequestManager mockReqManager;
-//
-//
-//
-//	EXPECT_CALL(mockReqManager,ProcessRequest(_))
-//		.Times(1);
-//
-//	EXPECT_CALL(mockRequest,Initialize())
-//		.Times(1);
-//
-//	//Procedure starts at Root
-//	Root root;
-//	root.PostRequest(&mockReqManager,&mockRequest);
-//
-//	//Initialize the process
-//	RequestManager rm;
-//	rm.ProcessRequest(&mockRequest);
-//
-//	ON_CALL(mockDb,GetUserInfo())
-//		.WillByDefault(Return(defaultUser));
-//
-//	EXPECT_CALL(mockRequest,GetResponse()).Times(1)
-//		.WillOnce(::Return(response));
-//
-//	ON_CALL(mockDb,GetUserInfo())
-//		.WillByDefault(Return(defaultUser));
-//
-//	EXPECT_CALL(mockDb,GetUserInfo()).Times(AtLeast(1));
-//
-//
-//
-//
-//	Parser pr(&mockRequest,&mockDb);
-//	EXPECT_EQ(false,pr.Parse());
-//
-//}
+
+	EXPECT_CALL(mockDatabase,GetUserInfo(_)).Times(::AtLeast(1));
+	EXPECT_CALL(mockDatabase,GetUserInfo()).Times(::AtLeast(1));
+	EXPECT_CALL(mockDatabase,SetUserInfo(_)).Times(::AtLeast(1));
+	EXPECT_CALL(mockDatabase,SaveAll()).Times(::AtLeast(1));
+
+	req.SetOptions();
+	req.Initiate();
+	req.OnSuccess();
+}

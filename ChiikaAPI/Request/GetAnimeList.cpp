@@ -24,7 +24,7 @@ namespace ChiikaApi
 {
 	GetAnimeListRequest::GetAnimeListRequest()
 	{
-		m_sName = GetRequest(Requests::GetAnimelistRequest); 
+		m_sName = GetRequest(Requests::GetAnimelistRequest);
 	}
 	//----------------------------------------------------------------------------
 	GetAnimeListRequest::~GetAnimeListRequest()
@@ -76,8 +76,12 @@ namespace ChiikaApi
 			info.Anime = Anime;
 			list.insert(UserAnimeList::value_type(Anime.Id,info));
 		}
-		MalManager::Get()->AddAnimeList(list);
-		MalManager::Get()->AddAnimeList(animeList);
+		if(MalManager::Get())
+		{
+			MalManager::Get()->AddAnimeList(list);
+			MalManager::Get()->AddAnimeList(animeList);
+		}
+
 
 		RequestInterface::OnSuccess();
 	}
