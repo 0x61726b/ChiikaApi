@@ -60,6 +60,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AccountVerifyRequest::Initialize()
 	{
+		m_Curl = new CurlRequest;
 		m_Curl->Initialize();
 		m_Curl->AddListener(this);
 	}

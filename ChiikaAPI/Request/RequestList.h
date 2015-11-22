@@ -22,12 +22,14 @@ namespace ChiikaApi
 	{
 		VerifyUser,
 		GetAnimelistRequest,
+		GetAnimelist,
 		Unknown
 	};
 	static std::map<enum Requests,ChiString> requestList =
 	{
 		std::make_pair(Requests::VerifyUser,"VerifyUser"),
 		std::make_pair(Requests::GetAnimelistRequest,"GetAnimelistRequest"),
+		std::make_pair(Requests::GetAnimelist,"GetAnimelist"),
 		std::make_pair(Requests::Unknown, "Unkown")
 	};
 	const MalApiExport ChiString& GetRequest(Requests r);

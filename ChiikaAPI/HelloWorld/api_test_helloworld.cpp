@@ -17,6 +17,7 @@
 #include "Request\RequestManager.h"
 #include "Database\LocalDataManager.h"
 #include "Request\GetAnimeList.h"
+#include "Request\AccountVerify.h"
 //----------------------------------------------------------------------------
 using namespace ChiikaApi;
 std::string SearchKeywordAnime = "Oregairu";
@@ -52,7 +53,7 @@ int main()
 	ui.Pass = testPass;
 	r.m_pLocalData->SetUserInfo(ui);
 	
-	GetAnimeListRequest req;
+	AccountVerifyRequest req;
 	req.Initialize();
 	req.SetOptions();
 	req.Initiate();
