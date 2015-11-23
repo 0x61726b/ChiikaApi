@@ -4,9 +4,8 @@
 #  LIBXML2_INCLUDE_DIRS - The LibXml2 include directories
 #  LIBXML2_LIBRARIES - The libraries needed to use LibXml2
 #  LIBXML2_DEFINITIONS - Compiler switches required for using LibXml2
-
-set(CHIIKA_HOME "D:\\Chiika\\ChiikaCef\\ChiikaApi\\ChiikaAPI")
-set(CHIIKA_LIB_HOME "D:/Chiika/ChiikaCef/Msvc/Chiika/Debug")
+set(CHIIKA_HOME "${CMAKE_SOURCE_DIR}/../ChiikaApi/ChiikaAPI")
+set(CHIIKA_LIB_HOME "${CMAKE_SOURCE_DIR}/Msvc/Chiika/Debug")
 
 find_path(CHIIKA_INCLUDE_DIR "Common\\Required.h"
           HINTS ${CHIIKA_HOME}

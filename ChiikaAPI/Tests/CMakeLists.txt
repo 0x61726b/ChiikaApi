@@ -5,7 +5,7 @@ set(CMAKE_CONFIGURATION_TYPES Debug)
 
 project(ChiikaTests)
 
-set(CMAKE_MODULE_PATH "D:/Chiika/ChiikaCef/ChiikaApi/CMake/Modules")
+set(CMAKE_MODULE_PATH "${CHIIKA_INCLUDE_DIR}/../CMake/Modules")
 
 include(FindChiikaApi)
 #Sample Hello World application for testing
