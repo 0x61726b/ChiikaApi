@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 2.8.12.2)
 
-set(CMAKE_CONFIGURATION_TYPES Debug)
+set(CMAKE_CONFIGURATION_TYPES Debug Release RelWithDebInfo)
 
 project(ChiikaTests)
 
@@ -25,6 +25,10 @@ set_target_properties( TestRunner
     LIBRARY_OUTPUT_DIRECTORY "${CHIIKA_LIB_HOME}/.."
     RUNTIME_OUTPUT_DIRECTORY "${CHIIKA_LIB_HOME}/.."
 )
+set_target_properties( TestRunner
+    PROPERTIES
+    FOLDER
+    "Tests" )
 include_directories(${CHIIKA_INCLUDE_DIR})
 
 target_compile_options( TestRunner 

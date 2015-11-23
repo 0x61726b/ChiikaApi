@@ -34,7 +34,7 @@ cmake_minimum_required(VERSION 2.8.12.2)
 set(CMAKE_CONFIGURATION_TYPES Debug Release)
 
 PROJECT(Chiika)
-
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Determine the platform.
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")

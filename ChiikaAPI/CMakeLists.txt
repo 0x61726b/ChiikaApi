@@ -183,12 +183,13 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\jsoncpp\\include\\j
 if(NOT BUILD_STATIC_LIBS)
   target_link_libraries(ChiikaApi jsoncpp_lib)
   set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib)
-
+  set_target_properties(jsoncpp_lib PROPERTIES FOLDER "3rdParty")
 endif()
 if(BUILD_STATIC_LIBS)
   target_compile_definitions(jsoncpp_lib_static PRIVATE -DJSON_DLL)
   target_link_libraries(ChiikaApi jsoncpp_lib_static)
   set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib_static)
+  set_target_properties(jsoncpp_lib_static PROPERTIES FOLDER "3rdParty")
 endif()
 
 #Pugixml
@@ -212,6 +213,10 @@ set_target_properties( ChiikaApi ${CHIIKA_LIBRARIES}
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
 )
+set_target_properties(ChiikaApi PROPERTIES FOLDER "Chiika")
+set_target_properties(Anitomy PROPERTIES FOLDER "3rdParty")
+set_target_properties(pugixml PROPERTIES FOLDER "3rdParty")
+set_target_properties(libcurl PROPERTIES FOLDER "3rdParty")
 
 use_precompiled_header(ChiikaApi 
   "${CMAKE_CURRENT_SOURCE_DIR}/Common/Stable.h"

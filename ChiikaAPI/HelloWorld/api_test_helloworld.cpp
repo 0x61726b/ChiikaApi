@@ -53,7 +53,7 @@ int main()
 	ui.Pass = testPass;
 	r.m_pLocalData->SetUserInfo(ui);
 	
-	AccountVerifyRequest req;
+	GetAnimeListRequest req;
 	req.Initialize();
 	req.SetOptions();
 	req.Initiate();

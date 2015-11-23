@@ -400,7 +400,7 @@ namespace ChiikaApi
 			pugi::xml_node  UserInfo = root.append_child(kUserInfo);
 
 			KeyList keys;
-			::GetUserAnimeEntryKeys(keys);
+			::GetUserInfoKeys(keys);
 			for(size_t i = 0; i < keys.size(); i++)
 			{
 				pugi::xml_node node = UserInfo.append_child(ToStd(keys[i]));

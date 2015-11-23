@@ -18,7 +18,10 @@ set_target_properties( ${TEST_EXECS}
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
 )
 include_directories(${CHIIKA_INCLUDE_DIR})
-
+set_target_properties( HelloWorld
+    PROPERTIES
+    FOLDER
+    "Tests")
 
 # #gmock
 # include_directories(${CHIIKA_INCLUDE_DIR}\\ThirdParty\\googletest\\googlemock\\include)
