@@ -143,7 +143,7 @@ namespace ChiikaApi
 			Rewatching = atoi(ToStd(value));
 			m_KeyMap.insert(KeyMap::value_type(key,value));
 		}
-		if(key == kSeriesStatus)
+		if(key == kMyStatus)
 		{
 			Status = (AnimeUserStatus)atoi(ToStd(value));
 			m_KeyMap.insert(KeyMap::value_type(key,value));

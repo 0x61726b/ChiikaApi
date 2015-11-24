@@ -109,7 +109,7 @@ namespace
 		keys.push_back(kMyRewatchingEp);
 		keys.push_back(kMyScore);
 		keys.push_back(kMyRewatching);
-		keys.push_back(kSeriesStatus);
+		keys.push_back(kMyStatus);
 		keys.push_back(kMyStartDate);
 		keys.push_back(kMyFinishDate);
 		keys.push_back(kMyLastUpdated);
