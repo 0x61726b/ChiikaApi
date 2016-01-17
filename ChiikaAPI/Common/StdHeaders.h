@@ -20,7 +20,7 @@
     #define __STD_ALGORITHM
 #endif
 //
-#define _HAS_EXCEPTIONS 0
+
 
 // STL containers
 #include <vector>

@@ -48,6 +48,7 @@ namespace ChiikaApi
 	class MPRecognitionInterface;
 	class AnimeRecognition;
 	class SettingInterface;
+	class ThreadManager;
 }
 //----------------------------------------------------------------------------
 #include "StdHeaders.h"

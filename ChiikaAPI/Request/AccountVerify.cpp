@@ -16,12 +16,15 @@
 #include "Stable.h"
 #include "AccountVerify.h"
 #include "Database\LocalDataManager.h"
+
+#include "boost\thread.hpp"
+
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
 	AccountVerifyRequest::AccountVerifyRequest()
 	{
-		m_sName = GetRequest(Requests::VerifyUser); 
+		m_sName = GetRequest(Requests::VerifyUser);
 	}
 	//----------------------------------------------------------------------------
 	AccountVerifyRequest::~AccountVerifyRequest()
@@ -40,11 +43,11 @@ namespace ChiikaApi
 
 		if(userInfo.UserName == userName)
 		{
-			
+
 			userInfo.UserId = atoi(ToStd(id));
 			userInfo.UserName = userName;
 
-			m_pLocalData->SetUserInfo(userInfo);
+			if(m_pLocalData)m_pLocalData->SetUserInfo(userInfo);
 			RequestInterface::OnSuccess();
 		}
 	}
@@ -53,7 +56,7 @@ namespace ChiikaApi
 	{
 		UserInfo ui;
 		ui.UserId = -1;
-		m_pLocalData->SetUserInfo(userInfo);
+		if(m_pLocalData)m_pLocalData->SetUserInfo(userInfo);
 
 		RequestInterface::OnError();
 	}
@@ -90,7 +93,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AccountVerifyRequest::Initiate()
 	{
-		m_Curl->Perform();
+
 	}
 	//----------------------------------------------------------------------------
 }

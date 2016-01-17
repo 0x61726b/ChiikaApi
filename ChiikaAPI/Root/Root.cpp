@@ -27,12 +27,7 @@
 #include "json/json.h"
 #include "Logging\FileHelper.h"
 #include "Logging\ChiString.h"
-//----------------------------------------------------------------------------
-namespace
-{
-	ChiikaApi::Root* g_Root = NULL;
-}
-//----------------------------------------------------------------------------
+#include "Root\ThreadManager.h"
 namespace ChiikaApi
 {
 	//----------------------------------------------------------------------------
@@ -46,29 +41,29 @@ namespace ChiikaApi
 		InitializeNULL(m_pRequestManager);
 		InitializeNULL(m_pRecognizer);
 		InitializeNULL(m_pLocalData);
-
-		g_Root = this;
 	}
 	//----------------------------------------------------------------------------
-	Root* Root::Get()
+	void Root::Initialize(const RootOptions& opts)
 	{
-		return g_Root;
-	}
-	//----------------------------------------------------------------------------
-	void Root::Initialize(const ChiString& modulePath)
-	{
-		m_pSettings = new AppSettings("Chiika.cfg", modulePath);
+		options = opts;
+		if(opts.appMode)
+			m_pSettings = new AppSettings("Chiika.cfg",options.modulePath);
 		m_pLogManager = new LogManager;
 
 		ChiString version = std::to_string(ChiikaApi_VERSION_MAJOR) + "." + std::to_string(ChiikaApi_VERSION_MINOR) + "." + std::to_string(ChiikaApi_VERSION_PATCH);;
 		m_sVersion = version;
 		m_sCommitHash = (char)ChiikaApi_COMMIT_HASH;
 
+		if(opts.appMode)
+		{
+			m_pLogManager->CreateLog(options.modulePath + "\\Chiika.log",true,true,false)->
+				SetLogDetail((LoggingLevel)m_pSettings->GetIntegerOption(API_LOG_LEVEL));
+		}
+		if(opts.debugMode && opts.appMode)
+			m_pLogManager->CreateLog(options.modulePath + "\\Chiika.log",true,true,false)->
+			SetLogDetail((LoggingLevel)LoggingLevel::LOG_LEVEL_EVERYTHING);
 
-		m_pLogManager->CreateLog(m_pSettings->GetDataPath() + "\\Chiika.log", true, true, false)->
-			SetLogDetail((LoggingLevel)m_pSettings->GetIntegerOption(API_LOG_LEVEL));
-
-		m_pLogManager->CreateLog("DebuggerOutput", false, true, true)->
+		m_pLogManager->CreateLog("DebuggerOutput",false,true,true)->
 			SetLogDetail(LoggingLevel::LOG_LEVEL_EVERYTHING); //This is used to see messages on debug window,rather than printing to file. Use LOGD rather than LOG
 
 		LOG(Bore) << "Chiika Api is initializing. Version: " << (m_sVersion);
@@ -79,23 +74,43 @@ namespace ChiikaApi
 		LOG(INFO) << "Creating Season Manager";
 		m_pSeasonManager = new SeasonManager;
 
-		LOG(INFO) << "Creating MediaPlayerRecognition Manager";
-		m_pMPRecognition = new MediaPlayerRecognitionManager;
+		if(opts.appMode)
+		{
+			LOG(INFO) << "Creating MediaPlayerRecognition Manager";
+			m_pMPRecognition = new MediaPlayerRecognitionManager;
+		}
+
+		if(!opts.appMode)
+		{
+			m_pThreadManager = new ThreadManager;
+		}
 
 		LOG(INFO) << "Creating RequestManager Manager";
 		m_pRequestManager = new RequestManager;
 
+		if(opts.appMode)
+		{
+			LOG(INFO) << "Creating AnimeRecognition Manager";
+			m_pRecognizer = new AnimeRecognition;
+		}
 
-		LOG(INFO) << "Creating AnimeRecognition Manager";
-		m_pRecognizer = new AnimeRecognition;
 
-		LOG(INFO) << "Creating LocalData Manager";
-		m_pLocalData = new LocalDataManager;
+		if(!opts.appMode)
+		{
+			LOG(INFO) << "Skipping LocalData Manager";
+		}
+		else
+		{
+			LOG(INFO) << "Creating LocalData Manager";
+			m_pLocalData = new LocalDataManager;
+		}
+
 
 
 		//Very important!
 		m_pRequestManager->Initialize();
-		m_pLocalData->Initialize();
+		if(opts.appMode)
+			m_pLocalData->Initialize();
 
 	}
 	//----------------------------------------------------------------------------
@@ -117,7 +132,7 @@ namespace ChiikaApi
 		TryDelete(m_pRecognizer);
 	}
 	//----------------------------------------------------------------------------
-	void Root::PostRequest(RequestManager* rm, ThreadedRequest* r)
+	void Root::PostRequest(RequestManager* rm,ThreadedRequest* r)
 	{
 		rm->ProcessRequest(r);
 	}
@@ -610,12 +625,12 @@ namespace ChiikaApi
 	//	return  NULL;
 	//}
 	//----------------------------------------------------------------------------
-	const ChiString& Root::GetVersion()
+	ChiString Root::GetVersion()
 	{
 		return m_sVersion;
 	}
 	//----------------------------------------------------------------------------
-	const ChiString& Root::GetHash()
+	ChiString Root::GetHash()
 	{
 		return m_sCommitHash;
 	}

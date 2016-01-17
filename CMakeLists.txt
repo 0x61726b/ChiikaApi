@@ -3,7 +3,7 @@
 #
 #You shouldn't edit this file unless you really have to
 #
-# 
+#
 # Copyright 2015 Alperen Gezer
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 # cd ChiikaApi
 # mkdir _build
 # cd _build
-# cmake .. 
+# cmake ..
 # ```
 
 # Recomended Cmake settings
@@ -196,7 +196,7 @@ if(OS_MACOSX)
   # -O3                             = Optimize for maximum speed plus a few extras
   set(CHI_COMPILER_FLAGS_RELEASE  "-O3")
   # -Wl,-search_paths_first         = Search for static or shared library versions in the same pass
-  # -Wl,-ObjC                       = Support creation of creation of ObjC static libraries 
+  # -Wl,-ObjC                       = Support creation of creation of ObjC static libraries
   # -Wl,-pie                        = Generate position-independent code suitable for executables only
   set(CHI_LINKER_FLAGS            "-Wl,-search_paths_first -Wl,-ObjC -Wl,-pie")
   # -Wl,-dead_strip                 = Strip dead code
@@ -275,7 +275,6 @@ if(OS_WINDOWS)
                    -D_WIN32_WINNT=0x602 -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_HAS_EXCEPTIONS=0)
 endif()
 
-
 set(BUILD_CURL_EXE OFF CACHE BOOL "" FORCE)
 set(BUILD_CURL_TESTS OFF CACHE BOOL "" FORCE)
 set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
@@ -291,6 +290,8 @@ endif()
 set(JSONCPP_WITH_POST_BUILD_UNITTEST OFF CACHE BOOL "" FORCE)
 set(JSONCPP_WITH_TESTS OFF CACHE BOOL "" FORCE)
 
+add_subdirectory(ChiikaAPI/ThirdParty)
+
 set(CMAKE_C_FLAGS                     "${CHI_COMPILER_FLAGS} ${CHI_C_COMPILER_FLAGS}")
 set(CMAKE_C_FLAGS_DEBUG               "${CHI_COMPILER_FLAGS_DEBUG} ${CHI_C_COMPILER_FLAGS_DEBUG}")
 set(CMAKE_C_FLAGS_RELEASE             "${CHI_COMPILER_FLAGS_RELEASE} ${CHI_C_COMPILER_FLAGS_RELEASE}")
@@ -304,7 +305,7 @@ set(CMAKE_SHARED_LINKER_FLAGS         "${CHI_LINKER_FLAGS} ${CHI_SHARED_LINKER_F
 set(CMAKE_SHARED_LINKER_FLAGS_DEBUG   "${CHI_LINKER_FLAGS_DEBUG} ${CHI_SHARED_LINKER_FLAGS_DEBUG}")
 set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CHI_LINKER_FLAGS_RELEASE} ${CHI_SHARED_LINKER_FLAGS_RELEASE}")
 
-add_subdirectory(ChiikaAPI/ThirdParty)
+
 add_subdirectory(ChiikaAPI)
 
 message(STATUS "*** CONFIGURATION SETTINGS ***")

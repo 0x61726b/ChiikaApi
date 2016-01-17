@@ -18,6 +18,8 @@
 #include "Database\LocalDataManager.h"
 #include "Request\GetAnimeList.h"
 #include "Request\AccountVerify.h"
+#include "Root\ThreadManager.h"
+
 //----------------------------------------------------------------------------
 using namespace ChiikaApi;
 std::string SearchKeywordAnime = "Oregairu";
@@ -36,28 +38,38 @@ public:
 
 	}
 };
-
+#include <thread>
+#include <chrono>
+#include <mutex>
 int main()
 {
 	char szFileName[MAX_PATH];
 
-	GetModuleFileNameA(NULL, szFileName, MAX_PATH);
+	GetModuleFileNameA(NULL,szFileName,MAX_PATH);
 
 	std::string pathToExecutable = szFileName;
-	std::string dir = pathToExecutable.substr(0, pathToExecutable.find_last_of("\\"));
+	std::string dir = pathToExecutable.substr(0,pathToExecutable.find_last_of("\\"));
 
+	RootOptions opts;
+	opts.appMode = false;
 	Root r;
-	r.Initialize(dir);
+	r.Initialize(opts);
 	UserInfo ui;
 	ui.UserName = testUserName;
 	ui.Pass = testPass;
-	r.m_pLocalData->SetUserInfo(ui);
-	
-	GetAnimeListRequest req;
-	req.Initialize();
-	req.SetOptions();
-	req.Initiate();
-	
+
+	AccountVerifyRequest request;
+	request.Initialize();
+	request.SetOptions();
+	request.SetUserInfo(ui);
+
+
+	request.Initiate();
+
+	std::this_thread::sleep_for(std::chrono::seconds(3));
+
+
+	r.m_pThreadManager->Wake();
 
 
 	while(true)
@@ -66,5 +78,5 @@ int main()
 	}
 	/*r.Destroy();*/
 
-    return 0;
+	return 0;
 }

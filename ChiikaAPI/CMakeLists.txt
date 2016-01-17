@@ -114,6 +114,8 @@ source_group(ChiikaApi\\\\Request FILES ${ChiikaApi_Request_Src})
 set(ChiikaApi_Root_Src
   Root/Root.cpp
   Root/Root.h
+  Root/ThreadManager.h
+  Root/ThreadManager.cpp
   )
 source_group(ChiikaApi\\\\Root FILES ${ChiikaApi_Root_Src})
 
@@ -203,7 +205,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\anitomy)
 target_link_libraries(ChiikaApi Anitomy)
 
 add_subdirectory(HelloWorld)
-add_subdirectory(Tests)
+#add_subdirectory(Tests)
 
 #Tests
 
@@ -218,9 +220,7 @@ set_target_properties(Anitomy PROPERTIES FOLDER "3rdParty")
 set_target_properties(pugixml PROPERTIES FOLDER "3rdParty")
 set_target_properties(libcurl PROPERTIES FOLDER "3rdParty")
 
-use_precompiled_header(ChiikaApi 
+use_precompiled_header(ChiikaApi
   "${CMAKE_CURRENT_SOURCE_DIR}/Common/Stable.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/Common/Stable.cpp"
 )
-
-

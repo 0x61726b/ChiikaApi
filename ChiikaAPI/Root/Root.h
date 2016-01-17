@@ -21,6 +21,15 @@
 #include "Request/RequestManager.h"
 #include "Recognition/MediaPlayerRecognitionManager.h" //Unfortunately,this is necessary or main func doesnt recognize the class
 //#include "Recognition/AnimeRecognition.h"
+
+struct MalApiExport RootOptions
+{
+	bool appMode;
+	bool debugMode;
+	std::string userName;
+	std::string passWord;
+	std::string modulePath;
+};
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -30,9 +39,7 @@ namespace ChiikaApi
 		Root();
 		~Root();
 
-		static Root* Get();
-
-		void Initialize(const ChiString& modulePath);
+		void Initialize(const RootOptions&);
 		void Destroy();
 
 		void AddAnimeToList(const UserAnimeEntry& data);
@@ -44,14 +51,17 @@ namespace ChiikaApi
 		void AddMangaToList(const MangaInfo& data);
 		void UpdateManga(const MangaInfo& data);
 
+		const RootOptions& GetRootOptions() { return options; }
 
+		//New
+		
 	public:
 
 		//Api Related things
 		void InitializeApi(bool b);
 		void Exit();
-		const ChiString& GetVersion();
-		const ChiString& GetHash(); //debugging purposes
+		ChiString GetVersion();
+		ChiString GetHash(); //debugging purposes
 
 		MalManager* m_pMalManager;
 		RequestManager* m_pRequestManager;
@@ -61,8 +71,9 @@ namespace ChiikaApi
 		MediaPlayerRecognitionManager* m_pMPRecognition;
 		AnimeRecognition* m_pRecognizer;
 		SeasonManager* m_pSeasonManager;
+		ThreadManager* m_pThreadManager;
 	private:
-
+		RootOptions options;
 
 
 	protected:
