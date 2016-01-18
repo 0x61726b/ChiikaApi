@@ -75,12 +75,6 @@ namespace ChiikaApi
 		void SetUserName(const std::string&);
 		void SetPass(const std::string&);
 	public:
-
-		int UserId;
-		ChiString UserName;
-		ChiString Pass;
-		ChiString ImageLink;
-
 		UserAnimeStats AnimeStats;
 		UserMangaInfo MangaInfo;
 

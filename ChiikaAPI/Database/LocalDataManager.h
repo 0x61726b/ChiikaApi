@@ -68,7 +68,7 @@ namespace ChiikaApi
 	class MalApiExport UserInfoLoader : public FileLoader
 	{
 	public:
-		UserInfoLoader(ChiString path,ChiikaApi::UserInfo ui);
+		UserInfoLoader(ChiString path);
 
 		void Save();
 		void Load();

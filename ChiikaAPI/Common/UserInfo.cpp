@@ -22,64 +22,22 @@ namespace ChiikaApi
 {
 	UserInfo::UserInfo()
 	{
-		UserId = 0;
-		UserName = "";
-		Pass = "";
-		ImageLink = "";
+
 	}
 	//----------------------------------------------------------------------------
 	void UserInfo::SetKeyValue(const std::string& key,const std::string& value)
 	{
-		if(key == kUserId)
-		{
-			UserId = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kUserName)
-		{
-			UserName = value;
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kUserWatching)
-		{
-			AnimeStats.Watching = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kUserCompleted)
-		{
-			AnimeStats.Completed = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kUserOnhold)
-		{
-			AnimeStats.OnHold = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kUserDropped)
-		{
-			AnimeStats.Dropped = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kUserPtw)
-		{
-			AnimeStats.PlanToWatch = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kUserDaysSpentWatching)
-		{
-			AnimeStats.DaySpentAnime = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
+		m_KeyMap.insert(KeyMap::value_type(key, value));
 	}
 	//----------------------------------------------------------------------------
 	void UserInfo::SetUserName(const std::string& u)
 	{
-		UserName = u;
+		
 	}
 	//----------------------------------------------------------------------------
 	void UserInfo::SetPass(const std::string& p)
 	{
-		Pass = p;
+		
 	}
 	//----------------------------------------------------------------------------
 }

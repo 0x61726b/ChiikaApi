@@ -149,6 +149,7 @@ namespace ChiikaApi
 		BAD_PARAMETER = 0x1 << 12
 	};
 
+	#include "Database\JsKeys.h"
 	//----------------------------------------------------------------------------
 #	define CHIKA_AUTO_MUTEX_NAME chitanda
 #	define CHIKA_AUTO_MUTEX /*mutable boost::recursive_mutex CHIKA_AUTO_MUTEX_NAME;*/ 

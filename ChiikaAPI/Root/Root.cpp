@@ -24,10 +24,13 @@
 #include "Recognition/AnimeRecognition.h"
 #include "Seasons/SeasonManager.h"
 #include "Request\ParsingManager.h"
-#include "json/json.h"
 #include "Logging\FileHelper.h"
 #include "Logging\ChiString.h"
 #include "Root\ThreadManager.h"
+//----------------------------------------------------------------------------
+//Whoops..
+MalApiExport ChiikaApi::Root* GlobalInstance = 0;
+//----------------------------------------------------------------------------
 namespace ChiikaApi
 {
 	//----------------------------------------------------------------------------
@@ -41,6 +44,8 @@ namespace ChiikaApi
 		InitializeNULL(m_pRequestManager);
 		InitializeNULL(m_pRecognizer);
 		InitializeNULL(m_pLocalData);
+
+		GlobalInstance = this;
 	}
 	//----------------------------------------------------------------------------
 	void Root::Initialize(const RootOptions& opts)
@@ -80,7 +85,7 @@ namespace ChiikaApi
 			m_pMPRecognition = new MediaPlayerRecognitionManager;
 		}
 
-		if(!opts.appMode)
+		if(opts.appMode)
 		{
 			m_pThreadManager = new ThreadManager;
 		}
@@ -108,9 +113,11 @@ namespace ChiikaApi
 
 
 		//Very important!
-		m_pRequestManager->Initialize();
 		if(opts.appMode)
 			m_pLocalData->Initialize();
+
+		m_User.SetKeyValue(kUserName, options.userName);
+		m_User.SetKeyValue(kPass, options.passWord);
 
 	}
 	//----------------------------------------------------------------------------
@@ -124,7 +131,6 @@ namespace ChiikaApi
 		TryDelete(m_pSettings);
 		TryDelete(m_pMalManager);
 
-		TryDestroy(m_pRequestManager);
 		TryDelete(m_pRequestManager);
 
 		TryDelete(m_pLogManager);
@@ -132,9 +138,29 @@ namespace ChiikaApi
 		TryDelete(m_pRecognizer);
 	}
 	//----------------------------------------------------------------------------
-	void Root::PostRequest(RequestManager* rm,ThreadedRequest* r)
+	Root* Root::Get()
 	{
-		rm->ProcessRequest(r);
+		return GlobalInstance;
+	}
+	//----------------------------------------------------------------------------
+	ThreadManager* Root::GetThreadManager()
+	{
+		return m_pThreadManager;
+	}
+	//----------------------------------------------------------------------------
+	RequestManager* Root::GetRequestManager()
+	{
+		return m_pRequestManager;
+	}
+	//----------------------------------------------------------------------------
+	LocalDataManager* Root::GetLocalDataManager()
+	{
+		return m_pLocalData;
+	}
+	//----------------------------------------------------------------------------
+	UserInfo& Root::GetUser()
+	{
+		return m_User;
 	}
 	//----------------------------------------------------------------------------
 	void Root::AddAnimeToList(const UserAnimeEntry& info)

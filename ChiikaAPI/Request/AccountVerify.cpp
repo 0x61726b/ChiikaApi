@@ -16,8 +16,8 @@
 #include "Stable.h"
 #include "AccountVerify.h"
 #include "Database\LocalDataManager.h"
+#include "Root\Root.h"
 
-#include "boost\thread.hpp"
 
 //----------------------------------------------------------------------------
 namespace ChiikaApi
@@ -41,22 +41,16 @@ namespace ChiikaApi
 		ChiString userName = user.child(("username")).text().as_string();
 		ChiString id = user.child(("id")).text().get();
 
-		if(userInfo.UserName == userName)
-		{
+		if (Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveUserInfo();
+		RequestInterface::OnSuccess();
 
-			userInfo.UserId = atoi(ToStd(id));
-			userInfo.UserName = userName;
-
-			if(m_pLocalData)m_pLocalData->SetUserInfo(userInfo);
-			RequestInterface::OnSuccess();
-		}
 	}
 	//----------------------------------------------------------------------------
 	void AccountVerifyRequest::OnError()
 	{
 		UserInfo ui;
-		ui.UserId = -1;
-		if(m_pLocalData)m_pLocalData->SetUserInfo(userInfo);
+		userInfo.SetKeyValue(kUserId,"-1");
+		if (Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SetUserInfo(userInfo);
 
 		RequestInterface::OnError();
 	}
@@ -70,7 +64,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AccountVerifyRequest::SetUserInfo(const UserInfo& user)
 	{
-		userInfo = user;
+
 	}
 	//----------------------------------------------------------------------------
 	void AccountVerifyRequest::SetOptions()
@@ -82,13 +76,15 @@ namespace ChiikaApi
 
 		url = ("http://myanimelist.net/api/account/verify_credentials.xml");
 		method = CURLOPT_HTTPGET;
-		userName = userInfo.UserName;
-		passWord = userInfo.Pass;
+		userName = Root::Get()->GetUser().GetKeyValue(kUserName);
+		passWord = Root::Get()->GetUser().GetKeyValue(kPass);
 
 		m_Curl->SetUrl(url);
 		m_Curl->SetAuth(userName + ":" + passWord);
-		m_Curl->SetMethod(method,"");
+		m_Curl->SetMethod(method, "");
 		m_Curl->SetWriteFunction(NULL);
+
+		m_Curl->SetReady();
 	}
 	//----------------------------------------------------------------------------
 	void AccountVerifyRequest::Initiate()

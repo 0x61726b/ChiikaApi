@@ -78,6 +78,7 @@ namespace ChiikaApi
 		m_sBuffer(""),
 		m_sPostData("")
 	{
+		m_bInitialized = false;
 	}
 	//----------------------------------------------------------------------------
 	CurlRequest::~CurlRequest()
@@ -162,95 +163,89 @@ namespace ChiikaApi
 		}
 	}
 	//----------------------------------------------------------------------------
-	DWORD CurlRequest::Perform(LPVOID params)
+	void CurlRequest::Perform()
 	{
-		CurlRequest* instance_ = reinterpret_cast<CurlRequest*>(params);
-
-		if(instance_ == NULL)
-			return 0;
 		LOG(INFO) << "Initiaing request....";
 
-		if (instance_->m_iMethod == CURLOPT_HTTPPOST)
+		if (m_iMethod == CURLOPT_HTTPPOST)
 		{
-			const char* data = instance_->m_sPostData.c_str();
+			const char* data = m_sPostData.c_str();
 			ChiString append = "data=";
 			append.append(data);
 
-			instance_->m_CurlRes = curl_easy_setopt(instance_->m_pCurl, CURLOPT_POST, 1L);
-			instance_->m_CurlRes = curl_easy_setopt(instance_->m_pCurl, CURLOPT_POSTFIELDS, append.c_str());
-			instance_->m_CurlRes = curl_easy_setopt(instance_->m_pCurl, CURLOPT_POSTFIELDSIZE, append.length());
-			instance_->m_CurlRes = curl_easy_perform(instance_->m_pCurl);
-			if (instance_->m_bVerbose)
+			m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_POST, 1L);
+			m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_POSTFIELDS, append.c_str());
+			m_CurlRes = curl_easy_setopt(m_pCurl, CURLOPT_POSTFIELDSIZE, append.length());
+			m_CurlRes = curl_easy_perform(m_pCurl);
+			if (m_bVerbose)
 			{
 				LOG(INFO) << "POST Data = " + append;
 			}
 		}
 		else
 		{
-			instance_->m_CurlRes = curl_easy_perform(instance_->m_pCurl);
+			m_CurlRes = curl_easy_perform(m_pCurl);
 		}
 
 		long http_code = 0;
-		curl_easy_getinfo(instance_->m_pCurl, CURLINFO_RESPONSE_CODE, &http_code);
+		curl_easy_getinfo(m_pCurl, CURLINFO_RESPONSE_CODE, &http_code);
 
 		LOG(INFO) << "Request returned HTTP code " << http_code << "...";
 
-		if (instance_->m_CurlRes == CURLE_COULDNT_CONNECT)
+		if (m_CurlRes == CURLE_COULDNT_CONNECT)
 		{
-			instance_->m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::CANT_CONNECT;
+			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::CANT_CONNECT;
 		}
-		if (instance_->m_CurlRes == CURLE_COULDNT_RESOLVE_HOST || instance_->m_CurlRes == CURLE_COULDNT_RESOLVE_PROXY)
+		if (m_CurlRes == CURLE_COULDNT_RESOLVE_HOST || m_CurlRes == CURLE_COULDNT_RESOLVE_PROXY)
 		{
-			instance_->m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::CANT_RESOLVE_HOST_OR_PROXY;
+			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::CANT_RESOLVE_HOST_OR_PROXY;
 		}
 
 		if (http_code == 200)
 		{
-			instance_->m_iRequestResult = RequestCodes::REQUEST_SUCCESS | RequestCodes::RETURNED_GOOD;
+			m_iRequestResult = RequestCodes::REQUEST_SUCCESS | RequestCodes::RETURNED_GOOD;
 		}
 		else if (http_code == 204)
 		{
-			instance_->m_iRequestResult = RequestCodes::REQUEST_SUCCESS | RequestCodes::RETURNED_EMPTY;
+			m_iRequestResult = RequestCodes::REQUEST_SUCCESS | RequestCodes::RETURNED_EMPTY;
 		}
 		else if (http_code == 201)
 		{
-			instance_->m_iRequestResult = RequestCodes::REQUEST_SUCCESS | RequestCodes::POST_SUCCESS;
+			m_iRequestResult = RequestCodes::REQUEST_SUCCESS | RequestCodes::POST_SUCCESS;
 		}
 		else if (http_code == 400)
 		{
-			instance_->m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::BAD_REQUEST;
+			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::BAD_REQUEST;
 		}
 		else  if (http_code == 401)
 		{
-			instance_->m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::UNAUTHORIZED;
+			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::UNAUTHORIZED;
 		}
 		else if (http_code == 500)
 		{
-			instance_->m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::INTERNAL_ERROR;
+			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::INTERNAL_ERROR;
 		}
 		else if (http_code == 501)
 		{
-			instance_->m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::NOT_IMPLEMENTED;
+			m_iRequestResult = RequestCodes::REQUEST_ERROR | RequestCodes::NOT_IMPLEMENTED;
 		}
-		if (instance_->m_iRequestResult & RequestCodes::REQUEST_SUCCESS)
+		if (m_iRequestResult & RequestCodes::REQUEST_SUCCESS)
 		{
 			LOG(INFO) << "Request successful.";
-			for (size_t i = 0; i <instance_-> m_vListeners.size(); i++)
+			for (size_t i = 0; i < m_vListeners.size(); i++)
 			{
-				instance_->m_vListeners[i]->OnSuccess();
+				m_vListeners[i]->OnSuccess();
 			}
 		}
-		if (instance_->m_iRequestResult & RequestCodes::REQUEST_ERROR)
+		if (m_iRequestResult & RequestCodes::REQUEST_ERROR)
 		{
 			LOG(INFO) << "Request error.";
-			for (size_t i = 0; i < instance_->m_vListeners.size(); i++)
+			for (size_t i = 0; i < m_vListeners.size(); i++)
 			{
-				instance_->m_vListeners[i]->OnError();
+				m_vListeners[i]->OnError();
 			}
 		}
-		curl_easy_cleanup(instance_->m_pCurl);
-
-		return 0;
+		curl_easy_cleanup(m_pCurl);
 	}
 	//----------------------------------------------------------------------------
 	const ChiString& CurlRequest::GetResponse()

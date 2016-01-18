@@ -118,6 +118,7 @@ namespace
 	{
 		keys.push_back(kUserId);
 		keys.push_back(kUserName);
+		keys.push_back(kPass);
 		keys.push_back(kUserWatching);
 		keys.push_back(kUserCompleted);
 		keys.push_back(kUserOnhold);

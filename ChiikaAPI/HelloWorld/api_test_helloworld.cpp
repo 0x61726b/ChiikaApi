@@ -31,11 +31,11 @@ class TestEventListener : public RequestListener
 public:
 	void OnSuccess(RequestInterface*)
 	{
-
+		int x = 0;
 	}
 	void OnError(RequestInterface*)
 	{
-
+		int y = 0;
 	}
 };
 #include <thread>
@@ -50,26 +50,52 @@ int main()
 	std::string pathToExecutable = szFileName;
 	std::string dir = pathToExecutable.substr(0,pathToExecutable.find_last_of("\\"));
 
+	TestEventListener tel;
+
 	RootOptions opts;
-	opts.appMode = false;
+	opts.appMode = true;
+	opts.modulePath = dir;
+	opts.userName = testUserName;
+	opts.passWord = testPass;
 	Root r;
 	r.Initialize(opts);
+
+
 	UserInfo ui;
-	ui.UserName = testUserName;
-	ui.Pass = testPass;
+	ui.SetKeyValue(kUserName,testUserName);
+	ui.SetKeyValue(kPass,testPass);
 
-	AccountVerifyRequest request;
-	request.Initialize();
-	request.SetOptions();
-	request.SetUserInfo(ui);
+	//UserInfo second = ui;
 
+	//UserInfo third = second;
 
-	request.Initiate();
+	int x = 0;
 
-	std::this_thread::sleep_for(std::chrono::seconds(3));
+	r.GetRequestManager()->VerifyUser(&tel);
 
+	//std::this_thread::sleep_for(std::chrono::seconds(4));
 
-	r.m_pThreadManager->Wake();
+	//AccountVerifyRequest request2;
+	//request2.Initialize();
+	
+	//request2.SetUserInfo(ui);
+	//request2.SetOptions();
+
+	//r.m_pThreadManager->PostRequest(&request2);
+
+	//std::this_thread::sleep_for(std::chrono::seconds(4));
+
+	//AccountVerifyRequest request3;
+	//request3.Initialize();
+	
+	//request3.SetUserInfo(ui);
+	//request3.SetOptions();
+
+	//r.m_pThreadManager->PostRequest(&request3);
+
+	
+
+	
 
 
 	while(true)

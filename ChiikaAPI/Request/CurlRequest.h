@@ -37,9 +37,9 @@ namespace ChiikaApi
 		virtual const ChiString& GetResponse() = 0;
 		virtual void SetMethod(int method,const ChiString& data) = 0;
 		virtual void SetWriteFunction(std::function<size_t(void *buffer,size_t size,size_t nmemb,void *stream)>*) = 0;
-#ifdef YUME_PLATFORM_WIN32
-		
-#endif
+
+		virtual void Perform() = 0;
+
 
 		virtual void SetErrorCode(int optional) = 0;
 		virtual void SetTimeout(int) = 0;
@@ -47,6 +47,11 @@ namespace ChiikaApi
 		virtual void AddListener(CurlEventListener* listener) = 0;
 		virtual void RemoveListener(CurlEventListener* listener) = 0;
 		virtual int GetRequestResult() = 0;
+
+		bool IsInitialized() { return m_bInitialized; }
+		void SetReady() { m_bInitialized = true; }
+	protected:
+		bool m_bInitialized;
 
 	};
 	//----------------------------------------------------------------------------
@@ -63,9 +68,9 @@ namespace ChiikaApi
 		void SetTimeout(int);
 		void SetVerbose(bool);
 
-#ifdef YUME_PLATFORM_WIN32
-		static DWORD WINAPI Perform(LPVOID params);
-#endif
+
+		void Perform();
+
 		void SetWriteFunction(std::function<size_t(void *buffer,size_t size,size_t nmemb,void *stream)>*);
 		void SetErrorCode(int optional);
 

@@ -17,6 +17,7 @@
 #include "GetAnimeList.h"
 #include "Database\LocalDataManager.h"
 #include "Request\MalManager.h"
+#include "Root\Root.h"
 
 #include "Database\JsKeys.h"
 //----------------------------------------------------------------------------
@@ -41,9 +42,9 @@ namespace ChiikaApi
 			return;
 
 		KeyList keys;
-		::GetUserAnimeEntryKeys(keys);
+		GetUserAnimeEntryKeys(keys);
 
-		UserInfo ui = m_pLocalData->GetUserInfo();
+		UserInfo ui = Root::Get()->GetLocalDataManager()->GetUserInfo();
 
 		pugi::xml_node  myanimelist = doc.child("myanimelist");
 		pugi::xml_node  user = myanimelist.child("myinfo");
@@ -56,7 +57,7 @@ namespace ChiikaApi
 			ui.SetKeyValue(name,val);
 
 		}
-		m_pLocalData->SetUserInfo(ui);
+		Root::Get()->GetLocalDataManager()->SetUserInfo(ui);
 
 		UserAnimeList list;
 		AnimeList animeList;
@@ -108,9 +109,9 @@ namespace ChiikaApi
 		ChiString url;
 		int method;
 		UserInfo ui;
-		m_pLocalData->GetUserInfo(ui);
-		ChiString userName = ui.UserName;
-		ChiString passWord = ui.Pass;
+		Root::Get()->GetLocalDataManager()->GetUserInfo(ui);
+		ChiString userName = ui.GetKeyValue(kUserName);
+		ChiString passWord = ui.GetKeyValue(kPass);
 
 		url = "http://myanimelist.net/malappinfo.php?u=" + userName + "&type=anime&status=all";
 		method = CURLOPT_HTTPGET;

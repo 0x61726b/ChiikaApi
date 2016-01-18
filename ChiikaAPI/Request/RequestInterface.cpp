@@ -41,7 +41,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	RequestInterface::RequestInterface()
 	{
-		m_pLocalData = LocalDataManager::Get();
+		
 	}
 	//----------------------------------------------------------------------------
 	RequestInterface::~RequestInterface()
@@ -55,8 +55,6 @@ namespace ChiikaApi
 		{
 			m_vListeners[i]->OnSuccess(this);
 		}
-
-		m_pLocalData->SaveAll();
 	}
 	//----------------------------------------------------------------------------
 	void RequestInterface::SetPostData()
@@ -121,6 +119,11 @@ namespace ChiikaApi
 		TryDelete(listener);
 	}
 	//----------------------------------------------------------------------------
+	CurlRequestInterface* RequestInterface::Get()
+	{
+		return m_Curl;
+	}
+	//----------------------------------------------------------------------------
 	const std::string& RequestInterface::GetName()
 	{
 		return m_sName;
@@ -138,7 +141,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void RequestInterface::SetDatabase(LocalDataInterface* ldm)
 	{
-		m_pLocalData = ldm;
+		
 	}
 	//----------------------------------------------------------------------------
 	ChiString RequestInterface::GetAnimeXML(const UserAnimeEntry& anime)

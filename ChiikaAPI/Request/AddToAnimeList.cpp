@@ -17,6 +17,8 @@
 #include "AddToAnimeList.h"
 #include "Database\LocalDataManager.h"
 #include "Logging\ChiString.h"
+#include "Root\Root.h"
+#include "Database\JsKeys.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -63,8 +65,10 @@ namespace ChiikaApi
 	{
 		ChiString url;
 		int method;
-		ChiString userName = m_pLocalData->GetUserInfo().UserName;
-		ChiString passWord = m_pLocalData->GetUserInfo().Pass;
+
+		UserInfo ui = Root::Get()->GetLocalDataManager()->GetUserInfo();
+		ChiString userName = ui.GetKeyValue(kUserName);
+		ChiString passWord = ui.GetKeyValue(kPass);
 
 		if (m_Anime.Anime.Id == UnknownAnimeId)
 		{

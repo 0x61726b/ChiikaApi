@@ -61,15 +61,9 @@ if(NOT DEFINED PROJECT_ARCH)
   endif()
 endif()
 
-if(NOT CMAKE_BUILD_TYPE AND
-   (${CMAKE_GENERATOR} STREQUAL "Ninja" OR ${CMAKE_GENERATOR} STREQUAL "Unix Makefiles"))
-  # CMAKE_BUILD_TYPE should be specified when using Ninja or Unix Makefiles.
-  set(CMAKE_BUILD_TYPE Release)
-  message(WARNING "No CMAKE_BUILD_TYPE value selected, using ${CMAKE_BUILD_TYPE}")
-endif()
-
 #Helper macros
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMake/Modules")
+set(CHIIKA_ROOT ${PROJECT_SOURCE_DIR})
 include("macros")
 
 # Source include directory.
@@ -103,7 +97,7 @@ if(OS_LINUX)
   # -fvisibility-inlines-hidden     = Give hidden visibility to inlined class member functions
   # -std=gnu++11                    = Use the C++11 language standard including GNU extensions
   # -Wsign-compare                  = Warn about mixed signed/unsigned type comparisons
-  set(CHI_CXX_COMPILER_FLAGS      "-fno-exceptions -fno-rtti -fno-threadsafe-statics -fvisibility-inlines-hidden -std=gnu++11 -Wsign-compare")
+  set(CHI_CXX_COMPILER_FLAGS      "-fno-rtti -fno-threadsafe-statics -fvisibility-inlines-hidden -std=gnu++11 -Wsign-compare")
   # -O0                             = Disable optimizations
   # -g                              = Generate debug information
   set(CHI_COMPILER_FLAGS_DEBUG    "-O0 -g")
@@ -189,7 +183,7 @@ if(OS_MACOSX)
   # -std=gnu++11                    = Use the C++11 language standard including GNU extensions
   # -Wno-narrowing                  = Don't warn about type narrowing
   # -Wsign-compare                  = Warn about mixed signed/unsigned type comparisons
-  set(CHI_CXX_COMPILER_FLAGS      "-fno-exceptions -fno-rtti -fno-threadsafe-statics -fobjc-call-cxx-cdtors -fvisibility-inlines-hidden -std=gnu++11 -Wno-narrowing -Wsign-compare")
+  set(CHI_CXX_COMPILER_FLAGS      "-fno-rtti -fno-threadsafe-statics -fobjc-call-cxx-cdtors -fvisibility-inlines-hidden -std=gnu++11 -Wno-narrowing -Wsign-compare")
   # -O0                             = Disable optimizations
   # -g                              = Generate debug information
   set(CHI_COMPILER_FLAGS_DEBUG    "-O0 -g")
@@ -248,7 +242,7 @@ if(OS_WINDOWS)
   # /wd"4701"             = Ignore "potentially uninitialized local variable" warning
   # /wd"4702"             = Ignore "unreachable code" warning
   # /wd"4996"             = Ignore "function or variable may be unsafe" warning
-  set(CHI_COMPILER_FLAGS          "/MP /Gy /GR- /Zi /W4 /WX /wd\"4100\" /wd\"4127\" /wd\"4244\" /wd\"4512\" /wd\"4701\" /wd\"4702\" /wd\"4996\" /wd\"4251\" /wd\"4275\"")
+  set(CHI_COMPILER_FLAGS          "/EHsc /Zi /GF /Gm /W4 /wd\"4100\" /wd\"4127\" /wd\"4244\" /wd\"4512\" /wd\"4701\" /wd\"4702\" /wd\"4996\" /wd\"4251\" /wd\"4275\"")
   # /MTd                  = Multithreaded debug runtime
   # /Od                   = Disable optimizations
   # /RTC1                 = Enable basic run-time checks
@@ -271,8 +265,8 @@ if(OS_WINDOWS)
   # -DNOMINMAX                            = Use the standard's templated min/max
   # -DWIN32_LEAN_AND_MEAN                 = Exclude less common API declarations
   # -D_HAS_EXCEPTIONS=0                   = Disable exceptions
-  add_definitions(-DWIN32 -D_WIN32 -D_WINDOWS -DUNICODE -D_UNICODE -DWINVER=0x0602
-                   -D_WIN32_WINNT=0x602 -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_HAS_EXCEPTIONS=0)
+  add_definitions(-DWIN32 -D_WIN32 -D_WINDOWS -DUNICODE -D_UNICODE
+                   -D_WIN32_WINNT=0x602 -DNOMINMAX)
 endif()
 
 set(BUILD_CURL_EXE OFF CACHE BOOL "" FORCE)
@@ -290,7 +284,11 @@ endif()
 set(JSONCPP_WITH_POST_BUILD_UNITTEST OFF CACHE BOOL "" FORCE)
 set(JSONCPP_WITH_TESTS OFF CACHE BOOL "" FORCE)
 
-add_subdirectory(ChiikaAPI/ThirdParty)
+option(WITH_SYSTEM_BOOST "Build with system Boost" OFF)
+
+fb_check_boost()
+
+
 
 set(CMAKE_C_FLAGS                     "${CHI_COMPILER_FLAGS} ${CHI_C_COMPILER_FLAGS}")
 set(CMAKE_C_FLAGS_DEBUG               "${CHI_COMPILER_FLAGS_DEBUG} ${CHI_C_COMPILER_FLAGS_DEBUG}")
@@ -305,8 +303,16 @@ set(CMAKE_SHARED_LINKER_FLAGS         "${CHI_LINKER_FLAGS} ${CHI_SHARED_LINKER_F
 set(CMAKE_SHARED_LINKER_FLAGS_DEBUG   "${CHI_LINKER_FLAGS_DEBUG} ${CHI_SHARED_LINKER_FLAGS_DEBUG}")
 set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CHI_LINKER_FLAGS_RELEASE} ${CHI_SHARED_LINKER_FLAGS_RELEASE}")
 
+if ( NOT WITH_SYSTEM_BOOST )
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /D BOOST_ALL_NO_LIB=1")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D BOOST_ALL_NO_LIB=1")
+endif ( NOT WITH_SYSTEM_BOOST )
 
+add_subdirectory(ChiikaAPI/ThirdParty)
 add_subdirectory(ChiikaAPI)
+
+
+
 
 message(STATUS "*** CONFIGURATION SETTINGS ***")
 message(STATUS "Generator:                    ${CMAKE_GENERATOR}")

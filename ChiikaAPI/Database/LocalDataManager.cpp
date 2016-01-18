@@ -20,6 +20,7 @@
 #include "Seasons/SeasonManager.h"
 #include "json\json.h"
 #include "Logging\FileHelper.h"
+#include "Root\Root.h"
 //----------------------------------------------------------------------------
 #include "JsKeys.h"
 //----------------------------------------------------------------------------
@@ -163,7 +164,7 @@ namespace ChiikaApi
 
 				pugi::xml_node  anime = MAL.append_child(kAnime);
 				KeyList keys;
-				::GetAnimeKeys(keys);
+				GetAnimeKeys(keys);
 
 
 				for(size_t i = 0; i < keys.size(); i++)
@@ -173,7 +174,7 @@ namespace ChiikaApi
 				}
 
 				KeyList uaeList;
-				::GetUserAnimeEntryKeys(uaeList);
+				GetUserAnimeEntryKeys(uaeList);
 
 				for(size_t i = 0; i < uaeList.size(); i++)
 				{
@@ -350,9 +351,10 @@ namespace ChiikaApi
 		}
 	}
 	//----------------------------------------------------------------------------
-	UserInfoLoader::UserInfoLoader(ChiString path,ChiikaApi::UserInfo)
+	UserInfoLoader::UserInfoLoader(ChiString path)
 		: FileLoader(path,FileLoader::FileType::UserInfo)
 	{
+		m_UserDetailedInfo.SetKeyValue(kUserName,"");
 	}
 	//----------------------------------------------------------------------------
 	void UserInfoLoader::Load()
@@ -400,11 +402,11 @@ namespace ChiikaApi
 			pugi::xml_node  UserInfo = root.append_child(kUserInfo);
 
 			KeyList keys;
-			::GetUserInfoKeys(keys);
+			GetUserInfoKeys(keys);
 			for(size_t i = 0; i < keys.size(); i++)
 			{
 				pugi::xml_node node = UserInfo.append_child(ToStd(keys[i]));
-				SetXMLValue(node,ToStd(m_UserDetailedInfo.GetKeyValue(keys[i])));
+				SetXMLValue(node,ToStd(Root::Get()->GetUser().GetKeyValue(keys[i])));
 			}
 			doc.save_file(dataFile.c_str());
 			//LOG("User info file saved successfully!")
@@ -945,8 +947,6 @@ namespace ChiikaApi
 		m_AnimeDetailsLoader = NULL;
 		m_SenpaiLoader = NULL;
 
-		m_UserDetailedInfo.UserName = "Chitanda";
-
 		gLdm = this;
 	}
 	//----------------------------------------------------------------------------
@@ -962,7 +962,7 @@ namespace ChiikaApi
 
 		m_AnimeLoader = new AnimeFileLoader(m_sAnimeListFilePath);
 		m_MangaLoader = new MangaFileLoader(m_sMangaListFilePath);
-		m_UserInfoLoader = new UserInfoLoader(m_sUserInfoPath,m_UserDetailedInfo);
+		m_UserInfoLoader = new UserInfoLoader(m_sUserInfoPath);
 		m_UpdateListLoader = new UpdateListLoader(m_sUpdateListPath);
 		m_AnimeDetailsLoader = new AnimeDetailsLoader(m_sAnimeDetailsPath);
 		m_SenpaiLoader = new SenpaiLoader(m_sSenpaiPath);
@@ -1018,8 +1018,8 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void LocalDataManager::SetUserNamePass(ChiString u,ChiString p)
 	{
-		m_UserDetailedInfo.UserName = u;
-		m_UserDetailedInfo.Pass = p;
+		m_UserDetailedInfo.SetKeyValue(kUserName,u);
+		m_UserDetailedInfo.SetKeyValue(kPass,p);
 
 		m_UserInfoLoader->m_UserDetailedInfo = m_UserDetailedInfo;
 		SaveUserInfo();
@@ -1069,9 +1069,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void LocalDataManager::SetUserInfo(const UserInfo& i)
 	{
-		m_UserDetailedInfo = i;
-		m_UserInfoLoader->m_UserDetailedInfo = m_UserDetailedInfo;
-		/*SaveUserInfo();*/
+
 	}
 	//----------------------------------------------------------------------------
 	const UserInfo& LocalDataManager::GetUserInfo()
@@ -1083,6 +1081,7 @@ namespace ChiikaApi
 	{
 		ui = m_UserDetailedInfo;
 	}
+	//----------------------------------------------------------------------------
 	LocalDataManager* LocalDataManager::Get()
 	{
 		return gLdm;

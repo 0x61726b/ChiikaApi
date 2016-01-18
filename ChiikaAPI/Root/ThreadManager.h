@@ -31,12 +31,15 @@ namespace ChiikaApi
 		boost::thread* Get();
 
 		void Run();
-		void Wake();
+
+		void PostRequest(RequestInterface* r);
 		
 		bool mStop;
 		boost::mutex m_Lock;
 		boost::condition_variable cond;
 		boost::thread* m_RequestThread;
+
+		std::queue<RequestInterface*> m_RequestQueue;
 	};
 }
 

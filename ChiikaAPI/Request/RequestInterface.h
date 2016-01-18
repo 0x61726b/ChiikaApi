@@ -38,6 +38,7 @@ namespace ChiikaApi
 
 		virtual void SetPostData();
 
+		CurlRequestInterface* Get();
 		//For creating mock objects
 		void SetCURL(CurlRequestInterface* curl);
 		void SetDatabase(LocalDataInterface*);
@@ -57,7 +58,6 @@ namespace ChiikaApi
 	protected:
 		ChiString m_sName;
 		CurlRequestInterface* m_Curl;
-		LocalDataInterface* m_pLocalData;
 	};
 }
 #endif

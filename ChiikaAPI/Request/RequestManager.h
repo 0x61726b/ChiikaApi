@@ -18,34 +18,21 @@
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
 #include "Common/Singleton.h"
+
+#include "Request\RequestInterface.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-
 	//----------------------------------------------------------------------------
-	class MalApiExport RequestManagerBase
-	{
-	public:
-		virtual ~RequestManagerBase() { }
-
-		virtual void ProcessRequest(ThreadedRequest*) = 0;
-	};
-	//----------------------------------------------------------------------------
-	class MalApiExport RequestManager : public Singleton<RequestManager>,public RequestManagerBase
+	class MalApiExport RequestManager
 	{
 	public:
 		RequestManager();
 		virtual ~RequestManager();
 
-		void Initialize();
-		void Destroy();
 
-		void ProcessRequest(ThreadedRequest*);
+		void VerifyUser(RequestListener* listener);
 
-		void VerifyUser(const UserInfo& info);
-
-		static RequestManager& Get();
-		static RequestManager* GetPtr();
 	};
 }
 //----------------------------------------------------------------------------

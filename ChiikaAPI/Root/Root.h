@@ -46,13 +46,18 @@ namespace ChiikaApi
 		void UpdateAnime(const UserAnimeEntry& data);
 		void DeleteAnime(const UserAnimeEntry& name);
 
-		void PostRequest(RequestManager* rm,ThreadedRequest* r);
-		
 		void AddMangaToList(const MangaInfo& data);
 		void UpdateManga(const MangaInfo& data);
 
 		const RootOptions& GetRootOptions() { return options; }
 
+		static Root* Get();
+
+		UserInfo& GetUser();
+
+		ThreadManager* GetThreadManager();
+		RequestManager* GetRequestManager();
+		LocalDataManager* GetLocalDataManager();
 		//New
 		
 	public:
@@ -74,7 +79,7 @@ namespace ChiikaApi
 		ThreadManager* m_pThreadManager;
 	private:
 		RootOptions options;
-
+		UserInfo m_User;
 
 	protected:
 		ChiString m_sListData;

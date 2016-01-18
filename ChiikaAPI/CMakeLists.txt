@@ -204,10 +204,16 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\anitomy)
 
 target_link_libraries(ChiikaApi Anitomy)
 
+#Boost
+link_boost_library(ChiikaApi filesystem)
+link_boost_library(ChiikaApi thread)
+link_boost_library(ChiikaApi system)
+
+include_directories(${Boost_INCLUDE_DIRS})
 add_subdirectory(HelloWorld)
 #add_subdirectory(Tests)
 
-#Tests
+
 
 set_target_properties( ChiikaApi ${CHIIKA_LIBRARIES}
     PROPERTIES
@@ -220,7 +226,12 @@ set_target_properties(Anitomy PROPERTIES FOLDER "3rdParty")
 set_target_properties(pugixml PROPERTIES FOLDER "3rdParty")
 set_target_properties(libcurl PROPERTIES FOLDER "3rdParty")
 
-use_precompiled_header(ChiikaApi
-  "${CMAKE_CURRENT_SOURCE_DIR}/Common/Stable.h"
-  "${CMAKE_CURRENT_SOURCE_DIR}/Common/Stable.cpp"
-)
+
+set(CopyFinalDepsDir "" CACHE STRING "Default")
+
+if(NOT ${FINAL_DEPS_DIR} EQUAL "")
+  add_custom_command(TARGET ChiikaApi POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                 "${CMAKE_BINARY_DIR}/Chiika/${CMAKE_BUILD_TYPE}$<CONFIGURATION>"
+               "${CopyFinalDepsDir}/${PROJECT_ARCH}/$<CONFIGURATION>" COMMENT "Lol")
+endif()

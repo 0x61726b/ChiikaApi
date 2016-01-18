@@ -23,7 +23,21 @@ add_subdirectory(pugixml\\scripts)
 #
 add_subdirectory(anitomy)
 
-include_directories(D:\\Torrent_Downloads\\boost_1_60_0\\boost_1_60_0)
+add_boost_library(system)
+add_boost_library(filesystem)
+add_boost_library(date_time)
+add_boost_library(regex)
+add_boost_library(thread)
+
+set_target_properties(boost_system PROPERTIES FOLDER "3rdParty" )
+set_target_properties(boost_filesystem PROPERTIES FOLDER "3rdParty" )
+set_target_properties(boost_thread PROPERTIES FOLDER "3rdParty" )
+set_target_properties(boost_date_time PROPERTIES FOLDER "3rdParty" )
+set_target_properties(boost_regex PROPERTIES FOLDER "3rdParty" )
+
+
+
+
 
 #
 #

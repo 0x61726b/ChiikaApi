@@ -16,6 +16,7 @@
 #include "Stable.h"
 #include "ThreadManager.h"
 #include "Logging\LogManager.h"
+#include "Request\RequestInterface.h"
 
 //----------------------------------------------------------------------------
 
@@ -39,16 +40,40 @@ namespace ChiikaApi
 			
 			boost::mutex::scoped_lock lock(m_Lock);
 
-			while(mStop) cond.wait(lock);
+			while(m_RequestQueue.empty()) cond.wait(lock);
 
-			LOG(Bore) << "I'm running free yeeaah";
+			LOG(Bore) << "Request Thread: Processing Queue";
+
+			if (!m_RequestQueue.empty())
+			{
+				RequestInterface* process = m_RequestQueue.front();
+				if (!process)
+					return;
+				CurlRequestInterface* curl = process->Get();
+				if (!curl)
+					return;
+
+				if (curl->IsInitialized())
+				{
+					curl->Perform();
+
+					m_RequestQueue.pop();
+					delete process;
+				}
+			}
+			else
+			{
+				LOG(Bore) << "Request Thread: Stopping";
+			}
 		}
 	}
-	void ThreadManager::Wake()
+
+	void ThreadManager::PostRequest(RequestInterface* r)
 	{
 		boost::mutex::scoped_lock lock(m_Lock);
-		mStop = false;
+		m_RequestQueue.push(r);
 		cond.notify_one();
+		
 	}
 
 	boost::thread* ThreadManager::Get()
