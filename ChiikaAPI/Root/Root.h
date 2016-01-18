@@ -26,9 +26,18 @@ struct MalApiExport RootOptions
 {
 	bool appMode;
 	bool debugMode;
-	std::string userName;
-	std::string passWord;
-	std::string modulePath;
+	char* userName;
+	char* passWord;
+	char* modulePath;
+
+	RootOptions() 
+		: appMode(false),
+		  debugMode(false),
+		  userName(""),
+		  passWord(""),
+		  modulePath("")
+	{
+	}
 };
 //----------------------------------------------------------------------------
 namespace ChiikaApi
@@ -39,7 +48,7 @@ namespace ChiikaApi
 		Root();
 		~Root();
 
-		void Initialize(const RootOptions&);
+		void Initialize(RootOptions*);
 		void Destroy();
 
 		void AddAnimeToList(const UserAnimeEntry& data);
@@ -49,7 +58,7 @@ namespace ChiikaApi
 		void AddMangaToList(const MangaInfo& data);
 		void UpdateManga(const MangaInfo& data);
 
-		const RootOptions& GetRootOptions() { return options; }
+		RootOptions* GetRootOptions() { return options; }
 
 		static Root* Get();
 
@@ -78,7 +87,7 @@ namespace ChiikaApi
 		SeasonManager* m_pSeasonManager;
 		ThreadManager* m_pThreadManager;
 	private:
-		RootOptions options;
+		RootOptions* options;
 		UserInfo m_User;
 
 	protected:

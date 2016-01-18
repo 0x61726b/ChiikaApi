@@ -229,7 +229,7 @@ set_target_properties(libcurl PROPERTIES FOLDER "3rdParty")
 
 set(CopyFinalDepsDir "" CACHE STRING "Default")
 
-if(NOT ${FINAL_DEPS_DIR} EQUAL "")
+if(NOT ${CopyFinalDepsDir} EQUAL "")
   add_custom_command(TARGET ChiikaApi POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                  "${CMAKE_BINARY_DIR}/Chiika/${CMAKE_BUILD_TYPE}$<CONFIGURATION>"

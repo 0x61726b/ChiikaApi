@@ -48,24 +48,24 @@ namespace ChiikaApi
 		GlobalInstance = this;
 	}
 	//----------------------------------------------------------------------------
-	void Root::Initialize(const RootOptions& opts)
+	void Root::Initialize(RootOptions* opts)
 	{
 		options = opts;
-		if(opts.appMode)
-			m_pSettings = new AppSettings("Chiika.cfg",options.modulePath);
+		if(opts->appMode)
+			m_pSettings = new AppSettings("Chiika.cfg",options->modulePath);
 		m_pLogManager = new LogManager;
 
 		ChiString version = std::to_string(ChiikaApi_VERSION_MAJOR) + "." + std::to_string(ChiikaApi_VERSION_MINOR) + "." + std::to_string(ChiikaApi_VERSION_PATCH);;
 		m_sVersion = version;
 		m_sCommitHash = (char)ChiikaApi_COMMIT_HASH;
 
-		if(opts.appMode)
+		if(opts->appMode)
 		{
-			m_pLogManager->CreateLog(options.modulePath + "\\Chiika.log",true,true,false)->
+			m_pLogManager->CreateLog(std::string(options->modulePath) + "\\Chiika.log",true,true,false)->
 				SetLogDetail((LoggingLevel)m_pSettings->GetIntegerOption(API_LOG_LEVEL));
 		}
-		if(opts.debugMode && opts.appMode)
-			m_pLogManager->CreateLog(options.modulePath + "\\Chiika.log",true,true,false)->
+		if(opts->debugMode && opts->appMode)
+			m_pLogManager->CreateLog(std::string(options->modulePath) + "\\Chiika.log",true,true,false)->
 			SetLogDetail((LoggingLevel)LoggingLevel::LOG_LEVEL_EVERYTHING);
 
 		m_pLogManager->CreateLog("DebuggerOutput",false,true,true)->
@@ -79,13 +79,13 @@ namespace ChiikaApi
 		LOG(INFO) << "Creating Season Manager";
 		m_pSeasonManager = new SeasonManager;
 
-		if(opts.appMode)
+		if(opts->appMode)
 		{
 			LOG(INFO) << "Creating MediaPlayerRecognition Manager";
 			m_pMPRecognition = new MediaPlayerRecognitionManager;
 		}
 
-		if(opts.appMode)
+		if(opts->appMode)
 		{
 			m_pThreadManager = new ThreadManager;
 		}
@@ -93,14 +93,14 @@ namespace ChiikaApi
 		LOG(INFO) << "Creating RequestManager Manager";
 		m_pRequestManager = new RequestManager;
 
-		if(opts.appMode)
+		if(opts->appMode)
 		{
 			LOG(INFO) << "Creating AnimeRecognition Manager";
 			m_pRecognizer = new AnimeRecognition;
 		}
 
 
-		if(!opts.appMode)
+		if(!opts->appMode)
 		{
 			LOG(INFO) << "Skipping LocalData Manager";
 		}
@@ -113,11 +113,11 @@ namespace ChiikaApi
 
 
 		//Very important!
-		if(opts.appMode)
+		if(opts->appMode)
 			m_pLocalData->Initialize();
 
-		m_User.SetKeyValue(kUserName, options.userName);
-		m_User.SetKeyValue(kPass, options.passWord);
+		m_User.SetKeyValue(kUserName, options->userName);
+		m_User.SetKeyValue(kPass, options->passWord);
 
 	}
 	//----------------------------------------------------------------------------
@@ -136,6 +136,7 @@ namespace ChiikaApi
 		TryDelete(m_pLogManager);
 		TryDelete(m_pLocalData);
 		TryDelete(m_pRecognizer);
+		TryDelete(options);
 	}
 	//----------------------------------------------------------------------------
 	Root* Root::Get()
