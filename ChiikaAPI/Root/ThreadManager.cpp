@@ -54,10 +54,9 @@ namespace ChiikaApi
 
 				if (curl->IsInitialized())
 				{
-					//curl->Perform();
-					boost::this_thread::sleep_for(boost::chrono::seconds(3)); //for debugging
+					curl->Perform();
+					//boost::this_thread::sleep_for(boost::chrono::seconds(3)); //for debugging
 
-					process->OnSuccess(); //For debugging,normally CurlRequestInterface::Perform will call success or error
 					Pop();
 					//delete process;
 				}
