@@ -25,8 +25,7 @@ namespace ChiikaApi
 	ThreadManager::ThreadManager()
 		: mStop(true)
 	{
-		m_RequestThread = new boost::thread(&ThreadManager::Run,this);
-
+		m_RequestThread = new boost::thread(&ThreadManager::Run, this);
 	}
 	ThreadManager::~ThreadManager()
 	{
@@ -35,37 +34,45 @@ namespace ChiikaApi
 
 	void ThreadManager::Run()
 	{
-		for(;;)
+		for (;;)
 		{
-			
 			boost::mutex::scoped_lock lock(m_Lock);
 
-			while(m_RequestQueue.empty()) cond.wait(lock);
+			while (m_RequestQueue.empty()) cond.wait(lock);
 
 			LOG(Bore) << "Request Thread: Processing Queue";
 
 			if (!m_RequestQueue.empty())
 			{
-				RequestInterface* process = m_RequestQueue.front();
+				RequestInterface* process = Front();
 				if (!process)
 					return;
 				CurlRequestInterface* curl = process->Get();
 				if (!curl)
 					return;
 
+
 				if (curl->IsInitialized())
 				{
-					curl->Perform();
+					//curl->Perform();
+					boost::this_thread::sleep_for(boost::chrono::seconds(3)); //for debugging
 
-					m_RequestQueue.pop();
-					delete process;
+					process->OnSuccess(); //For debugging,normally CurlRequestInterface::Perform will call success or error
+					Pop();
+					//delete process;
 				}
 			}
-			else
-			{
-				LOG(Bore) << "Request Thread: Stopping";
-			}
 		}
+	}
+
+	RequestInterface* ThreadManager::Front()
+	{
+		return m_RequestQueue.front();
+	}
+
+	void ThreadManager::Pop()
+	{
+		m_RequestQueue.pop();
 	}
 
 	void ThreadManager::PostRequest(RequestInterface* r)
@@ -73,7 +80,6 @@ namespace ChiikaApi
 		boost::mutex::scoped_lock lock(m_Lock);
 		m_RequestQueue.push(r);
 		cond.notify_one();
-		
 	}
 
 	boost::thread* ThreadManager::Get()

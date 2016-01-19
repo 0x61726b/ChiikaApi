@@ -18,6 +18,8 @@
 //----------------------------------------------------------------------------
 #include "Common\Required.h"
 #include "boost\thread.hpp"
+
+
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -34,12 +36,16 @@ namespace ChiikaApi
 
 		void PostRequest(RequestInterface* r);
 		
+		RequestInterface* Front();
+		void Pop();
+
 		bool mStop;
 		boost::mutex m_Lock;
 		boost::condition_variable cond;
 		boost::thread* m_RequestThread;
 
 		std::queue<RequestInterface*> m_RequestQueue;
+		
 	};
 }
 

@@ -52,14 +52,14 @@ int main()
 
 	TestEventListener tel;
 
-	RootOptions opts;
+	/*RootOptions opts;
 	opts.appMode = true;
 	opts.modulePath = dir;
 	opts.userName = testUserName;
 	opts.passWord = testPass;
 	Root r;
 	r.Initialize(opts);
-
+*/
 
 	UserInfo ui;
 	ui.SetKeyValue(kUserName,testUserName);
@@ -71,7 +71,7 @@ int main()
 
 	int x = 0;
 
-	r.GetRequestManager()->VerifyUser(&tel);
+	/*r.GetRequestManager()->VerifyUser(&tel);*/
 
 	//std::this_thread::sleep_for(std::chrono::seconds(4));
 

@@ -58,6 +58,8 @@ namespace ChiikaApi
 		void AddMangaToList(const MangaInfo& data);
 		void UpdateManga(const MangaInfo& data);
 
+		void PostRequest(RequestInterface* r);
+
 		RootOptions* GetRootOptions() { return options; }
 
 		static Root* Get();

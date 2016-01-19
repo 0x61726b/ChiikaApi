@@ -164,6 +164,11 @@ namespace ChiikaApi
 		return m_User;
 	}
 	//----------------------------------------------------------------------------
+	void Root::PostRequest(RequestInterface* r)
+	{
+		GetThreadManager()->PostRequest(r);
+	}
+	//----------------------------------------------------------------------------
 	void Root::AddAnimeToList(const UserAnimeEntry& info)
 	{
 		//UserAnimeEntry anime = info;
