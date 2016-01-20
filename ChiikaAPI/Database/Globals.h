@@ -16,8 +16,29 @@
 #ifndef __JsKeys_h__
 #define __JsKeys_h__
 //----------------------------------------------------------------------------
+#define CONCAT_STR(str1,str2) (std::string(std::string(str1) + std::string(str2))).c_str()
+//----------------------------------------------------------------------------
+#include "Common\Required.h"
+//----------------------------------------------------------------------------
+
+MalApiExport enum RequestApiValues
+{
+	REQUEST_VERIFY_SUCCESS = 0,
+	REQUEST_VERIFY_ERROR,
+
+	REQUEST_GETMYANIMELIST_SUCCESS,
+	REQUEST_GETMYANIMELIST_ERROR
+};
+
 namespace
 {
+	//Requests
+	const char* kRequestSuccess = "Success";
+	const char* kRequestError = "Error";
+
+	const char* kRequestVerify = "UserVerify";
+	const char* kRequestGetMyAnimelist = "GetMyAnimelist";
+
 	const char* kChiika = "Chiika";
 	const char* kMyAnimeList = "MyAnimeList";
 	const char* kUserInfo = "UserInfo";
@@ -131,6 +152,7 @@ namespace
 	}
 
 }
+
 
 //----------------------------------------------------------------------------
 #endif

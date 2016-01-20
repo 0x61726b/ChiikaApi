@@ -149,7 +149,7 @@ namespace ChiikaApi
 		BAD_PARAMETER = 0x1 << 12
 	};
 
-	#include "Database\JsKeys.h"
+	#include "Database\Globals.h"
 	//----------------------------------------------------------------------------
 #	define CHIKA_AUTO_MUTEX_NAME chitanda
 #	define CHIKA_AUTO_MUTEX /*mutable boost::recursive_mutex CHIKA_AUTO_MUTEX_NAME;*/ 
@@ -172,6 +172,7 @@ namespace ChiikaApi
 #define ApiDebugMode
 //#define ApiShowXMLOutput
 
-
+#define FOR_(vector,var) \
+						for(size_t var = 0; var < vector.size(); ++var) \
 
 #endif // __Required_h__

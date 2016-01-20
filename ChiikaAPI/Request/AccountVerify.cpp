@@ -24,7 +24,7 @@ namespace ChiikaApi
 {
 	AccountVerifyRequest::AccountVerifyRequest()
 	{
-		m_sName = GetRequest(Requests::VerifyUser);
+		m_sName = kRequestVerify;
 	}
 	//----------------------------------------------------------------------------
 	AccountVerifyRequest::~AccountVerifyRequest()
@@ -35,11 +35,13 @@ namespace ChiikaApi
 	{
 		pugi::xml_document doc;
 
-		doc.load(m_Curl->GetResponse().c_str());
+		bool parse = doc.load(m_Curl->GetResponse().c_str());
 
 		pugi::xml_node  user = doc.child(("user"));
 		ChiString userName = user.child(("username")).text().as_string();
 		ChiString id = user.child(("id")).text().get();
+
+		Root::Get()->GetUser().SetKeyValue(kUserId, id);
 
 		if (Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveUserInfo();
 		RequestInterface::OnSuccess();

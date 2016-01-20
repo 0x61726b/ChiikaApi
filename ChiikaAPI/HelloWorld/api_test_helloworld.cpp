@@ -16,7 +16,7 @@
 #include "Root\Root.h"
 #include "Request\RequestManager.h"
 #include "Database\LocalDataManager.h"
-#include "Request\GetAnimeList.h"
+#include "Request\GetMyAnimelist.h"
 #include "Request\AccountVerify.h"
 #include "Root\ThreadManager.h"
 
@@ -52,24 +52,26 @@ int main()
 
 	TestEventListener tel;
 
-	/*RootOptions opts;
+	RootOptions opts;
 	opts.appMode = true;
-	opts.modulePath = dir;
-	opts.userName = testUserName;
-	opts.passWord = testPass;
+	opts.modulePath = strdup(dir.c_str());
+	opts.userName = strdup(testUserName.c_str());
+	opts.passWord = strdup(testPass.c_str());
 	Root r;
-	r.Initialize(opts);
-*/
+	r.Initialize(&opts);
 
-	UserInfo ui;
+	r.GetRequestManager()->GetMyAnimelist(&tel);
+
+
+	/*UserInfo ui;
 	ui.SetKeyValue(kUserName,testUserName);
-	ui.SetKeyValue(kPass,testPass);
+	ui.SetKeyValue(kPass,testPass);*/
 
 	//UserInfo second = ui;
 
 	//UserInfo third = second;
 
-	int x = 0;
+	//t x = 0;
 
 	/*r.GetRequestManager()->VerifyUser(&tel);*/
 

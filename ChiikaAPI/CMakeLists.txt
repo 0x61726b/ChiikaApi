@@ -29,7 +29,7 @@ source_group(ChiikaApi\\\\Common FILES ${ChiikaApi_Common_Src})
 #Database
 #
 set(ChiikaApi_Database_Src
-  Database/JsKeys.h
+  Database/Globals.h
   Database/LocalDataManager.cpp
   Database/LocalDataManager.h
   )
@@ -101,8 +101,8 @@ set(ChiikaApi_Request_Src
   Request/CurlRequest.cpp
   Request/AccountVerify.h
   Request/AccountVerify.cpp
-  Request/GetAnimeList.h
-  Request/GetAnimeList.cpp
+  Request/GetMyAnimelist.h
+  Request/GetMyAnimelist.cpp
   Request/AddToAnimeList.h
   Request/AddToAnimeList.cpp
   )

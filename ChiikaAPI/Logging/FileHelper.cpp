@@ -17,6 +17,7 @@
 #include "FileHelper.h"
 
 #include <Windows.h>
+#include "boost\filesystem.hpp"
 //----------------------------------------------------------------------------
 ChiikaApi::FileUtil* gFileUtil = NULL;
 namespace ChiikaApi
@@ -104,23 +105,21 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	bool FileUtil::CheckIfDirectoryExists(const ChiString& path)
 	{
-#ifdef YUME_PLATFORM_WIN32
-		DWORD dwAttrib = GetFileAttributesA(path.c_str());
 
-		return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
-			(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
-#endif
+//#ifdef YUME_PLATFORM_WIN32
+//		DWORD dwAttrib = GetFileAttributesA(path.c_str());
+//
+//		return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
+//			(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+//#endif
+		return boost::filesystem::exists(path);
 	}
 	//----------------------------------------------------------------------------
 	bool FileUtil::CreateDir(const ChiString& path)
 	{
 		if(CheckIfDirectoryExists(path))
 			return false;
-		if(CreateDirectoryA(path.c_str(),NULL))
-			return true;
-		else 
-			return false;
-		return false;
+		return boost::filesystem::create_directory(path);
 	}
 	//----------------------------------------------------------------------------
 	FileUtil* FileUtil::Get()

@@ -30,7 +30,7 @@ namespace ChiikaApi
 			buffer->append(data, size * nmemb);
 
 			// How much did we write?
-			//result = size * nmemb; //LMao
+			result = size * nmemb; //LMao
 		}
 
 		return result;
