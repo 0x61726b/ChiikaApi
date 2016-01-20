@@ -113,11 +113,13 @@ namespace ChiikaApi
 
 
 		//Very important!
+
+
+		m_User.SetKeyValue(kUserName,options->userName);
+		m_User.SetKeyValue(kPass,options->passWord);
+
 		if(opts->appMode)
 			m_pLocalData->Initialize();
-
-		m_User.SetKeyValue(kUserName, options->userName);
-		m_User.SetKeyValue(kPass, options->passWord);
 
 		StoreKeys();
 
@@ -177,9 +179,9 @@ namespace ChiikaApi
 		KeyList userKeys;
 		GetUserInfoKeys(userKeys);
 
-		FOR_(userKeys, j)
+		FOR_(userKeys,j)
 		{
-			m_User.SetKeyValue(userKeys[j], user.GetKeyValue(userKeys[j]));
+			m_User.SetKeyValue(userKeys[j],user.GetKeyValue(userKeys[j]));
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -239,9 +241,9 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	const char* Root::GetKey(RequestApiValues api)
 	{
-		std::map<RequestApiValues, char*>::iterator It = RequestApiValueMap.find(api);
+		std::map<RequestApiValues,char*>::iterator It = RequestApiValueMap.find(api);
 
-		if (It != RequestApiValueMap.end())
+		if(It != RequestApiValueMap.end())
 		{
 			return It->second;
 		}
@@ -250,11 +252,11 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void Root::StoreKeys()
 	{
-		RequestApiValueMap.insert(std::make_pair(REQUEST_VERIFY_SUCCESS, strcat(strdup(kRequestVerify), kRequestSuccess)));
-		RequestApiValueMap.insert(std::make_pair(REQUEST_VERIFY_ERROR, strcat(strdup(kRequestVerify), kRequestError)));
+		RequestApiValueMap.insert(std::make_pair(REQUEST_VERIFY_SUCCESS,strcat(strdup(kRequestVerify),kRequestSuccess)));
+		RequestApiValueMap.insert(std::make_pair(REQUEST_VERIFY_ERROR,strcat(strdup(kRequestVerify),kRequestError)));
 
-		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYANIMELIST_SUCCESS, strcat(strdup(kRequestGetMyAnimelist), kRequestSuccess)));
-		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYANIMELIST_ERROR, strcat(strdup(kRequestGetMyAnimelist), kRequestError)));
+		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYANIMELIST_SUCCESS,strcat(strdup(kRequestGetMyAnimelist),kRequestSuccess)));
+		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYANIMELIST_ERROR,strcat(strdup(kRequestGetMyAnimelist),kRequestError)));
 	}
 }
 

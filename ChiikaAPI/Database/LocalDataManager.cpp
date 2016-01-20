@@ -367,7 +367,7 @@ namespace ChiikaApi
 			ChiString fileData = file.Read();
 			doc.load(fileData.c_str());
 
-			ChiikaApi::UserInfo ui;
+			ChiikaApi::UserInfo ui = Root::Get()->GetUser();
 			pugi::xml_node  root = doc.child(kChiika);
 			pugi::xml_node  info = root.child(kUserInfo);
 
@@ -379,7 +379,7 @@ namespace ChiikaApi
 				ui.SetKeyValue(name,val);
 			}
 
-			m_UserDetailedInfo = ui;
+			
 			file.Close();
 
 		}

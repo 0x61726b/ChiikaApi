@@ -60,7 +60,7 @@ int main()
 	Root r;
 	r.Initialize(&opts);
 
-	r.GetRequestManager()->GetMyAnimelist(&tel);
+	//r.GetRequestManager()->GetMyAnimelist(&tel);
 
 
 	/*UserInfo ui;
