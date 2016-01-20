@@ -120,6 +120,8 @@ namespace ChiikaApi
 		m_User.SetKeyValue(kPass, options->passWord);
 
 		StoreKeys();
+
+		LOG(INFO) << "Initialization successfull.Welcome to Chiika " << options->userName << "!";
 	}
 	//----------------------------------------------------------------------------
 	Root::~Root()
