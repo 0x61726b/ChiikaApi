@@ -17,6 +17,7 @@
 #include "Request\RequestManager.h"
 #include "Database\LocalDataManager.h"
 #include "Request\GetMyAnimelist.h"
+#include "Request\GetMyMangalist.h"
 #include "Request\AccountVerify.h"
 #include "Root\ThreadManager.h"
 
@@ -54,13 +55,13 @@ int main()
 
 	RootOptions opts;
 	opts.appMode = true;
-	opts.modulePath = strdup(dir.c_str());
+	opts.modulePath = "D:\\ElectronProjects\\ChiikaApi\\X64_1\\Chiika\\Debug";
 	opts.userName = strdup(testUserName.c_str());
 	opts.passWord = strdup(testPass.c_str());
 	Root r;
 	r.Initialize(&opts);
 
-	//r.GetRequestManager()->GetMyAnimelist(&tel);
+	//r.GetRequestManager()->GetMyMangalist(&tel);
 
 
 	/*UserInfo ui;

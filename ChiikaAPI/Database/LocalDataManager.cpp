@@ -111,16 +111,16 @@ namespace ChiikaApi
 			doc.load(fileData.c_str());
 			file.Close();
 
-			pugi::xml_node  root = doc.child(kChiika);
-			pugi::xml_node  myanimelist = root.child(kMyAnimeList);
+			XmlNode  root = doc.child(kChiika);
+			XmlNode  myanimelist = root.child(kMyAnimeList);
 
 			UserAnimeList list;
 			ChiikaApi::AnimeList animeList;
-			for(pugi::xml_node anime = myanimelist.child(kAnime); anime; anime = anime.next_sibling())
+			for (XmlNode anime = myanimelist.child(kAnime); anime; anime = anime.next_sibling())
 			{
 				Anime Anime;
 				UserAnimeEntry info;
-				for(pugi::xml_node animeChild = anime.first_child(); animeChild; animeChild = animeChild.next_sibling())
+				for (XmlNode animeChild = anime.first_child(); animeChild; animeChild = animeChild.next_sibling())
 				{
 					const char* name = animeChild.name();
 					const char* val = animeChild.text().get();
@@ -128,9 +128,9 @@ namespace ChiikaApi
 					Anime.SetKeyValue(name,val);
 					info.SetKeyValue(name,val);
 				}
-				animeList.insert(ChiikaApi::AnimeList::value_type(Anime.Id,Anime));
+				animeList.insert(ChiikaApi::AnimeList::value_type(Anime.GetKeyValue(kSeriesAnimedbId), Anime));
 				info.Anime = Anime;
-				list.insert(UserAnimeList::value_type(Anime.Id,info));
+				list.insert(UserAnimeList::value_type(((Anime.GetKeyValue(kSeriesAnimedbId))), info));
 			}
 			MalManager::Get()->AddAnimeList(list);
 			MalManager::Get()->AddAnimeList(animeList);
@@ -151,8 +151,8 @@ namespace ChiikaApi
 		{
 			pugi::xml_document doc;
 
-			pugi::xml_node  root = doc.append_child(kChiika);
-			pugi::xml_node  MAL = root.append_child(kMyAnimeList);
+			XmlNode root = doc.append_child(kChiika);
+			XmlNode  MAL = root.append_child(kMyAnimeList);
 
 			ChiikaApi::UserAnimeList list = MalManager::Get()->GetAnimeList();
 			ChiikaApi::UserAnimeList::iterator It;
@@ -161,14 +161,14 @@ namespace ChiikaApi
 				UserAnimeEntry Anime = It->second;
 
 
-				pugi::xml_node  anime = MAL.append_child(kAnime);
+				XmlNode  anime = MAL.append_child(kAnime);
 				KeyList keys;
 				GetAnimeKeys(keys);
 
 
 				for(size_t i = 0; i < keys.size(); i++)
 				{
-					pugi::xml_node node = anime.append_child(ToStd(keys[i]));
+					XmlNode node = anime.append_child(ToStd(keys[i]));
 					SetXMLValue(node,ToStd(Anime.Anime.GetKeyValue(keys[i])));
 				}
 
@@ -177,7 +177,7 @@ namespace ChiikaApi
 
 				for(size_t i = 0; i < uaeList.size(); i++)
 				{
-					pugi::xml_node node = anime.append_child(ToStd(uaeList[i]));
+					XmlNode node = anime.append_child(ToStd(uaeList[i]));
 					SetXMLValue(node,ToStd(Anime.GetKeyValue(uaeList[i])));
 				}
 			}
@@ -207,66 +207,32 @@ namespace ChiikaApi
 			pugi::xml_document doc;
 			ChiString fileData = file.Read();
 			doc.load(fileData.c_str());
+			file.Close();
 
-			pugi::xml_node  root = doc.child(kChiika);
-			pugi::xml_node  mymangalist = root.child(kMangaList);
+			XmlNode  root = doc.child(kChiika);
+			XmlNode  mymangalist = root.child(kMangaList);
 
-			ChiikaApi::MangaList list;
-			for(pugi::xml_node manga = mymangalist.child(kManga); manga; manga = manga.next_sibling())
+			ChiikaApi::MangaList mangaList;
+			ChiikaApi::UserMangaList list;
+			for (XmlNode manga = mymangalist.child(kManga); manga; manga = manga.next_sibling())
 			{
+				Manga Manga;
+				UserMangaEntry info;
 
-				pugi::xml_node  series_mangadb_id = manga.child(kSeriesMangadbId);
-				pugi::xml_node  series_title = manga.child(kSeriesTitle);
-				pugi::xml_node  series_synonyms = manga.child(kSeriesSynonyms);
-				pugi::xml_node  series_type = manga.child(kSeriesType);
-				pugi::xml_node  series_chapters = manga.child(kSeriesChapters);
-				pugi::xml_node  series_volumes = manga.child(kSeriesVolumes);
-				pugi::xml_node  series_status = manga.child(kSeriesStatus);
-				pugi::xml_node  series_start = manga.child(kSeriesStart);
-				pugi::xml_node  series_end = manga.child(kSeriesEnd);
-				pugi::xml_node  series_image = manga.child(kSeriesImage);
-				pugi::xml_node  my_id = manga.child(kMyId); //What does this even mean?
-				pugi::xml_node  my_read_chapters = manga.child(kMyReadChapters);
-				pugi::xml_node  my_read_volumes = manga.child(kMyReadVolumes);
-				pugi::xml_node  my_start_date = manga.child(kMyStartDate);
-				pugi::xml_node  my_finish_date = manga.child(kMyFinishDate);
-				pugi::xml_node  my_score = manga.child(kMyScore);
-				pugi::xml_node  my_status = manga.child(kMyStatus);
-				pugi::xml_node  my_rereading = manga.child(kMyRereading);
-				pugi::xml_node  my_rereading_chap = manga.child(kMyRereadingChap);
-				pugi::xml_node  my_last_updated = manga.child(kMyLastUpdated);
+				for (XmlNode mangaChild = manga.first_child(); mangaChild; mangaChild = mangaChild.next_sibling())
+				{
+					const char* name = mangaChild.name();
+					const char* val = mangaChild.text().get();
 
-
-				Manga mango;
-				mango.Id = FromXMLValueToInt(series_mangadb_id);
-				mango.Title = FromXMLValueToStd(series_title);
-				mango.English = FromXMLValueToStd(series_synonyms);
-				mango.Type = (MangaType)FromXMLValueToInt(series_type);
-				mango.Chapters = FromXMLValueToInt(series_chapters);
-				mango.Volumes = FromXMLValueToInt(series_volumes);
-
-				mango.Status = (MangaStatus)FromXMLValueToInt(series_status);
-				mango.StartDate = FromXMLValueToStd(series_start);
-				mango.EndDate = FromXMLValueToStd(series_end);
-				mango.Image = FromXMLValueToStd(series_image);
-
-				MangaInfo info;
-				info.Mango = mango;
-				info.MyId = FromXMLValueToInt(my_id);
-				info.StartDate = FromXMLValueToStd(my_start_date);
-				info.EndDate = FromXMLValueToStd(my_finish_date);
-				info.Score = FromXMLValueToInt(my_score);
-				info.ReadChapters = FromXMLValueToInt(my_read_chapters);
-				info.ReadVolumes = FromXMLValueToInt(my_read_volumes);
-				info.Status = (MangaUserStatus)FromXMLValueToInt(my_status);
-				info.Rereading = FromXMLValueToInt(my_rereading);
-				info.RereadChapters = FromXMLValueToInt(my_rereading_chap);
-				info.LastUpdated = FromXMLValueToStd(my_last_updated);
-				list.insert(MangaList::value_type(mango.Id,info));
+					Manga.SetKeyValue(name, val);
+					info.SetKeyValue(name, val);
+				}
+				mangaList.insert(ChiikaApi::MangaList::value_type(Manga.GetKeyValue(kSeriesAnimedbId), Manga));
+				info.Manga = Manga;
+				list.insert(UserMangaList::value_type(Manga.GetKeyValue(kSeriesMangadbId), info));
 			}
 			MalManager::Get()->AddMangaList(list);
-			//LOG("Manga list file loaded successfully!")
-			file.Close();
+			MalManager::Get()->AddMangaList(mangaList);
 		}
 		else
 		{
@@ -279,69 +245,41 @@ namespace ChiikaApi
 		ChiString dataFile = m_sPath;
 		FileWriter file(dataFile);
 
-		if(file.Open())
+		if (file.Open())
 		{
 			pugi::xml_document doc;
 
-			pugi::xml_node  root = doc.append_child(kChiika);
+			XmlNode root = doc.append_child(kChiika);
+			XmlNode  MAL = root.append_child(kMangaList);
 
-			pugi::xml_node  MAL = root.append_child(kMangaList);
-
-			ChiikaApi::MangaList list = MalManager::Get()->GetMangaList();
-
-			MangaList::iterator It;
-			for(It = list.begin(); It != list.end(); ++It)
+			ChiikaApi::UserMangaList list = MalManager::Get()->GetMangaList();
+			ChiikaApi::UserMangaList::iterator It;
+			for (It = list.begin(); It != list.end(); ++It)
 			{
-				MangaInfo Mango = It->second;
-
-				pugi::xml_node  manga = MAL.append_child(kManga);
-
-				pugi::xml_node  series_mangadb_id = manga.append_child(kSeriesMangadbId);
-				pugi::xml_node  series_title = manga.append_child(kSeriesTitle);
-				pugi::xml_node  series_synonyms = manga.append_child(kSeriesSynonyms);
-				pugi::xml_node  series_type = manga.append_child(kSeriesType);
-				pugi::xml_node  series_chapters = manga.append_child(kSeriesChapters);
-				pugi::xml_node  series_volumes = manga.append_child(kSeriesVolumes);
-				pugi::xml_node  series_status = manga.append_child(kSeriesStatus);
-				pugi::xml_node  series_start = manga.append_child(kSeriesStart);
-				pugi::xml_node  series_end = manga.append_child(kSeriesEnd);
-				pugi::xml_node  series_image = manga.append_child(kSeriesImage);
-				pugi::xml_node  my_id = manga.append_child(kMyId); //What does this even mean?
-				pugi::xml_node  my_read_chapters = manga.append_child(kMyReadChapters);
-				pugi::xml_node  my_read_volumes = manga.append_child(kMyReadVolumes);
-				pugi::xml_node  my_start_date = manga.append_child(kMyStartDate);
-				pugi::xml_node  my_finish_date = manga.append_child(kMyFinishDate);
-				pugi::xml_node  my_score = manga.append_child(kMyScore);
-				pugi::xml_node  my_status = manga.append_child(kMyStatus);
-				pugi::xml_node  my_rereading = manga.append_child(kMyRereading);
-				pugi::xml_node  my_rereading_chap = manga.append_child(kMyRereadingChap);
-				pugi::xml_node  my_last_updated = manga.append_child(kMyLastUpdated);
-
-				SetXMLValue(series_mangadb_id,Mango.Mango.Id);
-				SetXMLValue(series_title,Mango.Mango.Title.c_str());
-				SetXMLValue(series_synonyms,Mango.Mango.English.c_str());
-				SetXMLValue(series_type,Mango.Mango.Type);
-				SetXMLValue(series_chapters,Mango.Mango.Chapters);
-				SetXMLValue(series_volumes,Mango.Mango.Volumes);
-				SetXMLValue(series_status,Mango.Mango.Status);
-				SetXMLValue(series_start,Mango.Mango.StartDate.c_str());
-				SetXMLValue(series_end,Mango.Mango.EndDate.c_str());
-				SetXMLValue(series_image,Mango.Mango.Image.c_str());
-				SetXMLValue(my_id,Mango.MyId);
-				SetXMLValue(my_read_chapters,Mango.ReadChapters);
-				SetXMLValue(my_read_volumes,Mango.ReadVolumes);
-				SetXMLValue(my_start_date,Mango.StartDate.c_str());
-				SetXMLValue(my_finish_date,Mango.EndDate.c_str());
-				SetXMLValue(my_score,Mango.Score);
-				SetXMLValue(my_status,Mango.Status);
-				SetXMLValue(my_rereading,Mango.Rereading);
-				SetXMLValue(my_rereading_chap,Mango.RereadChapters);
-				SetXMLValue(my_last_updated,Mango.LastUpdated.c_str());
+				UserMangaEntry Manga = It->second;
 
 
+				XmlNode  manga = MAL.append_child(kManga);
+				KeyList keys;
+				GetMangaKeys(keys);
+
+
+				for (size_t i = 0; i < keys.size(); i++)
+				{
+					XmlNode node = manga.append_child(ToStd(keys[i]));
+					SetXMLValue(node, ToStd(Manga.Manga.GetKeyValue(keys[i])));
+				}
+
+				KeyList uaeList;
+				GetUserAnimeEntryKeys(uaeList);
+
+				for (size_t i = 0; i < uaeList.size(); i++)
+				{
+					XmlNode node = manga.append_child(ToStd(uaeList[i]));
+					SetXMLValue(node, ToStd(Manga.GetKeyValue(uaeList[i])));
+				}
 			}
 			doc.save_file(dataFile.c_str());
-			//LOG("Manga list file saved successfully!")
 			file.Close();
 		}
 		else
@@ -367,18 +305,40 @@ namespace ChiikaApi
 			ChiString fileData = file.Read();
 			doc.load(fileData.c_str());
 
-			ChiikaApi::UserInfo ui = Root::Get()->GetUser();
-			pugi::xml_node  root = doc.child(kChiika);
-			pugi::xml_node  info = root.child(kUserInfo);
 
-			for(pugi::xml_node infoChild = info.first_child(); infoChild; infoChild = infoChild.next_sibling())
+			XmlNode  root = doc.child(kChiika);
+			XmlNode  info = root.child(kUserInfo);
+			XmlNode	 anime = info.child(kAnime);
+			XmlNode	 manga = info.child(kManga);
+
+			for(XmlNode infoChild = info.first_child(); infoChild; infoChild = infoChild.next_sibling())
 			{
 				const char* name = infoChild.name();
 				const char* val = infoChild.text().get();
 
-				ui.SetKeyValue(name,val);
+				if (strcmp(name, kAnime) == 0 || strcmp(name, kManga) == 0)
+					continue;
+
+				Root::Get()->GetUser().SetKeyValue(name, val);
 			}
 
+			for (XmlNode animeChild = anime.first_child(); animeChild; animeChild = animeChild.next_sibling())
+			{
+				const char* name = animeChild.name();
+				const char* val = animeChild.text().get();
+
+				Root::Get()->GetUser().Anime.SetKeyValue(name, val);
+			}
+
+			for (XmlNode mangaChild = manga.first_child(); mangaChild; mangaChild = mangaChild.next_sibling())
+			{
+				const char* name = mangaChild.name();
+				const char* val = mangaChild.text().get();
+
+				Root::Get()->GetUser().Manga.SetKeyValue(name, val);
+			}
+			
+			ChiikaApi::UserInfo ui = Root::Get()->GetUser();
 			
 			file.Close();
 
@@ -397,18 +357,44 @@ namespace ChiikaApi
 		if(file.Open())
 		{
 			pugi::xml_document doc;
-			pugi::xml_node  root = doc.append_child(kChiika);
-			pugi::xml_node  UserInfo = root.append_child(kUserInfo);
+			XmlNode  root = doc.append_child(kChiika);
+			XmlNode  UserInfo = root.append_child(kUserInfo);
+			XmlNode	 AnimeInfo = UserInfo.append_child(kAnime);
+			XmlNode	 MangaInfo = UserInfo.append_child(kManga);
+
+			ChiikaApi::UserInfo ui = Root::Get()->GetUser();
 
 			KeyList keys;
 			GetUserInfoKeys(keys);
-			for(size_t i = 0; i < keys.size(); i++)
+
+			FOR_(keys,i)
 			{
-				pugi::xml_node node = UserInfo.append_child(ToStd(keys[i]));
-				SetXMLValue(node,ToStd(Root::Get()->GetUser().GetKeyValue(keys[i])));
+				XmlNode node = UserInfo.append_child(ToStd(keys[i]));
+				SetXMLValue(node,ToStd(ui.GetKeyValue(keys[i])));
 			}
+
+			KeyList animeKeys;
+			GetUserInfoAnimeKeys(animeKeys);
+
+
+			FOR_(animeKeys, i)
+			{
+				XmlNode node = AnimeInfo.append_child(ToStd(animeKeys[i]));
+				SetXMLValue(node, ToStd(ui.Anime.GetKeyValue(animeKeys[i])));
+			}
+
+			KeyList mangaKeys;
+			GetUserInfoMangaKeys(mangaKeys);
+
+
+			FOR_(mangaKeys, i)
+			{
+				XmlNode node = MangaInfo.append_child(ToStd(mangaKeys[i]));
+				std::string val = ui.Manga.GetKeyValue(mangaKeys[i]);
+				SetXMLValue(node, ToStd(val));
+			}
+
 			doc.save_file(dataFile.c_str());
-			//LOG("User info file saved successfully!")
 			file.Close();
 		}
 		else
@@ -463,7 +449,7 @@ namespace ChiikaApi
 				pugi::xml_node  my_last_updated = anime.child(kMyLastUpdated);
 				//pugi::xml_node  my_finish_date = anime.child(kMyFinishDate);
 
-				Anime Anime;
+				/*Anime Anime;
 				Anime.Id = FromXMLValueToInt(animeDbId);
 				Anime.Title = FromXMLValueToStd(series_title);
 				Anime.English = FromXMLValueToStd(series_synonyms);
@@ -473,21 +459,21 @@ namespace ChiikaApi
 				Anime.Status = (AnimeStatus)FromXMLValueToInt(series_status);
 				Anime.StartDate = FromXMLValueToStd(series_start);
 				Anime.EndDate = FromXMLValueToStd(series_end);
-				Anime.Image = FromXMLValueToStd(series_image);
+				Anime.Image = FromXMLValueToStd(series_image);*/
 
-				UserAnimeEntry info;
-				info.UpdateOperation = (CRUDOp)FromXMLValueToInt(Op);
-				info.WatchedEpisodes = FromXMLValueToInt(my_watched_episodes);
-				info.Anime = Anime;
-				info.MyId = FromXMLValueToInt(my_id);
-				info.StartDate = FromXMLValueToStd(my_start_date);
-				info.EndDate = FromXMLValueToStd(my_finish_date);
-				info.Score = FromXMLValueToInt(my_score);
-				info.Status = (AnimeUserStatus)FromXMLValueToInt(my_status);
-				info.Rewatching = FromXMLValueToInt(my_rewatching);
-				info.RewatchingEp = FromXMLValueToInt(my_rewatching_ep);
-				info.LastUpdated = FromXMLValueToStd(my_last_updated);
-				list.insert(UserAnimeList::value_type(Anime.Id,info));
+				//UserAnimeEntry info;
+				//info.UpdateOperation = (CRUDOp)FromXMLValueToInt(Op);
+				//info.WatchedEpisodes = FromXMLValueToInt(my_watched_episodes);
+				//info.Anime = Anime;
+				//info.MyId = FromXMLValueToInt(my_id);
+				//info.StartDate = FromXMLValueToStd(my_start_date);
+				//info.EndDate = FromXMLValueToStd(my_finish_date);
+				//info.Score = FromXMLValueToInt(my_score);
+				//info.Status = (AnimeUserStatus)FromXMLValueToInt(my_status);
+				//info.Rewatching = FromXMLValueToInt(my_rewatching);
+				//info.RewatchingEp = FromXMLValueToInt(my_rewatching_ep);
+				//info.LastUpdated = FromXMLValueToStd(my_last_updated);
+				//list.insert(UserAnimeList::value_type(Anime.Id,info));
 			}
 			MalManager::Get()->AddAnimeUpdateList(list);
 #pragma endregion
@@ -517,33 +503,6 @@ namespace ChiikaApi
 				pugi::xml_node  my_rereading = manga.child(kMyRereading);
 				pugi::xml_node  my_rereading_chap = manga.child(kMyRereadingChap);
 				pugi::xml_node  my_last_updated = manga.child(kMyLastUpdated);
-
-
-				Manga mango;
-				mango.Id = FromXMLValueToInt(series_mangadb_id);
-				mango.Title = FromXMLValueToStd(series_title);
-				mango.English = FromXMLValueToStd(series_synonyms);
-				mango.Type = (MangaType)FromXMLValueToInt(series_type);
-				mango.Chapters = FromXMLValueToInt(series_chapters);
-				mango.Volumes = FromXMLValueToInt(series_volumes);
-
-				mango.Status = (MangaStatus)FromXMLValueToInt(series_status);
-				mango.StartDate = FromXMLValueToStd(series_start);
-				mango.EndDate = FromXMLValueToStd(series_end);
-				mango.Image = FromXMLValueToStd(series_image);
-
-				MangaInfo info;
-				info.UpdateOperation = (CRUDOp)FromXMLValueToInt(Op);
-				info.Mango = mango;
-				info.MyId = FromXMLValueToInt(my_id);
-				info.StartDate = FromXMLValueToStd(my_start_date);
-				info.EndDate = FromXMLValueToStd(my_finish_date);
-				info.Score = FromXMLValueToInt(my_score);
-				info.Status = (MangaUserStatus)FromXMLValueToInt(my_status);
-				info.Rereading = FromXMLValueToInt(my_rereading);
-				info.RereadChapters = FromXMLValueToInt(my_rereading_chap);
-				info.LastUpdated = FromXMLValueToStd(my_last_updated);
-				mangaList.insert(MangaList::value_type(mango.Id,info));
 			}
 			MalManager::Get()->AddMangaUpdateList(mangaList);
 			//LOG("Update list file loaded successfully!")
@@ -600,25 +559,25 @@ namespace ChiikaApi
 				pugi::xml_node  my_rewatching_ep = anime.append_child(kMyRewatchingEp);
 				pugi::xml_node  my_last_updated = anime.append_child(kMyLastUpdated);
 
-				SetXMLValue(animeDbId,Anime.Anime.Id);
-				SetXMLValue(Op,Anime.UpdateOperation);
-				SetXMLValue(series_title,Anime.Anime.Title.c_str());
-				SetXMLValue(series_synonyms,Anime.Anime.English.c_str());
-				SetXMLValue(series_type,Anime.Anime.Type);
-				SetXMLValue(series_episodes,Anime.Anime.EpisodeCount);
-				SetXMLValue(series_status,Anime.Anime.Status);
-				SetXMLValue(series_start,Anime.Anime.StartDate.c_str());
-				SetXMLValue(series_end,Anime.Anime.EndDate.c_str());
-				SetXMLValue(series_image,Anime.Anime.Image.c_str());
-				SetXMLValue(my_id,Anime.MyId);
-				SetXMLValue(my_watched_episodes,Anime.WatchedEpisodes);
-				SetXMLValue(my_start_date,Anime.StartDate.c_str());
-				SetXMLValue(my_finish_date,Anime.EndDate.c_str());
-				SetXMLValue(my_score,Anime.Score);
-				SetXMLValue(my_status,Anime.Status);
-				SetXMLValue(my_rewatching,Anime.Rewatching);
-				SetXMLValue(my_rewatching_ep,Anime.RewatchingEp);
-				SetXMLValue(my_last_updated,Anime.LastUpdated.c_str());
+				//SetXMLValue(animeDbId,Anime.Anime.Id);
+				//SetXMLValue(Op,Anime.UpdateOperation);
+				//SetXMLValue(series_title,Anime.Anime.Title.c_str());
+				//SetXMLValue(series_synonyms,Anime.Anime.English.c_str());
+				//SetXMLValue(series_type,Anime.Anime.Type);
+				//SetXMLValue(series_episodes,Anime.Anime.EpisodeCount);
+				//SetXMLValue(series_status,Anime.Anime.Status);
+				//SetXMLValue(series_start,Anime.Anime.StartDate.c_str());
+				//SetXMLValue(series_end,Anime.Anime.EndDate.c_str());
+				//SetXMLValue(series_image,Anime.Anime.Image.c_str());
+				//SetXMLValue(my_id,Anime.MyId);
+				//SetXMLValue(my_watched_episodes,Anime.WatchedEpisodes);
+				//SetXMLValue(my_start_date,Anime.StartDate.c_str());
+				//SetXMLValue(my_finish_date,Anime.EndDate.c_str());
+				//SetXMLValue(my_score,Anime.Score);
+				//SetXMLValue(my_status,Anime.Status);
+				//SetXMLValue(my_rewatching,Anime.Rewatching);
+				//SetXMLValue(my_rewatching_ep,Anime.RewatchingEp);
+				//SetXMLValue(my_last_updated,Anime.LastUpdated.c_str());
 
 			}
 #pragma endregion
@@ -628,53 +587,53 @@ namespace ChiikaApi
 			MangaList::iterator ItManga;
 			for(ItManga = mangaList.begin(); ItManga != mangaList.end(); ++ItManga)
 			{
-				MangaInfo Mango = ItManga->second;
+				
 
-				pugi::xml_node  manga = MAL.append_child(kManga);
-				pugi::xml_node  Op = manga.append_child(kOperation);
-				pugi::xml_node  series_mangadb_id = manga.append_child(kSeriesMangadbId);
+				//pugi::xml_node  manga = MAL.append_child(kManga);
+				//pugi::xml_node  Op = manga.append_child(kOperation);
+				//pugi::xml_node  series_mangadb_id = manga.append_child(kSeriesMangadbId);
 
-				pugi::xml_node  series_title = manga.append_child(kSeriesTitle);
-				pugi::xml_node  series_synonyms = manga.append_child(kSeriesSynonyms);
-				pugi::xml_node  series_type = manga.append_child(kSeriesType);
-				pugi::xml_node  series_chapters = manga.append_child(kSeriesChapters);
-				pugi::xml_node  series_volumes = manga.append_child(kSeriesVolumes);
-				pugi::xml_node  series_status = manga.append_child(kSeriesStatus);
-				pugi::xml_node  series_start = manga.append_child(kSeriesStart);
-				pugi::xml_node  series_end = manga.append_child(kSeriesEnd);
-				pugi::xml_node  series_image = manga.append_child(kSeriesImage);
-				pugi::xml_node  my_id = manga.append_child(kMyId); //What does this even mean?
-				pugi::xml_node  my_read_chapters = manga.append_child(kMyReadChapters);
-				pugi::xml_node  my_read_volumes = manga.append_child(kMyReadVolumes);
-				pugi::xml_node  my_start_date = manga.append_child(kMyStartDate);
-				pugi::xml_node  my_finish_date = manga.append_child(kMyFinishDate);
-				pugi::xml_node  my_score = manga.append_child(kMyScore);
-				pugi::xml_node  my_status = manga.append_child(kMyStatus);
-				pugi::xml_node  my_rereading = manga.append_child(kMyRereading);
-				pugi::xml_node  my_rereading_chap = manga.append_child(kMyRereadingChap);
-				pugi::xml_node  my_last_updated = manga.append_child(kMyLastUpdated);
+				//pugi::xml_node  series_title = manga.append_child(kSeriesTitle);
+				//pugi::xml_node  series_synonyms = manga.append_child(kSeriesSynonyms);
+				//pugi::xml_node  series_type = manga.append_child(kSeriesType);
+				//pugi::xml_node  series_chapters = manga.append_child(kSeriesChapters);
+				//pugi::xml_node  series_volumes = manga.append_child(kSeriesVolumes);
+				//pugi::xml_node  series_status = manga.append_child(kSeriesStatus);
+				//pugi::xml_node  series_start = manga.append_child(kSeriesStart);
+				//pugi::xml_node  series_end = manga.append_child(kSeriesEnd);
+				//pugi::xml_node  series_image = manga.append_child(kSeriesImage);
+				//pugi::xml_node  my_id = manga.append_child(kMyId); //What does this even mean?
+				//pugi::xml_node  my_read_chapters = manga.append_child(kMyReadChapters);
+				//pugi::xml_node  my_read_volumes = manga.append_child(kMyReadVolumes);
+				//pugi::xml_node  my_start_date = manga.append_child(kMyStartDate);
+				//pugi::xml_node  my_finish_date = manga.append_child(kMyFinishDate);
+				//pugi::xml_node  my_score = manga.append_child(kMyScore);
+				//pugi::xml_node  my_status = manga.append_child(kMyStatus);
+				//pugi::xml_node  my_rereading = manga.append_child(kMyRereading);
+				//pugi::xml_node  my_rereading_chap = manga.append_child(kMyRereadingChap);
+				//pugi::xml_node  my_last_updated = manga.append_child(kMyLastUpdated);
 
-				SetXMLValue(series_mangadb_id,Mango.Mango.Id);
-				SetXMLValue(Op,Mango.UpdateOperation);
-				SetXMLValue(series_title,Mango.Mango.Title.c_str());
-				SetXMLValue(series_synonyms,Mango.Mango.English.c_str());
-				SetXMLValue(series_type,Mango.Mango.Type);
-				SetXMLValue(series_chapters,Mango.Mango.Chapters);
-				SetXMLValue(series_volumes,Mango.Mango.Volumes);
-				SetXMLValue(series_status,Mango.Mango.Status);
-				SetXMLValue(series_start,Mango.Mango.StartDate.c_str());
-				SetXMLValue(series_end,Mango.Mango.EndDate.c_str());
-				SetXMLValue(series_image,Mango.Mango.Image.c_str());
-				SetXMLValue(my_id,Mango.MyId);
-				SetXMLValue(my_read_chapters,Mango.ReadChapters);
-				SetXMLValue(my_read_volumes,Mango.ReadVolumes);
-				SetXMLValue(my_start_date,Mango.StartDate.c_str());
-				SetXMLValue(my_finish_date,Mango.EndDate.c_str());
-				SetXMLValue(my_score,Mango.Score);
-				SetXMLValue(my_status,Mango.Status);
-				SetXMLValue(my_rereading,Mango.Rereading);
-				SetXMLValue(my_rereading_chap,Mango.RereadChapters);
-				SetXMLValue(my_last_updated,Mango.LastUpdated.c_str());
+				//SetXMLValue(series_mangadb_id,Mango.Mango.Id);
+				//SetXMLValue(Op,Mango.UpdateOperation);
+				//SetXMLValue(series_title,Mango.Mango.Title.c_str());
+				//SetXMLValue(series_synonyms,Mango.Mango.English.c_str());
+				//SetXMLValue(series_type,Mango.Mango.Type);
+				//SetXMLValue(series_chapters,Mango.Mango.Chapters);
+				//SetXMLValue(series_volumes,Mango.Mango.Volumes);
+				//SetXMLValue(series_status,Mango.Mango.Status);
+				//SetXMLValue(series_start,Mango.Mango.StartDate.c_str());
+				//SetXMLValue(series_end,Mango.Mango.EndDate.c_str());
+				//SetXMLValue(series_image,Mango.Mango.Image.c_str());
+				//SetXMLValue(my_id,Mango.MyId);
+				//SetXMLValue(my_read_chapters,Mango.ReadChapters);
+				//SetXMLValue(my_read_volumes,Mango.ReadVolumes);
+				//SetXMLValue(my_start_date,Mango.StartDate.c_str());
+				//SetXMLValue(my_finish_date,Mango.EndDate.c_str());
+				//SetXMLValue(my_score,Mango.Score);
+				//SetXMLValue(my_status,Mango.Status);
+				//SetXMLValue(my_rereading,Mango.Rereading);
+				//SetXMLValue(my_rereading_chap,Mango.RereadChapters);
+				//SetXMLValue(my_last_updated,Mango.LastUpdated.c_str());
 
 
 			}
@@ -735,7 +694,7 @@ namespace ChiikaApi
 
 				UserAnimeEntry findAnime = MalManager::Get()->GetAnimeById(FromXMLValueToInt(Id));
 
-				if(findAnime.Anime.Id != UnknownAnimeId)
+				if (atoi(ToStd(findAnime.GetKeyValue(kSeriesAnimedbId))) != UnknownAnimeId)
 				{
 					ChiikaApi::AnimeDetails details = findAnime.Anime.ExtraDetails;
 					details.Synopsis = syn.text().get();
@@ -801,7 +760,7 @@ namespace ChiikaApi
 				pugi::xml_node  popularity = anime.append_child(kPopularity);
 
 
-				SetXMLValue(animeDbId,Anime.Anime.Id);
+				SetXMLValue(animeDbId, atoi(ToStd(Anime.GetKeyValue(kSeriesAnimedbId))));
 				SetXMLValue(syn,Details.Synopsis.c_str());
 				SetXMLValue(premiered,Details.Premiered.c_str());
 				SetXMLValue(duration,Details.DurationPerEpisode.c_str());

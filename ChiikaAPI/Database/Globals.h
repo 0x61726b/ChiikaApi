@@ -27,7 +27,10 @@ MalApiExport enum RequestApiValues
 	REQUEST_VERIFY_ERROR,
 
 	REQUEST_GETMYANIMELIST_SUCCESS,
-	REQUEST_GETMYANIMELIST_ERROR
+	REQUEST_GETMYANIMELIST_ERROR,
+
+	REQUEST_GETMYMANGALIST_SUCCESS,
+	REQUEST_GETMYMANGALIST_ERROR
 };
 
 namespace
@@ -38,6 +41,7 @@ namespace
 
 	const char* kRequestVerify = "UserVerify";
 	const char* kRequestGetMyAnimelist = "GetMyAnimelist";
+	const char* kRequestGetMyMangalist = "GetMyMangalist";
 
 	const char* kChiika = "Chiika";
 	const char* kMyAnimeList = "MyAnimeList";
@@ -81,7 +85,7 @@ namespace
 	const char* kUserDaysSpentWatching = "user_days_spent_watching";
 	const char* kUserReading = "user_reading";
 	const char* kUserPtr = "user_plantoread";
-	const char* kUserDaysSpentReading = "user_days_spent_watching";
+	const char* kUserDaysSpentReading = "user_days_spent_reading"; //Thanks
 
 	//~
 	const char* kSeriesMangadbId = "series_mangadb_id";
@@ -123,6 +127,33 @@ namespace
 		keys.push_back(kSeriesEnd);
 		keys.push_back(kSeriesImage);
 	}
+	void GetMangaKeys(KeyList& keys)
+	{
+		keys.push_back(kSeriesMangadbId);
+		keys.push_back(kSeriesTitle);
+		keys.push_back(kSeriesSynonyms);
+		keys.push_back(kSeriesChapters);
+		keys.push_back(kSeriesVolumes);
+		keys.push_back(kSeriesType);
+		keys.push_back(kSeriesStatus);
+		keys.push_back(kSeriesStart);
+		keys.push_back(kSeriesEnd);
+		keys.push_back(kSeriesImage);
+	}
+	void GetUserMangaEntryKeys(KeyList& keys)
+	{
+		keys.push_back(kMyId);
+		keys.push_back(kMyReadChapters);
+		keys.push_back(kMyReadVolumes);
+		keys.push_back(kMyRewatchingEp);
+		keys.push_back(kMyScore);
+		keys.push_back(kMyRereading);
+		keys.push_back(kMyRereadingChap);
+		keys.push_back(kMyStatus);
+		keys.push_back(kMyStartDate);
+		keys.push_back(kMyFinishDate);
+		keys.push_back(kMyLastUpdated);
+	}
 	void GetUserAnimeEntryKeys(KeyList& keys)
 	{
 		keys.push_back(kMyId);
@@ -140,13 +171,22 @@ namespace
 		keys.push_back(kUserId);
 		keys.push_back(kUserName);
 		keys.push_back(kPass);
+	}
+	void GetUserInfoAnimeKeys(KeyList& keys)
+	{
 		keys.push_back(kUserWatching);
 		keys.push_back(kUserCompleted);
 		keys.push_back(kUserOnhold);
 		keys.push_back(kUserDropped);
 		keys.push_back(kUserPtw);
 		keys.push_back(kUserDaysSpentWatching);
+	}
+	void GetUserInfoMangaKeys(KeyList& keys)
+	{
 		keys.push_back(kUserReading);
+		keys.push_back(kUserCompleted);
+		keys.push_back(kUserOnhold);
+		keys.push_back(kUserDropped);
 		keys.push_back(kUserPtr);
 		keys.push_back(kUserDaysSpentReading);
 	}

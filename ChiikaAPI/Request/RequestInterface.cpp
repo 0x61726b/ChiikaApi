@@ -144,7 +144,7 @@ namespace ChiikaApi
 		
 	}
 	//----------------------------------------------------------------------------
-	ChiString RequestInterface::GetAnimeXML(const UserAnimeEntry& anime)
+	ChiString RequestInterface::GetAnimeXML(UserAnimeEntry& anime)
 	{
 		pugi::xml_document doc;
 		pugi::xml_node entry = doc.append_child("entry");
@@ -170,9 +170,9 @@ namespace ChiikaApi
 		decl.append_attribute("encoding") = "UTF-8";
 
 
-		episode.text().set(anime.WatchedEpisodes);
-		status.text().set(anime.Status);
-		score.text().set(anime.Score);
+		episode.text().set(anime.GetKeyValue(kMyWatchedEpisodes).c_str());
+		status.text().set(ToStd(anime.GetKeyValue(kMyStatus)));
+		score.text().set(ToStd(anime.GetKeyValue(kMyScore)));
 		std::stringstream str;
 		xml_string_writer writer;
 

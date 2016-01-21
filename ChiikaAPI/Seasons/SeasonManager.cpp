@@ -82,7 +82,7 @@ namespace ChiikaApi
 
 		ForEachOnStd(It,m_SenpaiData)
 		{
-			if(list.find(It->MalID) != list.end())
+			if(list.find(std::to_string(It->MalID)) != list.end())
 			{
 				sd.push_back(*It);
 			}

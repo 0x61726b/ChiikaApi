@@ -17,6 +17,7 @@
 #include "RequestManager.h"
 #include "AccountVerify.h"
 #include "GetMyAnimelist.h"
+#include "GetMyMangalist.h"
 #include "Root\Root.h"
 #include "Root\ThreadManager.h"
 //----------------------------------------------------------------------------
@@ -52,6 +53,15 @@ namespace ChiikaApi
 	void RequestManager::GetMyAnimelist(RequestListener* listener)
 	{
 		GetMyAnimeListRequest* request = new GetMyAnimeListRequest;
+		request->Initialize();
+		request->SetOptions();
+		request->AddListener(listener);
+		Root::Get()->GetThreadManager()->PostRequest(request);
+	}
+
+	void RequestManager::GetMyMangalist(RequestListener* listener)
+	{
+		GetMyMangaListRequest* request = new GetMyMangaListRequest;
 		request->Initialize();
 		request->SetOptions();
 		request->AddListener(listener);

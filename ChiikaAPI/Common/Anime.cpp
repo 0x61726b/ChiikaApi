@@ -21,65 +21,11 @@ namespace ChiikaApi
 {
 	Anime::Anime()
 	{
-		Id = UnknownAnimeId;
-		Title = "";
-		English = "";
-		EpisodeCount = 0;
-		Type = AnimeType::TV;
-		Status = AnimeStatus::NotAired;
-		StartDate = "";
-		EndDate = "";
-		Image = "";
-
 	}
 	//----------------------------------------------------------------------------
 	void Anime::SetKeyValue(const std::string& key,const std::string& value)
 	{
-		if(key == kSeriesAnimedbId)
-		{
-			Id = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kSeriesTitle)
-		{
-			Title = value;
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kSeriesSynonyms)
-		{
-			English = value;
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kSeriesType)
-		{
-			Type = (AnimeType)atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kSeriesEpisodes)
-		{
-			EpisodeCount = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kSeriesStatus)
-		{
-			Status = (AnimeStatus)atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kSeriesStart)
-		{
-			StartDate = value;
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kSeriesEnd)
-		{
-			EndDate = value;
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kSeriesImage)
-		{
-			Image = value;
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
+		m_KeyMap.insert(KeyMap::value_type(key, value));
 	}
 	//----------------------------------------------------------------------------
 	const std::string& Anime::GetKeyValue(const std::string& key)
@@ -103,66 +49,11 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	UserAnimeEntry::UserAnimeEntry()
 	{
-		MyId = 0;
-		Score = 0;
-		WatchedEpisodes = 0;
-		StartDate = "";
-		EndDate = "";
-		Status = AnimeUserStatus::PlanToWatch;
-		Rewatching = 0;
-		RewatchingEp = 0;
-		LastUpdated = "";
-		UpdateOperation = CRUDOp::Nothing;
 	}
 	//----------------------------------------------------------------------------
 	void UserAnimeEntry::SetKeyValue(const std::string& key,const std::string& value)
 	{
-		if(key == kMyId)
-		{
-			MyId = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kMyWatchedEpisodes)
-		{
-			WatchedEpisodes = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kMyRewatchingEp)
-		{
-			RewatchingEp = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kMyScore)
-		{
-			Score = (AnimeType)atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kMyRewatching)
-		{
-			Rewatching = atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kMyStatus)
-		{
-			Status = (AnimeUserStatus)atoi(ToStd(value));
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kMyStartDate)
-		{
-			StartDate = value;
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kMyFinishDate)
-		{
-			EndDate = value;
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-		if(key == kMyLastUpdated)
-		{
-			LastUpdated = value;
-			m_KeyMap.insert(KeyMap::value_type(key,value));
-		}
-
+		m_KeyMap.insert(KeyMap::value_type(key, value));
 	}
 	//----------------------------------------------------------------------------
 	const std::string& UserAnimeEntry::GetKeyValue(const std::string& key)

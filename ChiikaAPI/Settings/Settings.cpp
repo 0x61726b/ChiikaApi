@@ -70,8 +70,8 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AppSettings::SetDefaultValues()
 	{
-		ChiString dataPath = (m_sGlobalPath)+"/Data";
-		m_sSettingsPath = dataPath + "/Chiika.cfg";
+		ChiString dataPath = (m_sGlobalPath)+"\\Data";
+		m_sSettingsPath = dataPath + "\\Chiika.cfg";
 
 		Initialize();
 

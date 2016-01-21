@@ -90,7 +90,7 @@ namespace ChiikaApi
 		void Initialize();
 		void Load();
 		void Save();
-		typedef Map<MangaInfo,MangaInfo>::type hehehe;
+		
 		void SetAnimeFolderPath(ChiString path);
 
 		/* A new era starts here*/

@@ -19,7 +19,7 @@
 namespace ChiikaApi
 {
 	/** Little Explanation on how settings work on Chiika
-		We have OptionsEnum and an option map which is used to "ChiStringfy" this option enum
+		We have OptionsEnum and an option map which is used to "stringfy" this option enum
 		that is used when writing to XML. Different types of settings(ChiString,bool,int)
 		will implement Setting interface and they will be stored as pointers on the singleton class
 		The reason I chose to do this is purely laziness.I didnt want to hard code every possible setting

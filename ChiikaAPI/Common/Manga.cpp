@@ -12,33 +12,24 @@
 //You should have received a copy of the GNU General Public License along
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
+//
+//	Date: 21.1.2016
+//	authors: arkenthera
+//	Description:
 //----------------------------------------------------------------------------
-#ifndef __AddToAnimelist_h__
-#define __AddToAnimelist_h__
+#include "Stable.h"
+#include "Manga.h"
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
-#include "RequestInterface.h"
-//---------------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	class MalApiExport AddToAnimeListRequest : public RequestInterface,public CurlEventListener
+	Manga::Manga()
 	{
-	public:
-		AddToAnimeListRequest();
-		virtual ~AddToAnimeListRequest();
-		void OnSuccess();
-		void OnError() ;
+	}
+	UserMangaEntry::UserMangaEntry()
+	{
 
-		void Initialize();
-		void Initiate();
-		void SetOptions();
-
-		void SetPostData();
-		void SetAnimeData(const UserAnimeEntry& anime);
-
-	private:
-		UserAnimeEntry m_Anime;
-	};
+	}
 }
-#endif
-//---------------------------------------------------------------------------

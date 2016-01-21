@@ -36,30 +36,31 @@ namespace ChiikaApi
 		void AddAnimeUpdateList(const UserAnimeList& list);
 		void AddAnimeList(AnimeList list);
 
+		void AddMangaList(const UserMangaList& list);
 		void AddMangaList(const MangaList& list);
 		void AddMangaUpdateList(const MangaList& list);
 
-		void AddAnime(const UserAnimeEntry& anime);
-		void AddAnimeToUpdates(const UserAnimeEntry& anime);
+		void AddAnime(UserAnimeEntry& anime);
+		void AddAnimeToUpdates(UserAnimeEntry& anime);
 
-		void DeleteAnimeFromUpdates(const UserAnimeEntry& anime);
-		void DeleteAnime(const UserAnimeEntry& anime);
-		void UpdateAnime(const UserAnimeEntry& anime);
+		void DeleteAnimeFromUpdates(UserAnimeEntry& anime);
+		void DeleteAnime(UserAnimeEntry& anime);
+		void UpdateAnime(UserAnimeEntry& anime);
 
 		void UpdateAnimeList(const UserAnimeList& list);
 
-		void AddManga(const MangaInfo& anime);
-		void AddMangaToUpdates(const MangaInfo& anime);
+		void AddManga(const UserMangaEntry& anime);
+		void AddMangaToUpdates(const UserMangaEntry& anime);
 
-		void DeleteMangaFromUpdates(const MangaInfo& anime);
-		void DeleteManga(const MangaInfo& anime);
-		void UpdateManga(const MangaInfo& anime);
+		void DeleteMangaFromUpdates(const UserMangaEntry& anime);
+		void DeleteManga(const UserMangaEntry& anime);
+		void UpdateManga(const UserMangaEntry& anime);
 
 
 		const UserAnimeList& GetAnimeList() const;
 		const UserAnimeList& GetAnimeUpdateList() const;
 
-		const MangaList& GetMangaList() const;
+		const UserMangaList& GetMangaList() const;
 		const MangaList& GetMangaUpdateList() const;
 
 		void RequestDownloadAnimeStats(const UserAnimeEntry& info);
@@ -75,6 +76,8 @@ namespace ChiikaApi
 		UserAnimeList m_vAnimeUpdateList;
 
 		MangaList m_vMangaList;
+		UserMangaList m_vUserMangaList;
+
 		MangaList m_vMangaUpdateList;
 	};
 }

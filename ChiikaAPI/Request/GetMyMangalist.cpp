@@ -12,9 +12,13 @@
 //You should have received a copy of the GNU General Public License along
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
+//
+//	Date: 21.1.2016
+//	authors: arkenthera
+//	Description:
 //----------------------------------------------------------------------------
 #include "Stable.h"
-#include "GetMyAnimelist.h"
+#include "GetMyMangaList.h"
 #include "Database\LocalDataManager.h"
 #include "Request\MalManager.h"
 #include "Root\Root.h"
@@ -22,39 +26,39 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	GetMyAnimeListRequest::GetMyAnimeListRequest()
+	GetMyMangaListRequest::GetMyMangaListRequest()
 	{
-		m_sName = kRequestGetMyAnimelist;
+		m_sName = kRequestGetMyMangalist;
 	}
 	//----------------------------------------------------------------------------
-	GetMyAnimeListRequest::~GetMyAnimeListRequest()
+	GetMyMangaListRequest::~GetMyMangaListRequest()
 	{
 	}
 	//----------------------------------------------------------------------------
-	void GetMyAnimeListRequest::OnSuccess()
+	void GetMyMangaListRequest::OnSuccess()
 	{
 		pugi::xml_document doc;
 
 		bool parse = doc.load(m_Curl->GetResponse().c_str());
 
-		if (!parse)
-		{
-			RequestInterface::OnError();
-			return;
-		}
 
 		KeyList keys;
-		GetUserAnimeEntryKeys(keys);
+		GetUserMangaEntryKeys(keys);
 
 		UserInfo ui = Root::Get()->GetUser();
 
-		pugi::xml_node  myanimelist = doc.child("myanimelist");
-		pugi::xml_node  user = myanimelist.child("myinfo");
+		XmlNode  myanimelist = doc.child("myanimelist");
+		XmlNode  user = myanimelist.child("myinfo");
 
-		for(pugi::xml_node userChild = user.first_child(); userChild; userChild = userChild.next_sibling())
+		
+
+		for (XmlNode userChild = user.first_child(); userChild; userChild = userChild.next_sibling())
 		{
 			const char* name = userChild.name();
 			const char* val = userChild.text().get();
+
+			if (strcmp(name,kUserDaysSpentWatching) == 0)
+				name = kUserDaysSpentReading;
 
 			if (strcmp(name, kUserId) == 0 || strcmp(name, kUserName) == 0)
 			{
@@ -62,82 +66,81 @@ namespace ChiikaApi
 			}
 			else
 			{
-				ui.Anime.SetKeyValue(name, val);
+				ui.Manga.SetKeyValue(name, val);
 			}
 		}
 		Root::Get()->SetUser(ui);
 
-		UserAnimeList list;
-		AnimeList animeList;
-		for(pugi::xml_node anime = myanimelist.child(kAnime); anime; anime = anime.next_sibling())
+		UserMangaList list;
+		MangaList animeList;
+		for (XmlNode manga = myanimelist.child(kManga); manga; manga = manga.next_sibling())
 		{
-			Anime Anime;
-			UserAnimeEntry info;
-			for(pugi::xml_node animeChild = anime.first_child(); animeChild; animeChild = animeChild.next_sibling())
+			Manga Manga;
+			UserMangaEntry info;
+			for (XmlNode mangaChild = manga.first_child(); mangaChild; mangaChild = mangaChild.next_sibling())
 			{
-				const char* name = animeChild.name();
-				const char* val = animeChild.text().get();
+				const char* name = mangaChild.name();
+				const char* val = mangaChild.text().get();
 
-				Anime.SetKeyValue(name,val);
-				info.SetKeyValue(name,val);
+				Manga.SetKeyValue(name, val);
+				info.SetKeyValue(name, val);
 			}
-			animeList.insert(ChiikaApi::AnimeList::value_type(Anime.GetKeyValue(kSeriesAnimedbId),Anime));
-			info.Anime = Anime;
-			list.insert(UserAnimeList::value_type(Anime.GetKeyValue(kSeriesAnimedbId), info));
+			animeList.insert(ChiikaApi::MangaList::value_type(Manga.GetKeyValue(kSeriesMangadbId), Manga));
+			info.Manga = Manga;
+			list.insert(UserMangaList::value_type(Manga.GetKeyValue(kSeriesMangadbId), info));
 		}
-		if(MalManager::Get())
+		if (MalManager::Get())
 		{
-			MalManager::Get()->AddAnimeList(list);
-			MalManager::Get()->AddAnimeList(animeList);
+			MalManager::Get()->AddMangaList(list);
+			MalManager::Get()->AddMangaList(animeList);
 		}
 
-		if (Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveAnimeList();
-		if (Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveAnimeDetails();
+		if (Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveMangaList();
 		if (Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveUserInfo();
 
 		RequestInterface::OnSuccess();
 	}
 	//----------------------------------------------------------------------------
-	void GetMyAnimeListRequest::OnError()
+	void GetMyMangaListRequest::OnError()
 	{
 		RequestInterface::OnError();
 	}
 	//----------------------------------------------------------------------------
-	void GetMyAnimeListRequest::Initialize()
+	void GetMyMangaListRequest::Initialize()
 	{
 		m_Curl = new CurlRequest;
 		m_Curl->Initialize();
 		m_Curl->AddListener(this);
 	}
 	//----------------------------------------------------------------------------
-	void GetMyAnimeListRequest::SetPostData()
+	void GetMyMangaListRequest::SetPostData()
 	{
 
 	}
 	//----------------------------------------------------------------------------
-	void GetMyAnimeListRequest::SetOptions()
+	void GetMyMangaListRequest::SetOptions()
 	{
 		ChiString url;
 		int method;
 		UserInfo ui = Root::Get()->GetUser();
-		
+
 		ChiString userName = ui.GetKeyValue(kUserName);
 		ChiString passWord = ui.GetKeyValue(kPass);
 
-		url = "http://myanimelist.net/malappinfo.php?u=" + userName + "&type=anime&status=all";
+		url = "http://myanimelist.net/malappinfo.php?u=" + userName + "&type=manga&status=all";
 		method = CURLOPT_HTTPGET;
 
 		m_Curl->SetUrl(url);
 		m_Curl->SetAuth(userName + ":" + passWord);
-		m_Curl->SetMethod(method,"");
+		m_Curl->SetMethod(method, "");
 		m_Curl->SetWriteFunction(NULL);
 
 		m_Curl->SetReady();
 	}
 	//----------------------------------------------------------------------------
-	void GetMyAnimeListRequest::Initiate()
+	void GetMyMangaListRequest::Initiate()
 	{
-		
+
 	}
 	//----------------------------------------------------------------------------
 }

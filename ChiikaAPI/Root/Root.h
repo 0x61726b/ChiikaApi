@@ -51,13 +51,6 @@ namespace ChiikaApi
 		void Initialize(RootOptions*);
 		void Destroy();
 
-		void AddAnimeToList(const UserAnimeEntry& data);
-		void UpdateAnime(const UserAnimeEntry& data);
-		void DeleteAnime(const UserAnimeEntry& name);
-
-		void AddMangaToList(const MangaInfo& data);
-		void UpdateManga(const MangaInfo& data);
-
 		void PostRequest(RequestInterface* r);
 
 		RootOptions* GetRootOptions() { return options; }
@@ -68,6 +61,7 @@ namespace ChiikaApi
 		void SetUser(UserInfo);
 
 		const UserAnimeList& GetUserAnimelist();
+		const UserMangaList& GetUserMangalist();
 
 		ThreadManager* GetThreadManager();
 		RequestManager* GetRequestManager();

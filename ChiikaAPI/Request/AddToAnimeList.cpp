@@ -70,13 +70,13 @@ namespace ChiikaApi
 		ChiString userName = ui.GetKeyValue(kUserName);
 		ChiString passWord = ui.GetKeyValue(kPass);
 
-		if (m_Anime.Anime.Id == UnknownAnimeId)
+		if (m_Anime.Anime.GetKeyValue(kSeriesAnimedbId) == "-1")
 		{
 			m_Curl->SetErrorCode(RequestCodes::BAD_PARAMETER);
 			RequestInterface::OnError();
 			return;
 		}
-		url = "http://myanimelist.net/api/animelist/add/" + std::to_string(m_Anime.Anime.Id) + ".xml";
+		url = "http://myanimelist.net/api/animelist/add/" + (m_Anime.Anime.GetKeyValue(kSeriesAnimedbId)) + ".xml";
 		method = CURLOPT_HTTPPOST;
 
 		ChiStringUtil strUtil;

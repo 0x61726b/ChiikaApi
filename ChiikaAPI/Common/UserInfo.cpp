@@ -24,28 +24,4 @@ namespace ChiikaApi
 
 	}
 	//----------------------------------------------------------------------------
-	void UserInfo::SetKeyValue(const std::string& key,const std::string& value)
-	{
-		KeyMap::iterator It = m_KeyMap.find(key);
-		if (It != m_KeyMap.end()) //Key exists
-		{
-			It->second = value;
-		}
-		else
-		{
-			m_KeyMap.insert(KeyMap::value_type(key, value));
-		}
-		
-	}
-	//----------------------------------------------------------------------------
-	void UserInfo::SetUserName(const std::string& u)
-	{
-		
-	}
-	//----------------------------------------------------------------------------
-	void UserInfo::SetPass(const std::string& p)
-	{
-		
-	}
-	//----------------------------------------------------------------------------
 }

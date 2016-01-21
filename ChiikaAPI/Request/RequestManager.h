@@ -32,7 +32,9 @@ namespace ChiikaApi
 
 
 		void VerifyUser(RequestListener* listener);
+
 		void GetMyAnimelist(RequestListener* listener);
+		void GetMyMangalist(RequestListener* listener);
 	};
 }
 //----------------------------------------------------------------------------

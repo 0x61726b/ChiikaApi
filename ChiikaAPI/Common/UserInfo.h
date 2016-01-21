@@ -20,50 +20,6 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	struct MalApiExport UserAnimeStats
-	{
-		int Watching;
-		int Completed;
-		int OnHold;
-		int Dropped;
-		int PlanToWatch;
-		double DaySpentAnime;
-		UserAnimeStats()
-		{
-			Watching = 0;
-			Completed = 0;
-			Dropped = 0;
-			PlanToWatch = 0;
-			OnHold = 0;
-			DaySpentAnime = 0.0;
-		}
-		virtual ~UserAnimeStats()
-		{
-		}
-	};
-	struct MalApiExport UserMangaInfo
-	{
-		int Reading;
-		int Completed;
-		int OnHold;
-		int Dropped;
-		int PlanToRead;
-		double DaysSpentReading;
-
-		UserMangaInfo()
-		{
-			Reading = 0;
-			Completed = 0;
-			OnHold = 0;
-			Dropped = 0;
-			PlanToRead = 0;
-			DaysSpentReading = 0.0;
-		}
-		virtual ~UserMangaInfo()
-		{
-
-		}
-	};
 
 	class MalApiExport UserInfo : public DictionaryBase
 	{
@@ -72,13 +28,8 @@ namespace ChiikaApi
 		virtual ~UserInfo()
 		{
 		}
-		void SetUserName(const std::string&);
-		void SetPass(const std::string&);
-	public:
-		UserAnimeStats AnimeStats;
-		UserMangaInfo MangaInfo;
-
-		void SetKeyValue(const std::string&, const std::string&);
+		Anime Anime;
+		Manga Manga;
 	};
 }
 #endif

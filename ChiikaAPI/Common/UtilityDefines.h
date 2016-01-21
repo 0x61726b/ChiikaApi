@@ -47,13 +47,25 @@
 #	define TryDelete(x) if(x) delete x
 #	define InitializeNULL(x) x = NULL
 #	define TryDestroy(x) if(x) x->Destroy();
+#	define XmlNode pugi::xml_node
 namespace ChiikaApi
 {
 	class DictionaryBase
 	{
 	public:
 		typedef Vector<const std::string>::type KeyList;
-		virtual void SetKeyValue(const std::string&, const std::string&) = 0;
+		virtual void SetKeyValue(const std::string& key, const std::string& value)
+		{
+			KeyMap::iterator It = m_KeyMap.find(key);
+			if (It != m_KeyMap.end()) //Key exists
+			{
+				It->second = value;
+			}
+			else
+			{
+				m_KeyMap.insert(KeyMap::value_type(key, value));
+			}
+		};
 		virtual const std::string& GetKeyValue(const std::string& key)
 		{
 			KeyMap::iterator It = m_KeyMap.find(key);

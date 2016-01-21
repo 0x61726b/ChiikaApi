@@ -46,31 +46,7 @@ namespace ChiikaApi
 
 
 #pragma region Enums
-	
-	enum MangaType
-	{
-		Normal = 1,
-		Novel = 2,
-		Oneshot = 3,
-		Doujinshi = 4,
-		Manwha = 5,
-		Manhua = 6
-	};
-	enum MangaUserStatus
-	{
-		Reading = 1,
-		MangaCompleted = 2,
-		MangaOnHold = 3,
-		MangaDropped = 4,
-		PlanToRead = 6
-	};
 
-	enum MangaStatus
-	{
-		MangaFinished = 2,
-		Publishing = 1,
-		NotYetPublished = 3
-	};
 	enum CRUDOp
 	{
 		Nothing,
@@ -90,35 +66,7 @@ namespace ChiikaApi
 
 #pragma region Anime and Manga
 
-	struct Manga
-	{
-		int Id;
-		ChiString Title;
-		ChiString English;
-		MangaType Type;
-		int Chapters;
-		int Volumes;
-		MangaStatus Status;
-		ChiString StartDate;
-		ChiString EndDate;
-		ChiString Image;
-		ChiString Synopsis;
-		Manga()
-		{
-			Id = 0;
-			Title = "";
-			English = "";
-			Type = MangaType::Normal;
-			Chapters = 0;
-			Volumes = 0;
-			Status = MangaStatus::MangaFinished;
-			StartDate = "";
-			EndDate = "";
-			Image = "";
-			Synopsis = "";
-		}
-	};
-
+	
 
 	struct AnimeFileInfo
 	{
@@ -126,35 +74,7 @@ namespace ChiikaApi
 		std::vector<ChiString> EpisodePaths;
 	};
 	
-	typedef struct _MangaInfo
-	{
-		Manga Mango;
-		int MyId;
-		int ReadChapters;
-		int ReadVolumes;
-		ChiString StartDate;
-		ChiString EndDate;
-		int Score;
-		MangaUserStatus Status;
-		int Rereading;
-		int RereadChapters;
-		ChiString LastUpdated;
-		CRUDOp UpdateOperation;
-		_MangaInfo()
-		{
-			MyId = 0;
-			ReadChapters = 0;
-			ReadVolumes = 0;
-			StartDate = "";
-			EndDate = "";
-			Score = 0;
-			Status = MangaUserStatus::PlanToRead;
-			Rereading = 0;
-			RereadChapters = 0;
-			LastUpdated = "";
-			UpdateOperation = CRUDOp::Nothing;
-		}
-	} MangaInfo;
+
 #pragma endregion
 
 	struct AnimeFileDetails
@@ -200,17 +120,20 @@ namespace ChiikaApi
 	};
 }
 #include "Anime.h"
+#include "Manga.h"
 #include "UserInfo.h"
 
 namespace ChiikaApi
 {
-	typedef Map<int, UserAnimeEntry>::type UserAnimeList;
+	typedef Map<std::string, UserAnimeEntry>::type UserAnimeList;
+	typedef Map<std::string, UserMangaEntry>::type UserMangaList;
 
-	typedef Map<int, MangaInfo>::type MangaList;
+	
 
 	typedef UserAnimeList::iterator AnimeListIt;
 
-	typedef Map<int, Anime>::type AnimeList;
+	typedef Map<std::string, Anime>::type AnimeList;
+	typedef Map<std::string, Manga>::type MangaList;
 
 	typedef MangaList::iterator MangaListIt;
 

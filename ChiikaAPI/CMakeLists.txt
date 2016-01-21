@@ -22,6 +22,8 @@ set(ChiikaApi_Common_Src
   Common/UserInfo.cpp
   Common/Anime.h
   Common/Anime.cpp
+  Common/Manga.h
+  Common/Manga.cpp
   )
 source_group(ChiikaApi\\\\Common FILES ${ChiikaApi_Common_Src})
 
@@ -103,6 +105,8 @@ set(ChiikaApi_Request_Src
   Request/AccountVerify.cpp
   Request/GetMyAnimelist.h
   Request/GetMyAnimelist.cpp
+  Request/GetMyMangalist.h
+  Request/GetMyMangalist.cpp
   Request/AddToAnimeList.h
   Request/AddToAnimeList.cpp
   )

@@ -183,6 +183,23 @@ namespace ChiikaApi
 		{
 			m_User.SetKeyValue(userKeys[j],user.GetKeyValue(userKeys[j]));
 		}
+
+		KeyList mangaKeys;
+		GetUserInfoMangaKeys(mangaKeys);
+
+		FOR_(mangaKeys, j)
+		{
+			m_User.Manga.SetKeyValue(mangaKeys[j], user.Manga.GetKeyValue(mangaKeys[j]));
+		}
+
+		KeyList animeKeys;
+		GetUserInfoAnimeKeys(animeKeys);
+
+		FOR_(animeKeys, j)
+		{
+			m_User.Anime.SetKeyValue(animeKeys[j], user.Anime.GetKeyValue(animeKeys[j]));
+		}
+
 	}
 	//----------------------------------------------------------------------------
 	const UserAnimeList& Root::GetUserAnimelist()
@@ -190,44 +207,16 @@ namespace ChiikaApi
 		return GetMyAnimelistManager()->GetAnimeList();
 	}
 	//----------------------------------------------------------------------------
+	const UserMangaList& Root::GetUserMangalist()
+	{
+		return GetMyAnimelistManager()->GetMangaList();
+	}
+	//----------------------------------------------------------------------------
 	void Root::PostRequest(RequestInterface* r)
 	{
 		GetThreadManager()->PostRequest(r);
 	}
 	//----------------------------------------------------------------------------
-	void Root::AddAnimeToList(const UserAnimeEntry& info)
-	{
-		//UserAnimeEntry anime = info;
-		//anime.UpdateOperation = CRUDOp::Create;
-		//m_pMalManager->AddAnimeToUpdates(anime);
-		//m_pRequestManager->CreateCRUDRequest(this,anime,MangaInfo(),ChiikaApi::CRUDOp::Create,CRUDTarget::ANIME);
-	}
-	//----------------------------------------------------------------------------
-	void Root::UpdateAnime(const UserAnimeEntry& info)
-	{
-		//UserAnimeEntry anime = info;
-		//anime.UpdateOperation = CRUDOp::Update;
-		//m_pMalManager->AddAnimeToUpdates(anime);
-		//m_pRequestManager->CreateCRUDRequest(this,info,MangaInfo(),ChiikaApi::CRUDOp::Update,CRUDTarget::ANIME);
-	}
-	//----------------------------------------------------------------------------
-	void Root::DeleteAnime(const UserAnimeEntry& info)
-	{
-		//UserAnimeEntry anime = info;
-		//anime.UpdateOperation = CRUDOp::Delete;
-		//m_pMalManager->AddAnimeToUpdates(anime);
-		//m_pRequestManager->CreateCRUDRequest(this,info,MangaInfo(),ChiikaApi::CRUDOp::Delete,CRUDTarget::ANIME);
-	}
-	//----------------------------------------------------------------------------
-	void Root::AddMangaToList(const MangaInfo& info)
-	{
-
-	}
-	//----------------------------------------------------------------------------
-	void Root::UpdateManga(const MangaInfo& info)
-	{
-
-	}
 
 	ChiString Root::GetVersion()
 	{
@@ -257,6 +246,9 @@ namespace ChiikaApi
 
 		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYANIMELIST_SUCCESS,strcat(strdup(kRequestGetMyAnimelist),kRequestSuccess)));
 		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYANIMELIST_ERROR,strcat(strdup(kRequestGetMyAnimelist),kRequestError)));
+
+		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYMANGALIST_SUCCESS, strcat(strdup(kRequestGetMyMangalist), kRequestSuccess)));
+		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYMANGALIST_ERROR, strcat(strdup(kRequestGetMyMangalist), kRequestError)));
 	}
 }
 

@@ -12,33 +12,54 @@
 //You should have received a copy of the GNU General Public License along
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
+//
+//	Date: 21.1.2016
+//	authors: arkenthera
+//	Description:
 //----------------------------------------------------------------------------
-#ifndef __AddToAnimelist_h__
-#define __AddToAnimelist_h__
+#ifndef __Manga_h__
+#define __Manga_h__
 //----------------------------------------------------------------------------
 #include "Common\Required.h"
-#include "RequestInterface.h"
-//---------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	class MalApiExport AddToAnimeListRequest : public RequestInterface,public CurlEventListener
+	enum MangaType
+	{
+		Normal = 1,
+		Novel = 2,
+		Oneshot = 3,
+		Doujinshi = 4,
+		Manwha = 5,
+		Manhua = 6
+	};
+	enum MangaUserStatus
+	{
+		Reading = 1,
+		MangaCompleted = 2,
+		MangaOnHold = 3,
+		MangaDropped = 4,
+		PlanToRead = 6
+	};
+
+	enum MangaStatus
+	{
+		MangaFinished = 2,
+		Publishing = 1,
+		NotYetPublished = 3
+	};
+
+	class MalApiExport Manga : public DictionaryBase
 	{
 	public:
-		AddToAnimeListRequest();
-		virtual ~AddToAnimeListRequest();
-		void OnSuccess();
-		void OnError() ;
-
-		void Initialize();
-		void Initiate();
-		void SetOptions();
-
-		void SetPostData();
-		void SetAnimeData(const UserAnimeEntry& anime);
-
-	private:
-		UserAnimeEntry m_Anime;
+		Manga();
+	};
+	class MalApiExport UserMangaEntry : public DictionaryBase
+	{
+	public:
+		UserMangaEntry();
+		Manga Manga;
 	};
 }
+
 #endif
-//---------------------------------------------------------------------------

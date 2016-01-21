@@ -79,16 +79,6 @@ namespace ChiikaApi
 	private:
 		KeyMap m_KeyMap;
 	public:
-		int Id;
-		ChiString Title;
-		ChiString English;
-		int EpisodeCount;
-		AnimeType Type;
-		AnimeStatus Status;
-		ChiString StartDate;
-		ChiString EndDate;
-		ChiString Image;
-
 		//Experimental
 		AnimeDetails ExtraDetails;
 		AnimeStatistics Statistics;
@@ -98,16 +88,6 @@ namespace ChiikaApi
 	{
 	public:
 		Anime Anime;
-		int MyId;
-		int WatchedEpisodes;
-		ChiString StartDate;
-		ChiString EndDate;
-		int Score;
-		AnimeUserStatus Status;
-		int Rewatching;
-		int RewatchingEp;
-		ChiString LastUpdated;
-		CRUDOp UpdateOperation;
 
 		void SetKeyValue(const std::string&, const std::string&);
 		const std::string& GetKeyValue(const std::string&);

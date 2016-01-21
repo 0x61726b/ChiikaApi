@@ -47,7 +47,7 @@ namespace ChiikaApi
 
 		const std::string& GetName();
 
-		ChiString GetAnimeXML(const UserAnimeEntry& anime);
+		ChiString GetAnimeXML(UserAnimeEntry& anime);
 
 	public:
 		void AddListener(RequestListener* listener);
