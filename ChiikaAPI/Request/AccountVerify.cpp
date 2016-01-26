@@ -50,10 +50,6 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AccountVerifyRequest::OnError()
 	{
-		UserInfo ui;
-		userInfo.SetKeyValue(kUserId,"-1");
-		if (Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SetUserInfo(userInfo);
-
 		RequestInterface::OnError();
 	}
 	//----------------------------------------------------------------------------
