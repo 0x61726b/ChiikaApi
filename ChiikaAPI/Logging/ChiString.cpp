@@ -15,6 +15,8 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "ChiString.h"
+#include "boost\regex.hpp"
+#include "Logging\LogManager.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -61,6 +63,19 @@ namespace ChiikaApi
 				out.replace(out.size()-1,1,"");
 		}
 		return out;
+	}
+	//----------------------------------------------------------------------------
+	ChiString ChiStringUtil::ParseSubelement(ChiString data, ChiString searchStart, ChiString searchEnd)
+	{
+		ChiStringUtil strUtil;
+		int start = data.find(searchStart);
+		int end = data.find(searchEnd,start);
+
+		ChiString first = strUtil.GetMiddle(data,start,end-start);
+		first = strUtil.GetMiddle(first,searchStart.size(),first.size() - searchStart.size());
+		first = strUtil.Trim(first);
+		
+		return first;
 	}
 }
 //----------------------------------------------------------------------------

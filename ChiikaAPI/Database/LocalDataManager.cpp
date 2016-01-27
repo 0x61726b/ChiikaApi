@@ -271,7 +271,7 @@ namespace ChiikaApi
 				}
 
 				KeyList uaeList;
-				GetUserAnimeEntryKeys(uaeList);
+				GetUserMangaEntryKeys(uaeList);
 
 				for (size_t i = 0; i < uaeList.size(); i++)
 				{

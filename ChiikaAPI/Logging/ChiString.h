@@ -28,6 +28,8 @@ namespace ChiikaApi
 		virtual std::string GetLeft(std::string str,std::size_t count);
 		std::string GetRight(std::string str,std::size_t count);
 		std::string Trim(std::string);
+
+		std::string ParseSubelement(std::string c,std::string start,std::string end);
 	};
 }
 //----------------------------------------------------------------------------

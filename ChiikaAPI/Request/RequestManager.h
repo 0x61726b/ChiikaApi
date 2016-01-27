@@ -35,6 +35,8 @@ namespace ChiikaApi
 
 		void GetMyAnimelist(RequestListener* listener);
 		void GetMyMangalist(RequestListener* listener);
+
+		void MalScrape(RequestListener* listener);
 	};
 }
 //----------------------------------------------------------------------------

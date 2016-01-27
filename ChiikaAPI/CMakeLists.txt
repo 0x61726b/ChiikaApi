@@ -109,6 +109,8 @@ set(ChiikaApi_Request_Src
   Request/GetMyMangalist.cpp
   Request/AddToAnimeList.h
   Request/AddToAnimeList.cpp
+  Request/MalScrape.cpp
+  Request/MalScrape.h
   )
 source_group(ChiikaApi\\\\Request FILES ${ChiikaApi_Request_Src})
 
@@ -212,6 +214,7 @@ target_link_libraries(ChiikaApi Anitomy)
 link_boost_library(ChiikaApi filesystem)
 link_boost_library(ChiikaApi thread)
 link_boost_library(ChiikaApi system)
+link_boost_library(ChiikaApi regex)
 
 include_directories(${Boost_INCLUDE_DIRS})
 add_subdirectory(HelloWorld)

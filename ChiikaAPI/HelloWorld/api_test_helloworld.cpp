@@ -61,6 +61,8 @@ int main()
 	Root r;
 	r.Initialize(&opts);
 
+	r.GetRequestManager()->MalScrape(&tel);
+
 	//r.GetRequestManager()->GetMyMangalist(&tel);
 
 

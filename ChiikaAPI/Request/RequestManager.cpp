@@ -18,6 +18,7 @@
 #include "AccountVerify.h"
 #include "GetMyAnimelist.h"
 #include "GetMyMangalist.h"
+#include "MalScrape.h"
 #include "Root\Root.h"
 #include "Root\ThreadManager.h"
 //----------------------------------------------------------------------------
@@ -66,6 +67,17 @@ namespace ChiikaApi
 		request->SetOptions();
 		request->AddListener(listener);
 		Root::Get()->GetThreadManager()->PostRequest(request);
+	}
+
+	void RequestManager::MalScrape(RequestListener* listener)
+	{
+		MalScrapeRequest* request = new MalScrapeRequest;
+
+		request->Initialize();
+		request->SetOptions();
+		request->AddListener(listener);
+
+		request->OnSuccess();
 	}
 	//----------------------------------------------------------------------------
 }
