@@ -57,7 +57,7 @@ int main()
 	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
 	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
 	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");*/
-	//r.GetRequestManager()->AnimePageScrape(&tel, 31442);
+	r.GetRequestManager()->MalAjax(&tel, 20047);
 	//r.GetRequestManager()->MalScrape(&tel);
 	//r.GetRequestManager()->DownloadImage(&tel);
 	//r.GetRequestManager()->GetMyAnimelist(&tel);

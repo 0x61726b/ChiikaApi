@@ -42,7 +42,7 @@ namespace ChiikaApi
 
 		ChiString data = m_Curl->GetResponse();
 
-		AnimeMisc result = MyAnimelistUtility::ParseAnimePage(data);
+		//AnimeMisc result = MyAnimelistUtility::ParseAnimePage(data);
 
 
 		AnimeList& list = Root::Get()->GetMyAnimelistManager()->GetAnimes();
@@ -52,7 +52,23 @@ namespace ChiikaApi
 		if(It != list.end())
 		{
 			Anime& a = It->second;
-			a.Misc = result;
+
+			AnimeMisc miscKappa;
+			
+			DictionaryBase genre;
+			genre.SetKeyValue(kGenre,"Test");
+
+			DictionaryBase genre2;
+			genre2.SetKeyValue(kGenre,"Test 2");
+
+			DictionaryBase genre3;
+			genre3.SetKeyValue(kGenre,"Test 3");
+			
+			miscKappa.Genres.push_back(genre);
+			miscKappa.Genres.push_back(genre2);
+			miscKappa.Genres.push_back(genre3);
+
+			a.Misc = miscKappa;
 		}
 
 		Root::Get()->GetLocalDataManager()->SaveAnimeList();

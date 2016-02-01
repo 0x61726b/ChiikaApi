@@ -41,6 +41,7 @@ namespace ChiikaApi
 			const std::string& file,
 			const std::string& folder);
 		void AnimePageScrape(RequestListener* listener,int AnimeId);
+		void MalAjax(RequestListener* listener,int AnimeId);
 
 		void OnSuccess(RequestInterface*);
 		void OnError(RequestInterface*);

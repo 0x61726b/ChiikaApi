@@ -19,7 +19,9 @@
 #include "MyAnimelistUtility.h"
 
 #include "boost\regex.hpp"
+#include "boost\algorithm\string.hpp"
 #include "boost\algorithm\string\replace.hpp"
+#include "boost\algorithm\string\split.hpp"
 
 namespace ChiikaApi
 {
@@ -195,7 +197,7 @@ namespace ChiikaApi
 		{
 			Studio s;
 			s.SetKeyValue(kStudioName,studioNames[i]);
-			
+
 			std::string studiolink = studioLinks[i];
 
 			int lastSep = studiolink.find_last_of("/")+1;
@@ -205,7 +207,7 @@ namespace ChiikaApi
 			result.Studios.push_back(s);
 			studioLinkMap.insert(std::make_pair(studioNames[i],studioLinks[i]));
 		}
-		
+
 		//---------------------------------------
 		//			
 		//				Genres
@@ -249,7 +251,7 @@ namespace ChiikaApi
 			flags |= boost::match_prev_avail;
 			flags |= boost::match_not_bob;
 		}
-		
+
 
 		//---------------------------------------
 		//			
@@ -491,6 +493,131 @@ namespace ChiikaApi
 
 		result.SetKeyValue(kSynopsis,synopsis);
 
+		return result;
+	}
+
+	AnimeMisc MyAnimelistUtility::ParseAnimeAjax(const std::string& webPage)
+	{
+		AnimeMisc result;
+
+		boost::regex expr;
+		boost::match_flag_type flags;
+		std::string::const_iterator start = webPage.begin();
+		std::string::const_iterator end	= webPage.end();
+
+
+		//---------------------------------------
+		//			
+		//				Genres
+		//		
+		//---------------------------------------
+		boost::smatch what;
+		std::string genresRegexStep1 = "(?<=Genres:</span>)(\\s*)(?s)(.+?)(?=\\s*<br)";
+
+		expr = boost::regex(genresRegexStep1);
+		flags = boost::match_default;
+
+
+		std::string step1Capture = "";
+		if(boost::regex_search(start,end,what,expr,flags))
+		{
+			step1Capture = what[2];
+
+
+			start = what[0].second;
+			// update flags: 
+			flags |= boost::match_prev_avail;
+			flags |= boost::match_not_bob;
+		}
+
+		std::vector<std::string> genreVector;
+		boost::split(genreVector,step1Capture,boost::is_any_of(","));
+
+
+		FOR_(genreVector,i)
+		{
+			DictionaryBase genre;
+			genre.SetKeyValue(kGenre,genreVector[i]);
+			result.Genres.push_back(genre);
+		}
+
+
+		//---------------------------------------
+		//			
+		//				Score
+		//		
+		//---------------------------------------
+		std::string scoreRegex = "(?<=Score:</span>)(\\s*)(?s)(.+?)(?=\\s*<)";
+
+		expr = boost::regex(scoreRegex);
+		flags = boost::match_default;
+
+		start = webPage.begin();
+		end = webPage.end();
+
+		std::string scoreCapture = "";
+		if(boost::regex_search(start,end,what,expr,flags))
+		{
+			scoreCapture = what[2];
+			result.SetKeyValue(kAvgScore,scoreCapture);
+
+			start = what[0].second;
+			// update flags: 
+			flags |= boost::match_prev_avail;
+			flags |= boost::match_not_bob;
+		}
+
+
+
+		//---------------------------------------
+		//			
+		//				Synopsis
+		//		
+		//---------------------------------------
+		std::string synpRegex = "(?<=;\">)(\\s*)(?s)(.+?)(?=\\s*<)";
+
+		expr = boost::regex(synpRegex);
+		flags = boost::match_default;
+
+		start = webPage.begin();
+		end = webPage.end();
+
+		std::string synCapture = "";
+		if(boost::regex_search(start,end,what,expr,flags))
+		{
+			synCapture = what[2];
+			result.SetKeyValue(kSynopsis,synCapture);
+
+			start = what[0].second;
+			// update flags: 
+			flags |= boost::match_prev_avail;
+			flags |= boost::match_not_bob;
+		}
+
+		//---------------------------------------
+		//			
+		//				Ranked
+		//		
+		//---------------------------------------
+		std::string rankedRegex = "(?<=Ranked:</span>)(\\s*)(?s)(.+?)(?=\\s*<)";
+
+		expr = boost::regex(rankedRegex);
+		flags = boost::match_default;
+
+		start = webPage.begin();
+		end = webPage.end();
+
+		std::string rankedCapture = "";
+		if(boost::regex_search(start,end,what,expr,flags))
+		{
+			rankedCapture = what[2];
+			result.SetKeyValue(kRanked,rankedCapture);
+
+			start = what[0].second;
+			// update flags: 
+			flags |= boost::match_prev_avail;
+			flags |= boost::match_not_bob;
+		}
 		return result;
 	}
 

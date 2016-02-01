@@ -52,6 +52,7 @@ namespace
 	const char* kRequestGetMyMangalist = "GetMyMangalist";
 	const char* kRequestMalUserScrape  = "GetMalUserScrape";
 	const char* kRequestAnimePageScrape = "GetAnimePageScrape";
+	const char* kRequestMalAjax			= "GetMalAjax";
 	const char* kRequestImageDownload  = "GetImage";
 
 	const char* kChiika = "Chiika";

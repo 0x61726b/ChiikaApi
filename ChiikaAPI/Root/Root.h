@@ -80,6 +80,7 @@ namespace ChiikaApi
 		void MalScrape(RequestListener* listener);
 		void DownloadImage(RequestListener* listener,const std::string& url);
 		void AnimeScrape(RequestListener* listener,int id);
+		void MalAjax(RequestListener* listener,int id);
 
 	private:
 		void StoreKeys();

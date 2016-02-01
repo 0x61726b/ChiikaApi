@@ -232,6 +232,11 @@ namespace ChiikaApi
 		m_pRequestManager->AnimePageScrape(listener,AnimeId);
 	}
 	//----------------------------------------------------------------------------
+	void Root::MalAjax(RequestListener* listener,int AnimeId)
+	{
+		m_pRequestManager->MalAjax(listener,AnimeId);
+	}
+	//----------------------------------------------------------------------------
 	void Root::SetUser(UserInfo user)
 	{
 		KeyList userKeys;
