@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------------
 //Chiika Api
-//Copyright (C) 2015  Alperen Gezer
+//Copyright (C) 2015  arkenthera
 //This program is free software; you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
 //the Free Software Foundation; either version 2 of the License, or
@@ -12,69 +12,87 @@
 //You should have received a copy of the GNU General Public License along
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
+//	authors: arkenthera
+//	Date:	 24.1.2016
 //----------------------------------------------------------------------------
 #include "Stable.h"
-#include "Request/MalManager.h"
-#include "curl.h"
-#include "pugixml.hpp"
-#include <sstream>
+#include "MalAnimePageScrape.h"
+#include "Database\LocalDataManager.h"
+#include "Root\Root.h"
+#include "Logging\ChiString.h"
+#include "Logging\LogManager.h"
+#include "Request\MalManager.h"
+#include "Logging\FileHelper.h"
+#include "Common\MyAnimelistUtility.h"
+
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	//----------------------------------------------------------------------------
-	MalManager::MalManager()
+	AnimePageScrapeRequest::AnimePageScrapeRequest()
 	{
-		
+		m_sName = kRequestAnimePageScrape;
 	}
 	//----------------------------------------------------------------------------
-	MalManager::~MalManager()
+	AnimePageScrapeRequest::~AnimePageScrapeRequest()
+	{
+	}
+	//----------------------------------------------------------------------------
+	void AnimePageScrapeRequest::OnSuccess()
 	{
 
-	}
-	//----------------------------------------------------------------------------
-	void MalManager::AddAnimeList(UserAnimeList& list)
-	{
-		CHIKA_AUTO_MUTEX_LOCK;
+		ChiString data = m_Curl->GetResponse();
 
-		m_vUserAnimeList.clear();
-		m_vUserAnimeList = list;
+		AnimeMisc result = MyAnimelistUtility::ParseAnimePage(data);
 
+
+		AnimeList& list = Root::Get()->GetMyAnimelistManager()->GetAnimes();
+
+		AnimeList::iterator It = list.find(std::to_string(m_AnimeId));
+
+		if(It != list.end())
+		{
+			Anime& a = It->second;
+			a.Misc = result;
+		}
+
+		Root::Get()->GetLocalDataManager()->SaveAnimeList();
+
+		RequestInterface::OnSuccess();
 	}
 	//----------------------------------------------------------------------------
-	void MalManager::AddAnimeList(AnimeList list)
+	void AnimePageScrapeRequest::OnError()
 	{
-		m_vAnimeList.clear();
-		m_vAnimeList = list;
+		RequestInterface::OnError();
 	}
 	//----------------------------------------------------------------------------
-	void MalManager::AddMangaList(MangaList& list)
+	void AnimePageScrapeRequest::Initialize()
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			m_vMangaList.clear();
-		m_vMangaList = list;
+		m_Curl = new CurlRequest;
+		m_Curl->Initialize();
+		m_Curl->AddListener(this);
 	}
 	//----------------------------------------------------------------------------
-	void MalManager::AddMangaList(UserMangaList& list)
+	void AnimePageScrapeRequest::SetAnimeId(int id)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			m_vMangaList.clear();
-		m_vUserMangaList = list;
+		m_AnimeId = id;
 	}
 	//----------------------------------------------------------------------------
-	UserMangaList& MalManager::GetMangaList()
+	void AnimePageScrapeRequest::SetOptions()
 	{
-		return m_vUserMangaList;
+		int method;
+		method = CURLOPT_HTTPGET;
+		ChiString url = "http://myanimelist.net/anime/" + std::to_string(m_AnimeId);
+
+		m_Curl->SetUrl(url);
+
+		m_Curl->SetMethod(method,"");
+
+		m_Curl->SetReady();
 	}
 	//----------------------------------------------------------------------------
-	AnimeList& MalManager::GetAnimes()
+	void AnimePageScrapeRequest::Initiate()
 	{
-		return m_vAnimeList;
-	}
-	//----------------------------------------------------------------------------
-	UserAnimeList& MalManager::GetAnimeList()
-	{
-		return m_vUserAnimeList;
+
 	}
 	//----------------------------------------------------------------------------
 }
-

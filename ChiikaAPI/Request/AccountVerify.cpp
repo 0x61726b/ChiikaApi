@@ -80,7 +80,7 @@ namespace ChiikaApi
 		m_Curl->SetUrl(url);
 		m_Curl->SetAuth(userName + ":" + passWord);
 		m_Curl->SetMethod(method, "");
-		m_Curl->SetWriteFunction(NULL);
+		
 
 		m_Curl->SetReady();
 	}

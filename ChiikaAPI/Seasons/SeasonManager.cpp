@@ -16,6 +16,7 @@
 #include "Stable.h"
 #include "Seasons/SeasonManager.h"
 #include "Request/MalManager.h"
+#include "Root\Root.h"
 
 #if YUME_PLATFORM == YUME_PLATFORM_WIN32
 #include <Windows.h>
@@ -74,7 +75,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	SenpaiData SeasonManager::GetSenpaiData()
 	{
-		UserAnimeList list = MalManager::Get()->GetAnimeList();
+		UserAnimeList list = Root::Get()->GetMyAnimelistManager()->GetAnimeList();
 
 		SenpaiData sd;
 

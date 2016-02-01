@@ -28,6 +28,7 @@ namespace ChiikaApi
 
 		enum FileType
 		{
+			AnimeFile,
 			AnimeList,
 			MangaList,
 			UpdateList,
@@ -72,23 +73,12 @@ namespace ChiikaApi
 
 		void Save();
 		void Load();
-
-
-		ChiikaApi::UserInfo m_UserDetailedInfo;
 	};
-	class MalApiExport UpdateListLoader : public FileLoader
+
+	class MalApiExport AnimeLoader : public FileLoader
 	{
 	public:
-
-		UpdateListLoader(ChiString path);
-
-		void Save();
-		void Load();
-	};
-	class MalApiExport AnimeDetailsLoader : public FileLoader
-	{
-	public:
-		AnimeDetailsLoader(ChiString path);
+		AnimeLoader(ChiString path);
 
 		void Save();
 		void Load();
@@ -101,46 +91,8 @@ namespace ChiikaApi
 		void Save();
 		void Load();
 	};
-	class MalApiExport LocalDataInterface
-	{
-	public:
-		virtual ~LocalDataInterface() { };
-
-		virtual const UserInfo& GetUserInfo() = 0;
-		virtual void GetUserInfo(UserInfo&) = 0;
-		virtual void SetUserInfo(const UserInfo&) = 0;
-
-		virtual void Initialize() = 0;
-
-	public:
-		virtual void SaveAnimeList() = 0;
-		virtual void LoadAnimeList() = 0;
-
-	public:
-		virtual void SaveUserInfo() = 0;
-		virtual void LoadUserInfo() = 0;
-
-	public:
-		virtual void SaveUpdateList() = 0;
-		virtual void LoadUpdateList() = 0;
-
-	public:
-		virtual void SaveMangaList() = 0;
-		virtual void LoadMangaList() = 0;
-	public:
-		virtual void SaveAnimeDetails() = 0;
-		virtual void LoadAnimeDetails() = 0;
-	public:
-		virtual void SaveSenpaiData() = 0;
-		virtual void LoadSenpaiData() = 0;
-	public:
-
-	public:
-		virtual void SaveAll() = 0;
-
-		virtual void SetUserNamePass(ChiString userName,ChiString pass) = 0;
-	};
-	class MalApiExport LocalDataManager : public LocalDataInterface
+	
+	class MalApiExport LocalDataManager
 	{
 	public:
 
@@ -162,15 +114,8 @@ namespace ChiikaApi
 		void LoadUserInfo();
 
 	public:
-		void SaveUpdateList();
-		void LoadUpdateList();
-
-	public:
 		void SaveMangaList();
 		void LoadMangaList();
-	public:
-		void SaveAnimeDetails();
-		void LoadAnimeDetails();
 	public:
 		void SaveSenpaiData();
 		void LoadSenpaiData();
@@ -180,14 +125,6 @@ namespace ChiikaApi
 		void SaveAll();
 
 		void SetUserNamePass(ChiString userName,ChiString pass);
-
-		const UserInfo& GetUserInfo();
-		void GetUserInfo(UserInfo&);
-		void SetUserInfo(const UserInfo& i);
-
-
-	public:
-		UserInfo m_UserDetailedInfo;
 
 	private:
 		ChiString m_sAnimeListFilePath;
@@ -201,9 +138,8 @@ namespace ChiikaApi
 		AnimeFileLoader* m_AnimeLoader;
 		MangaFileLoader* m_MangaLoader;
 		UserInfoLoader* m_UserInfoLoader;
-		UpdateListLoader* m_UpdateListLoader;
-		AnimeDetailsLoader* m_AnimeDetailsLoader;
 		SenpaiLoader* m_SenpaiLoader;
+		AnimeLoader* m_Anime;
 	};
 }
 //----------------------------------------------------------------------------

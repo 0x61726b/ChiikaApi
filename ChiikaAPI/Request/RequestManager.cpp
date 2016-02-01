@@ -15,12 +15,20 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "RequestManager.h"
+
 #include "AccountVerify.h"
 #include "GetMyAnimelist.h"
 #include "GetMyMangalist.h"
-#include "MalScrape.h"
+#include "MalUserPageScrape.h"
+#include "DownloadImage.h"
+#include "MalAnimePageScrape.h"
+
+
 #include "Root\Root.h"
 #include "Root\ThreadManager.h"
+#include "Logging\LogManager.h"
+
+
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -39,7 +47,8 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	RequestManager::~RequestManager()
 	{
-
+		//Maybe somehow some objects still linger?
+		RemoveThreadObjects();
 	}
 	//----------------------------------------------------------------------------
 	void RequestManager::VerifyUser(RequestListener* listener)
@@ -48,7 +57,14 @@ namespace ChiikaApi
 		request->Initialize();
 		request->SetOptions();
 		request->AddListener(listener);
-		Root::Get()->GetThreadManager()->PostRequest(request);
+		request->AddListener(this);
+		chiikaNode = listener;
+		ThreadManager* tm = new ThreadManager(false,request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
+		GetMyAnimelist(listener);
+		GetMyMangalist(listener);
+
+
 	}
 
 	void RequestManager::GetMyAnimelist(RequestListener* listener)
@@ -57,7 +73,9 @@ namespace ChiikaApi
 		request->Initialize();
 		request->SetOptions();
 		request->AddListener(listener);
-		Root::Get()->GetThreadManager()->PostRequest(request);
+		request->AddListener(this);
+		ThreadManager* tm = new ThreadManager(false,request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
 	}
 
 	void RequestManager::GetMyMangalist(RequestListener* listener)
@@ -66,7 +84,9 @@ namespace ChiikaApi
 		request->Initialize();
 		request->SetOptions();
 		request->AddListener(listener);
-		Root::Get()->GetThreadManager()->PostRequest(request);
+		request->AddListener(this);
+		ThreadManager* tm = new ThreadManager(false,request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
 	}
 
 	void RequestManager::MalScrape(RequestListener* listener)
@@ -76,8 +96,77 @@ namespace ChiikaApi
 		request->Initialize();
 		request->SetOptions();
 		request->AddListener(listener);
+		request->AddListener(this);
 
-		request->OnSuccess();
+		ThreadManager* tm = new ThreadManager(false,request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
+	}
+
+	void RequestManager::DownloadImage(RequestListener* listener,const std::string& url)
+	{
+		DownloadImageRequest* request = new DownloadImageRequest;
+
+		request->Initialize();
+		request->SetOptions();
+		request->AddListener(listener);
+		request->AddListener(this);
+		request->SetUrl(url);
+
+		ThreadManager* tm = new ThreadManager(false,request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
+	}
+
+	void RequestManager::OnSuccess(ChiikaApi::RequestInterface* request)
+	{
+		if(request->GetName() == kRequestVerify)
+		{
+			if(chiikaNode)
+				DownloadImage(chiikaNode,"http://cdn.myanimelist.net/images/userimages/"+Root::Get()->GetUser().GetKeyValue(kUserId)+".jpg");
+		}
+
+		RemoveThreadObjects();
+	}
+
+	void RequestManager::AnimePageScrape(RequestListener* listener,int AnimeId)
+	{
+		AnimePageScrapeRequest* request = new AnimePageScrapeRequest;
+
+		request->SetAnimeId(AnimeId);
+		request->Initialize();
+		request->SetOptions();
+		
+		request->AddListener(listener);
+		request->AddListener(this);
+
+		ThreadManager* tm = new ThreadManager(false,request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
+	}
+
+	void RequestManager::RemoveThreadObjects()
+	{
+		//Guard me onee-san
+		boost::mutex::scoped_lock onee(threadLock);
+
+
+		//Let's not leak the memory
+		//Make sure javascript side is called before getting here
+		for(RequestThreadMap::iterator It = m_RequestThreads.begin();It != m_RequestThreads.end();)
+		{
+			if(It->first->IsCompleted())
+			{
+				LOG(INFO) << "Removed thread " << It->first->GetName();
+				delete It->second;
+				It = m_RequestThreads.erase(It);
+			}
+			else
+			{
+				++It;
+			}
+		}
+	}
+	void RequestManager::OnError(ChiikaApi::RequestInterface*)
+	{
+		RemoveThreadObjects();
 	}
 	//----------------------------------------------------------------------------
 }

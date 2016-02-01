@@ -50,53 +50,52 @@ namespace ChiikaApi
 		XmlNode  myanimelist = doc.child("myanimelist");
 		XmlNode  user = myanimelist.child("myinfo");
 
-		
 
-		for (XmlNode userChild = user.first_child(); userChild; userChild = userChild.next_sibling())
+
+		for(XmlNode userChild = user.first_child(); userChild; userChild = userChild.next_sibling())
 		{
 			const char* name = userChild.name();
 			const char* val = userChild.text().get();
 
-			if (strcmp(name,kUserDaysSpentWatching) == 0)
+			if(strcmp(name,kUserDaysSpentWatching) == 0)
 				name = kUserDaysSpentReading;
 
-			if (strcmp(name, kUserId) == 0 || strcmp(name, kUserName) == 0)
+			if(strcmp(name,kUserId) == 0 || strcmp(name,kUserName) == 0)
 			{
-				ui.SetKeyValue(name, val);
+				ui.SetKeyValue(name,val);
 			}
 			else
 			{
-				ui.Manga.SetKeyValue(name, val);
+				ui.Manga.SetKeyValue(name,val);
 			}
 		}
 		Root::Get()->SetUser(ui);
 
 		UserMangaList list;
 		MangaList animeList;
-		for (XmlNode manga = myanimelist.child(kManga); manga; manga = manga.next_sibling())
+		for(XmlNode manga = myanimelist.child(kManga); manga; manga = manga.next_sibling())
 		{
 			Manga Manga;
 			UserMangaEntry info;
-			for (XmlNode mangaChild = manga.first_child(); mangaChild; mangaChild = mangaChild.next_sibling())
+			for(XmlNode mangaChild = manga.first_child(); mangaChild; mangaChild = mangaChild.next_sibling())
 			{
 				const char* name = mangaChild.name();
 				const char* val = mangaChild.text().get();
 
-				Manga.SetKeyValue(name, val);
-				info.SetKeyValue(name, val);
+				Manga.SetKeyValue(name,val);
+				info.SetKeyValue(name,val);
 			}
-			animeList.insert(ChiikaApi::MangaList::value_type(Manga.GetKeyValue(kSeriesMangadbId), Manga));
+			animeList.insert(ChiikaApi::MangaList::value_type(Manga.GetKeyValue(kSeriesMangadbId),Manga));
 			info.Manga = Manga;
-			list.insert(UserMangaList::value_type(Manga.GetKeyValue(kSeriesMangadbId), info));
-		}
-		if (MalManager::Get())
-		{
-			MalManager::Get()->AddMangaList(list);
-			MalManager::Get()->AddMangaList(animeList);
+			list.insert(UserMangaList::value_type(Manga.GetKeyValue(kSeriesMangadbId),info));
 		}
 
-		if (Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveMangaList();
-		if (Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveUserInfo();
+		Root::Get()->GetMyAnimelistManager()->AddMangaList(list);
+		Root::Get()->GetMyAnimelistManager()->AddMangaList(animeList);
+
+
+		if(Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveMangaList();
+		if(Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveUserInfo();
 
 		RequestInterface::OnSuccess();
 	}
@@ -132,8 +131,7 @@ namespace ChiikaApi
 
 		m_Curl->SetUrl(url);
 		m_Curl->SetAuth(userName + ":" + passWord);
-		m_Curl->SetMethod(method, "");
-		m_Curl->SetWriteFunction(NULL);
+		m_Curl->SetMethod(method,"");
 
 		m_Curl->SetReady();
 	}

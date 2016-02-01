@@ -16,10 +16,6 @@
 #include "Root\Root.h"
 #include "Request\RequestManager.h"
 #include "Database\LocalDataManager.h"
-#include "Request\GetMyAnimelist.h"
-#include "Request\GetMyMangalist.h"
-#include "Request\AccountVerify.h"
-#include "Root\ThreadManager.h"
 
 //----------------------------------------------------------------------------
 using namespace ChiikaApi;
@@ -55,14 +51,22 @@ int main()
 
 	RootOptions opts;
 	opts.appMode = true;
-	opts.modulePath = "D:\\ElectronProjects\\ChiikaApi\\X64_1\\Chiika\\Debug";
+	opts.debugMode = true;
+	opts.modulePath = "D:\\Arken\\C++\\ElectronProjects\\ChiikaApi\\X64\\Chiika";
 	opts.userName = strdup(testUserName.c_str());
 	opts.passWord = strdup(testPass.c_str());
 	Root r;
-	r.Initialize(&opts);
+	r.Initialize(true,true,"arkenthera","122","D:\\Arken\\C++\\ElectronProjects\\ChiikaApi\\X64\\Chiika");
 
-	r.GetRequestManager()->MalScrape(&tel);
-
+	/*r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
+	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
+	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
+	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");*/
+	//r.GetRequestManager()->AnimePageScrape(&tel,10020);
+	//r.GetRequestManager()->MalScrape(&tel);
+	//r.GetRequestManager()->DownloadImage(&tel);
+	//r.GetRequestManager()->GetMyAnimelist(&tel);
+	//r.GetLocalDataManager()->SaveAll();
 	//r.GetRequestManager()->GetMyMangalist(&tel);
 
 
@@ -98,16 +102,10 @@ int main()
 
 	//r.m_pThreadManager->PostRequest(&request3);
 
-	
-
-	
 
 
-	while(true)
-	{
-
-	}
-	/*r.Destroy();*/
+	getchar();
+	//r.Destroy();
 
 	return 0;
 }

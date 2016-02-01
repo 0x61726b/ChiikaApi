@@ -24,6 +24,8 @@ set(ChiikaApi_Common_Src
   Common/Anime.cpp
   Common/Manga.h
   Common/Manga.cpp
+  Common/MyAnimelistUtility.h
+  Common/MyAnimelistUtility.cpp
   )
 source_group(ChiikaApi\\\\Common FILES ${ChiikaApi_Common_Src})
 
@@ -109,8 +111,12 @@ set(ChiikaApi_Request_Src
   Request/GetMyMangalist.cpp
   Request/AddToAnimeList.h
   Request/AddToAnimeList.cpp
-  Request/MalScrape.cpp
-  Request/MalScrape.h
+  Request/MalUserPageScrape.cpp
+  Request/MalUserPageScrape.h
+  Request/DownloadImage.h
+  Request/DownloadImage.cpp
+  Request/MalAnimePageScrape.cpp
+  Request/MalAnimePageScrape.h
   )
 source_group(ChiikaApi\\\\Request FILES ${ChiikaApi_Request_Src})
 

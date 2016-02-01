@@ -38,6 +38,11 @@ namespace ChiikaApi
 
 		virtual void SetPostData();
 
+		bool IsCompleted()
+		{
+			return m_bIsCompleted;
+		}
+
 		CurlRequestInterface* Get();
 		//For creating mock objects
 		void SetCURL(CurlRequestInterface* curl);
@@ -58,6 +63,7 @@ namespace ChiikaApi
 	protected:
 		ChiString m_sName;
 		CurlRequestInterface* m_Curl;
+		bool m_bIsCompleted;
 	};
 }
 #endif

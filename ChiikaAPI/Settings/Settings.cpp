@@ -216,7 +216,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AppSettings::Initialize()
 	{
-		ChiString dataPath = (m_sGlobalPath)+"/Data";
+		ChiString dataPath = (m_sGlobalPath)+"\\Data";
 		//Create folders here
 
 		if(!FileUtil::Get()->CheckIfDirectoryExists(dataPath))
@@ -228,7 +228,7 @@ namespace ChiikaApi
 			}
 		}
 
-		ChiString imageDir = (dataPath + "/Images");
+		ChiString imageDir = (dataPath + "\\Images");
 		if(!FileUtil::Get()->CheckIfDirectoryExists(imageDir))
 		{
 			if(!FileUtil::Get()->CreateDir(imageDir))
@@ -366,7 +366,7 @@ namespace ChiikaApi
 					}
 				}
 			}
-
+			file.Close();
 			doc.save_file(m_sSettingsPath.c_str());
 		}
 		else
@@ -436,7 +436,7 @@ namespace ChiikaApi
 					}
 				}
 			}
-
+			file.Close();
 		}
 		else
 		{

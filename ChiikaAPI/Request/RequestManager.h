@@ -20,11 +20,12 @@
 #include "Common/Singleton.h"
 
 #include "Request\RequestInterface.h"
+#include "boost\thread.hpp"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
 	//----------------------------------------------------------------------------
-	class MalApiExport RequestManager
+	class MalApiExport RequestManager : public RequestListener
 	{
 	public:
 		RequestManager();
@@ -32,11 +33,25 @@ namespace ChiikaApi
 
 
 		void VerifyUser(RequestListener* listener);
-
 		void GetMyAnimelist(RequestListener* listener);
 		void GetMyMangalist(RequestListener* listener);
-
 		void MalScrape(RequestListener* listener);
+		void DownloadImage(RequestListener* listener,const std::string& url);
+		void AnimePageScrape(RequestListener* listener,int AnimeId);
+
+		void OnSuccess(RequestInterface*);
+		void OnError(RequestInterface*);
+
+		//Little hacking here
+		RequestListener* chiikaNode;
+
+		//Garbage Collecting
+		typedef std::map<RequestInterface*,ThreadManager*> RequestThreadMap;
+		RequestThreadMap m_RequestThreads;
+		boost::mutex threadLock;
+
+		void RemoveThreadObjects();
+
 	};
 }
 //----------------------------------------------------------------------------

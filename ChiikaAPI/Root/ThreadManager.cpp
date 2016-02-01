@@ -22,37 +22,42 @@
 
 namespace ChiikaApi
 {
-	ThreadManager::ThreadManager()
-		: mStop(true)
+	ThreadManager::ThreadManager(bool queue,RequestInterface* request)
+		: mStop(true),
+		isQueued(queue),
+		m_SingleReq(request)
 	{
-		m_RequestThread = new boost::thread(&ThreadManager::Run, this);
+		if(isQueued)
+			m_RequestThread = new boost::thread(&ThreadManager::Run,this);
+		else
+			m_RequestThread = new boost::thread(&ThreadManager::RunOnSpecialThread,this);
 	}
 	ThreadManager::~ThreadManager()
 	{
-
+		
 	}
 
 	void ThreadManager::Run()
 	{
-		for (;;)
+		for(;;)
 		{
 			boost::mutex::scoped_lock lock(m_Lock);
 
-			while (m_RequestQueue.empty()) cond.wait(lock);
+			while(m_RequestQueue.empty()) cond.wait(lock);
 
 			LOG(Bore) << "Request Thread: Processing Queue";
 
-			if (!m_RequestQueue.empty())
+			if(!m_RequestQueue.empty())
 			{
 				RequestInterface* process = Front();
-				if (!process)
+				if(!process)
 					return;
 				CurlRequestInterface* curl = process->Get();
-				if (!curl)
+				if(!curl)
 					return;
 
 
-				if (curl->IsInitialized())
+				if(curl->IsInitialized())
 				{
 					curl->Perform();
 					//boost::this_thread::sleep_for(boost::chrono::seconds(3)); //for debugging
@@ -61,6 +66,14 @@ namespace ChiikaApi
 					//delete process;
 				}
 			}
+		}
+	}
+
+	void ThreadManager::RunOnSpecialThread()
+	{
+		if(m_SingleReq->Get()->IsInitialized())
+		{
+			m_SingleReq->Get()->Perform();
 		}
 	}
 
@@ -78,7 +91,9 @@ namespace ChiikaApi
 	{
 		boost::mutex::scoped_lock lock(m_Lock);
 		m_RequestQueue.push(r);
-		cond.notify_one();
+
+		if(m_RequestQueue.size() == 1)
+			cond.notify_one();
 	}
 
 	boost::thread* ThreadManager::Get()

@@ -17,13 +17,7 @@
 #define __ChiikaUtilityDefines_h__
 //----------------------------------------------------------------------------
 #	define ToStd(x) x.c_str()
-#	define QToStd(x) x.toStdChiString()
-#	define QToChar(x) /*x.toStdChiString().c_str()*/
-#	define Q_(x) /*ChiString::fromStdChiString(x)*/
-#	define FromStdToInt(x) /*ChiString::fromStdChiString(x).toInt()*/
-#	define FromXMLValueToInt(x) atoi(x.text().get()) /*ChiString::fromStdChiString(x.text().get()).toInt()*/
-#	define FromXMLValueToFloat(x) atof(x.text().get())
-#	define FromXMLValueToStd(x)  x.text().get()
+
 #	define JsToQ(x) (x.asString())
 #	define SetXMLValue(x,y) x.text().set(y)
 #	define SetXMLAttrType(x,y) x.append_attribute("Type").set_value(y)
@@ -42,24 +36,23 @@
 #	define AddChiStringOption(x,y) AddToMap(MakePair(x,MakeShared<ChiStringOption>(x,y)),m_Settings)
 #	define AddBooleanOption(x,y) AddToMap(MakePair(x,MakeShared<BooleanOption>(x,y)),m_Settings)
 #	define AddIntegerOption(x,y) AddToMap(MakePair(x,MakeShared<IntegerOption>(x,y)),m_Settings)
-#	define RequestThread ThreadedRequest*
-#	define CreateRequest  new ThreadedRequest
 #	define TryDelete(x) if(x) delete x
 #	define InitializeNULL(x) x = NULL
 #	define TryDestroy(x) if(x) x->Destroy();
 #	define XmlNode pugi::xml_node
 namespace ChiikaApi
 {
-	class DictionaryBase
+	class MalApiExport DictionaryBase
 	{
 	public:
-		typedef Vector<const std::string>::type KeyList;
+		typedef Vector<std::string>::type KeyList;
 		virtual void SetKeyValue(const std::string& key, const std::string& value)
 		{
 			KeyMap::iterator It = m_KeyMap.find(key);
 			if (It != m_KeyMap.end()) //Key exists
 			{
-				It->second = value;
+				if(value.size() > 0)
+					It->second = value;
 			}
 			else
 			{
@@ -85,6 +78,7 @@ namespace ChiikaApi
 		}
 		~DictionaryBase()
 		{
+			
 		}
 	protected:
 		KeyMap m_KeyMap;

@@ -89,7 +89,7 @@ public:
     LogDebugStream() { }
 public:
     ~LogDebugStream() {
-		ChiikaApi::LogManager::Get().GetLog("DebuggerOutput")->LogMessage((this->str()));
+		//ChiikaApi::LogManager::Get().GetLog("DebuggerOutput")->LogMessage((this->str()));
     }
 };
 #endif

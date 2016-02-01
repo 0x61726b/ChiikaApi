@@ -30,7 +30,15 @@ MalApiExport enum RequestApiValues
 	REQUEST_GETMYANIMELIST_ERROR,
 
 	REQUEST_GETMYMANGALIST_SUCCESS,
-	REQUEST_GETMYMANGALIST_ERROR
+	REQUEST_GETMYMANGALIST_ERROR,
+
+	REQUEST_IMAGEDOWNLOAD_SUCCESS,
+	REQUEST_IMAGEDOWNLOAD_ERROR,
+
+	REQUEST_ANIMESCRAPE_SUCCESS,
+	REQUEST_ANIMESCRAPE_ERROR
+
+	
 };
 
 namespace
@@ -42,6 +50,9 @@ namespace
 	const char* kRequestVerify = "UserVerify";
 	const char* kRequestGetMyAnimelist = "GetMyAnimelist";
 	const char* kRequestGetMyMangalist = "GetMyMangalist";
+	const char* kRequestMalUserScrape  = "GetMalUserScrape";
+	const char* kRequestAnimePageScrape = "GetAnimePageScrape";
+	const char* kRequestImageDownload  = "GetImage";
 
 	const char* kChiika = "Chiika";
 	const char* kMyAnimeList = "MyAnimeList";
@@ -51,6 +62,7 @@ namespace
 	const char* kAnimeDetails = "AnimeDetails";
 	const char* kAnime = "anime";
 	const char* kManga = "manga";
+	const char* kMisc = "misc";
 	//Anime Keys
 	const char* kSeriesAnimedbId = "series_animedb_id";
 	const char* kSeriesTitle = "series_title";
@@ -102,16 +114,29 @@ namespace
 	const char* kOperation = "Operation";
 
 	const char* kId = "Id";
-	const char* kSynopsis = "Synopsis";
-	const char* kTags = "Tags";
-	const char* kPremiered = "Premiered";
-	const char* kProducers = "Producers";
-	const char* kDurationPerEpisode = "DurationPerEpisode";
-	const char* kScore = "Score";
-	const char* kRanked = "Ranked";
-	const char* kPopularity = "Popularity";
-	const char* kTag = "Tag";
-	const char* kProducer = "Producer";
+
+	//Misc
+	const char* kUserImageLink = "UserImageLink";
+
+	const char* kStudioName = "studio_name";
+	const char* kStudioId = "studio_id";
+	const char* kStudios  = "studios";
+	const char* kStudio   = "studio";
+
+	const char* kCharacter	   = "character";
+	const char* kCharacterName = "character_name";
+	const char* kCharacterId   = "character_id";
+	const char* kCharacters    = "characters";
+
+	const char* kGenre		   = "genre";
+	const char* kGenres		   = "genres";
+	const char*	kSource		   = "source";
+	const char* kBroadcastTime = "broadcast_time";
+	const char* kDuration	   = "duration";
+	const char* kAvgScore	   = "avg_score";
+	const char* kRanked		   = "ranked";
+	const char* kAiredDate	   = "aired";
+	const char* kSynopsis	   = "synopsis";
 
 	typedef ChiikaApi::Vector<std::string>::type KeyList;
 
@@ -126,6 +151,16 @@ namespace
 		keys.push_back(kSeriesStart);
 		keys.push_back(kSeriesEnd);
 		keys.push_back(kSeriesImage);
+	}
+	void GetAnimeMiscKeys(KeyList& keys)
+	{
+		keys.push_back(kSource);
+		keys.push_back(kBroadcastTime);
+		keys.push_back(kDuration);
+		keys.push_back(kAvgScore);
+		keys.push_back(kRanked);
+		keys.push_back(kAiredDate);
+		keys.push_back(kSynopsis);
 	}
 	void GetMangaKeys(KeyList& keys)
 	{
@@ -156,6 +191,7 @@ namespace
 	}
 	void GetUserAnimeEntryKeys(KeyList& keys)
 	{
+		keys.push_back(kSeriesAnimedbId);
 		keys.push_back(kMyId);
 		keys.push_back(kMyWatchedEpisodes);
 		keys.push_back(kMyRewatchingEp);

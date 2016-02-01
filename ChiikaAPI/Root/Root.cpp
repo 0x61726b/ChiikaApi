@@ -48,100 +48,118 @@ namespace ChiikaApi
 		GlobalInstance = this;
 	}
 	//----------------------------------------------------------------------------
-	void Root::Initialize(RootOptions* opts)
+	void Root::Initialize(bool appMode,bool debugMode,const char* userName,const char* pass,const char* modulePath)
 	{
-		options = opts;
-		if(opts->appMode)
-			m_pSettings = new AppSettings("Chiika.cfg",options->modulePath);
+		options.appMode = appMode;
+		options.debugMode = debugMode;
+		options.modulePath = modulePath;
+		options.userName = userName;
+		options.passWord = pass;
+
+		
+		m_pSettings = new AppSettings("Chiika.cfg",options.modulePath);
+		////if(opts->appMode)
+		////	m_pSettings = new AppSettings("Chiika.cfg",options->modulePath);
 		m_pLogManager = new LogManager;
 
 		ChiString version = std::to_string(ChiikaApi_VERSION_MAJOR) + "." + std::to_string(ChiikaApi_VERSION_MINOR) + "." + std::to_string(ChiikaApi_VERSION_PATCH);;
 		m_sVersion = version;
 		m_sCommitHash = (char)ChiikaApi_COMMIT_HASH;
 
-		if(opts->appMode)
-		{
-			m_pLogManager->CreateLog(std::string(options->modulePath) + "\\Chiika.log",true,true,false)->
-				SetLogDetail((LoggingLevel)m_pSettings->GetIntegerOption(API_LOG_LEVEL));
-		}
-		if(opts->debugMode && opts->appMode)
-			m_pLogManager->CreateLog(std::string(options->modulePath) + "\\Chiika.log",true,true,false)->
-			SetLogDetail((LoggingLevel)LoggingLevel::LOG_LEVEL_EVERYTHING);
+		m_pLogManager->CreateLog(std::string(options.modulePath) + "\\Chiika.log",true,true,false)->
+			SetLogDetail(LoggingLevel::LOG_LEVEL_EVERYTHING);
 
-		m_pLogManager->CreateLog("DebuggerOutput",false,true,true)->
-			SetLogDetail(LoggingLevel::LOG_LEVEL_EVERYTHING); //This is used to see messages on debug window,rather than printing to file. Use LOGD rather than LOG
+		LOG(INFO) << "Initialization successfull.Welcome to Chiika " << options.userName << "!";
 
-		LOG(Bore) << "Chiika Api is initializing. Version: " << (m_sVersion);
+		
+	
+		////m_pLogManager->CreateLog("DebuggerOutput",false,true,true)->
+		////	SetLogDetail(LoggingLevel::LOG_LEVEL_EVERYTHING); //This is used to see messages on debug window,rather than printing to file. Use LOGD rather than LOG
+
+		/*LOG(Bore) << "Chiika Api is initializing. Version: " << (m_sVersion);*/
 
 		LOG(INFO) << "Creating MyAnimeList Manager";
 		m_pMalManager = new MalManager;
 
-		LOG(INFO) << "Creating Season Manager";
-		m_pSeasonManager = new SeasonManager;
+		////LOG(INFO) << "Creating Season Manager";
+		////m_pSeasonManager = new SeasonManager;
 
-		if(opts->appMode)
-		{
-			LOG(INFO) << "Creating MediaPlayerRecognition Manager";
-			m_pMPRecognition = new MediaPlayerRecognitionManager;
-		}
+		//if(opts->appMode)
+		//{
+		//	LOG(INFO) << "Creating MediaPlayerRecognition Manager";
+		//	m_pMPRecognition = new MediaPlayerRecognitionManager;
+		//}
 
-		if(opts->appMode)
-		{
-			m_pThreadManager = new ThreadManager;
-		}
+		//if(opts->appMode)
+		//{
+		//	//m_pThreadManager = new ThreadManager(false);
+		//}
 
 		LOG(INFO) << "Creating RequestManager Manager";
 		m_pRequestManager = new RequestManager;
 
-		if(opts->appMode)
-		{
-			LOG(INFO) << "Creating AnimeRecognition Manager";
-			m_pRecognizer = new AnimeRecognition;
-		}
+		//if(opts->appMode)
+		//{
+		//	LOG(INFO) << "Creating AnimeRecognition Manager";
+		//	m_pRecognizer = new AnimeRecognition;
+		//}
 
 
-		if(!opts->appMode)
-		{
-			LOG(INFO) << "Skipping LocalData Manager";
-		}
-		else
-		{
-			LOG(INFO) << "Creating LocalData Manager";
-			m_pLocalData = new LocalDataManager;
-		}
+		//if(!opts->appMode)
+		//{
+		//	LOG(INFO) << "Skipping LocalData Manager";
+		//}
+		//else
+		//{
+		//	/*LOG(INFO) << "Creating LocalData Manager";
+		//	m_pLocalData = new LocalDataManager;*/
+		//}
+				m_User.SetKeyValue(kUserName,options.userName);
+		m_User.SetKeyValue(kPass,options.passWord);
+
+		LOG(INFO) << "Creating LocalData Manager";
+		m_pLocalData = new LocalDataManager;
+		m_pLocalData->Initialize();
+
+		////Very important!
 
 
 
-		//Very important!
 
+		////if(opts->appMode)
+		////	
 
-		m_User.SetKeyValue(kUserName,options->userName);
-		m_User.SetKeyValue(kPass,options->passWord);
+		//StoreKeys();
 
-		if(opts->appMode)
-			m_pLocalData->Initialize();
+		//LOG(INFO) << "Initialization successfull.Welcome to Chiika " << options->userName << "!";
 
 		StoreKeys();
-
-		LOG(INFO) << "Initialization successfull.Welcome to Chiika " << options->userName << "!";
 	}
 	//----------------------------------------------------------------------------
 	Root::~Root()
 	{
-
+		Destroy();
 	}
 	//----------------------------------------------------------------------------
 	void Root::Destroy()
 	{
+		LOG(INFO) << "D-destroying ChiikaApi";
 		TryDelete(m_pSettings);
+		m_pSettings = 0;
 		TryDelete(m_pMalManager);
-
+		m_pMalManager = 0;
 		TryDelete(m_pRequestManager);
+		m_pRequestManager = 0;
+		TryDelete(m_pLocalData);
+		m_pLocalData = 0;
+		//TryDelete(m_pMPRecognition);
+		//TryDelete(m_pRecognizer);
+		///*TryDelete(m_pSeasonManager);*/
+		////TryDelete(m_pThreadManager);
 
 		TryDelete(m_pLogManager);
-		TryDelete(m_pLocalData);
-		TryDelete(m_pRecognizer);
-		TryDelete(options);
+		m_pLogManager = 0;
+		
 	}
 	//----------------------------------------------------------------------------
 	Root* Root::Get()
@@ -169,9 +187,49 @@ namespace ChiikaApi
 		return m_pMalManager;
 	}
 	//----------------------------------------------------------------------------
+	AppSettings* Root::GetAppSettings()
+	{
+		return m_pSettings;
+	}
+	//----------------------------------------------------------------------------
 	UserInfo& Root::GetUser()
 	{
 		return m_User;
+	}
+	//----------------------------------------------------------------------------
+	void Root::VerifyUser(RequestListener* listener)
+	{
+		m_pRequestManager->VerifyUser(listener);
+	}
+	//----------------------------------------------------------------------------
+	void Root::GetMyAnimelist(RequestListener* listener)
+	{
+		m_pRequestManager->GetMyAnimelist(listener);
+	}
+	//----------------------------------------------------------------------------
+	const AnimeList& Root::GetAnimelist()
+	{
+		return GetMyAnimelistManager()->GetAnimes();
+	}
+	//----------------------------------------------------------------------------
+	void Root::GetMyMangalist(RequestListener* listener)
+	{
+		m_pRequestManager->GetMyMangalist(listener);
+	}
+	//----------------------------------------------------------------------------
+	void Root::MalScrape(RequestListener* listener)
+	{
+		m_pRequestManager->MalScrape(listener);
+	}
+	//----------------------------------------------------------------------------
+	void Root::DownloadImage(RequestListener* listener,const std::string& url)
+	{
+		m_pRequestManager->DownloadImage(listener,url);
+	}
+	//----------------------------------------------------------------------------
+	void Root::AnimeScrape(RequestListener* listener,int AnimeId)
+	{
+		m_pRequestManager->AnimePageScrape(listener,AnimeId);
 	}
 	//----------------------------------------------------------------------------
 	void Root::SetUser(UserInfo user)
@@ -187,17 +245,17 @@ namespace ChiikaApi
 		KeyList mangaKeys;
 		GetUserInfoMangaKeys(mangaKeys);
 
-		FOR_(mangaKeys, j)
+		FOR_(mangaKeys,j)
 		{
-			m_User.Manga.SetKeyValue(mangaKeys[j], user.Manga.GetKeyValue(mangaKeys[j]));
+			m_User.Manga.SetKeyValue(mangaKeys[j],user.Manga.GetKeyValue(mangaKeys[j]));
 		}
 
 		KeyList animeKeys;
 		GetUserInfoAnimeKeys(animeKeys);
 
-		FOR_(animeKeys, j)
+		FOR_(animeKeys,j)
 		{
-			m_User.Anime.SetKeyValue(animeKeys[j], user.Anime.GetKeyValue(animeKeys[j]));
+			m_User.Anime.SetKeyValue(animeKeys[j],user.Anime.GetKeyValue(animeKeys[j]));
 		}
 
 	}
@@ -247,8 +305,16 @@ namespace ChiikaApi
 		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYANIMELIST_SUCCESS,strcat(strdup(kRequestGetMyAnimelist),kRequestSuccess)));
 		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYANIMELIST_ERROR,strcat(strdup(kRequestGetMyAnimelist),kRequestError)));
 
-		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYMANGALIST_SUCCESS, strcat(strdup(kRequestGetMyMangalist), kRequestSuccess)));
-		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYMANGALIST_ERROR, strcat(strdup(kRequestGetMyMangalist), kRequestError)));
+		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYMANGALIST_SUCCESS,strcat(strdup(kRequestGetMyMangalist),kRequestSuccess)));
+		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYMANGALIST_ERROR,strcat(strdup(kRequestGetMyMangalist),kRequestError)));
+
+		RequestApiValueMap.insert(std::make_pair(REQUEST_IMAGEDOWNLOAD_SUCCESS,strcat(strdup(kRequestImageDownload),kRequestSuccess)));
+		RequestApiValueMap.insert(std::make_pair(REQUEST_IMAGEDOWNLOAD_ERROR,strcat(strdup(kRequestImageDownload),kRequestError)));
+
+		RequestApiValueMap.insert(std::make_pair(REQUEST_ANIMESCRAPE_SUCCESS,strcat(strdup(kRequestAnimePageScrape),kRequestSuccess)));
+		RequestApiValueMap.insert(std::make_pair(REQUEST_ANIMESCRAPE_ERROR,strcat(strdup(kRequestAnimePageScrape),kRequestError)));
+
+
 	}
 }
 

@@ -22,9 +22,13 @@ namespace ChiikaApi
 {
 	enum AnimeType
 	{
+		Unknown = 0,
 		TV = 1,
 		OVA = 2,
-		Movie = 3
+		Movie = 3,
+		Special = 4,
+		ONA = 5,
+		Music = 6
 	};
 	enum AnimeStatus
 	{
@@ -66,36 +70,50 @@ namespace ChiikaApi
 			Popularity = 0;
 		}
 	};
+	class MalApiExport Studio : public DictionaryBase
+	{
+	public:
+		Studio(){}
+		
+	};
+	class MalApiExport Character : public DictionaryBase
+	{
+	public:
+		Character(){}
+		
+	};
+	class MalApiExport Genre : public DictionaryBase
+	{
+	public:
+		Genre(){}
+		
+	};
+	class MalApiExport AnimeMisc : public DictionaryBase
+	{
+	public:
+		AnimeMisc() {}
 
-	class MalApiExport Anime
+		std::vector<DictionaryBase> Studios;
+		std::vector<DictionaryBase> Characters;
+		std::vector<DictionaryBase> Genres;
+	};
+
+	class MalApiExport Anime : public DictionaryBase
 	{
 	public:
 		Anime();
-		void SetKeyValue(const std::string&, const std::string&);
+		~Anime()
+		{
+			
 
-		const std::string& GetKeyValue(const std::string&);
-		bool ContainsKey(const std::string&);
-
-	private:
-		KeyMap m_KeyMap;
+		}
 	public:
-		//Experimental
-		AnimeDetails ExtraDetails;
-		AnimeStatistics Statistics;
+		AnimeMisc Misc;
 	};
 
-	class MalApiExport UserAnimeEntry
+	class MalApiExport UserAnimeEntry : public DictionaryBase
 	{
 	public:
-		Anime Anime;
-
-		void SetKeyValue(const std::string&, const std::string&);
-		const std::string& GetKeyValue(const std::string&);
-		bool ContainsKey(const std::string&);
-	private:
-		KeyMap m_KeyMap;
-	public:
-
 		UserAnimeEntry();
 	};
 }

@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------------
 //Chiika Api
-//Copyright (C) 2015  Alperen Gezer
+//Copyright (C) 2015  arkenthera
 //This program is free software; you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
 //the Free Software Foundation; either version 2 of the License, or
@@ -18,24 +18,24 @@
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
 //#include "Settings/Settings.h"
-#include "Request/RequestManager.h"
 #include "Recognition/MediaPlayerRecognitionManager.h" //Unfortunately,this is necessary or main func doesnt recognize the class
 //#include "Recognition/AnimeRecognition.h"
 
-struct MalApiExport RootOptions
+class MalApiExport RootOptions
 {
+public:
 	bool appMode;
 	bool debugMode;
-	char* userName;
-	char* passWord;
-	char* modulePath;
+	std::string userName;
+	std::string passWord;
+	std::string modulePath;
 
 	RootOptions() 
 		: appMode(false),
-		  debugMode(false),
-		  userName(""),
-		  passWord(""),
-		  modulePath("")
+		  debugMode(false)
+	{
+	}
+	~RootOptions()
 	{
 	}
 };
@@ -48,12 +48,12 @@ namespace ChiikaApi
 		Root();
 		~Root();
 
-		void Initialize(RootOptions*);
+		void Initialize(bool appMode,bool debugMode,const char* userName,const char* pass,const char* modulePath);
 		void Destroy();
 
 		void PostRequest(RequestInterface* r);
 
-		RootOptions* GetRootOptions() { return options; }
+		RootOptions GetRootOptions() { return options; }
 
 		static Root* Get();
 
@@ -63,11 +63,23 @@ namespace ChiikaApi
 		const UserAnimeList& GetUserAnimelist();
 		const UserMangaList& GetUserMangalist();
 
+		const AnimeList& GetAnimelist();
+
 		ThreadManager* GetThreadManager();
 		RequestManager* GetRequestManager();
 		LocalDataManager* GetLocalDataManager();
 		MalManager* GetMyAnimelistManager();
+		AppSettings* GetAppSettings();
 		//New
+
+
+		//Requests
+		void VerifyUser(RequestListener* listener);
+		void GetMyAnimelist(RequestListener* listener);
+		void GetMyMangalist(RequestListener* listener);
+		void MalScrape(RequestListener* listener);
+		void DownloadImage(RequestListener* listener,const std::string& url);
+		void AnimeScrape(RequestListener* listener,int id);
 
 	private:
 		void StoreKeys();
@@ -92,7 +104,7 @@ namespace ChiikaApi
 		SeasonManager* m_pSeasonManager;
 		ThreadManager* m_pThreadManager;
 	private:
-		RootOptions* options;
+		RootOptions options;
 		UserInfo m_User;
 		std::map<RequestApiValues, char*> RequestApiValueMap;
 	protected:

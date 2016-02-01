@@ -36,10 +36,10 @@ namespace ChiikaApi
 		virtual void SetAuth(const ChiString&) = 0;
 		virtual const ChiString& GetResponse() = 0;
 		virtual void SetMethod(int method,const ChiString& data) = 0;
-		virtual void SetWriteFunction(std::function<size_t(void *buffer,size_t size,size_t nmemb,void *stream)>*) = 0;
 
 		virtual void Perform() = 0;
-
+		virtual void SetFlag(int f) = 0;
+		virtual void SetFileOutput(const ChiString& output) = 0;
 
 		virtual void SetErrorCode(int optional) = 0;
 		virtual void SetTimeout(int) = 0;
@@ -67,11 +67,10 @@ namespace ChiikaApi
 		void SetMethod(int method,const ChiString& data);
 		void SetTimeout(int);
 		void SetVerbose(bool);
-
+		void SetFlag(int f);
+		void SetFileOutput(const ChiString& output);
 
 		void Perform();
-
-		void SetWriteFunction(std::function<size_t(void *buffer,size_t size,size_t nmemb,void *stream)>*);
 		void SetErrorCode(int optional);
 
 	public:
@@ -82,21 +81,26 @@ namespace ChiikaApi
 
 		const ChiString& GetResponse();
 		int GetRequestResult();
+
+		static size_t Curlfwrite(void *ptr, size_t size, size_t nmemb, FILE *stream);
+
+		
 	private:
 		CURL* m_pCurl;
 		CURLcode m_CurlRes;
 		int m_iRequestResult;
 		bool m_bVerbose;
 		int m_iMethod;
-
+		int m_Flags;
 	private:
 		ChiString m_sBuffer;
 		ChiString m_sPostData;
+		ChiString m_sFileOutput;
 
 
 		static int CallbackFunc(char* data,size_t size,size_t nmemb,ChiString* buffer);
 		static int ReadCallbackFunc(void *ptr,size_t size,size_t nmemb,void *userp);
 
-		static size_t Curlfwrite(void *buffer,size_t size,size_t nmemb,void *stream);
+		
 	};
 }

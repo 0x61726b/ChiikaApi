@@ -20,16 +20,13 @@
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-
 	class MalApiExport UserInfo : public DictionaryBase
 	{
 	public:
 		UserInfo();
-		virtual ~UserInfo()
-		{
-		}
-		Anime Anime;
-		Manga Manga;
+
+		DictionaryBase Anime;
+		DictionaryBase Manga;
 	};
 }
 #endif

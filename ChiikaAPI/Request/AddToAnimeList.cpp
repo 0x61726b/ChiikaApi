@@ -63,7 +63,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AddToAnimeListRequest::SetOptions()
 	{
-		ChiString url;
+		/*ChiString url;
 		int method;
 
 		UserInfo ui = Root::Get()->GetLocalDataManager()->GetUserInfo();
@@ -84,9 +84,8 @@ namespace ChiikaApi
 
 		m_Curl->SetUrl(url);
 		m_Curl->SetAuth(userName + ":" + passWord);
-		m_Curl->SetWriteFunction(NULL);
 		m_Curl->SetVerbose(true);
-		m_Curl->SetMethod(method, postData);
+		m_Curl->SetMethod(method, postData);*/
 	}
 	//----------------------------------------------------------------------------
 	void AddToAnimeListRequest::Initiate()

@@ -123,6 +123,15 @@ namespace ChiikaApi
 #include "Manga.h"
 #include "UserInfo.h"
 
+struct MyAnimelistUserPageParseResult
+{
+	std::string ProfileImageLink;
+	std::vector<std::string> FriendProfiles;
+	std::string AnimeUpdates;
+	std::string MangaUpdates;
+	std::string Favourites;
+};
+
 namespace ChiikaApi
 {
 	typedef Map<std::string, UserAnimeEntry>::type UserAnimeList;

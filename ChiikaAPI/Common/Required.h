@@ -148,6 +148,11 @@ namespace ChiikaApi
 		CANT_CONNECT = 0x1 << 11,
 		BAD_PARAMETER = 0x1 << 12
 	};
+	enum CurlFlags
+	{
+		REQUEST_NORMAL = 0x1 << 0,
+		REQUEST_DOWNLOAD = 0x1 << 1
+	};
 
 	#include "Database\Globals.h"
 	//----------------------------------------------------------------------------

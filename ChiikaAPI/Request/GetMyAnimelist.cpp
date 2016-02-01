@@ -37,7 +37,7 @@ namespace ChiikaApi
 
 		bool parse = doc.load(m_Curl->GetResponse().c_str());
 
-		if (!parse)
+		if(!parse)
 		{
 			RequestInterface::OnError();
 			return;
@@ -56,44 +56,58 @@ namespace ChiikaApi
 			const char* name = userChild.name();
 			const char* val = userChild.text().get();
 
-			if (strcmp(name, kUserId) == 0 || strcmp(name, kUserName) == 0)
+			if(strcmp(name,kUserId) == 0 || strcmp(name,kUserName) == 0)
 			{
-				ui.SetKeyValue(name, val);
+				ui.SetKeyValue(name,val);
 			}
 			else
 			{
-				ui.Anime.SetKeyValue(name, val);
+				ui.Anime.SetKeyValue(name,val);
 			}
 		}
 		Root::Get()->SetUser(ui);
 
 		UserAnimeList list;
 		AnimeList animeList;
+
+		KeyList animeKeys;
+		GetAnimeKeys(animeKeys);
+
 		for(pugi::xml_node anime = myanimelist.child(kAnime); anime; anime = anime.next_sibling())
 		{
-			Anime Anime;
 			UserAnimeEntry info;
+			Anime animeEntry;
 			for(pugi::xml_node animeChild = anime.first_child(); animeChild; animeChild = animeChild.next_sibling())
 			{
 				const char* name = animeChild.name();
 				const char* val = animeChild.text().get();
 
-				Anime.SetKeyValue(name,val);
-				info.SetKeyValue(name,val);
+				KeyList::iterator it = std::find(keys.begin(),keys.end(),name);
+
+				if(it != keys.end())
+				{
+					info.SetKeyValue(name,val);
+				}
+
+				KeyList::iterator It = std::find(animeKeys.begin(),animeKeys.end(),name);
+
+				if(It != animeKeys.end())
+				{
+					animeEntry.SetKeyValue(name,val);
+				}
 			}
-			animeList.insert(ChiikaApi::AnimeList::value_type(Anime.GetKeyValue(kSeriesAnimedbId),Anime));
-			info.Anime = Anime;
-			list.insert(UserAnimeList::value_type(Anime.GetKeyValue(kSeriesAnimedbId), info));
-		}
-		if(MalManager::Get())
-		{
-			MalManager::Get()->AddAnimeList(list);
-			MalManager::Get()->AddAnimeList(animeList);
+			list.insert(UserAnimeList::value_type(info.GetKeyValue(kSeriesAnimedbId),info));
+			animeList.insert(AnimeList::value_type(info.GetKeyValue(kSeriesAnimedbId),animeEntry));
 		}
 
-		if (Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveAnimeList();
-		if (Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveAnimeDetails();
-		if (Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveUserInfo();
+		Root::Get()->GetMyAnimelistManager()->AddAnimeList(list);
+		Root::Get()->GetMyAnimelistManager()->AddAnimeList(animeList);
+
+
+
+
+		if(Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveAnimeList();
+		if(Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveUserInfo();
 
 		RequestInterface::OnSuccess();
 	}
@@ -120,7 +134,7 @@ namespace ChiikaApi
 		ChiString url;
 		int method;
 		UserInfo ui = Root::Get()->GetUser();
-		
+
 		ChiString userName = ui.GetKeyValue(kUserName);
 		ChiString passWord = ui.GetKeyValue(kPass);
 
@@ -130,14 +144,14 @@ namespace ChiikaApi
 		m_Curl->SetUrl(url);
 		m_Curl->SetAuth(userName + ":" + passWord);
 		m_Curl->SetMethod(method,"");
-		m_Curl->SetWriteFunction(NULL);
+
 
 		m_Curl->SetReady();
 	}
 	//----------------------------------------------------------------------------
 	void GetMyAnimeListRequest::Initiate()
 	{
-		
+
 	}
 	//----------------------------------------------------------------------------
 }

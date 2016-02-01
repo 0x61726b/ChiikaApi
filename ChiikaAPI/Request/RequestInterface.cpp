@@ -29,17 +29,11 @@ struct xml_string_writer : pugi::xml_writer
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	const ChiString& GetRequest(Requests r)
-	{
-		std::map<enum Requests,ChiString>::iterator It = requestList.find(r);
-
-		if(It != requestList.end())
-			return It->second;
-		else
-			return requestList.find(Requests::Unknown)->second;
-	}
 	//----------------------------------------------------------------------------
 	RequestInterface::RequestInterface()
+		: m_bIsCompleted(false),
+		m_sName(""),
+		m_Curl(0)
 	{
 		
 	}
@@ -51,6 +45,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void RequestInterface::OnSuccess()
 	{
+		m_bIsCompleted = true;
 		for(size_t i = 0; i < m_vListeners.size(); i++)
 		{
 			m_vListeners[i]->OnSuccess(this);
@@ -59,11 +54,12 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void RequestInterface::SetPostData()
 	{
-
+		
 	}
 	//----------------------------------------------------------------------------
 	void RequestInterface::OnError()
 	{
+		m_bIsCompleted = true;
 		std::string errorResponse = m_Curl->GetResponse();
 		//
 		int error = m_Curl->GetRequestResult();

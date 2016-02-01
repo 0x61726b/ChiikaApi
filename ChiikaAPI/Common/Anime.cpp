@@ -23,55 +23,7 @@ namespace ChiikaApi
 	{
 	}
 	//----------------------------------------------------------------------------
-	void Anime::SetKeyValue(const std::string& key,const std::string& value)
-	{
-		m_KeyMap.insert(KeyMap::value_type(key, value));
-	}
-	//----------------------------------------------------------------------------
-	const std::string& Anime::GetKeyValue(const std::string& key)
-	{
-		KeyMap::iterator It = m_KeyMap.find(key);
-		if(It != m_KeyMap.end())
-		{
-			return m_KeyMap.find(key)->second;
-		}
-		return key;
-	}
-	//----------------------------------------------------------------------------
-	bool Anime::ContainsKey(const std::string& key)
-	{
-		KeyMap::iterator It = m_KeyMap.find(key);
-
-		if(It != m_KeyMap.end())
-			return true;
-		return false;
-	}
-	//----------------------------------------------------------------------------
 	UserAnimeEntry::UserAnimeEntry()
 	{
-	}
-	//----------------------------------------------------------------------------
-	void UserAnimeEntry::SetKeyValue(const std::string& key,const std::string& value)
-	{
-		m_KeyMap.insert(KeyMap::value_type(key, value));
-	}
-	//----------------------------------------------------------------------------
-	const std::string& UserAnimeEntry::GetKeyValue(const std::string& key)
-	{
-		KeyMap::iterator It = m_KeyMap.find(key);
-		if(It != m_KeyMap.end())
-		{
-			return m_KeyMap.find(key)->second;
-		}
-		return key;
-	}
-	//----------------------------------------------------------------------------
-	bool UserAnimeEntry::ContainsKey(const std::string& key)
-	{
-		KeyMap::iterator It = m_KeyMap.find(key);
-
-		if(It != m_KeyMap.end())
-			return true;
-		return false;
 	}
 }

@@ -30,6 +30,9 @@ namespace ChiikaApi
 		std::string Trim(std::string);
 
 		std::string ParseSubelement(std::string c,std::string start,std::string end);
+
+
+		
 	};
 }
 //----------------------------------------------------------------------------

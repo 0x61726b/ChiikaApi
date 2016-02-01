@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------------
 //Chiika Api
-//Copyright (C) 2016  Alperen Gezer
+//Copyright (C) 2015  arkenthera
 //This program is free software; you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
 //the Free Software Foundation; either version 2 of the License, or
@@ -12,47 +12,26 @@
 //You should have received a copy of the GNU General Public License along
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
+//	authors: arkenthera
+//	Date:	 24.1.2016
 //----------------------------------------------------------------------------
-#ifndef __ThreadManager_h__
-#define __ThreadManager_h__
+#ifndef __MyAnimelistUtility_h__
+#define __MyAnimelistUtility_h__
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
-#include "boost\thread.hpp"
-
-
+#include "Common/Required.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	class MalApiExport ThreadManager
+	class MalApiExport MyAnimelistUtility
 	{
 	public:
-		ThreadManager(bool isQueued,RequestInterface* request);
-		~ThreadManager();
-		bool IsBusy() { return mStop; }
+		static MyAnimelistUserPageParseResult ParseUserPage(const std::string&);
+		static ChiString GetFilenameFromURL(const std::string&);
+		static AnimeMisc ParseAnimePage(const std::string&);
 
 
-		boost::thread* Get();
-
-		void Run();
-		void RunOnSpecialThread();
-
-		void PostRequest(RequestInterface* r);
-		
-		RequestInterface* Front();
-		void Pop();
-
-		bool isQueued;
-		bool mStop;
-		boost::mutex m_Lock;
-		boost::condition_variable cond;
-		boost::thread* m_RequestThread;
-
-		std::queue<RequestInterface*> m_RequestQueue;
-		RequestInterface* m_SingleReq;
-		
 	};
 }
-
-
-
+//----------------------------------------------------------------------------
 #endif
+
