@@ -76,9 +76,11 @@ namespace ChiikaApi
 	void DownloadImageRequest::SetUrl(const ChiString& url)
 	{
 		m_Curl->SetUrl(url);
-		
-		ChiString filename = MyAnimelistUtility::GetFilenameFromURL(url);
-		m_Curl->SetFileOutput(Root::Get()->GetAppSettings()->GetImagePath() + filename);
+	}
+	//----------------------------------------------------------------------------
+	void DownloadImageRequest::SetFile(const ChiString& fileName, const ChiString& folder)
+	{
+		m_Curl->SetFileOutput(folder + fileName);
 	}
 	//----------------------------------------------------------------------------
 	void DownloadImageRequest::Initiate()

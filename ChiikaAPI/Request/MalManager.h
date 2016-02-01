@@ -38,7 +38,7 @@ namespace ChiikaApi
 
 		UserMangaList& GetMangaList();
 
-		
+		Anime GetAnimeById(int AnimeId);
 
 
 		AnimeList& GetAnimes();

@@ -231,8 +231,12 @@ namespace ChiikaApi
 		ChiString imageDir = (dataPath + "\\Images");
 		if(!FileUtil::Get()->CheckIfDirectoryExists(imageDir))
 		{
-			if(!FileUtil::Get()->CreateDir(imageDir))
+			if(FileUtil::Get()->CreateDir(imageDir))
 			{
+				if (!FileUtil::Get()->CreateDir(imageDir + "\\Anime"))
+				{
+
+				}
 			}
 				
 		}

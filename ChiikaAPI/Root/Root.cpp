@@ -224,7 +224,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void Root::DownloadImage(RequestListener* listener,const std::string& url)
 	{
-		m_pRequestManager->DownloadImage(listener,url);
+		//m_pRequestManager->DownloadImage(listener,url);
 	}
 	//----------------------------------------------------------------------------
 	void Root::AnimeScrape(RequestListener* listener,int AnimeId)
@@ -299,7 +299,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void Root::StoreKeys()
 	{
-		RequestApiValueMap.insert(std::make_pair(REQUEST_VERIFY_SUCCESS,strcat(strdup(kRequestVerify),kRequestSuccess)));
+		/*RequestApiValueMap.insert(std::make_pair(REQUEST_VERIFY_SUCCESS,strcat(strdup(kRequestVerify),kRequestSuccess)));
 		RequestApiValueMap.insert(std::make_pair(REQUEST_VERIFY_ERROR,strcat(strdup(kRequestVerify),kRequestError)));
 
 		RequestApiValueMap.insert(std::make_pair(REQUEST_GETMYANIMELIST_SUCCESS,strcat(strdup(kRequestGetMyAnimelist),kRequestSuccess)));
@@ -313,7 +313,7 @@ namespace ChiikaApi
 
 		RequestApiValueMap.insert(std::make_pair(REQUEST_ANIMESCRAPE_SUCCESS,strcat(strdup(kRequestAnimePageScrape),kRequestSuccess)));
 		RequestApiValueMap.insert(std::make_pair(REQUEST_ANIMESCRAPE_ERROR,strcat(strdup(kRequestAnimePageScrape),kRequestError)));
-
+*/
 
 	}
 }

@@ -47,22 +47,17 @@ int main()
 	std::string pathToExecutable = szFileName;
 	std::string dir = pathToExecutable.substr(0,pathToExecutable.find_last_of("\\"));
 
+	dir = dir + "\\..\\";
 	TestEventListener tel;
 
-	RootOptions opts;
-	opts.appMode = true;
-	opts.debugMode = true;
-	opts.modulePath = "D:\\Arken\\C++\\ElectronProjects\\ChiikaApi\\X64\\Chiika";
-	opts.userName = strdup(testUserName.c_str());
-	opts.passWord = strdup(testPass.c_str());
 	Root r;
-	r.Initialize(true,true,"arkenthera","122","D:\\Arken\\C++\\ElectronProjects\\ChiikaApi\\X64\\Chiika");
+	r.Initialize(true,true,"arkenthera","122",dir.c_str());
 
 	/*r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
 	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
 	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
 	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");*/
-	//r.GetRequestManager()->AnimePageScrape(&tel,10020);
+	//r.GetRequestManager()->AnimePageScrape(&tel, 31442);
 	//r.GetRequestManager()->MalScrape(&tel);
 	//r.GetRequestManager()->DownloadImage(&tel);
 	//r.GetRequestManager()->GetMyAnimelist(&tel);

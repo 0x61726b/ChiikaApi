@@ -76,5 +76,14 @@ namespace ChiikaApi
 		return m_vUserAnimeList;
 	}
 	//----------------------------------------------------------------------------
+	Anime MalManager::GetAnimeById(int AnimeId)
+	{
+		AnimeList::iterator It = m_vAnimeList.find(std::to_string(AnimeId));
+
+		if (It != m_vAnimeList.end())
+			return m_vAnimeList.find(std::to_string(AnimeId))->second;
+		else
+			return Anime();
+	}
 }
 

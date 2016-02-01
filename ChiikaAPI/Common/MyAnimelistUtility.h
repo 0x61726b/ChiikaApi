@@ -28,7 +28,7 @@ namespace ChiikaApi
 		static MyAnimelistUserPageParseResult ParseUserPage(const std::string&);
 		static ChiString GetFilenameFromURL(const std::string&);
 		static AnimeMisc ParseAnimePage(const std::string&);
-
+		
 
 	};
 }

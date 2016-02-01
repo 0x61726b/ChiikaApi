@@ -36,7 +36,7 @@ namespace ChiikaApi
 		void SetOptions();
 
 		void SetUrl(const ChiString& url);
-		
+		void SetFile(const ChiString& file,const ChiString& folder);
 
 	};
 }

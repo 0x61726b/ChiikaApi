@@ -36,7 +36,10 @@ namespace ChiikaApi
 		void GetMyAnimelist(RequestListener* listener);
 		void GetMyMangalist(RequestListener* listener);
 		void MalScrape(RequestListener* listener);
-		void DownloadImage(RequestListener* listener,const std::string& url);
+		void DownloadImage(RequestListener* listener,
+			const std::string& url,
+			const std::string& file,
+			const std::string& folder);
 		void AnimePageScrape(RequestListener* listener,int AnimeId);
 
 		void OnSuccess(RequestInterface*);
