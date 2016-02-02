@@ -176,8 +176,6 @@ namespace ChiikaApi
 		request->AddListener(listener);
 		request->AddListener(this);
 
-		SearchAnime(listener, AnimeId, "");
-
 		ThreadManager* tm = new ThreadManager(false,request);
 		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
 	}
@@ -216,15 +214,6 @@ namespace ChiikaApi
 			std::string folder = Root::Get()->GetAppSettings()->GetImagePath() + "anime/";
 			std::string url = anime.GetKeyValue(kSeriesImage);
 			DownloadImage(listener, url, fileName, folder);
-
-			if (!MyAnimelistUtility::CheckIfImageExists(folder + fileName))
-			{
-				
-			}
-			else
-			{
-				LOG(INFO) << "Cover image for " << std::to_string(AnimeId) << " already exists.Skipping...";
-			}
 		}
 	}
 
@@ -254,7 +243,21 @@ namespace ChiikaApi
 		//Should we pull a full scrape request?
 		if (anime.Misc.Characters.size() == 0)
 		{
-
+			AnimePageScrape(listener,AnimeId);
+		}
+		else
+		{
+			LOG(INFO) << "Full refresh is not required for " << std::to_string(AnimeId) << ". Skipping...";
+		}
+		//No synopsis, WTF ?!!
+		if(anime.GetKeyValue(kSynopsis) == kSynopsis)
+		{
+			MalAjax(listener,AnimeId);
+			SearchAnime(listener, AnimeId, "");
+		}
+		else
+		{
+			LOG(INFO) << "Basic details request is not required for " << std::to_string(AnimeId) << ". Skipping...";
 		}
 	}
 

@@ -249,6 +249,11 @@ namespace ChiikaApi
 		m_pRequestManager->RefreshAnimeDetails(listener, id);
 	}
 	//----------------------------------------------------------------------------
+	void Root::GetAnimeDetails(RequestListener* listener, int id)
+	{
+		m_pRequestManager->GetAnimeDetails(listener,id);
+	}
+	//----------------------------------------------------------------------------
 	void Root::SetUser(UserInfo user)
 	{
 		KeyList userKeys;
