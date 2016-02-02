@@ -54,6 +54,7 @@ namespace
 	const char* kRequestAnimePageScrape = "GetAnimePageScrape";
 	const char* kRequestMalAjax			= "GetMalAjax";
 	const char* kRequestImageDownload  = "GetImage";
+	const char* kRequestSearchAnime = "GetSearchAnime";
 
 	const char* kChiika = "Chiika";
 	const char* kMyAnimeList = "MyAnimeList";
@@ -67,6 +68,7 @@ namespace
 	//Anime Keys
 	const char* kSeriesAnimedbId = "series_animedb_id";
 	const char* kSeriesTitle = "series_title";
+	const char* kSeriesEnglish = "series_english";
 	const char* kSeriesSynonyms = "series_synonyms";
 	const char* kSeriesType = "series_type";
 	const char* kSeriesEpisodes = "series_episodes";
@@ -146,6 +148,7 @@ namespace
 		keys.push_back(kSeriesAnimedbId);
 		keys.push_back(kSeriesTitle);
 		keys.push_back(kSeriesSynonyms);
+		keys.push_back(kSynopsis);
 		keys.push_back(kSeriesEpisodes);
 		keys.push_back(kSeriesType);
 		keys.push_back(kSeriesStatus);

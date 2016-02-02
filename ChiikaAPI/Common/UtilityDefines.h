@@ -40,6 +40,8 @@
 #	define InitializeNULL(x) x = NULL
 #	define TryDestroy(x) if(x) x->Destroy();
 #	define XmlNode pugi::xml_node
+#	define XmlForeach(a,b) for(XmlNode a = b.first_child();a;a = a.next_sibling())
+#	define EmptyKey(x,y) (strcmp(x.GetKeyValue(y).c_str(),y) == 0)
 namespace ChiikaApi
 {
 	class MalApiExport DictionaryBase
@@ -75,6 +77,10 @@ namespace ChiikaApi
 			if (It != m_KeyMap.end())
 				return true;
 			return false;
+		}
+		virtual KeyMap GetKeys()
+		{
+			return m_KeyMap;
 		}
 		~DictionaryBase()
 		{

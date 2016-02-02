@@ -23,6 +23,8 @@
 #include "DownloadImage.h"
 #include "MalAnimePageScrape.h"
 #include "MalAjax.h"
+#include "SearchAnime.h"
+#include "Common\MyAnimelistUtility.h"
 
 #include "Root\Root.h"
 #include "Root\ThreadManager.h"
@@ -174,22 +176,86 @@ namespace ChiikaApi
 		request->AddListener(listener);
 		request->AddListener(this);
 
+		SearchAnime(listener, AnimeId, "");
 
+		ThreadManager* tm = new ThreadManager(false,request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
+	}
+
+	void RequestManager::SearchAnime(RequestListener* listener, int AnimeId, const char* keywords)
+	{
+		SearchAnimeRequest* request = new SearchAnimeRequest;
+
+		request->SetAnimeId(AnimeId);
+		request->Initialize();
+		request->SetOptions();
+		request->SetKeywords(keywords);
+
+		request->AddListener(listener);
+		request->AddListener(this);
+
+		ThreadManager* tm = new ThreadManager(false, request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request, tm));
+	}
+
+	void RequestManager::RefreshAnimeDetails(RequestListener* listener, int AnimeId)
+	{
+		//Hard refresh
+		//Dangerous !!
+		//Might take long to finish
+		MalAjax(listener, AnimeId); //also does search
+		AnimePageScrape(listener, AnimeId);
+
+		//Download Anime Image
 		Anime anime = Root::Get()->GetMyAnimelistManager()->GetAnimeById(AnimeId);
 
-		if(anime.GetKeyValue(kSeriesImage) != kSeriesImage)
+		if (anime.GetKeyValue(kSeriesImage) != kSeriesImage)
 		{
 			//Download anime image
 			std::string fileName = std::to_string(AnimeId) + ".jpg";
 			std::string folder = Root::Get()->GetAppSettings()->GetImagePath() + "anime/";
 			std::string url = anime.GetKeyValue(kSeriesImage);
+			DownloadImage(listener, url, fileName, folder);
 
+			if (!MyAnimelistUtility::CheckIfImageExists(folder + fileName))
+			{
+				
+			}
+			else
+			{
+				LOG(INFO) << "Cover image for " << std::to_string(AnimeId) << " already exists.Skipping...";
+			}
+		}
+	}
 
-			DownloadImage(listener,url,fileName,folder);
+	void RequestManager::GetAnimeDetails(RequestListener* listener, int AnimeId)
+	{
+		//Should we download cover again?
+		Anime anime = Root::Get()->GetMyAnimelistManager()->GetAnimeById(AnimeId);
+
+		if (anime.GetKeyValue(kSeriesImage) != kSeriesImage)
+		{
+			//Download anime image
+			std::string fileName = std::to_string(AnimeId) + ".jpg";
+			std::string folder = Root::Get()->GetAppSettings()->GetImagePath() + "anime/";
+			std::string url = anime.GetKeyValue(kSeriesImage);
+			
+
+			if (!MyAnimelistUtility::CheckIfImageExists(folder + fileName))
+			{
+				DownloadImage(listener, url, fileName, folder);
+			}
+			else
+			{
+				LOG(INFO) << "Cover image for " << std::to_string(AnimeId) << " already exists.Skipping...";
+			}
 		}
 
-		ThreadManager* tm = new ThreadManager(false,request);
-		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
+		//Should we pull a full scrape request?
+		if (anime.Misc.Characters.size() == 0)
+		{
+
+		}
 	}
 
 	void RequestManager::RemoveThreadObjects()

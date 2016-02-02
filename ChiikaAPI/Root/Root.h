@@ -81,6 +81,8 @@ namespace ChiikaApi
 		void DownloadImage(RequestListener* listener,const std::string& url);
 		void AnimeScrape(RequestListener* listener,int id);
 		void MalAjax(RequestListener* listener,int id);
+		void SearchAnime(RequestListener* listener, int id,const char* keywords);
+		void RefreshAnimeDetails(RequestListener* listener, int id);
 
 	private:
 		void StoreKeys();

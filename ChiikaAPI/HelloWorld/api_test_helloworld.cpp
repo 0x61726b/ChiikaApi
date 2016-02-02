@@ -51,14 +51,16 @@ int main()
 	TestEventListener tel;
 
 	Root r;
-	r.Initialize(true,true,"arkenthera","122",dir.c_str());
+	r.Initialize(true,true,"arkenthera","123asd456",dir.c_str());
 
 	/*r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
 	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
 	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
 	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");*/
-	r.GetRequestManager()->MalAjax(&tel, 20047);
+	//r.GetRequestManager()->SearchAnime(&tel, 31043, "");
 	//r.GetRequestManager()->MalScrape(&tel);
+	r.GetRequestManager()->AnimePageScrape(&tel, 31414);
+	r.GetRequestManager()->SearchAnime(&tel, 31414,"");
 	//r.GetRequestManager()->DownloadImage(&tel);
 	//r.GetRequestManager()->GetMyAnimelist(&tel);
 	//r.GetLocalDataManager()->SaveAll();

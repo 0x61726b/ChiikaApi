@@ -12,30 +12,37 @@
 //You should have received a copy of the GNU General Public License along
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
-//	authors: arkenthera
-//	Date:	 24.1.2016
+//authors:arkenthera
+//Date: 2.2.2016
 //----------------------------------------------------------------------------
-#ifndef __MyAnimelistUtility_h__
-#define __MyAnimelistUtility_h__
+#ifndef __SearchAnime_h__
+#define __SearchAnime_h__
 //----------------------------------------------------------------------------
-#include "Common/Required.h"
-//----------------------------------------------------------------------------
+#include "Common\Required.h"
+#include "RequestInterface.h"
+//---------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	class MalApiExport MyAnimelistUtility
+	class MalApiExport SearchAnimeRequest : public RequestInterface, public CurlEventListener
 	{
 	public:
-		static MyAnimelistUserPageParseResult ParseUserPage(const std::string&);
-		static ChiString GetFilenameFromURL(const std::string&);
-		static AnimeMisc ParseAnimePage(const std::string&);
-		static AnimeMisc ParseAnimeAjax(const std::string&);
-		
-		static ChiString PrepareTitleForSearching(const std::string&);
-		static ChiString RemoveSpecialHtmlCharacters(const std::string&);
+		SearchAnimeRequest();
+		virtual ~SearchAnimeRequest();
+		void OnSuccess();
+		void OnError();
 
-		static bool CheckIfImageExists(const std::string&);
+		void Initialize();
+		void Initiate();
+		void SetOptions();
+
+		void SetAnimeId(int Id);
+		void SetKeywords(const std::string& keywords);
+
+		int m_AnimeId;
+		KeyMap convertToMalApiConvention;
 	};
 }
+
 //----------------------------------------------------------------------------
 #endif
 

@@ -32,6 +32,7 @@ namespace ChiikaApi
 		virtual ~RequestManager();
 
 
+		//Mal Requests
 		void VerifyUser(RequestListener* listener);
 		void GetMyAnimelist(RequestListener* listener);
 		void GetMyMangalist(RequestListener* listener);
@@ -42,6 +43,10 @@ namespace ChiikaApi
 			const std::string& folder);
 		void AnimePageScrape(RequestListener* listener,int AnimeId);
 		void MalAjax(RequestListener* listener,int AnimeId);
+		void SearchAnime(RequestListener* listener, int AnimeId, const char* keywords); //smh
+		
+		void RefreshAnimeDetails(RequestListener* listener, int AnimeId);
+		void GetAnimeDetails(RequestListener* listener, int AnimeId);
 
 		void OnSuccess(RequestInterface*);
 		void OnError(RequestInterface*);

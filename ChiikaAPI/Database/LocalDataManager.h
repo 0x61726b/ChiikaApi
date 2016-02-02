@@ -107,6 +107,7 @@ namespace ChiikaApi
 
 	public:
 		void SaveAnimeList();
+		void SaveLocalAnimeList();
 		void LoadAnimeList();
 
 	public:

@@ -13,7 +13,7 @@
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //	authors: arkenthera
-//	Date:	 24.1.2016
+//	Date:	 1.2.2016
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "MalAjax.h"

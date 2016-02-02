@@ -22,6 +22,7 @@
 #include "boost\algorithm\string.hpp"
 #include "boost\algorithm\string\replace.hpp"
 #include "boost\algorithm\string\split.hpp"
+#include "boost\filesystem.hpp"
 
 namespace ChiikaApi
 {
@@ -208,51 +209,7 @@ namespace ChiikaApi
 			studioLinkMap.insert(std::make_pair(studioNames[i],studioLinks[i]));
 		}
 
-		//---------------------------------------
-		//			
-		//				Genres
-		//		
-		//---------------------------------------
-		std::string genresRegexStep1 = "(?<=Genres:</span>)(\\s*)(?s)(.+?)(?=\\s*</div)";
-		std::string genresRegexStep2 = "(?<=title=\")(.+?)(?=\")";
-
-		expr = boost::regex(genresRegexStep1);
-		flags = boost::match_default;
-		start = data.begin();
-		end = data.end();
-
-		std::string step1Capture = "";
-		if(boost::regex_search(start,end,what,expr,flags))
-		{
-			step1Capture = what[2];
-
-
-			start = what[0].second;
-			// update flags: 
-			flags |= boost::match_prev_avail;
-			flags |= boost::match_not_bob;
-		}
-
-		flags = boost::match_default;
-		start = step1Capture.begin();
-		end = step1Capture.end();
-
-		expr = boost::regex(genresRegexStep2);
-		while(boost::regex_search(start,end,what,expr,flags))
-		{
-			std::string genre = what[0];
-
-			Genre g;
-			g.SetKeyValue(kGenre,genre);
-			result.Genres.push_back(g);
-
-			start = what[0].second;
-			// update flags: 
-			flags |= boost::match_prev_avail;
-			flags |= boost::match_not_bob;
-		}
-
-
+		
 		//---------------------------------------
 		//			
 		//				Source
@@ -330,76 +287,6 @@ namespace ChiikaApi
 
 		//---------------------------------------
 		//			
-		//				Score
-		//		
-		//---------------------------------------
-		std::string scoreRegex = "(?<=Score:</span>)(\\s*)(?s)(.+?)(?=\\s*</div>)";
-		std::string scoreRegexStep2 = "(?<=\"ratingValue\">)(?s)(.+?)(?=</span>)";
-
-		flags = boost::match_default;
-		start = data.begin();
-		end = data.end();
-
-		expr = boost::regex(scoreRegex);
-
-		std::string scoreStep1Capture = "";
-		std::string score = "";
-
-		if(boost::regex_search(start,end,what,expr,flags))
-		{
-			scoreStep1Capture = what[2];
-
-			start = what[0].second;
-			// update flags: 
-			flags |= boost::match_prev_avail;
-			flags |= boost::match_not_bob;
-		}
-
-		flags = boost::match_default;
-		start = scoreStep1Capture.begin();
-		end = scoreStep1Capture.end();
-
-		expr = boost::regex(scoreRegexStep2);
-
-		if(boost::regex_search(start,end,what,expr,flags))
-		{
-			score = what[0];
-
-			start = what[0].second;
-			// update flags: 
-			flags |= boost::match_prev_avail;
-			flags |= boost::match_not_bob;
-		}
-		result.SetKeyValue(kAvgScore,score);
-
-		//---------------------------------------
-		//			
-		//				Ranked
-		//		
-		//---------------------------------------
-
-		std::string rankedRegex = "(?<=Ranked:</span>)(\\s*)(?s)(.+?)(?=\\s*<sup>)";
-		std::string ranked = "";
-		flags = boost::match_default;
-		start = data.begin();
-		end = data.end();
-
-		expr = boost::regex(rankedRegex);
-
-		if(boost::regex_search(start,end,what,expr,flags))
-		{
-			ranked = what[2];
-
-			start = what[0].second;
-			// update flags: 
-			flags |= boost::match_prev_avail;
-			flags |= boost::match_not_bob;
-		}
-		result.SetKeyValue(kRanked,ranked);
-
-
-		//---------------------------------------
-		//			
 		//				Aired
 		//		
 		//---------------------------------------
@@ -465,33 +352,6 @@ namespace ChiikaApi
 			character.SetKeyValue(kCharacterName,name);
 			result.Characters.push_back(character);
 		}
-
-		//---------------------------------------
-		//			
-		//				Synopsis
-		//				
-		//---------------------------------------
-		std::string synopsisOuterRegex = "(?<=<span itemprop=\"description\">)(\\s*)(?s)(.+?)(?=\\s*</span>)";
-
-		flags = boost::match_default;
-		start = data.begin();
-		end = data.end();
-
-		expr = boost::regex(synopsisOuterRegex);
-		std::string synopsis = "";
-		if(boost::regex_search(start,end,what,expr,flags))
-		{
-			std::string o = what[0];
-			synopsis = o;
-			start = what[0].second;
-			// update flags: 
-			flags |= boost::match_prev_avail;
-			flags |= boost::match_not_bob;
-		}
-
-		boost::replace_all(synopsis,"<br />","");
-
-		result.SetKeyValue(kSynopsis,synopsis);
 
 		return result;
 	}
@@ -621,6 +481,15 @@ namespace ChiikaApi
 		return result;
 	}
 
+	ChiString MyAnimelistUtility::PrepareTitleForSearching(const std::string& title)
+	{
+		std::string fullTitle = title;
+		
+		boost::replace_all(fullTitle, " ", "+");
+
+		return fullTitle;
+	}
+
 	ChiString MyAnimelistUtility::GetFilenameFromURL(const std::string& url)
 	{
 		int slash = url.find_last_of("/");
@@ -631,5 +500,23 @@ namespace ChiikaApi
 
 
 		return sub;
+	}
+
+	bool MyAnimelistUtility::CheckIfImageExists(const std::string& path)
+	{
+		return boost::filesystem::exists(path);
+	}
+
+	ChiString MyAnimelistUtility::RemoveSpecialHtmlCharacters(const std::string& html)
+	{
+		std::string copy = html;
+		boost::replace_all(copy, "&amp;", "&");
+		boost::replace_all(copy, "&apos;", "'");
+		boost::replace_all(copy, "&quot;", "\"");
+		boost::replace_all(copy, "&lt;", "<");
+		boost::replace_all(copy, "&gt;", ">");
+		boost::replace_all(copy, "&#039;", "'");
+		boost::replace_all(copy, "<br />", "");
+		return copy;
 	}
 }

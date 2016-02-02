@@ -42,33 +42,34 @@ namespace ChiikaApi
 
 		ChiString data = m_Curl->GetResponse();
 
-		//AnimeMisc result = MyAnimelistUtility::ParseAnimePage(data);
+		AnimeMisc result = MyAnimelistUtility::ParseAnimePage(data);
 
 
 		AnimeList& list = Root::Get()->GetMyAnimelistManager()->GetAnimes();
 
 		AnimeList::iterator It = list.find(std::to_string(m_AnimeId));
 
-		if(It != list.end())
+		if (It != list.end())
 		{
 			Anime& a = It->second;
 
-			AnimeMisc miscKappa;
-			
-			DictionaryBase genre;
-			genre.SetKeyValue(kGenre,"Test");
+			KeyList miscKeys;
+			GetAnimeMiscKeys(miscKeys);
 
-			DictionaryBase genre2;
-			genre2.SetKeyValue(kGenre,"Test 2");
+			KeyMap misc = a.Misc.GetKeys();
 
-			DictionaryBase genre3;
-			genre3.SetKeyValue(kGenre,"Test 3");
-			
-			miscKappa.Genres.push_back(genre);
-			miscKappa.Genres.push_back(genre2);
-			miscKappa.Genres.push_back(genre3);
+			KeyMap::iterator miscIt;
+			FOR_(miscKeys, i)
+			{
+				ChiString miscKeyValue = miscKeys[i];
 
-			a.Misc = miscKappa;
+				if (a.Misc.GetKeyValue(miscKeyValue) == miscKeyValue)
+				{
+					a.Misc.SetKeyValue(miscKeyValue, result.GetKeyValue(miscKeyValue));
+				}
+			}
+			a.Misc.Characters = result.Characters;
+			a.Misc.Studios = result.Studios;
 		}
 
 		Root::Get()->GetLocalDataManager()->SaveAnimeList();
@@ -101,7 +102,7 @@ namespace ChiikaApi
 
 		m_Curl->SetUrl(url);
 
-		m_Curl->SetMethod(method,"");
+		m_Curl->SetMethod(method, "");
 
 		m_Curl->SetReady();
 	}

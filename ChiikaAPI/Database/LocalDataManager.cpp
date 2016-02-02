@@ -747,6 +747,11 @@ namespace ChiikaApi
 		m_Anime->Save();
 	}
 	//----------------------------------------------------------------------------
+	void LocalDataManager::SaveLocalAnimeList()
+	{
+		m_Anime->Save();
+	}
+	//----------------------------------------------------------------------------
 	void LocalDataManager::LoadAnimeList()
 	{
 		m_AnimeLoader->Load();
