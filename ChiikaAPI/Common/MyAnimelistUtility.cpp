@@ -396,8 +396,9 @@ namespace ChiikaApi
 
 		FOR_(genreVector,i)
 		{
+			boost::trim_left(genreVector[i]);
 			DictionaryBase genre;
-			genre.SetKeyValue(kGenre,genreVector[i]);
+			genre.SetKeyValue(kGenre,(genreVector[i]));
 			result.Genres.push_back(genre);
 		}
 
