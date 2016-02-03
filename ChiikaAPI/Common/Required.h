@@ -157,8 +157,8 @@ namespace ChiikaApi
 	#include "Database\Globals.h"
 	//----------------------------------------------------------------------------
 #	define CHIKA_AUTO_MUTEX_NAME chitanda
-#	define CHIKA_AUTO_MUTEX /*mutable boost::recursive_mutex CHIKA_AUTO_MUTEX_NAME;*/ 
-#	define CHIKA_AUTO_MUTEX_LOCK /*boost::recursive_mutex::scoped_lock AutoMutexLock(CHIKA_AUTO_MUTEX_NAME);*/ 
+#	define CHIKA_AUTO_MUTEX mutable boost::recursive_mutex CHIKA_AUTO_MUTEX_NAME;
+#	define CHIKA_AUTO_MUTEX_LOCK boost::recursive_mutex::scoped_lock AutoMutexLock(CHIKA_AUTO_MUTEX_NAME)
 }
 //----------------------------------------------------------------------------
 namespace //Move this to a header file later

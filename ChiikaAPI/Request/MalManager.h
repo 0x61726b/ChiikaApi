@@ -17,12 +17,17 @@
 #define __MALUtility_h__
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
+#include "boost\thread\recursive_mutex.hpp"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
 	class MalApiExport MalManager
 	{
 	public:
+		CHIKA_AUTO_MUTEX;
+
+
+
 		MalManager();
 		~MalManager();
 

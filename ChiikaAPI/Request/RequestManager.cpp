@@ -80,6 +80,7 @@ namespace ChiikaApi
 		request->SetOptions();
 		request->AddListener(listener);
 		request->AddListener(this);
+
 		ThreadManager* tm = new ThreadManager(false,request);
 		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
 	}

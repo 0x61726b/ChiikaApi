@@ -37,50 +37,50 @@ namespace ChiikaApi
 	//-----------------------------------------------------------------------
 	LogManager::~LogManager()
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			// Destroy all logs
-			LogList::iterator i;
-		for(i = m_Logs.begin(); i != m_Logs.end(); ++i)
+		CHIKA_AUTO_MUTEX_LOCK;
+		// Destroy all logs
+		LogList::iterator i;
+		for (i = m_Logs.begin(); i != m_Logs.end(); ++i)
 		{
 			delete i->second;
 		}
 	}
 	//-----------------------------------------------------------------------
-	Log* LogManager::CreateLog(const ChiString& name,bool defaultLog,bool debuggerOutput,
+	Log* LogManager::CreateLog(const ChiString& name, bool defaultLog, bool debuggerOutput,
 		bool suppressFileOutput)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			Log* newLog = new Log(name,debuggerOutput,suppressFileOutput);
+		CHIKA_AUTO_MUTEX_LOCK;
+		Log* newLog = new Log(name, debuggerOutput, suppressFileOutput);
 
-		if(!m_pDefaultLog || defaultLog)
+		if (!m_pDefaultLog || defaultLog)
 		{
 			m_pDefaultLog = newLog;
 		}
 
-		m_Logs.insert(LogList::value_type(name,newLog));
+		m_Logs.insert(LogList::value_type(name, newLog));
 
 		return newLog;
 	}
 	//-----------------------------------------------------------------------
 	Log* LogManager::GetDefaultLog()
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			return m_pDefaultLog;
+		CHIKA_AUTO_MUTEX_LOCK;
+		return m_pDefaultLog;
 	}
 	//-----------------------------------------------------------------------
 	Log* LogManager::setDefaultLog(Log* newLog)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			Log* oldLog = m_pDefaultLog;
+		CHIKA_AUTO_MUTEX_LOCK;
+		Log* oldLog = m_pDefaultLog;
 		m_pDefaultLog = newLog;
 		return oldLog;
 	}
 	//-----------------------------------------------------------------------
 	Log* LogManager::GetLog(const ChiString& name)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			LogList::iterator i = m_Logs.find(name);
-		if(i != m_Logs.end())
+		CHIKA_AUTO_MUTEX_LOCK;
+		LogList::iterator i = m_Logs.find(name);
+		if (i != m_Logs.end())
 			return i->second;
 		/*OGRE_EXCEPT(Exception::ERR_INVALIDPARAMS, "Log not found. ", "LogManager::getLog");*/
 
@@ -90,9 +90,9 @@ namespace ChiikaApi
 	void LogManager::DestroyLog(const ChiString& name)
 	{
 		LogList::iterator i = m_Logs.find(name);
-		if(i != m_Logs.end())
+		if (i != m_Logs.end())
 		{
-			if(m_pDefaultLog == i->second)
+			if (m_pDefaultLog == i->second)
 			{
 				m_pDefaultLog = 0;
 			}
@@ -101,7 +101,7 @@ namespace ChiikaApi
 		}
 
 		// Set another default log if this one removed
-		if(!m_pDefaultLog && !m_Logs.empty())
+		if (!m_pDefaultLog && !m_Logs.empty())
 		{
 			m_pDefaultLog = m_Logs.begin()->second;
 		}
@@ -112,31 +112,30 @@ namespace ChiikaApi
 		DestroyLog(log->GetName());
 	}
 	//-----------------------------------------------------------------------
-	void LogManager::LogMessage(const ChiString& message,LogMessageLevel lml,bool maskDebug)
+	void LogManager::LogMessage(const ChiString& message, LogMessageLevel lml, bool maskDebug)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			if(m_pDefaultLog)
-			{
-				m_pDefaultLog->LogMessage(message,lml,maskDebug);
-			}
+		CHIKA_AUTO_MUTEX_LOCK;
+		if (m_pDefaultLog)
+		{
+			m_pDefaultLog->LogMessage(message, lml, maskDebug);
+		}
 	}
 	//-----------------------------------------------------------------------
 	void LogManager::setLogDetail(LoggingLevel ll)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			if(m_pDefaultLog)
-			{
-				m_pDefaultLog->SetLogDetail(ll);
-			}
+		CHIKA_AUTO_MUTEX_LOCK;
+		if (m_pDefaultLog)
+		{
+			m_pDefaultLog->SetLogDetail(ll);
+		}
 	}
 	//---------------------------------------------------------------------
-	Log::Stream LogManager::stream(LogMessageLevel lml,bool maskDebug)
+	Log::Stream LogManager::stream(LogMessageLevel lml, bool maskDebug)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			if(m_pDefaultLog)
-				return m_pDefaultLog->stream(lml,maskDebug);
-		/*OGRE_EXCEPT(Exception::ERR_INVALIDPARAMS, "Default log not found. ", "LogManager::stream");*/
-		return m_pDefaultLog->stream(lml,maskDebug);
+		CHIKA_AUTO_MUTEX_LOCK;
+		if (m_pDefaultLog)
+			return m_pDefaultLog->stream(lml, maskDebug);
+		return m_pDefaultLog->stream(lml, maskDebug);
 	}
 }
 

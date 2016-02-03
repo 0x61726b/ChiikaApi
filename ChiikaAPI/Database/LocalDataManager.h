@@ -18,6 +18,7 @@
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
 #include "ThirdParty\pugixml\src\pugixml.hpp"
+#include "boost\thread\recursive_mutex.hpp"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

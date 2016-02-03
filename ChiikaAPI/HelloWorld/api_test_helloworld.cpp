@@ -38,6 +38,7 @@ public:
 #include <thread>
 #include <chrono>
 #include <mutex>
+#include "Request\MalManager.h"
 int main()
 {
 	char szFileName[MAX_PATH];
@@ -53,52 +54,8 @@ int main()
 	Root r;
 	r.Initialize(true,true,"arkenthera","123asd456",dir.c_str());
 
-	/*r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
-	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
-	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");
-	r.GetRequestManager()->DownloadImage(&tel,"http://cdn.myanimelist.net/images/userimages/4449926.jpg");*/
-	//r.GetRequestManager()->SearchAnime(&tel, 31043, "");
-	//r.GetRequestManager()->MalScrape(&tel);
-	r.GetRequestManager()->AnimePageScrape(&tel, 31414);
-	r.GetRequestManager()->SearchAnime(&tel, 31414,"");
-	//r.GetRequestManager()->DownloadImage(&tel);
-	//r.GetRequestManager()->GetMyAnimelist(&tel);
-	//r.GetLocalDataManager()->SaveAll();
-	//r.GetRequestManager()->GetMyMangalist(&tel);
-
-
-	/*UserInfo ui;
-	ui.SetKeyValue(kUserName,testUserName);
-	ui.SetKeyValue(kPass,testPass);*/
-
-	//UserInfo second = ui;
-
-	//UserInfo third = second;
-
-	//t x = 0;
-
-	/*r.GetRequestManager()->VerifyUser(&tel);*/
-
-	//std::this_thread::sleep_for(std::chrono::seconds(4));
-
-	//AccountVerifyRequest request2;
-	//request2.Initialize();
 	
-	//request2.SetUserInfo(ui);
-	//request2.SetOptions();
-
-	//r.m_pThreadManager->PostRequest(&request2);
-
-	//std::this_thread::sleep_for(std::chrono::seconds(4));
-
-	//AccountVerifyRequest request3;
-	//request3.Initialize();
-	
-	//request3.SetUserInfo(ui);
-	//request3.SetOptions();
-
-	//r.m_pThreadManager->PostRequest(&request3);
-
+	r.GetRequestManager()->GetMyAnimelist(&tel);
 
 
 	getchar();

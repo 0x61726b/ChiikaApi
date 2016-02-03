@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------------
 //Chiika Api
-//Copyright (C) 2015  Alperen Gezer
+//Copyright (C) 2015  arkenthera
 //This program is free software; you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
 //the Free Software Foundation; either version 2 of the License, or
@@ -18,13 +18,14 @@
 #include "curl.h"
 #include "pugixml.hpp"
 #include <sstream>
+#include "boost\thread\recursive_mutex.hpp"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
 	//----------------------------------------------------------------------------
 	MalManager::MalManager()
 	{
-		
+
 	}
 	//----------------------------------------------------------------------------
 	MalManager::~MalManager()
@@ -43,21 +44,73 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void MalManager::AddAnimeList(AnimeList list)
 	{
-		m_vAnimeList.clear();
-		m_vAnimeList = list;
+		// 5/7 algorithm ahead
+		// There is no need to re construct this list when syncing user list right? I hope so..
+		// So we should just find the delta of two lists then add what's missing
+
+		size_t userAnimelistSize = m_vUserAnimeList.size();
+		size_t currentLocalAnimelistSize = m_vAnimeList.size();
+
+		if (currentLocalAnimelistSize == 0)
+		{
+			m_vAnimeList = list;
+			return;
+		}
+
+		size_t diff = userAnimelistSize - currentLocalAnimelistSize;
+
+		AnimeList deltaMap;
+		if (diff > 0)
+		{
+			UserAnimeList::iterator BiggerIt;
+			ForEachOnStd(BiggerIt, m_vUserAnimeList)
+			{
+				ChiString uAnimeId = BiggerIt->first;
+
+				AnimeList::iterator SmallerIt;
+				bool doesThisPresentInSmallerList = false;
+				ForEachOnStd(SmallerIt, m_vAnimeList)
+				{
+					ChiString animeId = SmallerIt->first;
+
+					if (uAnimeId == animeId)
+					{
+						//Present in both list
+						doesThisPresentInSmallerList = true;
+						break;
+					}
+					else
+					{
+
+					}
+				}
+				if (!doesThisPresentInSmallerList)
+				{
+					AnimeList::iterator newListIt = list.find(BiggerIt->first);
+
+					if (IsValidIt(newListIt, list))
+					{
+						m_vAnimeList.insert(AnimeList::value_type(uAnimeId, newListIt->second));
+					}
+				}
+			}
+		}
 	}
 	//----------------------------------------------------------------------------
 	void MalManager::AddMangaList(MangaList& list)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			m_vMangaList.clear();
+		CHIKA_AUTO_MUTEX_LOCK;
+
+		m_vMangaList.clear();
 		m_vMangaList = list;
 	}
 	//----------------------------------------------------------------------------
 	void MalManager::AddMangaList(UserMangaList& list)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			m_vMangaList.clear();
+		CHIKA_AUTO_MUTEX_LOCK;
+
+
+		m_vMangaList.clear();
 		m_vUserMangaList = list;
 	}
 	//----------------------------------------------------------------------------

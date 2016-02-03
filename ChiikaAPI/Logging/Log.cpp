@@ -20,11 +20,11 @@
 namespace ChiikaApi
 {
 	//-----------------------------------------------------------------------
-	Log::Log(const ChiString& name,bool debuggerOuput,bool suppressFile):
-		mLogLevel(LOG_LEVEL_NORMAL),mDebugOut(debuggerOuput),
-		mSuppressFile(suppressFile),mTimeStamp(true),mLogName(name)
+	Log::Log(const ChiString& name, bool debuggerOuput, bool suppressFile) :
+		mLogLevel(LOG_LEVEL_NORMAL), mDebugOut(debuggerOuput),
+		mSuppressFile(suppressFile), mTimeStamp(true), mLogName(name)
 	{
-		if(!mSuppressFile)
+		if (!mSuppressFile)
 		{
 			mLog.open(name.c_str());
 		}
@@ -32,107 +32,107 @@ namespace ChiikaApi
 	//-----------------------------------------------------------------------
 	Log::~Log()
 	{
-		CHIKA_AUTO_MUTEX_LOCK
+		CHIKA_AUTO_MUTEX_LOCK;
 
-			if(!mSuppressFile)
-			{
-				mLog.close();
-			}
+		if (!mSuppressFile)
+		{
+			mLog.close();
+		}
 	}
 	//-----------------------------------------------------------------------
-	void Log::LogMessage(const ChiString& message,LogMessageLevel lml,bool maskDebug)
+	void Log::LogMessage(const ChiString& message, LogMessageLevel lml, bool maskDebug)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			if((mLogLevel + lml) >= LOG_THRESHOLD)
+		CHIKA_AUTO_MUTEX_LOCK;
+		if ((mLogLevel + lml) >= LOG_THRESHOLD)
+		{
+			bool skipThisMessage = false;
+			for (mtLogListener::iterator i = mListeners.begin(); i != mListeners.end(); ++i)
+				(*i)->MessageLogged(message, lml, maskDebug, mLogName, skipThisMessage);
+
+			if (!skipThisMessage)
 			{
-				bool skipThisMessage = false;
-				for(mtLogListener::iterator i = mListeners.begin(); i != mListeners.end(); ++i)
-					(*i)->MessageLogged(message,lml,maskDebug,mLogName,skipThisMessage);
 
-				if(!skipThisMessage)
+				if (mDebugOut && !maskDebug)
+					std::cerr << message << std::endl;
+
+				// Write time into log
+				if (!mSuppressFile)
 				{
-
-					if(mDebugOut && !maskDebug)
-						std::cerr << message << std::endl;
-
-					// Write time into log
-					if(!mSuppressFile)
+					if (mTimeStamp)
 					{
-						if(mTimeStamp)
-						{
-							struct tm *pTime;
-							time_t ctTime; time(&ctTime);
-							pTime = localtime(&ctTime);
-							mLog << std::setw(2) << std::setfill('0') << pTime->tm_mday << "/"
-								<< std::setw(2) << std::setfill('0') << (pTime->tm_mon + 1) << "/"
-								<< (pTime->tm_year - 100)<< "  "
-								<< std::setw(2) << std::setfill('0') << pTime->tm_hour
-								<< ":" << std::setw(2) << std::setfill('0') << pTime->tm_min
-								<< ":" << std::setw(2) << std::setfill('0') << pTime->tm_sec
-								<< ": ";
-						}
-						ChiString prefix = "";
-						if(lml == LogMessageLevel::LOG_LEVEL_INFO)
-						{
-							prefix = "INFO ->";
-						}
-						if(lml == LogMessageLevel::LOG_LEVEL_ERROR)
-						{
-							prefix = "ERROR ->";
-						}
-						if(lml == LogMessageLevel::LOG_LEVEL_WARNING)
-						{
-							prefix = "WARNING ->";
-						}
-						if(lml == LogMessageLevel::LOG_LEVEL_BORE)
-						{
-							prefix = "API ->";
-						}
-						mLog << prefix << message << std::endl;
-						mLog.flush();
+						struct tm *pTime;
+						time_t ctTime; time(&ctTime);
+						pTime = localtime(&ctTime);
+						mLog << std::setw(2) << std::setfill('0') << pTime->tm_mday << "/"
+							<< std::setw(2) << std::setfill('0') << (pTime->tm_mon + 1) << "/"
+							<< (pTime->tm_year - 100) << "  "
+							<< std::setw(2) << std::setfill('0') << pTime->tm_hour
+							<< ":" << std::setw(2) << std::setfill('0') << pTime->tm_min
+							<< ":" << std::setw(2) << std::setfill('0') << pTime->tm_sec
+							<< ": ";
 					}
+					ChiString prefix = "";
+					if (lml == LogMessageLevel::LOG_LEVEL_INFO)
+					{
+						prefix = "INFO ->";
+					}
+					if (lml == LogMessageLevel::LOG_LEVEL_ERROR)
+					{
+						prefix = "ERROR ->";
+					}
+					if (lml == LogMessageLevel::LOG_LEVEL_WARNING)
+					{
+						prefix = "WARNING ->";
+					}
+					if (lml == LogMessageLevel::LOG_LEVEL_BORE)
+					{
+						prefix = "API ->";
+					}
+					mLog << prefix << message << std::endl;
+					mLog.flush();
 				}
 			}
+		}
 	}
 
 	//-----------------------------------------------------------------------
 	void Log::SetTimeStampEnabled(bool timeStamp)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			mTimeStamp = timeStamp;
+		CHIKA_AUTO_MUTEX_LOCK;
+		mTimeStamp = timeStamp;
 	}
 
 	//-----------------------------------------------------------------------
 	void Log::SetDebugOutputEnabled(bool debugOutput)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			mDebugOut = debugOutput;
+		CHIKA_AUTO_MUTEX_LOCK;
+		mDebugOut = debugOutput;
 	}
 
 	//-----------------------------------------------------------------------
 	void Log::SetLogDetail(LoggingLevel ll)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			mLogLevel = ll;
+		CHIKA_AUTO_MUTEX_LOCK;
+		mLogLevel = ll;
 	}
 
 	//-----------------------------------------------------------------------
 	void Log::AddListener(LogListener* listener)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			mListeners.push_back(listener);
+		CHIKA_AUTO_MUTEX_LOCK;
+		mListeners.push_back(listener);
 	}
 
 	//-----------------------------------------------------------------------
 	void Log::RemoveListener(LogListener* listener)
 	{
-		CHIKA_AUTO_MUTEX_LOCK
-			mListeners.erase(std::find(mListeners.begin(),mListeners.end(),listener));
+		CHIKA_AUTO_MUTEX_LOCK;
+		mListeners.erase(std::find(mListeners.begin(), mListeners.end(), listener));
 	}
 	//---------------------------------------------------------------------
-	Log::Stream Log::stream(LogMessageLevel lml,bool maskDebug)
+	Log::Stream Log::stream(LogMessageLevel lml, bool maskDebug)
 	{
-		return Stream(this,lml,maskDebug);
+		return Stream(this, lml, maskDebug);
 	}
 }
 

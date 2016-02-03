@@ -23,6 +23,7 @@
 #include <sstream>
 #include <chrono>
 #include <iomanip>
+#include "boost\thread\recursive_mutex.hpp"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
