@@ -121,6 +121,8 @@ set(ChiikaApi_Request_Src
   Request/MalAjax.cpp
   Request/SearchAnime.h
   Request/SearchAnime.cpp
+  Request/UpdateAnime.h
+  Request/UpdateAnime.cpp
   )
 source_group(ChiikaApi\\\\Request FILES ${ChiikaApi_Request_Src})
 

@@ -46,7 +46,7 @@ namespace ChiikaApi
 		CurlRequestInterface* Get();
 		//For creating mock objects
 		void SetCURL(CurlRequestInterface* curl);
-		void SetDatabase(LocalDataInterface*);
+		
 
 		const std::string& GetResponse();
 
@@ -64,6 +64,17 @@ namespace ChiikaApi
 		ChiString m_sName;
 		CurlRequestInterface* m_Curl;
 		bool m_bIsCompleted;
+	};
+	class MalApiExport FakeRequest : public RequestInterface
+	{
+	public:
+		FakeRequest();
+		void OnSuccess();
+		void OnError() { }
+
+		void Initialize() { }
+		void Initiate() { }
+		void SetOptions() { }
 	};
 }
 #endif

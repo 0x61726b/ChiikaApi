@@ -84,6 +84,7 @@ namespace ChiikaApi
 		void SearchAnime(RequestListener* listener, int id,const char* keywords);
 		void RefreshAnimeDetails(RequestListener* listener, int id);
 		void GetAnimeDetails(RequestListener* listener, int id);
+		void UpdateAnime(RequestListener* listener, int AnimeId, int score, int progress, int status);
 	private:
 		void StoreKeys();
 		

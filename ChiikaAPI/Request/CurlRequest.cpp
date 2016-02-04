@@ -152,6 +152,8 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void CurlRequest::Perform()
 	{
+		if (!m_bInitialized)
+			return;
 		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_WRITEDATA,&m_sBuffer);
 		FILE* fp;
 

@@ -55,6 +55,7 @@ namespace
 	const char* kRequestMalAjax			= "GetMalAjax";
 	const char* kRequestImageDownload  = "GetImage";
 	const char* kRequestSearchAnime = "GetSearchAnime";
+	const char* kRequestUpdateAnime = "GetUpdateAnime";
 
 	const char* kChiika = "Chiika";
 	const char* kMyAnimeList = "MyAnimeList";

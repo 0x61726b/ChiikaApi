@@ -55,7 +55,7 @@ int main()
 	r.Initialize(true,true,"arkenthera","123asd456",dir.c_str());
 
 	
-	r.GetRequestManager()->GetMyAnimelist(&tel);
+	r.GetRequestManager()->UpdateAnime(&tel,31414,-1,4,-1);
 
 
 	getchar();

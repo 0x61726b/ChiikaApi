@@ -24,6 +24,8 @@
 #include "MalAnimePageScrape.h"
 #include "MalAjax.h"
 #include "SearchAnime.h"
+#include "UpdateAnime.h"
+
 #include "Common\MyAnimelistUtility.h"
 
 #include "Root\Root.h"
@@ -64,11 +66,8 @@ namespace ChiikaApi
 		request->AddListener(this);
 		chiikaNode = listener;
 
-		ThreadManager* tm = new ThreadManager(false,request);
-		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
-
-		GetMyAnimelist(listener);
-		GetMyMangalist(listener);
+		ThreadManager* tm = new ThreadManager(false, request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request, tm));
 
 
 	}
@@ -81,8 +80,8 @@ namespace ChiikaApi
 		request->AddListener(listener);
 		request->AddListener(this);
 
-		ThreadManager* tm = new ThreadManager(false,request);
-		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
+		ThreadManager* tm = new ThreadManager(false, request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request, tm));
 	}
 
 	void RequestManager::GetMyMangalist(RequestListener* listener)
@@ -92,8 +91,8 @@ namespace ChiikaApi
 		request->SetOptions();
 		request->AddListener(listener);
 		request->AddListener(this);
-		ThreadManager* tm = new ThreadManager(false,request);
-		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
+		ThreadManager* tm = new ThreadManager(false, request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request, tm));
 	}
 
 	void RequestManager::MalScrape(RequestListener* listener)
@@ -105,8 +104,8 @@ namespace ChiikaApi
 		request->AddListener(listener);
 		request->AddListener(this);
 
-		ThreadManager* tm = new ThreadManager(false,request);
-		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
+		ThreadManager* tm = new ThreadManager(false, request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request, tm));
 	}
 
 	void RequestManager::DownloadImage(RequestListener* listener,
@@ -121,17 +120,35 @@ namespace ChiikaApi
 		request->AddListener(listener);
 		request->AddListener(this);
 		request->SetUrl(url);
-		request->SetFile(file,folder);
+		request->SetFile(file, folder);
 
-		ThreadManager* tm = new ThreadManager(false,request);
-		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
+		ThreadManager* tm = new ThreadManager(false, request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request, tm));
+	}
+
+	void RequestManager::UpdateAnime(RequestListener* listener, int AnimeId, int score, int progress, int status)
+	{
+		UpdateAnimeRequest* request = new UpdateAnimeRequest;
+
+		request->Initialize();
+		request->SetAnimeId(AnimeId);
+		request->UpdateProgress(progress);
+		request->UpdateScore(score);
+		request->UpdateStatus(status);
+
+		request->SetOptions();
+		request->AddListener(listener);
+		request->AddListener(this);
+
+		ThreadManager* tm = new ThreadManager(false, request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request, tm));
 	}
 
 	void RequestManager::OnSuccess(ChiikaApi::RequestInterface* request)
 	{
-		if(request->GetName() == kRequestVerify)
+		if (request->GetName() == kRequestVerify)
 		{
-			if(chiikaNode)
+			if (chiikaNode)
 			{
 				//Download user image
 				std::string fileName = Root::Get()->GetUser().GetKeyValue(kUserId) + ".jpg";
@@ -143,6 +160,9 @@ namespace ChiikaApi
 					fileName,
 					folder
 					);
+
+				GetMyAnimelist(chiikaNode);
+				GetMyMangalist(chiikaNode);
 			}
 
 		}
@@ -150,7 +170,7 @@ namespace ChiikaApi
 		RemoveThreadObjects();
 	}
 
-	void RequestManager::AnimePageScrape(RequestListener* listener,int AnimeId)
+	void RequestManager::AnimePageScrape(RequestListener* listener, int AnimeId)
 	{
 		AnimePageScrapeRequest* request = new AnimePageScrapeRequest;
 
@@ -162,11 +182,11 @@ namespace ChiikaApi
 		request->AddListener(this);
 
 
-		ThreadManager* tm = new ThreadManager(false,request);
-		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
+		ThreadManager* tm = new ThreadManager(false, request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request, tm));
 	}
 
-	void RequestManager::MalAjax(RequestListener* listener,int AnimeId)
+	void RequestManager::MalAjax(RequestListener* listener, int AnimeId)
 	{
 		MalAjaxRequest* request = new MalAjaxRequest;
 
@@ -177,8 +197,8 @@ namespace ChiikaApi
 		request->AddListener(listener);
 		request->AddListener(this);
 
-		ThreadManager* tm = new ThreadManager(false,request);
-		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
+		ThreadManager* tm = new ThreadManager(false, request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request, tm));
 	}
 
 	void RequestManager::SearchAnime(RequestListener* listener, int AnimeId, const char* keywords)
@@ -199,12 +219,6 @@ namespace ChiikaApi
 
 	void RequestManager::RefreshAnimeDetails(RequestListener* listener, int AnimeId)
 	{
-		//Hard refresh
-		//Dangerous !!
-		//Might take long to finish
-		MalAjax(listener, AnimeId); //also does search
-		AnimePageScrape(listener, AnimeId);
-
 		//Download Anime Image
 		Anime anime = Root::Get()->GetMyAnimelistManager()->GetAnimeById(AnimeId);
 
@@ -216,10 +230,19 @@ namespace ChiikaApi
 			std::string url = anime.GetKeyValue(kSeriesImage);
 			DownloadImage(listener, url, fileName, folder);
 		}
+		//Hard refresh
+		//Dangerous !!
+		//Might take long to finish
+		MalAjax(listener, AnimeId);
+		SearchAnime(listener, AnimeId, "");
+		AnimePageScrape(listener, AnimeId);
 	}
 
 	void RequestManager::GetAnimeDetails(RequestListener* listener, int AnimeId)
 	{
+		bool downloadImage = false;
+		bool fullScrape = false;
+		bool smallScrape = false;
 		//Should we download cover again?
 		Anime anime = Root::Get()->GetMyAnimelistManager()->GetAnimeById(AnimeId);
 
@@ -229,36 +252,47 @@ namespace ChiikaApi
 			std::string fileName = std::to_string(AnimeId) + ".jpg";
 			std::string folder = Root::Get()->GetAppSettings()->GetImagePath() + "anime/";
 			std::string url = anime.GetKeyValue(kSeriesImage);
-			
+
 
 			if (!MyAnimelistUtility::CheckIfImageExists(folder + fileName))
 			{
 				DownloadImage(listener, url, fileName, folder);
+				downloadImage = true;
 			}
 			else
 			{
 				LOG(INFO) << "Cover image for " << std::to_string(AnimeId) << " already exists.Skipping...";
 			}
+
 		}
 
 		//Should we pull a full scrape request?
 		if (anime.Misc.Characters.size() == 0)
 		{
-			AnimePageScrape(listener,AnimeId);
+			AnimePageScrape(listener, AnimeId);
+			fullScrape = true;
 		}
 		else
 		{
 			LOG(INFO) << "Full refresh is not required for " << std::to_string(AnimeId) << ". Skipping...";
 		}
 		//No synopsis, WTF ?!!
-		if(anime.GetKeyValue(kSynopsis) == kSynopsis)
+		if (anime.GetKeyValue(kSynopsis) == kSynopsis)
 		{
-			MalAjax(listener,AnimeId);
+			MalAjax(listener, AnimeId);
 			SearchAnime(listener, AnimeId, "");
+			smallScrape = false;
 		}
 		else
 		{
 			LOG(INFO) << "Basic details request is not required for " << std::to_string(AnimeId) << ". Skipping...";
+		}
+
+		if (!fullScrape && !smallScrape && !downloadImage)
+		{
+			FakeRequest* fakeRequest = new FakeRequest;
+			fakeRequest->AddListener(listener);
+			fakeRequest->OnSuccess();
 		}
 	}
 
@@ -270,9 +304,9 @@ namespace ChiikaApi
 
 		//Let's not leak the memory
 		//Make sure javascript side is called before getting here
-		for(RequestThreadMap::iterator It = m_RequestThreads.begin(); It != m_RequestThreads.end();)
+		for (RequestThreadMap::iterator It = m_RequestThreads.begin(); It != m_RequestThreads.end();)
 		{
-			if(It->first->IsCompleted())
+			if (It->first->IsCompleted())
 			{
 				LOG(INFO) << "Removed thread " << It->first->GetName();
 				delete It->second;
@@ -286,6 +320,7 @@ namespace ChiikaApi
 	}
 	void RequestManager::OnError(ChiikaApi::RequestInterface*)
 	{
+
 		RemoveThreadObjects();
 	}
 	//----------------------------------------------------------------------------

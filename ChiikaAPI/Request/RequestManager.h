@@ -48,6 +48,8 @@ namespace ChiikaApi
 		void RefreshAnimeDetails(RequestListener* listener, int AnimeId);
 		void GetAnimeDetails(RequestListener* listener, int AnimeId);
 
+		void UpdateAnime(RequestListener* listener, int AnimeId,int score,int progress,int status);
+
 		void OnSuccess(RequestInterface*);
 		void OnError(RequestInterface*);
 
