@@ -45,6 +45,8 @@ ChiikaAPI/Out/Data
 *.qmlproject.user
 *.qmlproject.user.*
 
+ChiikaAPI/HelloWorld
+
 
 X64
 X64_1
