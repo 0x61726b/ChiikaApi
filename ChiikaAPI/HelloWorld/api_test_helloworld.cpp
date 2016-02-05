@@ -52,7 +52,7 @@ int main()
 	TestEventListener tel;
 
 	Root r;
-	r.Initialize(true,true,"arkenthera","123asd456",dir.c_str());
+	r.Initialize(true,false,"arkenthera","123asd456",dir.c_str());
 
 	
 	r.GetRequestManager()->UpdateAnime(&tel,31414,-1,4,-1);

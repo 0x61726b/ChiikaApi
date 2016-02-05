@@ -66,7 +66,7 @@ namespace ChiikaApi
 		m_sVersion = version;
 		m_sCommitHash = (char)ChiikaApi_COMMIT_HASH;
 
-		m_pLogManager->CreateLog(std::string(options.modulePath) + "\\Chiika.log", true, true, false)->
+		m_pLogManager->CreateLog(std::string(options.modulePath) + "\\Chiika.log", true, options.debugMode, false)->
 			SetLogDetail(LoggingLevel::LOG_LEVEL_EVERYTHING);
 
 		LOG(INFO) << "Initialization successfull.Welcome to Chiika " << options.userName << "!";
