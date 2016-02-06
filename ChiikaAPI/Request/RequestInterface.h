@@ -42,7 +42,10 @@ namespace ChiikaApi
 		{
 			return m_bIsCompleted;
 		}
-
+		void SetCompleted(bool b)
+		{
+			m_bIsCompleted = b;
+		}
 		CurlRequestInterface* Get();
 		//For creating mock objects
 		void SetCURL(CurlRequestInterface* curl);
@@ -75,6 +78,8 @@ namespace ChiikaApi
 		void Initialize() { }
 		void Initiate() { }
 		void SetOptions() { }
+
+		void SetName(const std::string&);
 	};
 }
 #endif

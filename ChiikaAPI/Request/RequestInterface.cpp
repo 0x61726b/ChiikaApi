@@ -137,12 +137,17 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	FakeRequest::FakeRequest()
 	{
-		m_sName = "FakeRequest";
+		SetName("FakeRequest");
 	}
 	//----------------------------------------------------------------------------
 	void FakeRequest::OnSuccess()
 	{
 		RequestInterface::OnSuccess();
+	}
+	//----------------------------------------------------------------------------
+	void FakeRequest::SetName(const std::string& name)
+	{
+		m_sName = name;
 	}
 	//----------------------------------------------------------------------------
 	ChiString RequestInterface::GetAnimeXML(UserAnimeEntry& anime)

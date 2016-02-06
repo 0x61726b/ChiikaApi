@@ -71,7 +71,12 @@ namespace ChiikaApi
 
 	void ThreadManager::RunOnSpecialThread()
 	{
-		if(m_SingleReq->Get()->IsInitialized())
+		if(m_SingleReq->IsCompleted())
+		{
+			m_SingleReq->OnSuccess();
+			return;
+		}
+		if(m_SingleReq->Get()->IsInitialized() && !m_SingleReq->IsCompleted())
 		{
 			m_SingleReq->Get()->Perform();
 		}
