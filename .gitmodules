@@ -14,6 +14,7 @@
 [submodule "ChiikaAPI/ThirdParty/log4cplus"]
 	path = ChiikaAPI/ThirdParty/log4cplus
 	url = https://github.com/log4cplus/log4cplus
+
 [submodule "chiikaapi/thirdparty/pugixml"]
 	path = chiikaapi/thirdparty/pugixml
 	url = https://github.com/zeux/pugixml
