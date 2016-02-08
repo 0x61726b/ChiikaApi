@@ -5,9 +5,6 @@
 [submodule "ChiikaAPI/ThirdParty/anitomy"]
 	path = ChiikaAPI/ThirdParty/anitomy
 	url = https://github.com/arkenthera/anitomy.git
-[submodule "ChiikaAPI/ThirdParty/pugixml"]
-	path = ChiikaAPI/ThirdParty/pugixml
-	url = https://github.com/arkenthera/pugixml.git
 [submodule "ChiikaAPI/ThirdParty/jsoncpp"]
 	path = ChiikaAPI/ThirdParty/jsoncpp
 	url = https://github.com/arkenthera/jsoncpp.git
