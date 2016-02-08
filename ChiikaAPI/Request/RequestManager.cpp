@@ -30,7 +30,6 @@
 
 #include "Root\Root.h"
 #include "Root\ThreadManager.h"
-#include "Logging\LogManager.h"
 #include "Settings\Settings.h"
 #include "Request\MalManager.h"
 
@@ -261,7 +260,7 @@ namespace ChiikaApi
 			}
 			else
 			{
-				LOG(INFO) << "Cover image for " << std::to_string(AnimeId) << " already exists.Skipping...";
+				//LOG(INFO) << "Cover image for " << std::to_string(AnimeId) << " already exists.Skipping...";
 			}
 
 		}
@@ -274,7 +273,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			LOG(INFO) << "Full refresh is not required for " << std::to_string(AnimeId) << ". Skipping...";
+			/*LOG(INFO) << "Full refresh is not required for " << std::to_string(AnimeId) << ". Skipping...";*/
 		}
 		//No synopsis, WTF ?!!
 		if(anime.GetKeyValue(kSynopsis) == kSynopsis)
@@ -285,7 +284,7 @@ namespace ChiikaApi
 		}
 		else
 		{
-			LOG(INFO) << "Basic details request is not required for " << std::to_string(AnimeId) << ". Skipping...";
+			/*LOG(INFO) << "Basic details request is not required for " << std::to_string(AnimeId) << ". Skipping...";*/
 		}
 
 		if(!fullScrape && !smallScrape && !downloadImage)
@@ -314,7 +313,7 @@ namespace ChiikaApi
 		{
 			if(It->first->IsCompleted())
 			{
-				LOG(INFO) << "Removed thread " << It->first->GetName();
+				/*LOG(INFO) << "Removed thread " << It->first->GetName();*/
 				delete It->second;
 				It = m_RequestThreads.erase(It);
 			}

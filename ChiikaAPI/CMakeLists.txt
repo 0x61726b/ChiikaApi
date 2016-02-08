@@ -44,10 +44,6 @@ source_group(ChiikaApi\\\\Database FILES ${ChiikaApi_Database_Src})
 #Logging
 #
 set(ChiikaApi_Logging_Src
-  Logging/Log.cpp
-  Logging/Log.h
-  Logging/LogManager.cpp
-  Logging/LogManager.h
   Logging/FileHelper.h
   Logging/FileHelper.cpp
   Logging/ChiString.h
@@ -200,21 +196,22 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}\\ThirdParty\\curl\\include\\curl
 
 #Jsoncpp
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\jsoncpp\\include\\json)
-if(NOT BUILD_STATIC_LIBS)
+
+if(BUILD_SHARED_LIBS)
   target_link_libraries(ChiikaApi jsoncpp_lib)
   set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib)
   set_target_properties(jsoncpp_lib PROPERTIES FOLDER "3rdParty")
+  set(JSONCPPLIB jsoncpp_lib)
 endif()
 if(BUILD_STATIC_LIBS)
-  target_compile_definitions(jsoncpp_lib_static PRIVATE -DJSON_DLL)
   target_link_libraries(ChiikaApi jsoncpp_lib_static)
   set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib_static)
   set_target_properties(jsoncpp_lib_static PROPERTIES FOLDER "3rdParty")
+  set(JSONCPPLIB jsoncpp_lib_static)
 endif()
 
 #Pugixml
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\pugixml\\src)
-target_compile_definitions(pugixml PRIVATE -D_DLL)
 target_link_libraries(ChiikaApi pugixml)
 
 #Anitomy
@@ -229,10 +226,16 @@ link_boost_library(ChiikaApi system)
 link_boost_library(ChiikaApi regex)
 
 include_directories(${Boost_INCLUDE_DIRS})
-add_subdirectory(HelloWorld)
 #add_subdirectory(Tests)
+add_subdirectory(Tests/HelloWorld)
 
+#log4cplus
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\log4cplus\\include)
+set(CHIIKA_INCLUDE_DIR ${CHIIKA_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\log4cplus\\include)
 
+set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} log4cplus)
+
+target_link_libraries(ChiikaApi log4cplus)
 
 set_target_properties( ChiikaApi ${CHIIKA_LIBRARIES}
     PROPERTIES
@@ -244,9 +247,15 @@ set_target_properties(ChiikaApi PROPERTIES FOLDER "Chiika")
 set_target_properties(Anitomy PROPERTIES FOLDER "3rdParty")
 set_target_properties(pugixml PROPERTIES FOLDER "3rdParty")
 set_target_properties(libcurl PROPERTIES FOLDER "3rdParty")
+set_target_properties(log4cplus PROPERTIES FOLDER "3rdParty")
 
 
 set(CopyFinalDepsDir "" CACHE STRING "Default")
+
+add_custom_command(TARGET ChiikaApi POST_BUILD
+                 COMMAND ${CMAKE_COMMAND} -E copy
+               "${CMAKE_SOURCE_DIR}/log4cplusconfig"
+             "${CMAKE_BINARY_DIR}/Chiika/${CMAKE_BUILD_TYPE}$<CONFIGURATION>" COMMENT "Lol")
 
 if(NOT ${CopyFinalDepsDir} EQUAL "")
   add_custom_command(TARGET ChiikaApi POST_BUILD

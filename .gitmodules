@@ -14,3 +14,6 @@
 [submodule "ChiikaAPI/ThirdParty/googletest"]
 	path = ChiikaAPI/ThirdParty/googletest
 	url = https://github.com/google/googletest.git
+[submodule "ChiikaAPI/ThirdParty/log4cplus"]
+	path = ChiikaAPI/ThirdParty/log4cplus
+	url = https://github.com/log4cplus/log4cplus

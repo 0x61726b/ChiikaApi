@@ -18,7 +18,6 @@
 #include "Request/MalManager.h"
 #include "Settings/Settings.h"
 #include "Request/RequestManager.h"
-#include "Logging/LogManager.h"
 #include "Database/LocalDataManager.h"
 #include "Recognition/MediaPlayerRecognitionManager.h"
 #include "Recognition/AnimeRecognition.h"
@@ -27,6 +26,11 @@
 #include "Logging\FileHelper.h"
 #include "Logging\ChiString.h"
 #include "Root\ThreadManager.h"
+
+#include <log4cplus/logger.h>
+#include <log4cplus/loggingmacros.h>
+#include <log4cplus/configurator.h>
+#include <log4cplus/initializer.h>
 //----------------------------------------------------------------------------
 //Whoops..
 MalApiExport ChiikaApi::Root* GlobalInstance = 0;
@@ -56,71 +60,49 @@ namespace ChiikaApi
 		options.userName = userName;
 		options.passWord = pass;
 
+		log4cplus::Initializer initializer;
+
+		const size_t cSize = strlen(modulePath);
+
+		std::wstring wstrModulePath(cSize, L'#');
+
+		mbstowcs(&wstrModulePath[0], modulePath, cSize);
+		std::wstring log4cplusConfig;
+		log4cplusConfig.append(wstrModulePath);
+		log4cplusConfig.append(L"log4cplusconfig");
+		log4cplus::initialize();
+		log4cplus::PropertyConfigurator config(log4cplusConfig);
+		config.configure();
+
+		log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("ChiikaTrace"));
+		LOG4CPLUS_INFO(logger,
+			"Initializing ChiikaAPI " << std::endl << "Options : -> " << std::endl <<
+			"App Mode: " << appMode <<
+			std::endl << "User: " << userName << std::endl << "Module Path: " << modulePath);
+
+
+		
 
 		m_pSettings = new AppSettings("Chiika.cfg", options.modulePath);
-		////if(opts->appMode)
-		////	m_pSettings = new AppSettings("Chiika.cfg",options->modulePath);
-		m_pLogManager = new LogManager;
+
 
 		ChiString version = std::to_string(ChiikaApi_VERSION_MAJOR) + "." + std::to_string(ChiikaApi_VERSION_MINOR) + "." + std::to_string(ChiikaApi_VERSION_PATCH);;
 		m_sVersion = version;
 		m_sCommitHash = (char)ChiikaApi_COMMIT_HASH;
 
-		m_pLogManager->CreateLog(std::string(options.modulePath) + "\\Chiika.log", true, options.debugMode, false)->
-			SetLogDetail(LoggingLevel::LOG_LEVEL_EVERYTHING);
-
-		LOG(INFO) << "Initialization successfull.Welcome to Chiika " << options.userName << "!";
 
 
-
-		////m_pLogManager->CreateLog("DebuggerOutput",false,true,true)->
-		////	SetLogDetail(LoggingLevel::LOG_LEVEL_EVERYTHING); //This is used to see messages on debug window,rather than printing to file. Use LOGD rather than LOG
-
-		/*LOG(Bore) << "Chiika Api is initializing. Version: " << (m_sVersion);*/
-
-		LOG(INFO) << "Creating MyAnimeList Manager";
 		m_pMalManager = new MalManager;
 
-		////LOG(INFO) << "Creating Season Manager";
-		////m_pSeasonManager = new SeasonManager;
 
-		//if(opts->appMode)
-		//{
-		//	LOG(INFO) << "Creating MediaPlayerRecognition Manager";
-		//	m_pMPRecognition = new MediaPlayerRecognitionManager;
-		//}
 
-		//if(opts->appMode)
-		//{
-		//	//m_pThreadManager = new ThreadManager(false);
-		//}
 
-		LOG(INFO) << "Creating RequestManager Manager";
 		m_pRequestManager = new RequestManager;
 
-		//if(opts->appMode)
-		//{
-		//	LOG(INFO) << "Creating AnimeRecognition Manager";
-		//	m_pRecognizer = new AnimeRecognition;
-		//}
 
-
-		//if(!opts->appMode)
-		//{
-		//	LOG(INFO) << "Skipping LocalData Manager";
-		//}
-		//else
-		//{
-		//	/*LOG(INFO) << "Creating LocalData Manager";
-		//	m_pLocalData = new LocalDataManager;*/
-		//}
-
-
-		LOG(INFO) << "Creating LocalData Manager";
 		m_pLocalData = new LocalDataManager;
 		m_pLocalData->Initialize();
 
-		////Very important!
 
 		if (options.userName == "" || options.passWord == "")
 		{
@@ -135,12 +117,8 @@ namespace ChiikaApi
 
 
 
-		////if(opts->appMode)
-		////	
 
-		//StoreKeys();
 
-		//LOG(INFO) << "Initialization successfull.Welcome to Chiika " << options->userName << "!";
 	}
 	//----------------------------------------------------------------------------
 	Root::~Root()
@@ -150,7 +128,6 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void Root::Destroy()
 	{
-		LOG(INFO) << "D-destroying ChiikaApi";
 		TryDelete(m_pSettings);
 		m_pSettings = 0;
 		TryDelete(m_pMalManager);
@@ -162,6 +139,8 @@ namespace ChiikaApi
 		TryDelete(m_pLogManager);
 		m_pLogManager = 0;
 
+		log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("main"));
+		logger.shutdown();
 	}
 	//----------------------------------------------------------------------------
 	Root* Root::Get()
@@ -251,7 +230,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void Root::GetAnimeDetails(RequestListener* listener, int id)
 	{
-		m_pRequestManager->GetAnimeDetails(listener,id);
+		m_pRequestManager->GetAnimeDetails(listener, id);
 	}
 	//----------------------------------------------------------------------------
 	void Root::UpdateAnime(RequestListener* listener, int AnimeId, int score, int progress, int status)

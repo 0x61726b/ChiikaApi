@@ -15,7 +15,6 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "CurlRequest.h"
-#include "Logging\LogManager.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -79,7 +78,6 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void CurlRequest::Initialize()
 	{
-		LOG(INFO) << "Initializing request...";
 		m_pCurl = curl_easy_init();
 	}
 	//----------------------------------------------------------------------------
@@ -87,7 +85,7 @@ namespace ChiikaApi
 	{
 		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_HTTPAUTH,CURLAUTH_BASIC);
 		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_USERPWD,ToStd(auth));
-		LOG(INFO) << "Setting authentication to " + auth.substr(0,5) + "..."; //Not posting everything
+		//LOG(INFO) << "Setting authentication to " + auth.substr(0,5) + "..."; //Not posting everything
 	}
 	//----------------------------------------------------------------------------
 	void CurlRequest::SetFlag(int f)
@@ -98,13 +96,13 @@ namespace ChiikaApi
 	void CurlRequest::SetUrl(const ChiString& url)
 	{
 		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_URL,ToStd(url));
-		LOG(INFO) << "Setting URL to " + url + "..";
+		//LOG(INFO) << "Setting URL to " + url + "..";
 	}
 	//----------------------------------------------------------------------------
 	void CurlRequest::SetUserAgent(const ChiString& ua)
 	{
 		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_USERAGENT,ua);
-		LOG(INFO) << "Setting User-Agent to " + ua + "..";
+		//LOG(INFO) << "Setting User-Agent to " + ua + "..";
 	}
 	//----------------------------------------------------------------------------
 	void CurlRequest::SetMethod(int method,const ChiString& xmlData)
@@ -112,11 +110,11 @@ namespace ChiikaApi
 		m_iMethod = method;
 		if(method == CURLOPT_HTTPGET)
 		{
-			LOG(INFO) << "Setting method to GET";
+			/*LOG(INFO) << "Setting method to GET";*/
 		}
 		else
 		{
-			LOG(INFO) << "Setting method to POST";
+			/*LOG(INFO) << "Setting method to POST";*/
 			m_sPostData = xmlData;
 		}
 	}
@@ -124,7 +122,7 @@ namespace ChiikaApi
 	void CurlRequest::SetTimeout(int time)
 	{
 		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_TIMEOUT,time);
-		LOG(INFO) << "Setting timeout to " << time << " seconds";
+		/*LOG(INFO) << "Setting timeout to " << time << " seconds";*/
 	}
 	//----------------------------------------------------------------------------
 	void CurlRequest::SetVerbose(bool b)
@@ -133,7 +131,7 @@ namespace ChiikaApi
 		if(m_bVerbose)
 		{
 			curl_easy_setopt(m_pCurl,CURLOPT_VERBOSE,1L);
-			LOG(INFO) << "VERBOSE enabled.";
+			/*LOG(INFO) << "VERBOSE enabled.";*/
 		}
 	}
 	//----------------------------------------------------------------------------
@@ -167,7 +165,7 @@ namespace ChiikaApi
 		{
 			m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_WRITEFUNCTION,CallbackFunc);
 		}
-		LOG(INFO) << "Initiaing request....";
+		/*LOG(INFO) << "Initiaing request....";*/
 
 		if(m_iMethod == CURLOPT_HTTPPOST)
 		{
@@ -181,7 +179,7 @@ namespace ChiikaApi
 			m_CurlRes = curl_easy_perform(m_pCurl);
 			if(m_bVerbose)
 			{
-				LOG(INFO) << "POST Data = " + append;
+				/*LOG(INFO) << "POST Data = " + append;*/
 			}
 		}
 		else
@@ -196,7 +194,7 @@ namespace ChiikaApi
 		long http_code = 0;
 		curl_easy_getinfo(m_pCurl,CURLINFO_RESPONSE_CODE,&http_code);
 
-		LOG(INFO) << "Request returned HTTP code " << http_code << "...";
+		/*LOG(INFO) << "Request returned HTTP code " << http_code << "...";*/
 
 		if(m_CurlRes == CURLE_COULDNT_CONNECT)
 		{
@@ -237,7 +235,7 @@ namespace ChiikaApi
 		}
 		if(m_iRequestResult & RequestCodes::REQUEST_SUCCESS)
 		{
-			LOG(INFO) << "Request successful.";
+			/*LOG(INFO) << "Request successful.";*/
 			for(size_t i = 0; i < m_vListeners.size(); i++)
 			{
 				m_vListeners[i]->OnSuccess();
@@ -245,7 +243,7 @@ namespace ChiikaApi
 		}
 		if(m_iRequestResult & RequestCodes::REQUEST_ERROR)
 		{
-			LOG(INFO) << "Request error.";
+			/*LOG(INFO) << "Request error.";*/
 			for(size_t i = 0; i < m_vListeners.size(); i++)
 			{
 				m_vListeners[i]->OnError();

@@ -16,7 +16,6 @@
 #include "Stable.h"
 #include "ChiString.h"
 #include "boost\regex.hpp"
-#include "Logging\LogManager.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

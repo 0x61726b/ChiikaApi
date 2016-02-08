@@ -20,7 +20,6 @@
 #include "Database\LocalDataManager.h"
 #include "Root\Root.h"
 #include "Logging\ChiString.h"
-#include "Logging\LogManager.h"
 #include "boost\regex.hpp"
 #include "Logging\FileHelper.h"
 #include "Common\MyAnimelistUtility.h"

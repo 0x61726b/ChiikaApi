@@ -18,7 +18,6 @@
 
 #include <string.h>
 //#include "ThirdParty/anitomy/anitomy/anitomy.h"
-#include "Logging\LogManager.h"
 //----------------------------------------------------------------------------
 // Here is the explanation of how recognition works on Chiika
 // Chiika adds a windows message called SHELLHOOK to listen window events

@@ -40,5 +40,6 @@ set_target_properties(boost_regex PROPERTIES FOLDER "3rdParty" )
 
 
 #
+#log4cplus
 #
-#To-do add build test
+add_subdirectory(log4cplus)

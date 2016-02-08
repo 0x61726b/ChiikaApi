@@ -15,7 +15,6 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "ThreadManager.h"
-#include "Logging\LogManager.h"
 #include "Request\RequestInterface.h"
 
 //----------------------------------------------------------------------------
@@ -45,7 +44,7 @@ namespace ChiikaApi
 
 			while(m_RequestQueue.empty()) cond.wait(lock);
 
-			LOG(Bore) << "Request Thread: Processing Queue";
+			//LOG(Bore) << "Request Thread: Processing Queue";
 
 			if(!m_RequestQueue.empty())
 			{

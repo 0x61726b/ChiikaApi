@@ -16,7 +16,6 @@
 #include "Stable.h"
 #include "Settings/Settings.h"
 #include "pugixml.hpp"
-#include "Logging\Log.h"
 #include "Logging\FileHelper.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
@@ -93,10 +92,8 @@ namespace ChiikaApi
 		ChiString m_sAnimeDetailsFile = dataPath + "/Detailskun.eru";
 		ChiString m_sAnimeFolderPath = "";
 		ChiString m_sSenpaiPath = dataPath + "/Senpai.moe";
-		LoggingLevel lv = LoggingLevel::LOG_LEVEL_NORMAL;
 
 		/**/
-		AddIntegerOption(API_LOG_LEVEL,(int)lv);
 
 		AddChiStringOption(LIBRARY_ANIME_LIST_PATH,m_sAnimeListFile);
 		AddChiStringOption(LIBRARY_MANGA_LIST_PATH,m_sMangaListFile);

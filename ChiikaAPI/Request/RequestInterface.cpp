@@ -16,7 +16,6 @@
 #include "Stable.h"
 #include "RequestInterface.h"
 #include "Database\LocalDataManager.h"
-#include "Logging\LogManager.h"
 //----------------------------------------------------------------------------
 struct xml_string_writer : pugi::xml_writer
 {
