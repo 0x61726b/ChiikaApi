@@ -257,6 +257,14 @@ add_custom_command(TARGET ChiikaApi POST_BUILD
                "${CMAKE_SOURCE_DIR}/log4cplusconfig"
              "${CMAKE_BINARY_DIR}/Chiika/${CMAKE_BUILD_TYPE}$<CONFIGURATION>" COMMENT "Lol")
 
+
+add_custom_command(TARGET ChiikaApi POST_BUILD
+                              COMMAND ${CMAKE_COMMAND} -E copy
+                            "${CMAKE_BINARY_DIR}/ChiikaAPI/ThirdParty/curl/include/curl/curlbuild.h"
+                          "${CMAKE_SOURCE_DIR}/ChiikaAPI/ThirdParty/curl/include/curl" COMMENT "Lol")
+
+
+
 if(NOT ${CopyFinalDepsDir} EQUAL "")
   add_custom_command(TARGET ChiikaApi POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
