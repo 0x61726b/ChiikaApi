@@ -69,8 +69,8 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AppSettings::SetDefaultValues()
 	{
-		ChiString dataPath = (m_sGlobalPath)+"\\Data";
-		m_sSettingsPath = dataPath + "\\Chiika.cfg";
+		ChiString dataPath = (m_sGlobalPath)+"/Data";
+		m_sSettingsPath = m_sGlobalPath + "/Chiika.cfg";
 
 		Initialize();
 
@@ -87,35 +87,26 @@ namespace ChiikaApi
 
 		ChiString m_sAnimeListFile = dataPath + "/Chitanda.eru";
 		ChiString m_sMangaListFile =  dataPath + "/Oreki.houtarou";
-		ChiString m_sUpdateListFile =  dataPath + "/Satoshi.fukube";
 		ChiString m_sUserInfo = dataPath + "/User.eru";
-		ChiString m_sAnimeDetailsFile = dataPath + "/Detailskun.eru";
-		ChiString m_sAnimeFolderPath = "";
 		ChiString m_sSenpaiPath = dataPath + "/Senpai.moe";
+
+
+
+
+
 
 		/**/
 
 		AddChiStringOption(LIBRARY_ANIME_LIST_PATH,m_sAnimeListFile);
 		AddChiStringOption(LIBRARY_MANGA_LIST_PATH,m_sMangaListFile);
-		AddChiStringOption(LIBRARY_UPDATE_LIST_PATH,m_sUpdateListFile);
 		AddChiStringOption(LIBRARY_USER_INFO_PATH,m_sUserInfo);
-		AddChiStringOption(LIBRARY_ANIME_DETAILS_PATH,m_sAnimeDetailsFile);
-		AddChiStringOption(LIBRARY_ANIME_FOLDER_PATH,m_sAnimeFolderPath);
 		AddChiStringOption(LIBRARY_SENPAI_PATH,m_sSenpaiPath);
+
+
+
+
 		/**/
-		AddBooleanOption(WINDOW_START_MINIMIZED,false);
-		AddBooleanOption(WINDOW_START_WITH_WINDOWS,false);
-		AddBooleanOption(WINDOW_REMEMBER_POS,true);
-		AddBooleanOption(WINDOW_REMEMBER_SIZE,true);
-		/**/
-		AddIntegerOption(LIBRARY_SYNC_EVERY_X_SECOND,150);
-		/**/
-		AddChiStringOption(COLORS_ANIMELIST,"red");
-		AddChiStringOption(COLORS_MANGALIST,"blue");
-		AddChiStringOption(COLORS_HOME,"teal");
-		AddChiStringOption(COLORS_SETTINGS,"blueGrey");
-		/**/
-		AddChiStringOption(GEN_APP_STARTING_PAGE,"Home");
+		
 
 		Save();
 	}
@@ -213,7 +204,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void AppSettings::Initialize()
 	{
-		ChiString dataPath = (m_sGlobalPath)+"\\Data";
+		ChiString dataPath = (m_sGlobalPath)+"/Data";
 		//Create folders here
 
 		if(!FileUtil::Get()->CheckIfDirectoryExists(dataPath))
@@ -225,12 +216,12 @@ namespace ChiikaApi
 			}
 		}
 
-		ChiString imageDir = (dataPath + "\\Images");
+		ChiString imageDir = (dataPath + "/Images");
 		if(!FileUtil::Get()->CheckIfDirectoryExists(imageDir))
 		{
 			if(FileUtil::Get()->CreateDir(imageDir))
 			{
-				if (!FileUtil::Get()->CreateDir(imageDir + "\\Anime"))
+				if (!FileUtil::Get()->CreateDir(imageDir + "/Anime"))
 				{
 
 				}

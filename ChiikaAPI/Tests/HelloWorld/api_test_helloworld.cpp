@@ -49,7 +49,7 @@ int main()
 	TestEventListener tel;
 
 	Root r;
-	r.Initialize(true, false, "arkenthera", "123asd456", dir.c_str());
+	r.Initialize(true, false, "arkenthera", "", dir.c_str());
 
 
 	//r.GetRequestManager()->GetMyAnimelist(&tel);

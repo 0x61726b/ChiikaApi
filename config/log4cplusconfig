@@ -17,7 +17,7 @@ log4cplus.appender.MyConsoleAppender.layout.ConversionPattern=[%-5p][%d] %m%n
 
 #MyFileAppender
 log4cplus.appender.MyFileAppender=log4cplus::RollingFileAppender
-log4cplus.appender.MyFileAppender.File=${chiika_log}/Chiika.log
+log4cplus.appender.MyFileAppender.File=${APPDATA}/Chiika/Logs/Chiika.log
 log4cplus.appender.MyFileAppender.MaxFileSize=16MB
 log4cplus.appender.MyFileAppender.MaxBackupIndex=1
 log4cplus.appender.MyFileAppender.layout=log4cplus::PatternLayout

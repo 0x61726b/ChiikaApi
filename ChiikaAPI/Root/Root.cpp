@@ -69,7 +69,7 @@ namespace ChiikaApi
 		mbstowcs(&wstrModulePath[0], modulePath, cSize);
 		std::wstring log4cplusConfig;
 		log4cplusConfig.append(wstrModulePath);
-		log4cplusConfig.append(L"log4cplusconfig");
+		log4cplusConfig.append(L"/Logs/log4cplusconfig");
 		log4cplus::initialize();
 		log4cplus::PropertyConfigurator config(log4cplusConfig);
 		config.configure();

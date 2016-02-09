@@ -265,8 +265,7 @@ if(OS_WINDOWS)
   # -DNOMINMAX                            = Use the standard's templated min/max
   # -DWIN32_LEAN_AND_MEAN                 = Exclude less common API declarations
   # -D_HAS_EXCEPTIONS=0                   = Disable exceptions
-  add_definitions(-DWIN32 -D_WIN32 -D_WINDOWS -DUNICODE -D_UNICODE
-                   -D_WIN32_WINNT=0x602 -DNOMINMAX)
+  add_definitions(-DWIN32 -D_WIN32 -D_WINDOWS -DUNICODE -D_UNICODE -DNOMINMAX)
 endif()
 
 set(BUILD_CURL_EXE OFF CACHE BOOL "" FORCE)

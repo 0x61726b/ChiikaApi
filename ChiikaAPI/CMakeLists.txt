@@ -237,7 +237,7 @@ set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} log4cplus)
 
 target_link_libraries(ChiikaApi log4cplus)
 
-set_target_properties( ChiikaApi ${CHIIKA_LIBRARIES}
+set_target_properties( ChiikaApi libcurl
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/Chiika"
@@ -253,21 +253,12 @@ set_target_properties(log4cplus PROPERTIES FOLDER "3rdParty")
 set(CopyFinalDepsDir "" CACHE STRING "Default")
 
 add_custom_command(TARGET ChiikaApi POST_BUILD
-                 COMMAND ${CMAKE_COMMAND} -E copy
-               "${CMAKE_SOURCE_DIR}/log4cplusconfig"
-             "${CMAKE_BINARY_DIR}/Chiika/${CMAKE_BUILD_TYPE}$<CONFIGURATION>" COMMENT "Lol")
+                 COMMAND ${CMAKE_COMMAND} -E copy_directory
+               "${CMAKE_SOURCE_DIR}/config/"
+             "${CMAKE_BINARY_DIR}/Chiika/${CMAKE_BUILD_TYPE}$<CONFIGURATION>/config" COMMENT "Lol")
 
 
-add_custom_command(TARGET ChiikaApi POST_BUILD
+add_custom_command(TARGET libcurl POST_BUILD
                               COMMAND ${CMAKE_COMMAND} -E copy
                             "${CMAKE_BINARY_DIR}/ChiikaAPI/ThirdParty/curl/include/curl/curlbuild.h"
                           "${CMAKE_SOURCE_DIR}/ChiikaAPI/ThirdParty/curl/include/curl" COMMENT "Lol")
-
-
-
-if(NOT ${CopyFinalDepsDir} EQUAL "")
-  add_custom_command(TARGET ChiikaApi POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                 "${CMAKE_BINARY_DIR}/Chiika/${CMAKE_BUILD_TYPE}$<CONFIGURATION>"
-               "${CopyFinalDepsDir}/${PROJECT_ARCH}/$<CONFIGURATION>" COMMENT "Lol")
-endif()
