@@ -27,10 +27,7 @@
 #include "Logging\ChiString.h"
 #include "Root\ThreadManager.h"
 
-#include <log4cplus/logger.h>
-#include <log4cplus/loggingmacros.h>
-#include <log4cplus/configurator.h>
-#include <log4cplus/initializer.h>
+#include "Logging\LogManager.h"
 //----------------------------------------------------------------------------
 //Whoops..
 MalApiExport ChiikaApi::Root* GlobalInstance = 0;
@@ -41,7 +38,6 @@ namespace ChiikaApi
 	Root::Root()
 	{
 		InitializeNULL(m_pSettings);
-		InitializeNULL(m_pLogManager);
 		InitializeNULL(m_pMalManager);
 		InitializeNULL(m_pSeasonManager);
 		InitializeNULL(m_pMPRecognition);
@@ -60,27 +56,11 @@ namespace ChiikaApi
 		options.userName = userName;
 		options.passWord = pass;
 
-		log4cplus::Initializer initializer;
+		std::string logFile = options.modulePath + "Chiika.log";
+	
+		Log::InitLogging(logFile.c_str());
 
-		const size_t cSize = strlen(modulePath);
-
-		std::wstring wstrModulePath(cSize, L'#');
-
-		mbstowcs(&wstrModulePath[0], modulePath, cSize);
-		std::wstring log4cplusConfig;
-		log4cplusConfig.append(wstrModulePath);
-		log4cplusConfig.append(L"/Logs/log4cplusconfig");
-		log4cplus::initialize();
-		log4cplus::PropertyConfigurator config(log4cplusConfig);
-		config.configure();
-
-		log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("ChiikaTrace"));
-		LOG4CPLUS_INFO(logger,
-			"Initializing ChiikaAPI " << std::endl << "Options : -> " << std::endl <<
-			"App Mode: " << appMode <<
-			std::endl << "User: " << userName << std::endl << "Module Path: " << modulePath);
-
-
+		CHIIKALOG_INFO("Test", "test");
 		
 
 		m_pSettings = new AppSettings("Chiika.cfg", options.modulePath);
@@ -136,11 +116,8 @@ namespace ChiikaApi
 		m_pRequestManager = 0;
 		TryDelete(m_pLocalData);
 		m_pLocalData = 0;
-		TryDelete(m_pLogManager);
-		m_pLogManager = 0;
 
-		log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("main"));
-		logger.shutdown();
+		Log::StopLogging();
 	}
 	//----------------------------------------------------------------------------
 	Root* Root::Get()

@@ -48,6 +48,8 @@ set(ChiikaApi_Logging_Src
   Logging/FileHelper.cpp
   Logging/ChiString.h
   Logging/ChiString.cpp
+  Logging/LogManager.h
+  Logging/LogManager.cpp
   )
 source_group(ChiikaApi\\\\Logging FILES ${ChiikaApi_Logging_Src})
 
@@ -248,14 +250,6 @@ set_target_properties(Anitomy PROPERTIES FOLDER "3rdParty")
 set_target_properties(pugixml PROPERTIES FOLDER "3rdParty")
 set_target_properties(libcurl PROPERTIES FOLDER "3rdParty")
 set_target_properties(log4cplus PROPERTIES FOLDER "3rdParty")
-
-
-set(CopyFinalDepsDir "" CACHE STRING "Default")
-
-add_custom_command(TARGET ChiikaApi POST_BUILD
-                 COMMAND ${CMAKE_COMMAND} -E copy_directory
-               "${CMAKE_SOURCE_DIR}/config/"
-             "${CMAKE_BINARY_DIR}/Chiika/${CMAKE_BUILD_TYPE}$<CONFIGURATION>/config" COMMENT "Lol")
 
 
 add_custom_command(TARGET libcurl POST_BUILD

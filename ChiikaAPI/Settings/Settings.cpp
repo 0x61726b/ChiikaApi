@@ -225,8 +225,12 @@ namespace ChiikaApi
 				{
 
 				}
-			}
-				
+			}	
+		}
+
+		if (!FileUtil::Get()->CheckIfDirectoryExists(m_sGlobalPath + "/Config"))
+		{
+			FileUtil::Get()->CreateDir(m_sGlobalPath + "/Config");
 		}
 	}
 	//----------------------------------------------------------------------------

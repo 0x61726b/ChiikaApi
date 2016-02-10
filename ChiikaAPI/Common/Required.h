@@ -31,8 +31,6 @@ namespace ChiikaApi
 	class RequestManager;
 	class ThreadedRequest;
 	class RequestListener;
-	class Log;
-	class LogManager;
 	class AppSettings;
 	class LocalDataInterface;
 	class LocalDataManager;

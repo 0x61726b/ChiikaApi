@@ -100,7 +100,6 @@ namespace ChiikaApi
 
 		MalManager* m_pMalManager;
 		RequestManager* m_pRequestManager;
-		LogManager* m_pLogManager;
 		AppSettings* m_pSettings;
 		LocalDataManager* m_pLocalData;
 		MediaPlayerRecognitionManager* m_pMPRecognition;
