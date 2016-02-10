@@ -40,12 +40,12 @@
 #endif
 
 #if !CHIIKA_NO_LOGGING_MACROS
-#  define CHIIKALOG_TRACE(src, msg) CHIIKALOG_LOG_BODY(trace, src, msg)
-#  define CHIIKALOG_DEBUG(src, msg) CHIIKALOG_LOG_BODY(debug, src, msg)
-#  define CHIIKALOG_INFO(src, msg) CHIIKALOG_LOG_BODY(info, src, msg)
-#  define CHIIKALOG_WARN(src, msg) CHIIKALOG_LOG_BODY(warn, src, msg)
-#  define CHIIKALOG_ERROR(src, msg) CHIIKALOG_LOG_BODY(error, src, msg)
-#  define CHIIKALOG_FATAL(src, msg) CHIIKALOG_LOG_BODY(fatal, src, msg)
+#  define CHIIKALOG_TRACE(msg) CHIIKALOG_LOG_BODY(trace, "Src", msg)
+#  define CHIIKALOG_DEBUG(msg) CHIIKALOG_LOG_BODY(debug, "Src", msg)
+#  define CHIIKALOG_INFO(msg) CHIIKALOG_LOG_BODY(info, "Src", msg)
+#  define CHIIKALOG_WARN(msg) CHIIKALOG_LOG_BODY(warn, "Src", msg)
+#  define CHIIKALOG_ERROR(msg) CHIIKALOG_LOG_BODY(error, "Src", msg)
+#  define CHIIKALOG_FATAL(msg) CHIIKALOG_LOG_BODY(fatal, "Src", msg)
 #else 
 #  define CHIIKALOG_TRACE(src, msg) 
 #  define CHIIKALOG_DEBUG(src, msg)

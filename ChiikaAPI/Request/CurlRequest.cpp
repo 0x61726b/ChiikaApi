@@ -15,6 +15,8 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "CurlRequest.h"
+
+#include "Logging\LogManager.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -76,8 +78,15 @@ namespace ChiikaApi
 
 	}
 	//----------------------------------------------------------------------------
+	void CurlRequest::SetReady()
+	{
+		m_bInitialized = true;
+
+		CHIIKALOG_INFO("Curl Request is ready to be executed ");
+	}
 	void CurlRequest::Initialize()
 	{
+		CHIIKALOG_DEBUG("Initiating Curl...");
 		m_pCurl = curl_easy_init();
 	}
 	//----------------------------------------------------------------------------
@@ -86,6 +95,7 @@ namespace ChiikaApi
 		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_HTTPAUTH,CURLAUTH_BASIC);
 		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_USERPWD,ToStd(auth));
 		//LOG(INFO) << "Setting authentication to " + auth.substr(0,5) + "..."; //Not posting everything
+		CHIIKALOG_DEBUG("Setting auth information to " + auth.substr(0, 5) + "...";);
 	}
 	//----------------------------------------------------------------------------
 	void CurlRequest::SetFlag(int f)
@@ -96,7 +106,7 @@ namespace ChiikaApi
 	void CurlRequest::SetUrl(const ChiString& url)
 	{
 		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_URL,ToStd(url));
-		//LOG(INFO) << "Setting URL to " + url + "..";
+		CHIIKALOG_DEBUG("Setting URL to " << url << "..");
 	}
 	//----------------------------------------------------------------------------
 	void CurlRequest::SetUserAgent(const ChiString& ua)
@@ -110,11 +120,11 @@ namespace ChiikaApi
 		m_iMethod = method;
 		if(method == CURLOPT_HTTPGET)
 		{
-			/*LOG(INFO) << "Setting method to GET";*/
+			CHIIKALOG_DEBUG("Setting method to GET");
 		}
 		else
 		{
-			/*LOG(INFO) << "Setting method to POST";*/
+			CHIIKALOG_DEBUG("Setting method to POST");
 			m_sPostData = xmlData;
 		}
 	}
@@ -152,6 +162,8 @@ namespace ChiikaApi
 	{
 		if (!m_bInitialized)
 			return;
+
+		CHIIKALOG_DEBUG("Curl Request is running...");
 		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_WRITEDATA,&m_sBuffer);
 		FILE* fp;
 
@@ -194,7 +206,7 @@ namespace ChiikaApi
 		long http_code = 0;
 		curl_easy_getinfo(m_pCurl,CURLINFO_RESPONSE_CODE,&http_code);
 
-		/*LOG(INFO) << "Request returned HTTP code " << http_code << "...";*/
+		CHIIKALOG_DEBUG("Request returned HTTP code " << http_code << "...");
 
 		if(m_CurlRes == CURLE_COULDNT_CONNECT)
 		{
@@ -235,7 +247,7 @@ namespace ChiikaApi
 		}
 		if(m_iRequestResult & RequestCodes::REQUEST_SUCCESS)
 		{
-			/*LOG(INFO) << "Request successful.";*/
+			CHIIKALOG_DEBUG("Request success.");
 			for(size_t i = 0; i < m_vListeners.size(); i++)
 			{
 				m_vListeners[i]->OnSuccess();
@@ -243,7 +255,7 @@ namespace ChiikaApi
 		}
 		if(m_iRequestResult & RequestCodes::REQUEST_ERROR)
 		{
-			/*LOG(INFO) << "Request error.";*/
+			CHIIKALOG_DEBUG("Request error.");
 			for(size_t i = 0; i < m_vListeners.size(); i++)
 			{
 				m_vListeners[i]->OnError();

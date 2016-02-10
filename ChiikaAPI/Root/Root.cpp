@@ -26,7 +26,7 @@
 #include "Logging\FileHelper.h"
 #include "Logging\ChiString.h"
 #include "Root\ThreadManager.h"
-
+#include <log4cplus/initializer.h>
 #include "Logging\LogManager.h"
 //----------------------------------------------------------------------------
 //Whoops..
@@ -46,47 +46,45 @@ namespace ChiikaApi
 		InitializeNULL(m_pLocalData);
 
 		GlobalInstance = this;
+
+		log4cplus::Initializer initializer;
 	}
 	//----------------------------------------------------------------------------
-	void Root::Initialize(bool appMode, bool debugMode, const char* userName, const char* pass, const char* modulePath)
+	void Root::Initialize(bool appMode, int log_level, const char* userName, const char* pass, const char* modulePath)
 	{
 		options.appMode = appMode;
-		options.debugMode = debugMode;
+		options.log_level = log_level;
 		options.modulePath = modulePath;
 		options.userName = userName;
 		options.passWord = pass;
 
 		std::string logFile = options.modulePath + "Chiika.log";
-	
 		Log::InitLogging(logFile.c_str());
-
-		CHIIKALOG_INFO("Test", "test");
-		
-
-		m_pSettings = new AppSettings("Chiika.cfg", options.modulePath);
-
 
 		ChiString version = std::to_string(ChiikaApi_VERSION_MAJOR) + "." + std::to_string(ChiikaApi_VERSION_MINOR) + "." + std::to_string(ChiikaApi_VERSION_PATCH);;
 		m_sVersion = version;
-		m_sCommitHash = (char)ChiikaApi_COMMIT_HASH;
+		m_sCommitHash = (char*)ChiikaApi_COMMIT_HASH;
 
+		CHIIKALOG_INFO("Initializing settings...");
+		m_pSettings = new AppSettings("Chiika.cfg", options.modulePath);
+		
 
-
+		CHIIKALOG_INFO("Initializing MyAnimelist...");
 		m_pMalManager = new MalManager;
+		
 
-
-
-
+		CHIIKALOG_INFO("Initializing Request Manager...");
 		m_pRequestManager = new RequestManager;
-
-
+		
+		CHIIKALOG_INFO("Initializing local database...");
 		m_pLocalData = new LocalDataManager;
 		m_pLocalData->Initialize();
 
 
 		if (options.userName == "" || options.passWord == "")
 		{
-
+			options.userName = m_User.GetKeyValue(kUserName);
+			options.passWord = m_User.GetKeyValue(kPass);
 		}
 		else
 		{
@@ -95,14 +93,21 @@ namespace ChiikaApi
 		}
 
 
-
-
-
-
+		
+		CHIIKALOG_INFO(
+			"Initializing ChiikaApi" << std::endl <<
+			"Options: " << std::endl <<
+			"App Mode: " << appMode << std::endl <<
+			"Log Level: " << 1 << std::endl <<
+			"User: " << userName << std::endl <<
+			"ChiikaApi Version " << version << std::endl <<
+			"Last HEAD " << m_sCommitHash << std::endl
+		);
 	}
 	//----------------------------------------------------------------------------
 	Root::~Root()
 	{
+		CHIIKALOG_INFO("Destroying Chiika Api...");
 		Destroy();
 	}
 	//----------------------------------------------------------------------------

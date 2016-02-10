@@ -49,10 +49,10 @@ int main()
 	TestEventListener tel;
 
 	Root r;
-	r.Initialize(true, false, "arkenthera", "", dir.c_str());
+	r.Initialize(true, 1, "arkenthera", "", dir.c_str());
 
 
-	//r.GetRequestManager()->GetMyAnimelist(&tel);
+	r.GetRequestManager()->GetMyAnimelist(&tel);
 
 
 	getchar();

@@ -49,7 +49,7 @@ namespace ChiikaApi
 		virtual int GetRequestResult() = 0;
 
 		bool IsInitialized() { return m_bInitialized; }
-		void SetReady() { m_bInitialized = true; }
+		virtual void SetReady() = 0;
 	protected:
 		bool m_bInitialized;
 
@@ -72,6 +72,7 @@ namespace ChiikaApi
 
 		void Perform();
 		void SetErrorCode(int optional);
+		void SetReady();
 
 	public:
 		void AddListener(CurlEventListener* listener);

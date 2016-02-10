@@ -25,14 +25,14 @@ class MalApiExport RootOptions
 {
 public:
 	bool appMode;
-	bool debugMode;
+	int log_level;
 	std::string userName;
 	std::string passWord;
 	std::string modulePath;
 
 	RootOptions() 
 		: appMode(false),
-		  debugMode(false)
+		  log_level(1)
 	{
 	}
 	~RootOptions()
@@ -48,7 +48,7 @@ namespace ChiikaApi
 		Root();
 		~Root();
 
-		void Initialize(bool appMode,bool debugMode,const char* userName,const char* pass,const char* modulePath);
+		void Initialize(bool appMode,int log_Level,const char* userName,const char* pass,const char* modulePath);
 		void Destroy();
 
 		void PostRequest(RequestInterface* r);

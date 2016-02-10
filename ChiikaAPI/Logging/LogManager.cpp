@@ -32,26 +32,27 @@
 #include "log4cplus/consoleappender.h"
 #include "log4cplus/nullappender.h"
 
+#include "Root\Root.h"
+
 
 static log4cplus::LogLevel translate_logLevel(ChiikaApi::Log::LogLevel ll);
 
 void ChiikaApi::Log::InitLogging(const char* loc)
 {
-	log4cplus::Initializer initializer;
-
-	log4cplus::BasicConfigurator config;
-	config.configure();
-
 	log4cplus::Logger logger = log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("Chiika"));
-	logger.setLogLevel(translate_logLevel(ChiikaApi::Log::LogLevel_Debug));
+	
+	
+	RootOptions ro = Root::Get()->GetRootOptions();
+	logger.setLogLevel(translate_logLevel((ChiikaApi::Log::LogLevel)ro.log_level));
 
 #ifdef YUME_PLATFORM_WIN32
 	log4cplus::SharedAppenderPtr debugAppender(new log4cplus::Win32ConsoleAppender());
-	/*std::unique_ptr<log4cplus::Layout> layout2(new log4cplus::TTCCLayout());
-	debugAppender->setLayout(std::move(layout2));*/
-	logger.addAppender(debugAppender);
+	debugAppender->setName(LOG4CPLUS_TEXT("First"));
+	debugAppender->setLayout(std::unique_ptr<log4cplus::Layout>(new log4cplus::TTCCLayout()));
+	log4cplus::Logger::getRoot().addAppender(log4cplus::SharedAppenderPtr(debugAppender.get()));
 #else
 	log4cplus::SharedAppenderPtr debugAppender(new log4cplus::ConsoleAppender());
+	debugAppender->setName("ConsoleAppender");
 	std::unique_ptr<log4cplus::Layout> layout2(new log4cplus::TTCCLayout());
 	debugAppender->setLayout(std::move(layout2));
 	logger.addAppender(debugAppender);
@@ -63,10 +64,12 @@ void ChiikaApi::Log::InitLogging(const char* loc)
 
 	mbstowcs(&wstrModulePath[0], loc, cSize);
 
-	log4cplus::SharedAppenderPtr fileAppender(new log4cplus::FileAppender(wstrModulePath));
-	/*std::unique_ptr<log4cplus::Layout> layout(new log4cplus::TTCCLayout());
-	fileAppender->setLayout(std::move(layout));*/
-	logger.addAppender(fileAppender);
+	log4cplus::SharedAppenderPtr fileAppender(new log4cplus::RollingFileAppender(wstrModulePath));
+	fileAppender->setName(LOG4CPLUS_TEXT("Second"));
+	fileAppender->setLayout(
+		std::unique_ptr<log4cplus::Layout>(
+		new log4cplus::PatternLayout(LOG4CPLUS_TEXT("[%-5p][%D{%Y/%m/%d %H:%M:%S:%q}][%t] %m%n"))));
+	log4cplus::Logger::getRoot().addAppender(log4cplus::SharedAppenderPtr(fileAppender.get()));
 
 }
 
@@ -85,17 +88,17 @@ void ChiikaApi::Log::trace(const std::string& src, const std::string& msg, const
 void ChiikaApi::Log::debug(const std::string& src, const std::string& msg, const char *file, int line, const char *fn)
 {
 	LOG4CPLUS_DEBUG(log4cplus::Logger::getInstance(L"Chiika"),
-		file << ":" << line << " - " << fn << " - " << msg.c_str());
+		fn << " - " << msg.c_str());
 }
 void ChiikaApi::Log::info(const std::string& src, const std::string& msg, const char *file, int line, const char *fn)
 {
 	LOG4CPLUS_INFO(log4cplus::Logger::getInstance(L"Chiika"),
-		file << ":" << line << " - " << fn << " - " << msg.c_str());
+		fn << " - " << msg.c_str());
 }
 void ChiikaApi::Log::warn(const std::string& src, const std::string& msg, const char *file, int line, const char *fn)
 {
 	LOG4CPLUS_WARN(log4cplus::Logger::getInstance(L"Chiika"),
-		file << ":" << line << " - " << fn << " - " << msg.c_str());
+		fn << " - " << msg.c_str());
 }
 void ChiikaApi::Log::error(const std::string& src, const std::string& msg, const char *file, int line, const char *fn)
 {

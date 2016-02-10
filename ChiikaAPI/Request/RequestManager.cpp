@@ -33,6 +33,8 @@
 #include "Settings\Settings.h"
 #include "Request\MalManager.h"
 
+#include "Logging\LogManager.h"
+
 
 //----------------------------------------------------------------------------
 namespace ChiikaApi
