@@ -76,10 +76,6 @@ namespace ChiikaApi
 
 				list.insert(TimezoneMap::value_type(tz.TimezoneIdentifier,tz));
 			}
-			Root::Get()->GetSeasonManager()->SetTimezones(list);
-
-
-
 
 			//Items
 			const Json::Value items = root["items"];
