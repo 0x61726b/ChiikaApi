@@ -44,17 +44,20 @@ namespace ChiikaApi
 
 		//Write everything
 		ChiString response = m_Curl->GetResponse();
-		if(fw.Open())
+		if (fw.Open())
 		{
 			fw.Write(response);
+			fw.Close();
 		}
 		Json::Value root;
 		Json::Reader reader;
 
-		bool b = reader.parse(response,root);
+		UserTimezoneInfo uTz = Root::Get()->GetSeasonManager()->GetUserTimezone();
+		Timezone senpaiTimezone;
+		bool b = reader.parse(response, root);
 
 		//Only write the user data
-		if(b)
+		if (b)
 		{
 			//Root
 			const Json::Value meta = root["meta"];
@@ -65,7 +68,7 @@ namespace ChiikaApi
 			Json::Value::const_iterator It = tz.begin();
 
 			TimezoneMap list;
-			for(It; It != tz.end(); It++)
+			for (It; It != tz.end(); It++)
 			{
 				Json::Value inner = *It;
 
@@ -74,7 +77,12 @@ namespace ChiikaApi
 				tz.TimezoneIdentifier = (It.name());
 				tz.Offset = (inner["offset"].asString());
 
-				list.insert(TimezoneMap::value_type(tz.TimezoneIdentifier,tz));
+				list.insert(TimezoneMap::value_type(tz.TimezoneIdentifier, tz));
+
+				if (atoi(tz.TimezoneIdentifier.c_str()) == uTz.Bias)
+				{
+					senpaiTimezone = tz;
+				}
 			}
 
 			//Items
@@ -82,7 +90,10 @@ namespace ChiikaApi
 			Json::Value::const_iterator itemsIt = items.begin();
 			SenpaiData sd;
 
-			for(itemsIt; itemsIt != items.end(); itemsIt++)
+			Json::Value root_;
+			Json::Value userSenpai;
+			Json::Value itemSenpai(Json::arrayValue);
+			for (itemsIt; itemsIt != items.end(); itemsIt++)
 			{
 				Json::Value v = *itemsIt;
 
@@ -100,12 +111,28 @@ namespace ChiikaApi
 				si.AirDateOriginal = JsToQ(v["airdate_orig"]);
 
 
+
+
 				const Json::Value airdates = v["airdates"];
-
+				v.removeMember("airdates");
+				v.removeMember("simulcast_airdates");
+				v.removeMember("commentary");
+				v.removeMember("fansub");
+				v.removeMember("fansubClass");
+				v.removeMember("fansub_link");
+				v.removeMember("hasTranslation");
+				v.removeMember("isAired");
+				v.removeMember("isSequel");
+				v.removeMember("isShort");
+				v.removeMember("isSimulcastAired");
+				v.removeMember("missingAirdate");
+				v.removeMember("missingAirtime");
+				v.removeMember("notes");
+				v.removeMember("isSimulcastAired");
 				Json::Value::const_iterator adIt = airdates.begin();
-				Map<ChiString,Airdate>::type airdateList;
+				Map<ChiString, Airdate>::type airdateList;
 
-				ForEachOnStd(adIt,airdates)
+				ForEachOnStd(adIt, airdates)
 				{
 					Json::Value t = *adIt;
 
@@ -119,11 +146,28 @@ namespace ChiikaApi
 					ad.Weekday = t["weekday"].asInt();
 					ad.RdWeekday = JsToQ(t["rd_weekday"]);
 
-					airdateList.insert(std::make_pair(ad.TimeZone.TimezoneIdentifier,ad));
+					if (ad.TimeZone.Offset == senpaiTimezone.Offset)
+					{
+						v["airdates"][timezoneValue] = t;
+					}
 				}
-				si.Airdates = airdateList;
-				sd.push_back(si);
+				itemSenpai.append(v);
+
 			}
+			root_["meta"] = meta;
+			root_["items"] = (itemSenpai);
+			FileWriter fw(Root::Get()->GetAppSettings()->GetDataPath() + "SenpaiUser.moe");
+			if (fw.Open())
+			{
+				Json::StyledWriter styledWriter;
+				std::stringstream file;
+
+				file << styledWriter.write(root_);
+				fw.Write(file);
+
+				fw.Close();
+			}
+
 		}
 		RequestInterface::OnSuccess();
 	}
@@ -145,7 +189,7 @@ namespace ChiikaApi
 		int method;
 		method = CURLOPT_HTTPGET;
 
-		m_Curl->SetMethod(method,"");
+		m_Curl->SetMethod(method, "");
 		m_Curl->SetUrl("http://www.senpai.moe/export.php?type=json&src=raw");
 
 		m_Curl->SetReady();

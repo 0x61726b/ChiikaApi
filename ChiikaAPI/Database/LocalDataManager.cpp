@@ -470,7 +470,10 @@ namespace ChiikaApi
 
 						ChiString timezoneValue = (adIt.name());
 
-						ad.TimeZone = list.find(timezoneValue)->second;
+						TimezoneMap::iterator timezoneIt = list.find(timezoneValue);
+
+						if (timezoneIt != list.end())
+							ad.TimeZone = list.find(timezoneValue)->second;
 						ad.RdDate = JsToQ(t["rd_date"]);
 						ad.RdTime = JsToQ(t["rd_time"]);
 						ad.Weekday = t["weekday"].asInt();
@@ -715,15 +718,16 @@ namespace ChiikaApi
 		m_sMangaListFilePath = AppSettings::Get().GetDataPath() + "Oreki.houtarou";
 		m_sUserInfoPath = AppSettings::Get().GetDataPath() + "User.eru";
 		m_sSenpaiPath = AppSettings::Get().GetDataPath() + "Senpai.moe";
+		m_sSenpaiUserPath = AppSettings::Get().GetDataPath() + "SenpaiUser.moe";
 
 
 		m_AnimeLoader = new AnimeFileLoader(m_sAnimeListFilePath);
 		m_MangaLoader = new MangaFileLoader(m_sMangaListFilePath);
 		m_UserInfoLoader = new UserInfoLoader(m_sUserInfoPath);
 		m_SenpaiLoader = new SenpaiLoader(m_sSenpaiPath);
+		m_SenpaiUserLoader = new SenpaiLoader(m_sSenpaiUserPath);
 		
-		
-		m_Anime = new AnimeLoader(Root::Get()->GetAppSettings()->GetDataPath() + "/Yuu.sonoda");
+		m_Anime = new AnimeLoader(Root::Get()->GetAppSettings()->GetDataPath() + "Yuu.sonoda");
 
 		LoadUserInfo();
 		LoadAnimeList();
@@ -739,6 +743,9 @@ namespace ChiikaApi
 		TryDelete(m_AnimeLoader);
 		TryDelete(m_MangaLoader);
 		TryDelete(m_UserInfoLoader);
+		TryDelete(m_SenpaiLoader);
+		TryDelete(m_SenpaiUserLoader);
+		TryDelete(m_Anime);
 	}
 	//----------------------------------------------------------------------------
 	void LocalDataManager::SaveAnimeList()
@@ -789,7 +796,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void LocalDataManager::LoadSenpaiData()
 	{
-		m_SenpaiLoader->Load();
+		m_SenpaiUserLoader->Load();
 	}
 	//----------------------------------------------------------------------------
 	void LocalDataManager::SaveAll()

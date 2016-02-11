@@ -135,12 +135,14 @@ namespace ChiikaApi
 		ChiString m_sUpdateListPath;
 		ChiString m_sAnimeDetailsPath;
 		ChiString m_sSenpaiPath;
+		ChiString m_sSenpaiUserPath;
 
 	private:
 		AnimeFileLoader* m_AnimeLoader;
 		MangaFileLoader* m_MangaLoader;
 		UserInfoLoader* m_UserInfoLoader;
 		SenpaiLoader* m_SenpaiLoader;
+		SenpaiLoader* m_SenpaiUserLoader;
 		AnimeLoader* m_Anime;
 	};
 }

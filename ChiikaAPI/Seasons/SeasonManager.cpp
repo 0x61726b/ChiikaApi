@@ -58,6 +58,15 @@ namespace ChiikaApi
 		m_SenpaiData = sd;
 	}
 	//----------------------------------------------------------------------------
+	void SeasonManager::SetSeasonInfo(SeasonInfo inf)
+	{
+		m_CurrentSeason = inf;
+	}
+	//----------------------------------------------------------------------------
+	SeasonInfo SeasonManager::GetSeasonInfo() const
+	{
+		return m_CurrentSeason;
+	}
 	SenpaiItem SeasonManager::GetSenpaiDataFromMalId(int malid)
 	{
 		SenpaiData::iterator It = m_SenpaiData.begin();
@@ -247,6 +256,8 @@ namespace ChiikaApi
 		/*utz.Name = (tz.DaylightName);*/
 		utz.Bias = -tz.Bias*60; //convert to seconds UTC = local time + bias
 		return utz;
+#else
+		UserTimezoneInfo();
 #endif
 	}
 }

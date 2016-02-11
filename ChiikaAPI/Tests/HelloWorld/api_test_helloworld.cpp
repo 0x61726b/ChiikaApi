@@ -52,7 +52,7 @@ int main()
 	r.Initialize(true, 1, "arkenthera", "123asd456", dir.c_str());
 
 
-	/*r.GetRequestManager()->GetMyAnimelist(&tel);*/
+	//r.GetRequestManager()->DownloadSenpaiData(&tel);
 
 
 	getchar();

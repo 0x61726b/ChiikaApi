@@ -24,6 +24,12 @@ namespace ChiikaApi
 	typedef Map<ChiString,Timezone>::type TimezoneMap;
 	typedef Vector<SenpaiItem>::type SenpaiData;
 
+	struct MalApiExport SeasonInfo
+	{
+		ChiString Name;
+		ChiString StartDate;
+	};
+
 	class MalApiExport SeasonManager
 	{
 	public:
@@ -43,9 +49,13 @@ namespace ChiikaApi
 
 		SenpaiData GetShowsFromDayAway(int day);
 		
+		void SetSeasonInfo(SeasonInfo inf);
+		SeasonInfo GetSeasonInfo() const;
 
 		TimezoneMap m_Timezones;
 		SenpaiData m_SenpaiData;
+
+		SeasonInfo m_CurrentSeason;
 	};
 }
 #endif // SEASONMANAGER_H

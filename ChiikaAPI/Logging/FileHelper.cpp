@@ -99,6 +99,12 @@ namespace ChiikaApi
 		mStream.flush();
 	}
 	//----------------------------------------------------------------------------
+	void FileWriter::Write(std::stringstream& stream)
+	{
+		mStream << stream.rdbuf();
+		mStream.flush();
+	}
+	//----------------------------------------------------------------------------
 	FileUtil::FileUtil()
 	{
 		gFileUtil = this;

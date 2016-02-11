@@ -43,6 +43,7 @@ namespace ChiikaApi
 		bool Open();
 		void Close();
 		void Write(ChiString);
+		void Write(std::stringstream&);
 	};
 	class MalApiExport FileUtil
 	{
