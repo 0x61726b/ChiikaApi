@@ -50,6 +50,10 @@ namespace ChiikaApi
 
 		void UpdateAnime(RequestListener* listener, int AnimeId,int score,int progress,int status);
 
+
+		//Senpai.Moe
+		void DownloadSenpaiData(RequestListener* listener);
+
 		void OnSuccess(RequestInterface*);
 		void OnError(RequestInterface*);
 

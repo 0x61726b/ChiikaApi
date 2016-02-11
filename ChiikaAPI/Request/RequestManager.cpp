@@ -26,6 +26,8 @@
 #include "SearchAnime.h"
 #include "UpdateAnime.h"
 
+#include "SenpaiMoe.h"
+
 #include "Common\MyAnimelistUtility.h"
 
 #include "Root\Root.h"
@@ -35,6 +37,7 @@
 
 #include "Logging\LogManager.h"
 
+#include "boost\shared_ptr.hpp"
 
 //----------------------------------------------------------------------------
 namespace ChiikaApi
@@ -145,6 +148,18 @@ namespace ChiikaApi
 		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
 	}
 
+	void RequestManager::DownloadSenpaiData(RequestListener* listener)
+	{
+		SenpaiMoeDlRequest* request = (new SenpaiMoeDlRequest);
+
+		request->Initialize();
+		request->SetOptions();
+		request->AddListener(listener);
+		request->AddListener(this);
+
+		ThreadManager* tm = new ThreadManager(false,request);
+		m_RequestThreads.insert(RequestThreadMap::value_type(request,tm));
+	}
 	void RequestManager::OnSuccess(ChiikaApi::RequestInterface* request)
 	{
 		if(request->GetName() == kRequestVerify)
@@ -164,6 +179,7 @@ namespace ChiikaApi
 
 				GetMyAnimelist(chiikaNode);
 				GetMyMangalist(chiikaNode);
+				DownloadSenpaiData(chiikaNode);
 			}
 
 		}

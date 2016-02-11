@@ -84,40 +84,6 @@ namespace ChiikaApi
 		ChiString Group;
 		ChiString Quality;
 	};
-	struct Timezone
-	{
-		ChiString TimezoneIdentifier;
-		ChiString Name;
-		ChiString Offset; //To Utc
-	};
-	struct UserTimezoneInfo
-	{
-		ChiString Name;
-		long Bias;
-	};
-	struct Airdate
-	{
-		Timezone TimeZone;
-		ChiString RdDate;
-		ChiString RdTime;
-		int Weekday;
-		ChiString RdWeekday;
-	};
-	struct SenpaiItem
-	{
-		ChiString Name;
-		int MalID;
-		bool IsSequel;
-		ChiString Simulcast;
-		ChiString AirdateStr;
-		ChiString Fansub;
-		int SimulcastDelay;
-		ChiString Type;
-		bool MissingAirdate;
-		bool MissingAirtime;
-		ChiString AirDateOriginal;
-		Map<ChiString,Airdate>::type Airdates;
-	};
 }
 #include "Anime.h"
 #include "Manga.h"

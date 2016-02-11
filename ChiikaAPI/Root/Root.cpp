@@ -50,7 +50,7 @@ namespace ChiikaApi
 		log4cplus::Initializer initializer;
 	}
 	//----------------------------------------------------------------------------
-	void Root::Initialize(bool appMode, int log_level, const char* userName, const char* pass, const char* modulePath)
+	void Root::Initialize(bool appMode,int log_level,const char* userName,const char* pass,const char* modulePath)
 	{
 		options.appMode = appMode;
 		options.log_level = log_level;
@@ -66,34 +66,39 @@ namespace ChiikaApi
 		m_sCommitHash = (char*)ChiikaApi_COMMIT_HASH;
 
 		CHIIKALOG_INFO("Initializing settings...");
-		m_pSettings = new AppSettings("Chiika.cfg", options.modulePath);
-		
+		m_pSettings = new AppSettings("Chiika.cfg",options.modulePath);
+
 
 		CHIIKALOG_INFO("Initializing MyAnimelist...");
 		m_pMalManager = new MalManager;
-		
+
 
 		CHIIKALOG_INFO("Initializing Request Manager...");
 		m_pRequestManager = new RequestManager;
+
 		
+		CHIIKALOG_INFO("Initializing local Season Manager...");
+		m_pSeasonManager = new SeasonManager;
+
+
 		CHIIKALOG_INFO("Initializing local database...");
 		m_pLocalData = new LocalDataManager;
 		m_pLocalData->Initialize();
 
+		
 
-		if (options.userName == "" || options.passWord == "")
+
+		if(options.userName.size() == 0 || options.passWord.size() == 0)
 		{
 			options.userName = m_User.GetKeyValue(kUserName);
 			options.passWord = m_User.GetKeyValue(kPass);
 		}
 		else
 		{
-			m_User.SetKeyValue(kUserName, options.userName);
-			m_User.SetKeyValue(kPass, options.passWord);
+			m_User.SetKeyValue(kUserName,options.userName);
+			m_User.SetKeyValue(kPass,options.passWord);
 		}
 
-
-		
 		CHIIKALOG_INFO(
 			"Initializing ChiikaApi" << std::endl <<
 			"Options: " << std::endl <<
@@ -102,7 +107,7 @@ namespace ChiikaApi
 			"User: " << userName << std::endl <<
 			"ChiikaApi Version " << version << std::endl <<
 			"Last HEAD " << m_sCommitHash << std::endl
-		);
+			);
 	}
 	//----------------------------------------------------------------------------
 	Root::~Root()
@@ -121,6 +126,8 @@ namespace ChiikaApi
 		m_pRequestManager = 0;
 		TryDelete(m_pLocalData);
 		m_pLocalData = 0;
+		TryDelete(m_pSeasonManager);
+		m_pSeasonManager = 0;
 
 		Log::StopLogging();
 	}
@@ -155,6 +162,11 @@ namespace ChiikaApi
 		return m_pSettings;
 	}
 	//----------------------------------------------------------------------------
+	SeasonManager* Root::GetSeasonManager()
+	{
+		return m_pSeasonManager;
+	}
+	//----------------------------------------------------------------------------
 	UserInfo& Root::GetUser()
 	{
 		return m_User;
@@ -185,39 +197,39 @@ namespace ChiikaApi
 		m_pRequestManager->MalScrape(listener);
 	}
 	//----------------------------------------------------------------------------
-	void Root::DownloadImage(RequestListener* listener, const std::string& url)
+	void Root::DownloadImage(RequestListener* listener,const std::string& url)
 	{
 		//m_pRequestManager->DownloadImage(listener,url);
 	}
 	//----------------------------------------------------------------------------
-	void Root::AnimeScrape(RequestListener* listener, int AnimeId)
+	void Root::AnimeScrape(RequestListener* listener,int AnimeId)
 	{
-		m_pRequestManager->AnimePageScrape(listener, AnimeId);
+		m_pRequestManager->AnimePageScrape(listener,AnimeId);
 	}
 	//----------------------------------------------------------------------------
-	void Root::MalAjax(RequestListener* listener, int AnimeId)
+	void Root::MalAjax(RequestListener* listener,int AnimeId)
 	{
-		m_pRequestManager->MalAjax(listener, AnimeId);
+		m_pRequestManager->MalAjax(listener,AnimeId);
 	}
 	//----------------------------------------------------------------------------
-	void Root::SearchAnime(RequestListener* listener, int id, const char* keywords)
+	void Root::SearchAnime(RequestListener* listener,int id,const char* keywords)
 	{
-		m_pRequestManager->SearchAnime(listener, id, keywords);
+		m_pRequestManager->SearchAnime(listener,id,keywords);
 	}
 	//----------------------------------------------------------------------------
-	void Root::RefreshAnimeDetails(RequestListener* listener, int id)
+	void Root::RefreshAnimeDetails(RequestListener* listener,int id)
 	{
-		m_pRequestManager->RefreshAnimeDetails(listener, id);
+		m_pRequestManager->RefreshAnimeDetails(listener,id);
 	}
 	//----------------------------------------------------------------------------
-	void Root::GetAnimeDetails(RequestListener* listener, int id)
+	void Root::GetAnimeDetails(RequestListener* listener,int id)
 	{
-		m_pRequestManager->GetAnimeDetails(listener, id);
+		m_pRequestManager->GetAnimeDetails(listener,id);
 	}
 	//----------------------------------------------------------------------------
-	void Root::UpdateAnime(RequestListener* listener, int AnimeId, int score, int progress, int status)
+	void Root::UpdateAnime(RequestListener* listener,int AnimeId,int score,int progress,int status)
 	{
-		m_pRequestManager->UpdateAnime(listener, AnimeId, score, progress, status);
+		m_pRequestManager->UpdateAnime(listener,AnimeId,score,progress,status);
 	}
 	//----------------------------------------------------------------------------
 	void Root::SetUser(UserInfo user)
@@ -225,25 +237,25 @@ namespace ChiikaApi
 		KeyList userKeys;
 		GetUserInfoKeys(userKeys);
 
-		FOR_(userKeys, j)
+		FOR_(userKeys,j)
 		{
-			m_User.SetKeyValue(userKeys[j], user.GetKeyValue(userKeys[j]));
+			m_User.SetKeyValue(userKeys[j],user.GetKeyValue(userKeys[j]));
 		}
 
 		KeyList mangaKeys;
 		GetUserInfoMangaKeys(mangaKeys);
 
-		FOR_(mangaKeys, j)
+		FOR_(mangaKeys,j)
 		{
-			m_User.Manga.SetKeyValue(mangaKeys[j], user.Manga.GetKeyValue(mangaKeys[j]));
+			m_User.Manga.SetKeyValue(mangaKeys[j],user.Manga.GetKeyValue(mangaKeys[j]));
 		}
 
 		KeyList animeKeys;
 		GetUserInfoAnimeKeys(animeKeys);
 
-		FOR_(animeKeys, j)
+		FOR_(animeKeys,j)
 		{
-			m_User.Anime.SetKeyValue(animeKeys[j], user.Anime.GetKeyValue(animeKeys[j]));
+			m_User.Anime.SetKeyValue(animeKeys[j],user.Anime.GetKeyValue(animeKeys[j]));
 		}
 
 	}
@@ -256,6 +268,25 @@ namespace ChiikaApi
 	const UserMangaList& Root::GetUserMangalist()
 	{
 		return GetMyAnimelistManager()->GetMangaList();
+	}
+	//----------------------------------------------------------------------------
+	std::vector<SenpaiItem> Root::GetSenpaiData()
+	{
+		Timezone userTimezone = GetSeasonManager()->GetSenpaiAirdateFromLocalTimezone();
+
+		SenpaiData sd = GetSeasonManager()->GetSenpaiData();
+
+		FOR_(sd,i)
+		{
+			if(IsValidIt(sd[i].Airdates.find(userTimezone.Offset),sd[i].Airdates))
+			{
+				Airdate ad = sd[i].Airdates.find(userTimezone.Offset)->second;
+				sd[i].Airdates.clear();
+				sd[i].Airdates.insert(std::make_pair(userTimezone.TimezoneIdentifier,ad));
+			}
+		}
+		
+		return sd;
 	}
 	//----------------------------------------------------------------------------
 	void Root::PostRequest(RequestInterface* r)
@@ -276,9 +307,9 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	const char* Root::GetKey(RequestApiValues api)
 	{
-		std::map<RequestApiValues, char*>::iterator It = RequestApiValueMap.find(api);
+		std::map<RequestApiValues,char*>::iterator It = RequestApiValueMap.find(api);
 
-		if (It != RequestApiValueMap.end())
+		if(It != RequestApiValueMap.end())
 		{
 			return It->second;
 		}

@@ -63,6 +63,10 @@ namespace ChiikaApi
 		const UserAnimeList& GetUserAnimelist();
 		const UserMangaList& GetUserMangalist();
 
+		std::vector<SenpaiItem> GetSenpaiData();
+
+		
+
 		const AnimeList& GetAnimelist();
 
 		ThreadManager* GetThreadManager();
@@ -70,6 +74,7 @@ namespace ChiikaApi
 		LocalDataManager* GetLocalDataManager();
 		MalManager* GetMyAnimelistManager();
 		AppSettings* GetAppSettings();
+		SeasonManager* GetSeasonManager();
 		//New
 
 

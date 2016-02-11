@@ -429,7 +429,7 @@ namespace ChiikaApi
 
 					list.insert(TimezoneMap::value_type(tz.TimezoneIdentifier,tz));
 				}
-				SeasonManager::Get().SetTimezones(list);
+				Root::Get()->GetSeasonManager()->SetTimezones(list);
 
 
 
@@ -481,7 +481,7 @@ namespace ChiikaApi
 					si.Airdates = airdateList;
 					sd.push_back(si);
 				}
-				SeasonManager::Get().SetSenpaiData(sd);
+				Root::Get()->GetSeasonManager()->SetSenpaiData(sd);
 			}
 			else
 			{
@@ -711,15 +711,16 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void LocalDataManager::Initialize()
 	{
-		m_sAnimeListFilePath = AppSettings::Get().GetChiStringOption(LIBRARY_ANIME_LIST_PATH);
-		m_sMangaListFilePath = AppSettings::Get().GetChiStringOption(LIBRARY_MANGA_LIST_PATH);
-		m_sUserInfoPath = AppSettings::Get().GetChiStringOption(LIBRARY_USER_INFO_PATH);
-		m_sSenpaiPath = AppSettings::Get().GetChiStringOption(LIBRARY_SENPAI_PATH);;
+		m_sAnimeListFilePath = AppSettings::Get().GetDataPath() + "Chitanda.eru";
+		m_sMangaListFilePath = AppSettings::Get().GetDataPath() + "Oreki.houtarou";
+		m_sUserInfoPath = AppSettings::Get().GetDataPath() + "User.eru";
+		m_sSenpaiPath = AppSettings::Get().GetDataPath() + "Senpai.moe";
 
 
 		m_AnimeLoader = new AnimeFileLoader(m_sAnimeListFilePath);
 		m_MangaLoader = new MangaFileLoader(m_sMangaListFilePath);
 		m_UserInfoLoader = new UserInfoLoader(m_sUserInfoPath);
+		m_SenpaiLoader = new SenpaiLoader(m_sSenpaiPath);
 		
 		
 		m_Anime = new AnimeLoader(Root::Get()->GetAppSettings()->GetDataPath() + "/Yuu.sonoda");
@@ -727,6 +728,7 @@ namespace ChiikaApi
 		LoadUserInfo();
 		LoadAnimeList();
 		LoadMangaList();
+		LoadSenpaiData();
 		
 
 		m_Anime->Load();
@@ -787,7 +789,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void LocalDataManager::LoadSenpaiData()
 	{
-		
+		m_SenpaiLoader->Load();
 	}
 	//----------------------------------------------------------------------------
 	void LocalDataManager::SaveAll()

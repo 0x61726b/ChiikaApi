@@ -121,6 +121,8 @@ set(ChiikaApi_Request_Src
   Request/SearchAnime.cpp
   Request/UpdateAnime.h
   Request/UpdateAnime.cpp
+  Request/SenpaiMoe.h
+  Request/SenpaiMoe.cpp
   )
 source_group(ChiikaApi\\\\Request FILES ${ChiikaApi_Request_Src})
 

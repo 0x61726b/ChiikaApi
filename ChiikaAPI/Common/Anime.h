@@ -44,49 +44,58 @@ namespace ChiikaApi
 		AnimeDropped = 4,
 		PlanToWatch = 6
 	};
-	struct MalApiExport AnimeDetails
+	struct MalApiExport Timezone
 	{
-		ChiString Synopsis;
-		StringVector Tags;
-		ChiString Premiered;
-		StringVector Producers;
-		ChiString DurationPerEpisode;
-
-		AnimeDetails()
-		{
-
-		}
+		ChiString TimezoneIdentifier;
+		ChiString Name;
+		ChiString Offset; //To Utc
 	};
-	struct MalApiExport AnimeStatistics
+	struct MalApiExport UserTimezoneInfo
 	{
-		double Score;
-		int Ranked;
-		int Popularity;
-
-		AnimeStatistics()
-		{
-			Score = 0;
-			Ranked = 0;
-			Popularity = 0;
-		}
+		ChiString Name;
+		long Bias;
+	};
+	struct MalApiExport Airdate
+	{
+		Timezone TimeZone;
+		ChiString RdDate;
+		ChiString RdTime;
+		int Weekday;
+		ChiString RdWeekday;
+	};
+	class MalApiExport SenpaiItem
+	{
+	public:
+		ChiString Name;
+		int MalID;
+		bool IsSequel;
+		ChiString Simulcast;
+		ChiString AirdateStr;
+		ChiString Fansub;
+		int SimulcastDelay;
+		ChiString Type;
+		bool MissingAirdate;
+		bool MissingAirtime;
+		ChiString AirDateOriginal;
+		Map<ChiString,Airdate>::type Airdates;
 	};
 	class MalApiExport Studio : public DictionaryBase
 	{
 	public:
 		Studio(){}
-		
+
 	};
 	class MalApiExport Character : public DictionaryBase
 	{
 	public:
 		Character(){}
-		
+
 	};
 	class MalApiExport Genre : public DictionaryBase
 	{
 	public:
 		Genre(){}
-		
+
 	};
 	class MalApiExport AnimeMisc : public DictionaryBase
 	{
@@ -104,7 +113,7 @@ namespace ChiikaApi
 		Anime();
 		~Anime()
 		{
-			
+
 
 		}
 	public:

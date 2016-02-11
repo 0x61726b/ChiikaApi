@@ -249,16 +249,5 @@ namespace ChiikaApi
 		return utz;
 #endif
 	}
-	//----------------------------------------------------------------------------
-	template<> SeasonManager* Singleton<SeasonManager>::msSingleton = 0;
-	SeasonManager& SeasonManager::Get(void)
-	{
-		/*assert(msSingleton); */ return (*msSingleton);
-	}
-	//----------------------------------------------------------------------------
-	SeasonManager* SeasonManager::GetPtr(void)
-	{
-		return msSingleton;
-	}
 }
 

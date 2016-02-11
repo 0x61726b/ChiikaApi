@@ -442,7 +442,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	ChiString AppSettings::GetDataPath()
 	{
-		return (m_sGlobalPath)+"/Data";
+		return (m_sGlobalPath)+"/Data/";
 	}
 	//----------------------------------------------------------------------------
 	ChiString AppSettings::GetImagePath()
