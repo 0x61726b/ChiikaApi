@@ -82,11 +82,9 @@ namespace ChiikaApi
 		return si;
 	}
 	//----------------------------------------------------------------------------
-	SenpaiData SeasonManager::GetSenpaiData()
+	SenpaiData& SeasonManager::GetSenpaiData()
 	{
 		UserAnimeList list = Root::Get()->GetMyAnimelistManager()->GetAnimeList();
-
-		SenpaiData sd;
 
 		SenpaiData::iterator It = m_SenpaiData.begin();
 
@@ -94,10 +92,10 @@ namespace ChiikaApi
 		{
 			if(list.find(std::to_string(It->MalID)) != list.end())
 			{
-				sd.push_back(*It);
+				m_UserSenpaiData.push_back(*It);
 			}
 		}
-		return sd;
+		return m_UserSenpaiData;
 	}
 	//----------------------------------------------------------------------------
 	Timezone SeasonManager::GetSenpaiAirdateFromLocalTimezone()

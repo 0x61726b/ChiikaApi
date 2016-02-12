@@ -503,7 +503,7 @@ namespace ChiikaApi
 		return sub;
 	}
 
-	bool MyAnimelistUtility::CheckIfImageExists(const std::string& path)
+	bool MyAnimelistUtility::CheckIfImageExists(FsPath path)
 	{
 		return boost::filesystem::exists(path);
 	}

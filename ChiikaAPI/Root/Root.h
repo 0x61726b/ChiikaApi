@@ -30,9 +30,9 @@ public:
 	std::string passWord;
 	std::string modulePath;
 
-	RootOptions() 
+	RootOptions()
 		: appMode(false),
-		  log_level(1)
+		log_level(1)
 	{
 	}
 	~RootOptions()
@@ -42,7 +42,12 @@ public:
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	class MalApiExport Root 
+	class MalApiExport SystemEventListener
+	{
+	public:
+		virtual void OnEvent(SystemEvents) = 0;
+	};
+	class MalApiExport Root
 	{
 	public:
 		Root();
@@ -63,9 +68,9 @@ namespace ChiikaApi
 		const UserAnimeList& GetUserAnimelist();
 		const UserMangaList& GetUserMangalist();
 
-		std::vector<SenpaiItem> GetSenpaiData();
+		const std::vector<SenpaiItem>& GetSenpaiData();
 
-		
+
 
 		const AnimeList& GetAnimelist();
 
@@ -86,13 +91,23 @@ namespace ChiikaApi
 		void DownloadImage(RequestListener* listener,const std::string& url);
 		void AnimeScrape(RequestListener* listener,int id);
 		void MalAjax(RequestListener* listener,int id);
-		void SearchAnime(RequestListener* listener, int id,const char* keywords);
-		void RefreshAnimeDetails(RequestListener* listener, int id);
-		void GetAnimeDetails(RequestListener* listener, int id);
-		void UpdateAnime(RequestListener* listener, int AnimeId, int score, int progress, int status);
+		void SearchAnime(RequestListener* listener,int id,const char* keywords);
+		void RefreshAnimeDetails(RequestListener* listener,int id);
+		void GetAnimeDetails(RequestListener* listener,int id);
+		void UpdateAnime(RequestListener* listener,int AnimeId,int score,int progress,int status);
+
+
+		//API Related stuff
+		void RegisterSystemEventListener(SystemEventListener* sys);
+		void UnRegisterSystemEventListener(SystemEventListener* sys);
+
+		void FireSystemEvent(SystemEvents evt);
+
+		void InitDatabase();
 	private:
 		void StoreKeys();
-		
+		std::vector<SystemEventListener*> m_vSysEventListeners;
+
 	public:
 
 		//Api Related things
@@ -114,7 +129,7 @@ namespace ChiikaApi
 	private:
 		RootOptions options;
 		UserInfo m_User;
-		std::map<RequestApiValues, char*> RequestApiValueMap;
+		std::map<RequestApiValues,char*> RequestApiValueMap;
 	protected:
 		ChiString m_sListData;
 		ChiString m_sVersion;

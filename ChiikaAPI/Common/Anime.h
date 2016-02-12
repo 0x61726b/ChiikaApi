@@ -55,8 +55,9 @@ namespace ChiikaApi
 		ChiString Name;
 		long Bias;
 	};
-	struct MalApiExport Airdate
+	class MalApiExport Airdate
 	{
+	public:
 		Timezone TimeZone;
 		ChiString RdDate;
 		ChiString RdTime;

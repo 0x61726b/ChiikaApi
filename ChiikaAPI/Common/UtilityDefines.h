@@ -25,23 +25,19 @@
 								  x = y.begin(); \
 									  for(x;x != y.end(); ++x )
 #	define ForEachOnXml(x,y) for(x = y.first_child();x != y.end(); x++)
-#	define For(x,y) for(x; x < y; x++)
-#	define MakePair(x,y) std::make_pair(x,y)
-#	define AddToMap(x,y) y.insert(x)
 #	define StdIt(x) x::iterator
 #	define IsValidIt(x,y) x != y.end()
-#	define ShrPtr std::shared_ptr //SharedPtr is used by boost huh
-#	define UniquePtr std::unique_ptr
-#	define MakeShared std::make_shared
-#	define AddChiStringOption(x,y) AddToMap(MakePair(x,MakeShared<ChiStringOption>(x,y)),m_Settings)
-#	define AddBooleanOption(x,y) AddToMap(MakePair(x,MakeShared<BooleanOption>(x,y)),m_Settings)
-#	define AddIntegerOption(x,y) AddToMap(MakePair(x,MakeShared<IntegerOption>(x,y)),m_Settings)
 #	define TryDelete(x) if(x) delete x
 #	define InitializeNULL(x) x = NULL
 #	define TryDestroy(x) if(x) x->Destroy();
 #	define XmlNode pugi::xml_node
 #	define XmlForeach(a,b) for(XmlNode a = b.first_child();a;a = a.next_sibling())
 #	define EmptyKey(x,y) (strcmp(x.GetKeyValue(y).c_str(),y) == 0)
+//----------------------------------------------------------------------------
+
+#	define FsPath boost::filesystem::path
+#	define SCOPED_LOCK boost::mutex::scoped_lock lock(m_Lock)
+//----------------------------------------------------------------------------
 namespace ChiikaApi
 {
 	class MalApiExport DictionaryBase

@@ -102,7 +102,7 @@ namespace ChiikaApi
 		}
 		RequestInterface::OnSuccess();
 
-		Root::Get()->GetLocalDataManager()->SaveLocalAnimeList();
+		Root::Get()->GetLocalDataManager()->SaveCachedAnimeList();
 	}
 	//----------------------------------------------------------------------------
 	void SearchAnimeRequest::OnError()

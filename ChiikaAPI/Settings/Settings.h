@@ -21,102 +21,43 @@
 #include "Common/Required.h"
 #include "Common/Singleton.h"
 #include "Settings/OptionList.h"
+#include "Common/BoostHeaders.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	//----------------------------------------------------------------------------
-	class MalApiExport SettingInterface
+	class MalApiExport AppSettings
 	{
 	public:
-		SettingInterface(OptionsEnum nsp,OptionsType);
-		virtual void Execute() = 0;
-
-		OptionsType GetType();
-	protected:
-		OptionsEnum Id;
-		OptionsType Type;
-	};
-	//----------------------------------------------------------------------------
-	class MalApiExport ChiStringOption : public SettingInterface
-	{
-	public:
-		//Setting Interface
-		ChiStringOption(OptionsEnum nsp,ChiString v);
-
-		void Execute();
-		ChiString GetValue();
-		void SetValue(ChiString v);
-	private:
-		ChiString Value;
-	};
-	//----------------------------------------------------------------------------
-	class MalApiExport BooleanOption : public SettingInterface
-	{
-	public:
-		BooleanOption(OptionsEnum nsp,bool b);
-
-		void Execute();
-		bool GetValue();
-		void SetValue(bool b);
-
-	private:
-		bool Value;
-	};
-	//----------------------------------------------------------------------------
-	class MalApiExport IntegerOption : public SettingInterface
-	{
-	public:
-		IntegerOption(OptionsEnum nsp,int i);
-
-		void Execute();
-		int GetValue();
-		void SetValue(int b);
-
-	private:
-		int Value;
-	};
-	//----------------------------------------------------------------------------
-	class MalApiExport AppSettings : Singleton<AppSettings>
-	{
-	public:
-		typedef std::map<ChiString,ChiString> FileMap; //<Name,Path>
-		FileMap Files;
-
-		static AppSettings& Get();
-		static AppSettings* GetPtr();
-
-		AppSettings(const ChiString& settingsFile,ChiString globalPath);
+		AppSettings(ChiString globalPath);
 		~AppSettings();
 		void Initialize();
-		void Load();
-		void Save();
-		
-		void SetAnimeFolderPath(ChiString path);
-
-		/* A new era starts here*/
-
-		typedef Map<OptionsEnum,ShrPtr<SettingInterface>>::type OptionValueMap;
-		OptionValueMap m_Settings;
-
 		void SetDefaultValues();
-		
 
-		ChiString GetChiStringOption(OptionsEnum option);
-		bool    GetBooleanOption(OptionsEnum option);
-		int		GetIntegerOption(OptionsEnum option);
 
-		void SetChiStringOption(OptionsEnum option,ChiString newValue);
-		void SetBooleanOption(OptionsEnum option,bool newValue);
-		/* New era ends here*/
+		FsPath GetDataPath();
+		FsPath GetImagePath();
 
-		ChiString GetDataPath();
-		ChiString GetImagePath();
+		FsPath GetAnimelistPath();
+		FsPath GetCachedAnimelistPath();
+		FsPath GetMangalistPath();
+		FsPath GetUserInfoPath();
+		FsPath GetSenpaiMoePath();
+		FsPath GetConfigPath();
 
 		bool GetIfFirstLaunch();
 
 	private:
-		ChiString m_sGlobalPath;
-		ChiString m_sSettingsPath;
+		FsPath m_GlobalPath;
+		FsPath m_DataPath;
+		FsPath m_ImagePath;
+		FsPath m_AnimeImagePath;
+
+		FsPath m_AnimeListFile;
+		FsPath m_CachedAnimeListFile;
+		FsPath m_MangaListFile;
+		FsPath m_UserInfo;
+		FsPath m_SenpaiPath;
+		FsPath m_ConfigFile;
 
 		//Option Values
 

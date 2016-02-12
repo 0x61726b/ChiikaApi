@@ -16,6 +16,7 @@ set(ChiikaApi_Common_Src
   Common/Singleton.h
   Common/Stable.h
   Common/StdHeaders.h
+  Common/BoostHeaders.h
   Common/UtilityDefines.h
   Common/ApiVersion.h
   Common/UserInfo.h

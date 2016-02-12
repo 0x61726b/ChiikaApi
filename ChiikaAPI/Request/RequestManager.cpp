@@ -168,18 +168,18 @@ namespace ChiikaApi
 			{
 				//Download user image
 				std::string fileName = Root::Get()->GetUser().GetKeyValue(kUserId) + ".jpg";
-				std::string folder = Root::Get()->GetAppSettings()->GetImagePath();
+				FsPath folder = Root::Get()->GetAppSettings()->GetImagePath();
 				std::string url = "http://cdn.myanimelist.net/images/userimages/" + Root::Get()->GetUser().GetKeyValue(kUserId) + ".jpg";
 
 				DownloadImage(chiikaNode,
 					url,
 					fileName,
-					folder
+					folder.generic_string()
 					);
 
 				GetMyAnimelist(chiikaNode);
 				GetMyMangalist(chiikaNode);
-				DownloadSenpaiData(chiikaNode);
+				
 			}
 
 		}
@@ -243,9 +243,9 @@ namespace ChiikaApi
 		{
 			//Download anime image
 			std::string fileName = std::to_string(AnimeId) + ".jpg";
-			std::string folder = Root::Get()->GetAppSettings()->GetImagePath() + "anime/";
+			FsPath folder = Root::Get()->GetAppSettings()->GetImagePath() / "Anime";
 			std::string url = anime.GetKeyValue(kSeriesImage);
-			DownloadImage(listener,url,fileName,folder);
+			DownloadImage(listener,url,fileName,folder.generic_string());
 		}
 		//Hard refresh
 		//Dangerous !!
@@ -267,13 +267,13 @@ namespace ChiikaApi
 		{
 			//Download anime image
 			std::string fileName = std::to_string(AnimeId) + ".jpg";
-			std::string folder = Root::Get()->GetAppSettings()->GetImagePath() + "anime/";
+			FsPath folder = Root::Get()->GetAppSettings()->GetImagePath() / "Anime";
 			std::string url = anime.GetKeyValue(kSeriesImage);
 
 
-			if(!MyAnimelistUtility::CheckIfImageExists(folder + fileName))
+			if(!MyAnimelistUtility::CheckIfImageExists(folder / fileName))
 			{
-				DownloadImage(listener,url,fileName,folder);
+				DownloadImage(listener,url,fileName,folder.generic_string());
 				downloadImage = true;
 			}
 			else

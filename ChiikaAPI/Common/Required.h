@@ -123,7 +123,7 @@ namespace ChiikaApi
 	typedef Vector<ChiString>::type StringVector;
 	typedef StringVector::size_type StringVectorSize;
 
-	typedef Map<std::string, std::string>::type KeyMap;
+	typedef Map<std::string,std::string>::type KeyMap;
 }
 //----------------------------------------------------------------------------
 #	include "Common/UtilityDefines.h"
@@ -152,7 +152,7 @@ namespace ChiikaApi
 		REQUEST_DOWNLOAD = 0x1 << 1
 	};
 
-	#include "Database\Globals.h"
+#include "Database\Globals.h"
 	//----------------------------------------------------------------------------
 #	define CHIKA_AUTO_MUTEX_NAME chitanda
 #	define CHIKA_AUTO_MUTEX mutable boost::recursive_mutex CHIKA_AUTO_MUTEX_NAME;
@@ -169,7 +169,10 @@ namespace //Move this to a header file later
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-
+	enum SystemEvents
+	{
+		CHIIKA_API_FS_READY = 0
+	};
 }
 //----------------------------------------------------------------------------
 #define ApiDebugMode

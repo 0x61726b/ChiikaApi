@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------------
 //Chiika Api
-//Copyright (C) 2015  Alperen Gezer
+//Copyright (C) 2015  arkenthera
 //This program is free software; you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
 //the Free Software Foundation; either version 2 of the License, or
@@ -12,51 +12,14 @@
 //You should have received a copy of the GNU General Public License along
 //with this program; if not, write to the Free Software Foundation, Inc.,
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
+//	authors: arkenthera
+//	Date:	 11.2.2016
 //----------------------------------------------------------------------------
-#ifndef __SeasonManager_h__
-#define __SeasonManager_h__
+#ifndef __BoostHeaders_h__
+#define __BoostHeaders_h__
 //----------------------------------------------------------------------------
-#include "Common/Required.h"
-#include "Common/Singleton.h"
+#include "boost/scoped_ptr.hpp"
+#include "boost/thread.hpp"
+#include "boost/filesystem.hpp"
 //----------------------------------------------------------------------------
-namespace ChiikaApi
-{
-	typedef Map<ChiString,Timezone>::type TimezoneMap;
-	typedef Vector<SenpaiItem>::type SenpaiData;
-
-	struct MalApiExport SeasonInfo
-	{
-		ChiString Name;
-		ChiString StartDate;
-	};
-
-	class MalApiExport SeasonManager
-	{
-	public:
-		SeasonManager();
-
-		void SetTimezones(TimezoneMap map);
-		void SetSenpaiData(SenpaiData sd);
-
-		SenpaiItem GetSenpaiDataFromMalId(int malid);
-
-		SenpaiData& GetSenpaiData(); //Returns SenpaiItem which are on the anime list
-
-		UserTimezoneInfo GetUserTimezone();
-
-		Timezone GetSenpaiAirdateFromLocalTimezone();
-		virtual SenpaiItem GetClosest();
-
-		SenpaiData GetShowsFromDayAway(int day);
-		
-		void SetSeasonInfo(SeasonInfo inf);
-		SeasonInfo GetSeasonInfo() const;
-
-		TimezoneMap m_Timezones;
-		SenpaiData m_SenpaiData;
-		SenpaiData m_UserSenpaiData;
-
-		SeasonInfo m_CurrentSeason;
-	};
-}
-#endif // SEASONMANAGER_H
+#endif

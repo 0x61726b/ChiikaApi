@@ -19,6 +19,7 @@
 #define __MyAnimelistUtility_h__
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
+#include "Common/BoostHeaders.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -33,7 +34,7 @@ namespace ChiikaApi
 		static ChiString PrepareTitleForSearching(const std::string&);
 		static ChiString RemoveSpecialHtmlCharacters(const std::string&);
 
-		static bool CheckIfImageExists(const std::string&);
+		static bool CheckIfImageExists(FsPath);
 	};
 }
 //----------------------------------------------------------------------------

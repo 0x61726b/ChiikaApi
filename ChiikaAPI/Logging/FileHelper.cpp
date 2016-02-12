@@ -33,7 +33,7 @@ namespace ChiikaApi
 		return ChiString();
 	}
 	//----------------------------------------------------------------------------
-	FileReader::FileReader(const ChiString& file)
+	FileReader::FileReader(FsPath file)
 	{
 		mFile = file;
 	}
@@ -77,7 +77,7 @@ namespace ChiikaApi
 		outputStr = output.str();
 	}
 	//----------------------------------------------------------------------------
-	FileWriter::FileWriter(const ChiString& file)
+	FileWriter::FileWriter(FsPath file)
 	{
 		mFile = file;
 	}

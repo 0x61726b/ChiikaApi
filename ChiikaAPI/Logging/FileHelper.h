@@ -17,6 +17,7 @@
 #define __FileHelper_h__
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
+#include "Common/BoostHeaders.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -24,9 +25,9 @@ namespace ChiikaApi
 	{
 	protected:
 		std::ifstream mStream;
-		ChiString mFile;
+		FsPath mFile;
 	public:
-		FileReader(const ChiString& fileName);
+		FileReader(FsPath path);
 		~FileReader();
 		bool Open();
 		void Close();
@@ -37,9 +38,9 @@ namespace ChiikaApi
 	{
 	protected:
 		std::ofstream mStream;
-		ChiString mFile;
+		FsPath mFile;
 	public:
-		FileWriter(const ChiString& fileName);
+		FileWriter(FsPath fileName);
 		bool Open();
 		void Close();
 		void Write(ChiString);

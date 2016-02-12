@@ -22,7 +22,7 @@
 #include "Settings\Settings.h"
 
 #include "Common\MyAnimeListUtility.h"
-
+#include "Common\BoostHeaders.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
@@ -80,7 +80,10 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void DownloadImageRequest::SetFile(const ChiString& fileName, const ChiString& folder)
 	{
-		m_Curl->SetFileOutput(folder + fileName);
+		boost::filesystem::path f1(fileName);
+		boost::filesystem::path f2(folder);
+		boost::filesystem::path f3(f2 / f1);
+		m_Curl->SetFileOutput(f3.generic_string());
 	}
 	//----------------------------------------------------------------------------
 	void DownloadImageRequest::Initiate()

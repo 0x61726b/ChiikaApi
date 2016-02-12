@@ -28,6 +28,7 @@
 #include "Root\ThreadManager.h"
 #include <log4cplus/initializer.h>
 #include "Logging\LogManager.h"
+
 //----------------------------------------------------------------------------
 //Whoops..
 MalApiExport ChiikaApi::Root* GlobalInstance = 0;
@@ -66,7 +67,7 @@ namespace ChiikaApi
 		m_sCommitHash = (char*)ChiikaApi_COMMIT_HASH;
 
 		CHIIKALOG_INFO("Initializing settings...");
-		m_pSettings = new AppSettings("Chiika.cfg",options.modulePath);
+		m_pSettings = new AppSettings(options.modulePath);
 
 
 		CHIIKALOG_INFO("Initializing MyAnimelist...");
@@ -83,7 +84,6 @@ namespace ChiikaApi
 
 		CHIIKALOG_INFO("Initializing local database...");
 		m_pLocalData = new LocalDataManager;
-		m_pLocalData->Initialize();
 
 		
 
@@ -129,6 +129,7 @@ namespace ChiikaApi
 		TryDelete(m_pSeasonManager);
 		m_pSeasonManager = 0;
 
+		m_vSysEventListeners.clear();
 		Log::StopLogging();
 	}
 	//----------------------------------------------------------------------------
@@ -260,6 +261,34 @@ namespace ChiikaApi
 
 	}
 	//----------------------------------------------------------------------------
+	void Root::RegisterSystemEventListener(SystemEventListener* sys)
+	{
+		m_vSysEventListeners.push_back(sys);
+	}
+	//----------------------------------------------------------------------------
+	void Root::UnRegisterSystemEventListener(SystemEventListener* sys)
+	{
+		std::vector<SystemEventListener*>::iterator listener = std::find(m_vSysEventListeners.begin(),m_vSysEventListeners.end(),sys);
+
+		if(IsValidIt(listener,m_vSysEventListeners))
+		{
+			m_vSysEventListeners.erase(listener);
+		}
+	}
+	//----------------------------------------------------------------------------
+	void Root::FireSystemEvent(SystemEvents evt)
+	{
+		FOR_(m_vSysEventListeners,i)
+		{
+			m_vSysEventListeners[i]->OnEvent(evt);
+		}
+	}
+	//----------------------------------------------------------------------------
+	void Root::InitDatabase()
+	{
+		GetLocalDataManager()->Initialize();
+	}
+	//----------------------------------------------------------------------------
 	const UserAnimeList& Root::GetUserAnimelist()
 	{
 		return GetMyAnimelistManager()->GetAnimeList();
@@ -270,23 +299,9 @@ namespace ChiikaApi
 		return GetMyAnimelistManager()->GetMangaList();
 	}
 	//----------------------------------------------------------------------------
-	std::vector<SenpaiItem> Root::GetSenpaiData()
+	const std::vector<SenpaiItem>& Root::GetSenpaiData()
 	{
-		Timezone userTimezone = GetSeasonManager()->GetSenpaiAirdateFromLocalTimezone();
-
-		SenpaiData sd = GetSeasonManager()->GetSenpaiData();
-
-		FOR_(sd,i)
-		{
-			if(IsValidIt(sd[i].Airdates.find(userTimezone.Offset),sd[i].Airdates))
-			{
-				Airdate ad = sd[i].Airdates.find(userTimezone.Offset)->second;
-				sd[i].Airdates.clear();
-				sd[i].Airdates.insert(std::make_pair(userTimezone.TimezoneIdentifier,ad));
-			}
-		}
-		
-		return sd;
+		return GetSeasonManager()->GetSenpaiData();
 	}
 	//----------------------------------------------------------------------------
 	void Root::PostRequest(RequestInterface* r)

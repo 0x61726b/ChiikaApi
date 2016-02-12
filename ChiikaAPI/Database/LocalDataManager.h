@@ -18,87 +18,14 @@
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
 #include "ThirdParty\pugixml\src\pugixml.hpp"
-#include "boost\thread\recursive_mutex.hpp"
+#include "boost\asio.hpp"
+#include "Common\BoostHeaders.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {
-	class MalApiExport FileLoader
-	{
-	public:
-
-
-		enum FileType
-		{
-			AnimeFile,
-			AnimeList,
-			MangaList,
-			UpdateList,
-			Settings,
-			UserInfo,
-			AnimeDetails,
-			SenpaiJSON
-		};
-
-		FileLoader(ChiString filePath,FileType type);
-
-		virtual void Save() = 0;
-		virtual void Load() = 0;
-		virtual void Create();
-
-
-
-	protected:
-		ChiString m_sPath;
-		FileType m_eType;
-	};
-	class MalApiExport AnimeFileLoader : public FileLoader
-	{
-	public:
-		AnimeFileLoader(ChiString path);
-
-		void Save();
-		void Load();
-	};
-	class MalApiExport MangaFileLoader : public FileLoader
-	{
-	public:
-		MangaFileLoader(ChiString path);
-
-		void Save();
-		void Load();
-	};
-	class MalApiExport UserInfoLoader : public FileLoader
-	{
-	public:
-		UserInfoLoader(ChiString path);
-
-		void Save();
-		void Load();
-	};
-
-	class MalApiExport AnimeLoader : public FileLoader
-	{
-	public:
-		AnimeLoader(ChiString path);
-
-		void Save();
-		void Load();
-	};
-	class MalApiExport SenpaiLoader : public FileLoader
-	{
-	public:
-		SenpaiLoader(ChiString path);
-
-		void Save();
-		void Load();
-	};
-	
 	class MalApiExport LocalDataManager
 	{
 	public:
-
-		CHIKA_AUTO_MUTEX;
-
 		LocalDataManager();
 		virtual ~LocalDataManager();
 
@@ -108,8 +35,9 @@ namespace ChiikaApi
 
 	public:
 		void SaveAnimeList();
-		void SaveLocalAnimeList();
+		void SaveCachedAnimeList();
 		void LoadAnimeList();
+		void LoadCachedAnimelist();
 
 	public:
 		void SaveUserInfo();
@@ -128,22 +56,22 @@ namespace ChiikaApi
 
 		void SetUserNamePass(ChiString userName,ChiString pass);
 
-	private:
-		ChiString m_sAnimeListFilePath;
-		ChiString m_sMangaListFilePath;
-		ChiString m_sUserInfoPath;
-		ChiString m_sUpdateListPath;
-		ChiString m_sAnimeDetailsPath;
-		ChiString m_sSenpaiPath;
-		ChiString m_sSenpaiUserPath;
+		void WorkerThread(boost::shared_ptr< boost::asio::io_service > io_service );
 
+		void CheckIfFsLoaded();
 	private:
-		AnimeFileLoader* m_AnimeLoader;
-		MangaFileLoader* m_MangaLoader;
-		UserInfoLoader* m_UserInfoLoader;
-		SenpaiLoader* m_SenpaiLoader;
-		SenpaiLoader* m_SenpaiUserLoader;
-		AnimeLoader* m_Anime;
+		FsPath m_sAnimeListFilePath;
+		FsPath m_sMangaListFilePath;
+		FsPath m_sUserInfoPath;
+		FsPath m_sSenpaiPath;
+
+		bool animeListReady;
+		bool animeCachedListReady;
+		bool mangaListReady;
+		bool userInfoReady;
+		bool senpaiReady;
+
+		boost::mutex m_Lock;
 	};
 }
 //----------------------------------------------------------------------------
