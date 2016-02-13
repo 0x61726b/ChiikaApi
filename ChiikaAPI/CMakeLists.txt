@@ -199,7 +199,9 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Common) #This is for Vs2013 so I
 
 #Link CURL
 target_link_libraries(ChiikaApi libcurl)
-target_compile_options(libcurl PRIVATE "/MT$<$<CONFIG:Debug>:d>")
+if(OS_WINDOWS)
+  target_compile_options(libcurl PRIVATE "/MT$<$<CONFIG:Debug>:d>")
+endif()
 target_compile_definitions(libcurl PRIVATE -DUNICODE)
 #Include CURL
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/curl/include/curl)
