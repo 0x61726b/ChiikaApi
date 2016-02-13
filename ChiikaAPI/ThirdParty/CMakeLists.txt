@@ -4,7 +4,7 @@
 #
 #Curl
 #
-add_subdirectory(curl)
+#add_subdirectory(curl)
 #To not override compiler flags for curl we dont add it here
 
 

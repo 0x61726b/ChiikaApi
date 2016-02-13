@@ -316,6 +316,8 @@ if (CHIIKA_USE_ICU)
   include(FindICU)
 endif()
 
+add_subdirectory(ChiikaAPI/ThirdParty/curl)
+
 set(CMAKE_C_FLAGS                     "${CHI_COMPILER_FLAGS} ${CHI_C_COMPILER_FLAGS}")
 set(CMAKE_C_FLAGS_DEBUG               "${CHI_COMPILER_FLAGS_DEBUG} ${CHI_C_COMPILER_FLAGS_DEBUG}")
 set(CMAKE_C_FLAGS_RELEASE             "${CHI_COMPILER_FLAGS_RELEASE} ${CHI_C_COMPILER_FLAGS_RELEASE}")
