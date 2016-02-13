@@ -16,6 +16,9 @@ before_install:
   - rm cmake-3.2.2-Linux-x86_64.tar.gz
   - export PATH=$(pwd)/cmake/bin:$PATH
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+  - cd ChiikaAPI/ThirdParty/log4cplus
+  - git submodule update --recursive
+  - cd ./../../..
 
 before_script:
   - ./cmake-3.2.2-Linux-x86_64/bin/cmake --version
