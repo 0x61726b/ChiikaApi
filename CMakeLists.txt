@@ -91,7 +91,7 @@ if(OS_LINUX)
   # -Wno-unused-parameter           = Don't warn about unused parameters
   set(CHI_COMPILER_FLAGS          "-pipe -pthread -Wall -Werror -Wno-missing-field-initializers -Wno-unused-parameter")
   # -std=c99                        = Use the C99 language standard
-  set(CHI_C_COMPILER_FLAGS        "-std=c99")
+  set(CHI_C_COMPILER_FLAGS        "-std=c11")
   # -fno-exceptions                 = Disable exceptions
   # -fno-rtti                       = Disable real-time type information
   # -fno-threadsafe-statics         = Don't generate thread-safe statics
