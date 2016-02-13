@@ -4,9 +4,9 @@ compiler:
   - gcc
 
 before_install:
-  - wget https://github.com/Viq111/travis-container-packets/releases/download/cmake-3.1.2/cmake.tar.bz2
-  - tar -xjf cmake.tar.bz2
-  - rm cmake.tar.bz2
+  - wget http://pkgs.fedoraproject.org/repo/pkgs/cmake/cmake-3.2.2.tar.gz/2da57308071ea98b10253a87d2419281/cmake-3.2.2.tar.gz
+  - tar -xjf cmake-3.2.2.tar.gz
+  - rm cmake-3.2.2.tar.gz
   - export PATH=$(pwd)/cmake/bin:$PATH
 
 before_script:
