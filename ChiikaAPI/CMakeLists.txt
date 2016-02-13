@@ -174,7 +174,7 @@ source_group(ChiikaApi\\\\Settings FILES ${ChiikaApi_Settings_Src})
 
 
 set(CHIIKA_API_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-set(CHIIKA_THIRD_PARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}//ThirdParty)
+set(CHIIKA_THIRD_PARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty)
 
 
 set(CHIIKA_LIBRARIES libcurl)
@@ -194,7 +194,7 @@ add_library(${TARGET_NAME} ${CHI_LIBTYPE}
   )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\Common) #This is for Vs2013 so Intellisense stops crying about precompiled header
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Common) #This is for Vs2013 so Intellisense stops crying about precompiled header
 
 
 #Link CURL
@@ -202,11 +202,11 @@ target_link_libraries(ChiikaApi libcurl)
 target_compile_options(libcurl PRIVATE "/MT$<$<CONFIG:Debug>:d>")
 target_compile_definitions(libcurl PRIVATE -DUNICODE)
 #Include CURL
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\curl\\include\\curl)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}\\ThirdParty\\curl\\include\\curl)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/curl/include/curl)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/curl/include/curl)
 
 #Jsoncpp
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\jsoncpp\\include\\json)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/jsoncpp/include/json)
 
 if(BUILD_SHARED_LIBS)
   target_link_libraries(ChiikaApi jsoncpp_lib)
@@ -222,11 +222,11 @@ if(BUILD_STATIC_LIBS)
 endif()
 
 #Pugixml
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\pugixml\\src)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/pugixml/src)
 target_link_libraries(ChiikaApi pugixml)
 
 #Anitomy
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\anitomy)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/anitomy)
 
 target_link_libraries(ChiikaApi Anitomy)
 
@@ -241,8 +241,8 @@ include_directories(${Boost_INCLUDE_DIRS})
 add_subdirectory(Tests/HelloWorld)
 
 #log4cplus
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\log4cplus\\include)
-set(CHIIKA_INCLUDE_DIR ${CHIIKA_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}\\ThirdParty\\log4cplus\\include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/log4cplus/include)
+set(CHIIKA_INCLUDE_DIR ${CHIIKA_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/log4cplus/include)
 
 set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} log4cplus)
 

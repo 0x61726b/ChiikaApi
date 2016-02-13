@@ -16,7 +16,7 @@ add_subdirectory(jsoncpp)
 #
 #PugiXML
 #
-add_subdirectory(pugixml\\scripts)
+add_subdirectory(pugixml/scripts)
 
 #
 #Modified Anitomy
