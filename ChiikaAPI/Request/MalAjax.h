@@ -36,6 +36,7 @@ namespace ChiikaApi
 		void SetOptions();
 
 		void SetAnimeId(int Id);
+		int GetAnimeId() const;
 
 		int m_AnimeId;
 	};

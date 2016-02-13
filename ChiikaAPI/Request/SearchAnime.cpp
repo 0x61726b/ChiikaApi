@@ -105,6 +105,11 @@ namespace ChiikaApi
 		Root::Get()->GetLocalDataManager()->SaveCachedAnimeList();
 	}
 	//----------------------------------------------------------------------------
+	int SearchAnimeRequest::GetAnimeId() const
+	{
+		return m_AnimeId;
+	}
+	//----------------------------------------------------------------------------
 	void SearchAnimeRequest::OnError()
 	{
 		RequestInterface::OnError();

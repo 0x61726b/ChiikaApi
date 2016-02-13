@@ -107,6 +107,7 @@ namespace ChiikaApi
 
 
 		if(Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveAnimeList();
+		if(Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveCachedAnimeList();
 		if(Root::Get()->GetLocalDataManager())Root::Get()->GetLocalDataManager()->SaveUserInfo();
 
 		RequestInterface::OnSuccess();

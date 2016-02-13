@@ -64,6 +64,7 @@ endif()
 #Helper macros
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMake/Modules")
 set(CHIIKA_ROOT ${PROJECT_SOURCE_DIR})
+set(CHIIKA_ICU_DIR ${CHIIKA_ROOT}/vendor/icu)
 include("macros")
 
 # Source include directory.
@@ -292,8 +293,28 @@ set(JSONCPP_WITH_TESTS OFF CACHE BOOL "" FORCE)
 option(WITH_SYSTEM_BOOST "Build with system Boost" OFF)
 
 fb_check_boost()
+option(CHIIKA_USE_ICU "Use ICU with boost" OFF)
 
+if (CHIIKA_USE_ICU)
+  chiika_download_icu()
 
+  set(ICU_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor/icu/include)
+
+  if(OS_WINDOWS)
+    set(ICU_LIB_PREFIX "")
+    set(ICU_LIB_SUFFIX ".lib")
+  elseif(OS_MACOSX)
+    set(ICU_LIB_PREFIX "lib")
+    set(ICU_LIB_SUFFIX ".a")
+  elseif(OS_LINUX)
+    set(ICU_LIB_PREFIX "")
+    set(ICU_LIB_SUFFIX ".lib")
+  endif()
+
+  set(ICU_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/vendor/icu/lib64)
+
+  include(FindICU)
+endif()
 
 set(CMAKE_C_FLAGS                     "${CHI_COMPILER_FLAGS} ${CHI_C_COMPILER_FLAGS}")
 set(CMAKE_C_FLAGS_DEBUG               "${CHI_COMPILER_FLAGS_DEBUG} ${CHI_C_COMPILER_FLAGS_DEBUG}")
@@ -315,6 +336,7 @@ endif ( NOT WITH_SYSTEM_BOOST )
 
 add_subdirectory(ChiikaAPI/ThirdParty)
 add_subdirectory(ChiikaAPI)
+
 
 
 

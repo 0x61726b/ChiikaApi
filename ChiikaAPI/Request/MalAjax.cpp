@@ -55,7 +55,7 @@ namespace ChiikaApi
 			a.Misc = result;
 		}
 
-		Root::Get()->GetLocalDataManager()->SaveAnimeList();
+		Root::Get()->GetLocalDataManager()->SaveCachedAnimeList();
 
 		RequestInterface::OnSuccess();
 	}
@@ -75,6 +75,11 @@ namespace ChiikaApi
 	void MalAjaxRequest::SetAnimeId(int id)
 	{
 		m_AnimeId = id;
+	}
+	//----------------------------------------------------------------------------
+	int MalAjaxRequest::GetAnimeId() const
+	{
+		return m_AnimeId;
 	}
 	//----------------------------------------------------------------------------
 	void MalAjaxRequest::SetOptions()

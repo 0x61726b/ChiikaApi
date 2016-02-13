@@ -72,6 +72,7 @@ namespace ChiikaApi
 		}
 
 		Root::Get()->GetLocalDataManager()->SaveAnimeList();
+		Root::Get()->GetLocalDataManager()->SaveCachedAnimeList();
 
 		RequestInterface::OnSuccess();
 	}
@@ -91,6 +92,11 @@ namespace ChiikaApi
 	void AnimePageScrapeRequest::SetAnimeId(int id)
 	{
 		m_AnimeId = id;
+	}
+	//----------------------------------------------------------------------------
+	int AnimePageScrapeRequest::GetAnimeId() const
+	{
+		return m_AnimeId;
 	}
 	//----------------------------------------------------------------------------
 	void AnimePageScrapeRequest::SetOptions()

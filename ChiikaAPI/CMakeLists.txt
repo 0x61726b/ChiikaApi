@@ -27,6 +27,12 @@ set(ChiikaApi_Common_Src
   Common/Manga.cpp
   Common/MyAnimelistUtility.h
   Common/MyAnimelistUtility.cpp
+  Common/UtfTools.h
+  Common/UtfTools.cpp
+  ThirdParty/utf8/utf8.h
+  ThirdParty/utf8/utf8/checked.h
+  ThirdParty/utf8/utf8/core.h
+  ThirdParty/utf8/utf8/unchecked.h
   )
 source_group(ChiikaApi\\\\Common FILES ${ChiikaApi_Common_Src})
 
@@ -254,8 +260,22 @@ set_target_properties(pugixml PROPERTIES FOLDER "3rdParty")
 set_target_properties(libcurl PROPERTIES FOLDER "3rdParty")
 set_target_properties(log4cplus PROPERTIES FOLDER "3rdParty")
 
+include_directories(${ICU_INCLUDE_DIR})
 
 add_custom_command(TARGET libcurl POST_BUILD
                               COMMAND ${CMAKE_COMMAND} -E copy
                             "${CMAKE_BINARY_DIR}/ChiikaAPI/ThirdParty/curl/include/curl/curlbuild.h"
                           "${CMAKE_SOURCE_DIR}/ChiikaAPI/ThirdParty/curl/include/curl" COMMENT "Lol")
+
+if(CHIIKA_USE_ICU)
+  add_custom_command(TARGET ChiikaApi POST_BUILD
+                                COMMAND ${CMAKE_COMMAND} -E copy_directory
+                              "${CMAKE_SOURCE_DIR}/vendor/icu/lib64"
+                            "${CMAKE_BINARY_DIR}/Chiika/$<CONFIGURATION>" COMMENT "Lol")
+
+
+  add_custom_command(TARGET ChiikaApi POST_BUILD
+                                COMMAND ${CMAKE_COMMAND} -E copy_directory
+                              "${CMAKE_SOURCE_DIR}/vendor/icu/bin64"
+                            "${CMAKE_BINARY_DIR}/Chiika/$<CONFIGURATION>" COMMENT "Lol")
+endif()

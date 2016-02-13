@@ -172,11 +172,18 @@ namespace ChiikaApi
 
 				FOR_(miscKeys,k)
 				{
+					if(miscKeys[k] == "japanese")
+					{
+						if(animeMisc.GetKeyValue(miscKeys[k]) != "japanese")
+						{
+							int x = 0;
+						}
+					}
 					XmlNode node = misc.append_child(ToStd(miscKeys[k]));
 					SetXMLValue(node,ToStd(animeMisc.GetKeyValue(miscKeys[k])));
 				}
 				KeyList studiokeys ={kStudioId,kStudioName};
-				KeyList characterKeys ={kCharacterId,kCharacterName};
+				KeyList characterKeys ={kCharacterId,kCharacterName,kCharacter,kCharacterImage,kCharacterVa,kCharacterVaId};
 				KeyList genreKeys ={kGenre};
 
 				XmlNode genresNode = misc.append_child(kGenres);

@@ -38,6 +38,8 @@ namespace ChiikaApi
 		void SetAnimeId(int Id);
 		void SetKeywords(const std::string& keywords);
 
+		int GetAnimeId() const;
+
 		int m_AnimeId;
 		KeyMap convertToMalApiConvention;
 	};

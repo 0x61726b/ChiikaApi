@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------
 //Chiika Api
 //Copyright (C) 2015  arkenthera
 //This program is free software; you can redistribute it and/or modify
@@ -19,10 +19,13 @@
 #include "MyAnimelistUtility.h"
 
 #include "boost\regex.hpp"
+//#include "boost/regex/icu.hpp"
 #include "boost\algorithm\string.hpp"
 #include "boost\algorithm\string\replace.hpp"
 #include "boost\algorithm\string\split.hpp"
 #include "boost\filesystem.hpp"
+
+#include "Common/UtfTools.h"
 
 namespace ChiikaApi
 {
@@ -209,7 +212,7 @@ namespace ChiikaApi
 			studioLinkMap.insert(std::make_pair(studioNames[i],studioLinks[i]));
 		}
 
-		
+
 		//---------------------------------------
 		//			
 		//				Source
@@ -234,6 +237,48 @@ namespace ChiikaApi
 			flags |= boost::match_not_bob;
 		}
 		result.SetKeyValue(kSource,source);
+
+		//---------------------------------------
+		//			
+		//				Japaneese
+		//		
+		//---------------------------------------
+
+		std::string jRegex = "(?<=Japanese:</span>)(\\s*)(?s)(.+?)(?=\\s*</div>)";
+		flags = boost::match_default;
+		start = data.begin();
+		end = data.end();
+
+		expr = boost::regex(jRegex);
+
+		std::string japanese = "";
+		if(boost::regex_search(start,end,what,expr,flags))
+		{
+			japanese= what[0];
+
+			start = what[0].second;
+			// update flags: 
+			flags |= boost::match_prev_avail;
+			flags |= boost::match_not_bob;
+		}
+		result.SetKeyValue(kJapanese,japanese);
+
+		//std::wstring wStart = Utf8::utf8_to_wstring(data);
+
+		//boost::u32regex wreg = boost::make_u32regex(jRegex);
+		//boost::wsmatch wwhat;
+
+		//std::wstring j = L"";
+		//if(boost::u32regex_search(wStart,wwhat,wreg))
+		//{
+		//	j = std::wstring(wwhat[0]);
+
+		//	start = what[0].second;
+		//	// update flags: 
+		//	flags |= boost::match_prev_avail;
+		//	flags |= boost::match_not_bob;
+		//}
+		/*result.SetKeyValue(kJapanese,Utf8::wstring_to_utf8(j));*/
 
 		//---------------------------------------
 		//			
@@ -312,10 +357,11 @@ namespace ChiikaApi
 
 		//---------------------------------------
 		//			
-		//				Characters
-		//			(dis gon' be gud)
+		//			  Characters
+		//			
 		//---------------------------------------
-		std::string chrStep1 = "(?<=<div class=\"picSurround\"><a href=\"/character)(?s)(.+?)(?=\"\\sstyle=\"font-weight:)";
+		ChiString chrStep1 = "(?<=<div class=\"picSurround\"><a href=\"/character)(?s)(.+?)(?=\")(?s)(.+?)(?<=<div class=\"picSurround\"><a href=\"/people)(?s)(.+?)(?=\")";
+		ChiString chrStep2 = "(?<=<div class=\"picSurround\"><a href=\"/character)(?s)(.+?)(<img src=\")(?s)(.+?)(?=\\?)";
 
 		flags = boost::match_default;
 		start = data.begin();
@@ -324,14 +370,35 @@ namespace ChiikaApi
 		expr = boost::regex(chrStep1);
 
 		std::vector<std::string> charactersWithIds;
+		std::vector<std::string> voiceActors;
 		while(boost::regex_search(start,end,what,expr,flags))
 		{
-			charactersWithIds.push_back(what[0]);
+			charactersWithIds.push_back(what[1]);
+			voiceActors.push_back(what[3]);
+
 			start = what[0].second;
 			// update flags: 
 			flags |= boost::match_prev_avail;
 			flags |= boost::match_not_bob;
 		}
+		flags = boost::match_default;
+		start = data.begin();
+		end = data.end();
+
+
+		//Extract character image links
+		expr = boost::regex(chrStep2);
+		std::vector<std::string> charactersWithImageLinks;
+		while(boost::regex_search(start,end,what,expr,flags))
+		{
+			charactersWithImageLinks.push_back(what[3]);
+
+			start = what[0].second;
+			// update flags: 
+			flags |= boost::match_prev_avail;
+			flags |= boost::match_not_bob;
+		}
+
 
 		//Extract ID and name
 		// i.e. /94351/Yuzu_Iizuka to 94351 and Yuzu Iizuka
@@ -345,11 +412,31 @@ namespace ChiikaApi
 
 			std::string name = ch.substr(idEnd+1,ch.size() - idEnd);
 
-			boost::replace_all(name,"_"," ");
+			std::string image = charactersWithImageLinks[i];
 
+			boost::replace_all(image,"r/21x32/","");
+			boost::replace_all(name,"_"," ");
 			Character character;
 			character.SetKeyValue(kCharacterId,id);
 			character.SetKeyValue(kCharacterName,name);
+			character.SetKeyValue(kCharacterImage,image);
+
+
+			std::string va = voiceActors[i];
+			idStart = ch.find_first_of("/");
+			idEnd = ch.find_last_of("/");
+
+			id = va.substr(idStart + 1,idEnd - (idStart+1));
+			name = va.substr(idEnd+1,ch.size() - idEnd);
+
+			boost::replace_all(name,"_"," ");
+
+
+			boost::replace_all(name,"/","");
+
+			character.SetKeyValue(kCharacterVa,name);
+			character.SetKeyValue(kCharacterVaId,id);
+
 			result.Characters.push_back(character);
 		}
 
@@ -485,8 +572,8 @@ namespace ChiikaApi
 	ChiString MyAnimelistUtility::PrepareTitleForSearching(const std::string& title)
 	{
 		std::string fullTitle = title;
-		
-		boost::replace_all(fullTitle, " ", "+");
+
+		boost::replace_all(fullTitle," ","+");
 
 		return fullTitle;
 	}
@@ -511,13 +598,13 @@ namespace ChiikaApi
 	ChiString MyAnimelistUtility::RemoveSpecialHtmlCharacters(const std::string& html)
 	{
 		std::string copy = html;
-		boost::replace_all(copy, "&amp;", "&");
-		boost::replace_all(copy, "&apos;", "'");
-		boost::replace_all(copy, "&quot;", "\"");
-		boost::replace_all(copy, "&lt;", "<");
-		boost::replace_all(copy, "&gt;", ">");
-		boost::replace_all(copy, "&#039;", "'");
-		boost::replace_all(copy, "<br />", "");
+		boost::replace_all(copy,"&amp;","&");
+		boost::replace_all(copy,"&apos;","'");
+		boost::replace_all(copy,"&quot;","\"");
+		boost::replace_all(copy,"&lt;","<");
+		boost::replace_all(copy,"&gt;",">");
+		boost::replace_all(copy,"&#039;","'");
+		boost::replace_all(copy,"<br />","");
 		return copy;
 	}
 }

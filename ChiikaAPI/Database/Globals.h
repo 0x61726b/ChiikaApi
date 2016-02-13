@@ -131,11 +131,15 @@ namespace
 	const char* kCharacter	   = "character";
 	const char* kCharacterName = "character_name";
 	const char* kCharacterId   = "character_id";
+	const char* kCharacterImage= "character_image_link";
+	const char* kCharacterVa   = "character_va";
+	const char* kCharacterVaId = "character_va_id";
 	const char* kCharacters    = "characters";
 
 	const char* kGenre		   = "genre";
 	const char* kGenres		   = "genres";
 	const char*	kSource		   = "source";
+	const char*	kJapanese      = "japanese";
 	const char* kBroadcastTime = "broadcast_time";
 	const char* kDuration	   = "duration";
 	const char* kAvgScore	   = "avg_score";
@@ -157,10 +161,12 @@ namespace
 		keys.push_back(kSeriesStart);
 		keys.push_back(kSeriesEnd);
 		keys.push_back(kSeriesImage);
+		keys.push_back(kSeriesEnglish);
 	}
 	void GetAnimeMiscKeys(KeyList& keys)
 	{
 		keys.push_back(kSource);
+		keys.push_back(kJapanese);
 		keys.push_back(kBroadcastTime);
 		keys.push_back(kDuration);
 		keys.push_back(kAvgScore);

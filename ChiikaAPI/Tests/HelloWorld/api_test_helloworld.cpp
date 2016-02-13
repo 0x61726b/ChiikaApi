@@ -53,6 +53,8 @@ int main()
 
 
 	r.InitDatabase();
+	//r.GetRequestManager()->GetMyAnimelist(&tel);
+	//r.GetRequestManager()->AnimePageScrape(&tel,31414);
 	//r.GetRequestManager()->DownloadSenpaiData(&tel);
 	
 

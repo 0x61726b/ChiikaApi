@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------
 //Chiika Api
 //Copyright (C) 2015  Alperen Gezer
 //This program is free software; you can redistribute it and/or modify
@@ -29,6 +29,7 @@
 #include <log4cplus/initializer.h>
 #include "Logging\LogManager.h"
 
+#include "Common\UtfTools.h"
 //----------------------------------------------------------------------------
 //Whoops..
 MalApiExport ChiikaApi::Root* GlobalInstance = 0;
@@ -108,6 +109,20 @@ namespace ChiikaApi
 			"ChiikaApi Version " << version << std::endl <<
 			"Last HEAD " << m_sCommitHash << std::endl
 			);
+
+
+		/*std::wstring wstr = L"虹色デイズ";
+		std::string k = Utf8::wstring_to_utf8(wstr);
+
+
+		FsPath p = GetAppSettings()->GetDataPath() / "testo.txt";
+
+		pugi::xml_document testo;
+		pugi::xml_node root = testo.append_child("root");
+
+		SetXMLValue(root,k.c_str());
+
+		testo.save_file(p.generic_string().c_str());*/
 	}
 	//----------------------------------------------------------------------------
 	Root::~Root()
