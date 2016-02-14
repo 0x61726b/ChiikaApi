@@ -75,19 +75,18 @@ namespace ChiikaApi
 		MangaList animeList;
 		for(XmlNode manga = myanimelist.child(kManga); manga; manga = manga.next_sibling())
 		{
-			Manga Manga;
+			Manga nManga;
 			UserMangaEntry info;
 			for(XmlNode mangaChild = manga.first_child(); mangaChild; mangaChild = mangaChild.next_sibling())
 			{
 				const char* name = mangaChild.name();
 				const char* val = mangaChild.text().get();
 
-				Manga.SetKeyValue(name,val);
+				nManga.SetKeyValue(name,val);
 				info.SetKeyValue(name,val);
 			}
-			animeList.insert(ChiikaApi::MangaList::value_type(Manga.GetKeyValue(kSeriesMangadbId),Manga));
-			info.Manga = Manga;
-			list.insert(UserMangaList::value_type(Manga.GetKeyValue(kSeriesMangadbId),info));
+			animeList.insert(ChiikaApi::MangaList::value_type(nManga.GetKeyValue(kSeriesMangadbId),nManga));
+			list.insert(UserMangaList::value_type(nManga.GetKeyValue(kSeriesMangadbId),info));
 		}
 
 		Root::Get()->GetMyAnimelistManager()->AddMangaList(list);

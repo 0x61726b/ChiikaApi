@@ -17,7 +17,7 @@
 #define __MALUtility_h__
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
-#include "boost\thread\recursive_mutex.hpp"
+#include "boost/thread/recursive_mutex.hpp"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

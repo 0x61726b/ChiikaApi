@@ -309,7 +309,7 @@ namespace ChiikaApi
 				for(size_t i = 0; i < keys.size(); i++)
 				{
 					XmlNode node = manga.append_child(ToStd(keys[i]));
-					SetXMLValue(node,ToStd(Manga.Manga.GetKeyValue(keys[i])));
+					SetXMLValue(node,ToStd(Manga.GetKeyValue(keys[i])));
 				}
 
 				KeyList uaeList;
@@ -350,7 +350,7 @@ namespace ChiikaApi
 			ChiikaApi::UserMangaList list;
 			for(XmlNode manga = mymangalist.child(kManga); manga; manga = manga.next_sibling())
 			{
-				Manga Manga;
+				Manga nManga;
 				UserMangaEntry info;
 
 				for(XmlNode mangaChild = manga.first_child(); mangaChild; mangaChild = mangaChild.next_sibling())
@@ -358,12 +358,12 @@ namespace ChiikaApi
 					const char* name = mangaChild.name();
 					const char* val = mangaChild.text().get();
 
-					Manga.SetKeyValue(name,val);
+					nManga.SetKeyValue(name,val);
 					info.SetKeyValue(name,val);
 				}
-				mangaList.insert(ChiikaApi::MangaList::value_type(Manga.GetKeyValue(kSeriesAnimedbId),Manga));
-				info.Manga = Manga;
-				list.insert(UserMangaList::value_type(Manga.GetKeyValue(kSeriesMangadbId),info));
+				mangaList.insert(ChiikaApi::MangaList::value_type(nManga.GetKeyValue(kSeriesAnimedbId),nManga));
+				
+				list.insert(UserMangaList::value_type(nManga.GetKeyValue(kSeriesMangadbId),info));
 			}
 
 
