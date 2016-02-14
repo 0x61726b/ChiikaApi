@@ -27,7 +27,9 @@ namespace ChiikaApi
 		m_SingleReq(request)
 	{
 		if(isQueued)
-			m_RequestThread = new boost::thread(&ThreadManager::Run,this);
+		{
+			/*m_RequestThread = new boost::thread(&ThreadManager::Run,this);*/
+		}
 		else
 			m_RequestThread = new boost::thread(&ThreadManager::RunOnSpecialThread,this);
 	}
@@ -36,37 +38,37 @@ namespace ChiikaApi
 		
 	}
 
-	void ThreadManager::Run()
-	{
-		for(;;)
-		{
-			boost::mutex::scoped_lock lock(m_Lock);
+	/*void ThreadManager::Run()*/
+	//{
+	//	for(;;)
+	//	{
+	//		boost::mutex::scoped_lock lock(m_Lock);
 
-			while(m_RequestQueue.empty()) cond.wait(lock);
+	//		while(m_RequestQueue.empty()) cond.wait(lock);
 
-			//LOG(Bore) << "Request Thread: Processing Queue";
+	//		//LOG(Bore) << "Request Thread: Processing Queue";
 
-			if(!m_RequestQueue.empty())
-			{
-				RequestInterface* process = Front();
-				if(!process)
-					return;
-				CurlRequestInterface* curl = process->Get();
-				if(!curl)
-					return;
+	//		if(!m_RequestQueue.empty())
+	//		{
+	//			RequestInterface* process = Front();
+	//			if(!process)
+	//				return;
+	//			CurlRequestInterface* curl = process->Get();
+	//			if(!curl)
+	//				return;
 
 
-				if(curl->IsInitialized())
-				{
-					curl->Perform();
-					//boost::this_thread::sleep_for(boost::chrono::seconds(3)); //for debugging
+	//			if(curl->IsInitialized())
+	//			{
+	//				curl->Perform();
+	//				//boost::this_thread::sleep_for(boost::chrono::seconds(3)); //for debugging
 
-					Pop();
-					//delete process;
-				}
-			}
-		}
-	}
+	//				Pop();
+	//				//delete process;
+	//			}
+	//		}
+	//	}
+	/*}*/
 
 	void ThreadManager::RunOnSpecialThread()
 	{
@@ -81,23 +83,13 @@ namespace ChiikaApi
 		}
 	}
 
-	RequestInterface* ThreadManager::Front()
-	{
-		return m_RequestQueue.front();
-	}
-
-	void ThreadManager::Pop()
-	{
-		m_RequestQueue.pop();
-	}
-
 	void ThreadManager::PostRequest(RequestInterface* r)
 	{
-		boost::mutex::scoped_lock lock(m_Lock);
-		m_RequestQueue.push(r);
+		//boost::mutex::scoped_lock lock(m_Lock);
+		//m_RequestQueue.push(r);
 
-		if(m_RequestQueue.size() == 1)
-			cond.notify_one();
+		//if(m_RequestQueue.size() == 1)
+		//	cond.notify_one();
 	}
 
 	boost::thread* ThreadManager::Get()

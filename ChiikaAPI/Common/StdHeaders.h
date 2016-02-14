@@ -16,39 +16,14 @@
 #ifndef __StdHeaders_H__
 #define __StdHeaders_H__
 
-#ifdef __BORLANDC__
-    #define __STD_ALGORITHM
-#endif
-//
-
 
 // STL containers
 
 
-#include <string>
-#include <queue>
-
-#include <fstream>
-#include <iostream>
-#include <iomanip>
-#include <sstream>
-
+#include <cstring>
 #include <map>
 #include <vector>
 
-//C++11
-#include <chrono>
-
-#include <memory>
-#include <functional>
-#include <type_traits>
-
-#ifdef __BORLANDC__
-namespace ChiikaApi
-{
-    using namespace std;
-}
-#endif
 
 
 #if YUME_PLATFORM == YUME_PLATFORM_WIN32 || YUME_PLATFORM == YUME_PLATFORM_WINRT
@@ -59,18 +34,4 @@ namespace ChiikaApi
 #  endif
 #endif
 
-#if YUME_PLATFORM == YUME_PLATFORM_LINUX
-extern "C" {
-
-#   include <unistd.h>
-#   include <dlfcn.h>
-
-}
-#endif
-
-
-
-//#if defined ( OGRE_GCC_VISIBILITY ) && ((OGRE_PLATFORM == OGRE_PLATFORM_APPLE && !__LP64__) && OGRE_PLATFORM != OGRE_PLATFORM_APPLE_IOS)
-//#   pragma GCC visibility pop
-//#endif
 #endif

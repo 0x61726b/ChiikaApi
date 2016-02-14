@@ -33,13 +33,11 @@ namespace ChiikaApi
 
 		boost::thread* Get();
 
-		void Run();
+		/*void Run();*/
 		void RunOnSpecialThread();
 
 		void PostRequest(RequestInterface* r);
-		
-		RequestInterface* Front();
-		void Pop();
+
 
 		bool isQueued;
 		bool mStop;
@@ -47,7 +45,6 @@ namespace ChiikaApi
 		boost::condition_variable cond;
 		boost::thread* m_RequestThread;
 
-		std::queue<RequestInterface*> m_RequestQueue;
 		RequestInterface* m_SingleReq;
 		
 	};
