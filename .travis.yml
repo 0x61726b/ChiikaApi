@@ -19,7 +19,7 @@ matrix:
   include:
     - os: linux
     - env: COMPILER=g++-4.8 CMAKE_OPTIONS="-DJSONCPP_LIB_BUILD_STATIC=ON -DJSONCPP_LIB_BUILD_SHARED=OFF"
-        addons: &clang35
+        addons:
           apt:
             packages: ["g++-4.8"]
             sources:
