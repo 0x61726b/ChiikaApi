@@ -1,7 +1,14 @@
 language: cpp
 
 compiler:
-  - gcc
+  - clang
+  #- gcc
+
+osx_image: xcode7
+os:
+  - osx
+  #- linux
+
 addons:
   apt:
     sources:
