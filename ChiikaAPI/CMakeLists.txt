@@ -255,7 +255,11 @@ set_target_properties(log4cplus PROPERTIES FOLDER "3rdParty")
 
 
 if(OS_LINUX)
-  target_compile_options(${CHIIKA_LIBRARIES} PUBLIC "-fPIC")
+  target_compile_options(ChiikaApi PUBLIC "-fPIC")
+  target_compile_options(Anitomy PUBLIC "-fPIC")
+  target_compile_options(pugixml PUBLIC "-fPIC")
+  target_compile_options(libcurl PUBLIC "-fPIC")
+  target_compile_options(log4cplus PUBLIC "-fPIC")
 endif()
 
 
