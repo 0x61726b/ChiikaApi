@@ -8,9 +8,8 @@ git:
 
 matrix:
   include:
-    - os: osx
-      env: COMPILER=clang++ CMAKE_OPTIONS="-DJSONCPP_LIB_BUILD_STATIC=ON -DJSONCPP_LIB_BUILD_SHARED=OFF"
-      osx_image: xcode6.4
+    env: COMPILER=clang++ CMAKE_OPTIONS="-DJSONCPP_LIB_BUILD_STATIC=ON -DJSONCPP_LIB_BUILD_SHARED=OFF"
+    osx_image: xcode6.4
 
 install:
   - |
