@@ -18,7 +18,7 @@
 //	Description:
 //----------------------------------------------------------------------------
 #include "Stable.h"
-#include "GetMyMangaList.h"
+#include "GetMyMangalist.h"
 #include "Database/LocalDataManager.h"
 #include "Request/MalManager.h"
 #include "Root/Root.h"
