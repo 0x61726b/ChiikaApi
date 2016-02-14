@@ -111,7 +111,7 @@ namespace ChiikaApi
 	//----------------------------------------------------------------------------
 	void CurlRequest::SetUserAgent(const ChiString& ua)
 	{
-		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_USERAGENT,ua);
+		m_CurlRes = curl_easy_setopt(m_pCurl,CURLOPT_USERAGENT,ToStd(ua));
 		//LOG(INFO) << "Setting User-Agent to " + ua + "..";
 	}
 	//----------------------------------------------------------------------------
