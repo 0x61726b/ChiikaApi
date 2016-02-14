@@ -184,7 +184,7 @@ if(OS_MACOSX)
   # -std=gnu++11                    = Use the C++11 language standard including GNU extensions
   # -Wno-narrowing                  = Don't warn about type narrowing
   # -Wsign-compare                  = Warn about mixed signed/unsigned type comparisons
-  set(CHI_CXX_COMPILER_FLAGS      "-fno-rtti -fno-threadsafe-statics -fobjc-call-cxx-cdtors -fvisibility-inlines-hidden -std=gnu++11 -Wno-narrowing -Wsign-compare")
+  set(CHI_CXX_COMPILER_FLAGS      "-fno-rtti -fno-threadsafe-statics -fobjc-call-cxx-cdtors -fvisibility-inlines-hidden -std=c++11 -stdlib=libc++ -Wno-narrowing -Wsign-compare")
   # -O0                             = Disable optimizations
   # -g                              = Generate debug information
   set(CHI_COMPILER_FLAGS_DEBUG    "-O0 -g")

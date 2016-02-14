@@ -261,6 +261,13 @@ if(OS_LINUX)
   target_compile_options(libcurl PUBLIC "-fPIC")
   target_compile_options(log4cplus PUBLIC "-fPIC")
 endif()
+if(OS_MACOSX)
+  target_compile_options(ChiikaApi PUBLIC "-std=c++11 -stdlib=libc++")
+  target_compile_options(Anitomy PUBLIC "-std=c++11 -stdlib=libc++")
+  target_compile_options(pugixml PUBLIC "-std=c++11 -stdlib=libc++")
+  target_compile_options(libcurl PUBLIC "-std=c++11 -stdlib=libc++")
+  target_compile_options(log4cplus PUBLIC "-std=c++11 -stdlib=libc++")
+endif()
 
 
 add_custom_command(TARGET ChiikaApi PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy
