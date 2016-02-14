@@ -65,7 +65,7 @@ void ChiikaApi::Log::InitLogging(const char* loc)
 
 	mbstowcs(&wstrModulePath[0], loc, cSize);
 
-	log4cplus::SharedAppenderPtr fileAppender(new log4cplus::RollingFileAppender(wstrModulePath.c_str()));
+	log4cplus::SharedAppenderPtr fileAppender(new log4cplus::RollingFileAppender(log4cplus::tstring(wstrModulePath)));
 	fileAppender->setName(LOG4CPLUS_TEXT("Second"));
 	fileAppender->setLayout(
 		std::unique_ptr<log4cplus::Layout>(
