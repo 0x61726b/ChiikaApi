@@ -59,13 +59,17 @@ void ChiikaApi::Log::InitLogging(const char* loc)
 	log4cplus::Logger::getRoot().addAppender(log4cplus::SharedAppenderPtr(debugAppender.get()));
 #endif
 
+	std::string strModulePath = std::string(loc);
 	const size_t cSize = strlen(loc);
-
 	std::wstring wstrModulePath(cSize, L'#');
-
 	mbstowcs(&wstrModulePath[0], loc, cSize);
 
-	log4cplus::SharedAppenderPtr fileAppender(new log4cplus::RollingFileAppender(log4cplus::tstring(wstrModulePath)));
+#if YUME_PLATFORM == YUME_PLATFORM_WIN32
+	log4cplus::SharedAppenderPtr fileAppender(new log4cplus::RollingFileAppender(wstrModulePath));
+#else
+	log4cplus::SharedAppenderPtr fileAppender(new log4cplus::RollingFileAppender(std::string(loc));
+#endif
+
 	fileAppender->setName(LOG4CPLUS_TEXT("Second"));
 	fileAppender->setLayout(
 		std::unique_ptr<log4cplus::Layout>(
