@@ -152,7 +152,7 @@ namespace ChiikaApi
 		REQUEST_DOWNLOAD = 0x1 << 1
 	};
 
-#include "Database\Globals.h"
+#include "Database/Globals.h"
 	//----------------------------------------------------------------------------
 #	define CHIKA_AUTO_MUTEX_NAME chitanda
 #	define CHIKA_AUTO_MUTEX mutable boost::recursive_mutex CHIKA_AUTO_MUTEX_NAME;

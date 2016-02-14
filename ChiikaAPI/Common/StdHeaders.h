@@ -23,8 +23,8 @@
 
 
 // STL containers
-#include <vector>
-#include <map>
+
+
 #include <string>
 #include <queue>
 
@@ -32,6 +32,9 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+
+#include <map>
+#include <vector>
 
 //C++11
 #include <chrono>
