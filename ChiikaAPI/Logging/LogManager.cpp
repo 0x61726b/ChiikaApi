@@ -20,10 +20,10 @@
 
 #include <boost/scoped_ptr.hpp>
 #include "LogManager.h"
-#include <log4cplus/logger.h>
-#include <log4cplus/configurator.h>
-#include <log4cplus/initializer.h>
-#include <log4cplus/win32consoleappender.h>
+#include "log4cplus/logger.h"
+#include "log4cplus/configurator.h""
+#include "log4cplus/initializer.h"
+#include "log4cplus/win32consoleappender.h"
 #include "log4cplus/loggingmacros.h"
 #include "log4cplus/loglevel.h"
 #include "log4cplus/layout.h"
@@ -52,10 +52,9 @@ void ChiikaApi::Log::InitLogging(const char* loc)
 	log4cplus::Logger::getRoot().addAppender(log4cplus::SharedAppenderPtr(debugAppender.get()));
 #else
 	log4cplus::SharedAppenderPtr debugAppender(new log4cplus::ConsoleAppender());
-	debugAppender->setName("ConsoleAppender");
-	std::unique_ptr<log4cplus::Layout> layout2(new log4cplus::TTCCLayout());
-	debugAppender->setLayout(std::move(layout2));
-	logger.addAppender(debugAppender);
+	debugAppender->setName(LOG4CPLUS_TEXT("ConsoleAppender"));
+	debugAppender->setLayout(std::unique_ptr<log4cplus::Layout>(new log4cplus::TTCCLayout()));
+	log4cplus::Logger::getRoot().addAppender(log4cplus::SharedAppenderPtr(debugAppender.get()));
 #endif
 
 	const size_t cSize = strlen(loc);
