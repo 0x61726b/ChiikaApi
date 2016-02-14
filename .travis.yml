@@ -7,8 +7,8 @@ addons:
     sources:
     - ubuntu-toolchain-r-test
     packages:
-    - gcc-4.9
-    - g++-4.9
+    - gcc-4.8
+    - g++-4.8
 
 git:
   submodules: false
@@ -23,7 +23,7 @@ before_install:
   - tar -xzvf cmake-3.2.2-Linux-x86_64.tar.gz
   - rm cmake-3.2.2-Linux-x86_64.tar.gz
   - export PATH=$(pwd)/cmake/bin:$PATH
-  - if [ "$CXX" = "g++" ]; then export CXX="gcc-4.9"; fi
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 
 before_script:
   - ./cmake-3.2.2-Linux-x86_64/bin/cmake --version

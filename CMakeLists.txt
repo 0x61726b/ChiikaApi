@@ -91,14 +91,14 @@ if(OS_LINUX)
   # -Wno-unused-parameter           = Don't warn about unused parameters
   # set(CHI_COMPILER_FLAGS          "-pipe -pthread -Wall -Werror -Wno-missing-field-initializers -Wno-unused-parameter")
   # # -std=c99                        = Use the C99 language standard
-  # set(CHI_C_COMPILER_FLAGS        "-std=c99")
+  set(CHI_C_COMPILER_FLAGS        "-std=c99")
   # # -fno-exceptions                 = Disable exceptions
   # # -fno-rtti                       = Disable real-time type information
   # # -fno-threadsafe-statics         = Don't generate thread-safe statics
   # # -fvisibility-inlines-hidden     = Give hidden visibility to inlined class member functions
   # # -std=gnu++11                    = Use the C++11 language standard including GNU extensions
   # # -Wsign-compare                  = Warn about mixed signed/unsigned type comparisons
-  set(CHI_CXX_COMPILER_FLAGS      "-std=c++11")
+  set(CHI_CXX_COMPILER_FLAGS      "-std=gnu++11")
   # # -O0                             = Disable optimizations
   # # -g                              = Generate debug information
   # set(CHI_COMPILER_FLAGS_DEBUG    "-O0 -g")
