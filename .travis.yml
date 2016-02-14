@@ -35,5 +35,6 @@ before_script:
   - (mkdir build && cd build && cmake .. -DCMAKE_CXX_COMPILER=${COMPILER} ${CMAKE_OPTIONS})
 
 script:
+  - ${TRAVIS_BUILD_DIR}/ChiikaAPI/ThirdParty/log4cplus/configure
   - cd ${TRAVIS_BUILD_DIR}
   - cd build && make
