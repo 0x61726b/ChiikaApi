@@ -1,9 +1,4 @@
 language: cpp
-
-compiler:
-  - clang
-  - gcc
-
 os: linux
 sudo: false
 
@@ -19,8 +14,9 @@ matrix:
   exclude:
     - env: TRAVIS_EMPTY_JOB_WORKAROUND=true
   include:
+    - os: osx
     - os: linux
-    - env: COMPILER=g++-4.8 CMAKE_OPTIONS="-DJSONCPP_LIB_BUILD_STATIC=ON -DJSONCPP_LIB_BUILD_SHARED=OFF"
+      env: COMPILER=g++-4.8 CMAKE_OPTIONS="-DJSONCPP_LIB_BUILD_STATIC=ON -DJSONCPP_LIB_BUILD_SHARED=OFF"
       addons:
         apt:
           sources:
