@@ -15,10 +15,19 @@ matrix:
     - env: TRAVIS_EMPTY_JOB_WORKAROUND=true
   include:
     - os: osx
-      language: clang
+      compiler: clang
     - os: linux
       env: COMPILER=g++-4.8 CMAKE_OPTIONS="-DJSONCPP_LIB_BUILD_STATIC=ON -DJSONCPP_LIB_BUILD_SHARED=OFF"
-      language: gcc
+      compiler: gcc
+      before_install:
+        - wget --no-check-certificate http://cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
+        - tar -xzvf cmake-3.2.2-Linux-x86_64.tar.gz
+        - rm cmake-3.2.2-Linux-x86_64.tar.gz
+        - export PATH=$(pwd)/cmake/bin:$PATH
+        - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+      before_script:
+        - cd ${TRAVIS_BUILD_DIR}
+        - (mkdir build && cd build && ./cmake-3.2.2-Linux-x86_64/cmake .. -DCMAKE_CXX_COMPILER=${COMPILER} ${CMAKE_OPTIONS})
       addons:
         apt:
           sources:
@@ -41,10 +50,6 @@ install:
 before_install:
   - set -e # Fail the whole script whenever any command fails
   - git submodule update --init --recursive
-
-before_script:
-  - cd ${TRAVIS_BUILD_DIR}
-  - (mkdir build && cd build && cmake .. -DCMAKE_CXX_COMPILER=${COMPILER} ${CMAKE_OPTIONS})
 
 script:
   - ${TRAVIS_BUILD_DIR}/ChiikaAPI/ThirdParty/log4cplus/configure
