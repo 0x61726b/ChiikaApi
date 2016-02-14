@@ -45,7 +45,7 @@ void ChiikaApi::Log::InitLogging(const char* loc)
 	RootOptions ro = Root::Get()->GetRootOptions();
 	logger.setLogLevel(translate_logLevel((ChiikaApi::Log::LogLevel)ro.log_level));
 
-#ifdef YUME_PLATFORM == YUME_PLATFORM_WIN32
+#if YUME_PLATFORM == YUME_PLATFORM_WIN32
 	log4cplus::SharedAppenderPtr debugAppender(new log4cplus::Win32ConsoleAppender());
 	debugAppender->setName(LOG4CPLUS_TEXT("First"));
 	debugAppender->setLayout(std::unique_ptr<log4cplus::Layout>(new log4cplus::TTCCLayout()));
