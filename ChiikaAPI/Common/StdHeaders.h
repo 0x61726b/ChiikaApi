@@ -28,18 +28,6 @@
 #include <string>
 #include <queue>
 
-// Note - not in the original STL, but exists in SGI STL and STLport
-// For gcc 4.3 see http://gcc.gnu.org/gcc-4.3/changes.html
-#if (YUME_COMPILER == YUME_COMPILER_GNUC) && !defined(STLPORT)
-#   if OGRE_COMP_VER >= 430
-#       include <tr1/unordered_map>
-#       include <tr1/unordered_set> 
-#   else
-#       include <ext/hash_map>
-#       include <ext/hash_set>
-#   endif
-#endif 
-
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -51,7 +39,6 @@
 #include <memory>
 #include <functional>
 #include <type_traits>
-#include <codecvt>
 
 #ifdef __BORLANDC__
 namespace ChiikaApi
