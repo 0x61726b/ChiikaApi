@@ -98,8 +98,6 @@ source_group(ChiikaApi\\\\Recognition FILES ${ChiikaApi_Recognition_Src})
 set(ChiikaApi_Request_Src
   Request/MalManager.cpp
   Request/MalManager.h
-  Request/ParsingManager.cpp
-  Request/ParsingManager.h
   Request/RequestManager.cpp
   Request/RequestManager.h
   Request/RequestList.h
@@ -262,14 +260,15 @@ set_target_properties(pugixml PROPERTIES FOLDER "3rdParty")
 set_target_properties(libcurl PROPERTIES FOLDER "3rdParty")
 set_target_properties(log4cplus PROPERTIES FOLDER "3rdParty")
 
-include_directories(${ICU_INCLUDE_DIR})
 
-add_custom_command(TARGET libcurl POST_BUILD
-                              COMMAND ${CMAKE_COMMAND} -E copy
+add_custom_command(TARGET ChiikaApi PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy
                             "${CMAKE_BINARY_DIR}/ChiikaAPI/ThirdParty/curl/include/curl/curlbuild.h"
                           "${CMAKE_SOURCE_DIR}/ChiikaAPI/ThirdParty/curl/include/curl" COMMENT "Lol")
 
+
+
 if(CHIIKA_USE_ICU)
+  include_directories(${ICU_INCLUDE_DIR})
   add_custom_command(TARGET ChiikaApi POST_BUILD
                                 COMMAND ${CMAKE_COMMAND} -E copy_directory
                               "${CMAKE_SOURCE_DIR}/vendor/icu/lib64"

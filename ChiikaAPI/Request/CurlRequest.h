@@ -14,7 +14,7 @@
 //51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.*/
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
-#include "ThirdParty/curl/include/curl/curl.h"
+#include "../ThirdParty/curl/include/curl/curl.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

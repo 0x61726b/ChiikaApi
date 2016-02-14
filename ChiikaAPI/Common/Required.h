@@ -38,7 +38,6 @@ namespace ChiikaApi
 	class MediaPlayerRecognitionManager;
 	class SeasonManager;
 	class ParserInerface;
-	class ParsingManager;
 	class RequestInterface;
 	class CurlEventListener;
 	class CurlRequest;

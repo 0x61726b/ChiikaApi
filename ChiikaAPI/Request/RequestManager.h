@@ -19,7 +19,7 @@
 #include "Common/Required.h"
 #include "Common/Singleton.h"
 
-#include "Request\RequestInterface.h"
+#include "Request/RequestInterface.h"
 #include "boost/thread.hpp"
 //----------------------------------------------------------------------------
 namespace ChiikaApi

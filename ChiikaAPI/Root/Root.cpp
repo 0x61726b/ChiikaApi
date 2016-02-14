@@ -22,7 +22,6 @@
 #include "Recognition/MediaPlayerRecognitionManager.h"
 #include "Recognition/AnimeRecognition.h"
 #include "Seasons/SeasonManager.h"
-#include "Request/ParsingManager.h"
 #include "Logging/FileHelper.h"
 #include "Logging/ChiString.h"
 #include "Root/ThreadManager.h"
@@ -78,7 +77,7 @@ namespace ChiikaApi
 		CHIIKALOG_INFO("Initializing Request Manager...");
 		m_pRequestManager = new RequestManager;
 
-		
+
 		CHIIKALOG_INFO("Initializing local Season Manager...");
 		m_pSeasonManager = new SeasonManager;
 
@@ -86,7 +85,7 @@ namespace ChiikaApi
 		CHIIKALOG_INFO("Initializing local database...");
 		m_pLocalData = new LocalDataManager;
 
-		
+
 
 
 		if(options.userName.size() == 0 || options.passWord.size() == 0)
@@ -355,4 +354,3 @@ namespace ChiikaApi
 
 	}
 }
-
