@@ -33,8 +33,7 @@ before_install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 
 before_script:
-  - ./cmake-3.2.2-Linux-x86_64/bin/cmake --version
-  - mkdir build
-  - ./cmake-3.2.2-Linux-x86_64/bin/cmake -DJSONCPP_LIB_BUILD_STATIC=ON -DJSONCPP_LIB_BUILD_SHARED=OFF .
+  - cmake --version
+  - cmake -DJSONCPP_LIB_BUILD_STATIC=ON -DJSONCPP_LIB_BUILD_SHARED=OFF .
 
 script: make
