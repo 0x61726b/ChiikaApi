@@ -21,7 +21,7 @@
 #include <boost/scoped_ptr.hpp>
 #include "LogManager.h"
 #include "log4cplus/logger.h"
-#include "log4cplus/configurator.h""
+#include "log4cplus/configurator.h"
 #include "log4cplus/initializer.h"
 #include "log4cplus/win32consoleappender.h"
 #include "log4cplus/loggingmacros.h"
@@ -45,7 +45,7 @@ void ChiikaApi::Log::InitLogging(const char* loc)
 	RootOptions ro = Root::Get()->GetRootOptions();
 	logger.setLogLevel(translate_logLevel((ChiikaApi::Log::LogLevel)ro.log_level));
 
-#ifdef YUME_PLATFORM_WIN32
+#ifdef YUME_PLATFORM == YUME_PLATFORM_WIN32
 	log4cplus::SharedAppenderPtr debugAppender(new log4cplus::Win32ConsoleAppender());
 	debugAppender->setName(LOG4CPLUS_TEXT("First"));
 	debugAppender->setLayout(std::unique_ptr<log4cplus::Layout>(new log4cplus::TTCCLayout()));
