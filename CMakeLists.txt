@@ -89,7 +89,7 @@ if(OS_LINUX)
   # -Werror                         = Treat warnings as errors
   # -Wno-missing-field-initializers = Don't warn about missing field initializers
   # -Wno-unused-parameter           = Don't warn about unused parameters
-  set(CHI_COMPILER_FLAGS          "-pipe -pthread -Wall -Werror -Wno-missing-field-initializers -Wno-unused-parameter")
+  set(CHI_COMPILER_FLAGS          "-fno-strict-aliasing -fPIC -fstack-protector -funwind-tables -fvisibility=hidden --param=ssp-buffer-size=4 -pipe -pthread -Wall -Werror -Wno-missing-field-initializers -Wno-unused-parameter")
   # # -std=c99                        = Use the C99 language standard
   set(CHI_C_COMPILER_FLAGS        "-std=c99")
   # # -fno-exceptions                 = Disable exceptions
