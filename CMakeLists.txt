@@ -210,8 +210,8 @@ if(OS_MACOSX)
   endforeach()
 
   # Target SDK.
-  set(CHI_TARGET_SDK               "10.6")
-  set(CHI_COMPILER_FLAGS           "${CEF_COMPILER_FLAGS} -mmacosx-version-min=${CEF_TARGET_SDK}")
+  set(CHI_TARGET_SDK               "10.8")
+  set(CHI_COMPILER_FLAGS           "${CHI_COMPILER_FLAGS} -mmacosx-version-min=${CHI_TARGET_SDK}")
   set(CMAKE_OSX_DEPLOYMENT_TARGET  ${CHI_TARGET_SDK})
 
   # Target architecture.
