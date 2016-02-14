@@ -67,7 +67,7 @@ void ChiikaApi::Log::InitLogging(const char* loc)
 #if YUME_PLATFORM == YUME_PLATFORM_WIN32
 	log4cplus::SharedAppenderPtr fileAppender(new log4cplus::RollingFileAppender(wstrModulePath));
 #else
-	log4cplus::SharedAppenderPtr fileAppender(new log4cplus::RollingFileAppender(std::string(loc));
+	log4cplus::SharedAppenderPtr fileAppender(new log4cplus::RollingFileAppender(strModulePath));
 #endif
 
 	fileAppender->setName(LOG4CPLUS_TEXT("Second"));
@@ -87,32 +87,32 @@ void ChiikaApi::Log::StopLogging()
 
 void ChiikaApi::Log::trace(const std::string& src, const std::string& msg, const char *file, int line, const char *fn)
 {
-	LOG4CPLUS_TRACE(log4cplus::Logger::getInstance(L"Chiika"),
+	LOG4CPLUS_TRACE(log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("Chiika")),
 		file << ":" << line << " - " << fn << " - " << msg.c_str());
 }
 void ChiikaApi::Log::debug(const std::string& src, const std::string& msg, const char *file, int line, const char *fn)
 {
-	LOG4CPLUS_DEBUG(log4cplus::Logger::getInstance(L"Chiika"),
+	LOG4CPLUS_DEBUG(log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("Chiika")),
 		fn << " - " << msg.c_str());
 }
 void ChiikaApi::Log::info(const std::string& src, const std::string& msg, const char *file, int line, const char *fn)
 {
-	LOG4CPLUS_INFO(log4cplus::Logger::getInstance(L"Chiika"),
+	LOG4CPLUS_INFO(log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("Chiika")),
 		fn << " - " << msg.c_str());
 }
 void ChiikaApi::Log::warn(const std::string& src, const std::string& msg, const char *file, int line, const char *fn)
 {
-	LOG4CPLUS_WARN(log4cplus::Logger::getInstance(L"Chiika"),
+	LOG4CPLUS_WARN(log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("Chiika")),
 		fn << " - " << msg.c_str());
 }
 void ChiikaApi::Log::error(const std::string& src, const std::string& msg, const char *file, int line, const char *fn)
 {
-	LOG4CPLUS_ERROR(log4cplus::Logger::getInstance(L"Chiika"),
+	LOG4CPLUS_ERROR(log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("Chiika")),
 		file << ":" << line << " - " << fn << " - " << msg.c_str());
 }
 void ChiikaApi::Log::fatal(const std::string& src, const std::string& msg, const char *file, int line, const char *fn)
 {
-	LOG4CPLUS_ERROR(log4cplus::Logger::getInstance(L"Chiika"),
+	LOG4CPLUS_ERROR(log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("Chiika")),
 		file << ":" << line << " - " << fn << " - " << msg.c_str());
 }
 
