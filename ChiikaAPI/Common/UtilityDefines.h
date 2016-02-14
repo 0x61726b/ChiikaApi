@@ -43,7 +43,7 @@ namespace ChiikaApi
 	class MalApiExport DictionaryBase
 	{
 	public:
-		typedef Vector<std::string>::type KeyList;
+		typedef std::vector<std::string> KeyList;
 		virtual void SetKeyValue(const std::string& key, const std::string& value)
 		{
 			KeyMap::iterator It = m_KeyMap.find(key);

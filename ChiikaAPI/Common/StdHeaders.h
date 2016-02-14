@@ -20,7 +20,9 @@
 // STL containers
 
 
-#include <cstring>
+#include <string>
+#include <sstream>
+#include <iostream>
 #include <map>
 #include <vector>
 

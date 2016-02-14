@@ -134,9 +134,10 @@
 #  define MalApiExport __declspec( dllimport )
 #endif
 #endif
-#if YUME_PLATFORM == YUME_PLATFORM_LINUX
+#if YUME_PLATFORM == YUME_PLATFORM_LINUX || YUME_PLATFORM == YUME_COMPILER_CLANG
 #  define MalApiExport
 #endif
+
 
 #define YUME_CPU_UNKNOWN    0
 #define YUME_CPU_X86        1
