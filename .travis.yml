@@ -54,4 +54,5 @@ matrix:
             - g++-4.8
 
 script:
+  - cd ${TRAVIS_BUILD_DIR}
   - make
