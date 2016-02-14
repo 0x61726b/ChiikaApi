@@ -6,7 +6,13 @@ sudo: false
 git:
   submodules: false
 
+env:
+  matrix:
+    - TRAVIS_EMPTY_JOB_WORKAROUND=true
+
 matrix:
+  exclude:
+    - env: TRAVIS_EMPTY_JOB_WORKAROUND=true
   include:
     - os: osx
 

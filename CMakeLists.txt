@@ -173,7 +173,7 @@ if(OS_MACOSX)
   # -Wnewline-eof                   = Warn about no newline at end of file
   # -Wno-missing-field-initializers = Don't warn about missing field initializers
   # -Wno-unused-parameter           = Don't warn about unused parameters
-  set(CHI_COMPILER_FLAGS          "-fno-strict-aliasing -fstack-protector -funwind-tables -fvisibility=hidden -Wall -Wendif-labels -Werror -Wextra -Wnewline-eof -Wno-missing-field-initializers -Wno-unused-parameter")
+  set(CHI_COMPILER_FLAGS          "-fno-strict-aliasing -fstack-protector -funwind-tables -fvisibility=hidden")
   # -std=c99                        = Use the C99 language standard
   set(CHI_C_COMPILER_FLAGS        "-std=c99")
   # -fno-exceptions                 = Disable exceptions
