@@ -208,18 +208,10 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/curl/include/curl)
 #Jsoncpp
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/jsoncpp/include/json)
 
-if(BUILD_SHARED_LIBS)
-  target_link_libraries(ChiikaApi jsoncpp_lib)
-  set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib)
-  set_target_properties(jsoncpp_lib PROPERTIES FOLDER "3rdParty")
-  set(JSONCPPLIB jsoncpp_lib)
-endif()
-if(BUILD_STATIC_LIBS)
-  target_link_libraries(ChiikaApi jsoncpp_lib_static)
-  set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib_static)
-  set_target_properties(jsoncpp_lib_static PROPERTIES FOLDER "3rdParty")
-  set(JSONCPPLIB jsoncpp_lib_static)
-endif()
+target_link_libraries(ChiikaApi jsoncpp_lib_static)
+set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} jsoncpp_lib_static)
+set_target_properties(jsoncpp_lib_static PROPERTIES FOLDER "3rdParty")
+set(JSONCPPLIB jsoncpp_lib_static)
 
 #Pugixml
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/pugixml/src)
