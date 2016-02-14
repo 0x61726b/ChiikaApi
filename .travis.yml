@@ -31,7 +31,7 @@ matrix:
           fi
       before_script:
         - cmake --version
-        - (mkdir build && cd build && cmake .. -DCMAKE_CXX_COMPILER=${COMPILER} ${CMAKE_OPTIONS})
+        - cmake . -DCMAKE_CXX_COMPILER=${COMPILER} ${CMAKE_OPTIONS})
     - os: linux
       env: COMPILER=g++-4.8 CMAKE_OPTIONS="-DJSONCPP_LIB_BUILD_STATIC=ON -DJSONCPP_LIB_BUILD_SHARED=OFF"
       compiler: gcc
@@ -54,5 +54,4 @@ matrix:
             - g++-4.8
 
 script:
-  - cd ${TRAVIS_BUILD_DIR}
   - make
