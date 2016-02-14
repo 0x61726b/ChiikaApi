@@ -35,7 +35,13 @@ set_target_properties(boost_thread PROPERTIES FOLDER "3rdParty" )
 set_target_properties(boost_date_time PROPERTIES FOLDER "3rdParty" )
 set_target_properties(boost_regex PROPERTIES FOLDER "3rdParty" )
 
-
+if(OS_LINUX)
+  target_compile_options(boost_system PUBLIC "-fPIC")
+  target_compile_options(boost_filesystem PUBLIC "-fPIC")
+  target_compile_options(boost_thread PUBLIC "-fPIC")
+  target_compile_options(boost_date_time PUBLIC "-fPIC")
+  target_compile_options(boost_regex PUBLIC "-fPIC")
+endif()
 
 
 

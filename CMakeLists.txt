@@ -342,7 +342,6 @@ add_subdirectory(ChiikaAPI)
 
 
 
-
 message(STATUS "*** CONFIGURATION SETTINGS ***")
 message(STATUS "Generator:                    ${CMAKE_GENERATOR}")
 message(STATUS "Platform:                     ${CMAKE_SYSTEM_NAME}")

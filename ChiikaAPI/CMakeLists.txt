@@ -253,6 +253,12 @@ set_target_properties(libcurl PROPERTIES FOLDER "3rdParty")
 set_target_properties(log4cplus PROPERTIES FOLDER "3rdParty")
 
 
+
+if(OS_LINUX)
+  target_compile_options(${CHIIKA_LIBRARIES} PUBLIC "-fPIC")
+endif()
+
+
 add_custom_command(TARGET ChiikaApi PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy
                             "${CMAKE_BINARY_DIR}/ChiikaAPI/ThirdParty/curl/include/curl/curlbuild.h"
                           "${CMAKE_SOURCE_DIR}/ChiikaAPI/ThirdParty/curl/include/curl" COMMENT "Lol")
