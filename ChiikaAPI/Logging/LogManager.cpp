@@ -34,6 +34,8 @@
 
 #include "Root/Root.h"
 
+#include "Common/UtfTools.h"
+
 
 static log4cplus::LogLevel translate_logLevel(ChiikaApi::Log::LogLevel ll);
 
@@ -63,7 +65,7 @@ void ChiikaApi::Log::InitLogging(const char* loc)
 
 	mbstowcs(&wstrModulePath[0], loc, cSize);
 
-	log4cplus::SharedAppenderPtr fileAppender(new log4cplus::RollingFileAppender(wstrModulePath));
+	log4cplus::SharedAppenderPtr fileAppender(new log4cplus::RollingFileAppender(wstrModulePath.c_str()));
 	fileAppender->setName(LOG4CPLUS_TEXT("Second"));
 	fileAppender->setLayout(
 		std::unique_ptr<log4cplus::Layout>(
