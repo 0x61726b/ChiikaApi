@@ -89,7 +89,7 @@ if(OS_LINUX)
   # -Werror                         = Treat warnings as errors
   # -Wno-missing-field-initializers = Don't warn about missing field initializers
   # -Wno-unused-parameter           = Don't warn about unused parameters
-  # set(CHI_COMPILER_FLAGS          "-pipe -pthread -Wall -Werror -Wno-missing-field-initializers -Wno-unused-parameter")
+  set(CHI_COMPILER_FLAGS          "-pipe -pthread -Wall -Werror -Wno-missing-field-initializers -Wno-unused-parameter")
   # # -std=c99                        = Use the C99 language standard
   set(CHI_C_COMPILER_FLAGS        "-std=c99")
   # # -fno-exceptions                 = Disable exceptions
@@ -101,7 +101,7 @@ if(OS_LINUX)
   set(CHI_CXX_COMPILER_FLAGS      "-std=gnu++11")
   # # -O0                             = Disable optimizations
   # # -g                              = Generate debug information
-  # set(CHI_COMPILER_FLAGS_DEBUG    "-O0 -g")
+  set(CHI_COMPILER_FLAGS_DEBUG    "-O0 -g")
   # # -O2                             = Optimize for maximum speed
   # # -fdata-sections                 = Enable linker optimizations to improve locality of reference for data sections
   # # -ffunction-sections             = Enable linker optimizations to improve locality of reference for function sections
@@ -109,18 +109,18 @@ if(OS_LINUX)
   # # -DNDEBUG                        = Not a debug build
   # # -U_FORTIFY_SOURCE               = Undefine _FORTIFY_SOURCE in case it was previously defined
   # # -D_FORTIFY_SOURCE=2             = Add memory and string function protection (security feature, related to stack-protector)
-  # set(CHI_COMPILER_FLAGS_RELEASE  "-O2 -fdata-sections -ffunction-sections -fno-ident -DNDEBUG -U_FORTIFY_SOURCE")
+  set(CHI_COMPILER_FLAGS_RELEASE  "-O2 -fdata-sections -ffunction-sections -fno-ident -DNDEBUG -U_FORTIFY_SOURCE")
   # # -Wl,--disable-new-dtags         = Don't generate new-style dynamic tags in ELF
   # # -Wl,--fatal-warnings            = Treat warnings as errors
   # # -Wl,-rpath,.                    = Set rpath so that libraries can be placed next to the executable
   # # -Wl,-z,noexecstack              = Mark the stack as non-executable (security feature)
   # # -Wl,-z,now                      = Resolve symbols on program start instead of on first use (security feature)
   # # -Wl,-z,relro                    = Mark relocation sections as read-only (security feature)
-  # set(CHI_LINKER_FLAGS            "-fPIC -pthread -Wl,--disable-new-dtags -Wl,--fatal-warnings -Wl,-rpath,. -Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro")
+  set(CHI_LINKER_FLAGS            "-fPIC -pthread -Wl,--disable-new-dtags -Wl,--fatal-warnings -Wl,-rpath,. -Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro")
   # # -Wl,-O1                         = Enable linker optimizations
   # # -Wl,--as-needed                 = Only link libraries that export symbols used by the binary
   # # -Wl,--gc-sections               = Remove unused code resulting from -fdata-sections and -function-sections
-  # set(CHI_LINKER_FLAGS_RELEASE    "-Wl,-O1 -Wl,--as-needed -Wl,--gc-sections")
+  set(CHI_LINKER_FLAGS_RELEASE    "-Wl,-O1 -Wl,--as-needed -Wl,--gc-sections")
 
   include(CheckCCompilerFlag)
   include(CheckCXXCompilerFlag)

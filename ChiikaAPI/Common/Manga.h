@@ -58,7 +58,6 @@ namespace ChiikaApi
 	{
 	public:
 		UserMangaEntry();
-		Manga Manga;
 	};
 }
 
