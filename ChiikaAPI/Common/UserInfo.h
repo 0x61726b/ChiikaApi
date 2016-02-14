@@ -16,7 +16,7 @@
 #ifndef __UserInfo_h__
 #define __UserInfo_h__
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
+#include "Common/Required.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

@@ -15,8 +15,8 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "AccountVerify.h"
-#include "Database\LocalDataManager.h"
-#include "Root\Root.h"
+#include "Database/LocalDataManager.h"
+#include "Root/Root.h"
 
 
 //----------------------------------------------------------------------------

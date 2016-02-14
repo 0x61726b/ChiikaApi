@@ -32,7 +32,7 @@
 #include "log4cplus/consoleappender.h"
 #include "log4cplus/nullappender.h"
 
-#include "Root\Root.h"
+#include "Root/Root.h"
 
 
 static log4cplus::LogLevel translate_logLevel(ChiikaApi::Log::LogLevel ll);

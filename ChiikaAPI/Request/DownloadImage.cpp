@@ -17,12 +17,12 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "DownloadImage.h"
-#include "Database\LocalDataManager.h"
-#include "Root\Root.h"
-#include "Settings\Settings.h"
+#include "Database/LocalDataManager.h"
+#include "Root/Root.h"
+#include "Settings/Settings.h"
 
-#include "Common\MyAnimeListUtility.h"
-#include "Common\BoostHeaders.h"
+#include "Common/MyAnimeListUtility.h"
+#include "Common/BoostHeaders.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

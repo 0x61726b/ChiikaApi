@@ -115,8 +115,6 @@ namespace ChiikaApi
 		void Exit();
 		ChiString GetVersion();
 		ChiString GetHash(); //debugging purposes
-		const char* GetKey(RequestApiValues);
-
 
 		MalManager* m_pMalManager;
 		RequestManager* m_pRequestManager;
@@ -129,7 +127,6 @@ namespace ChiikaApi
 	private:
 		RootOptions options;
 		UserInfo m_User;
-		std::map<RequestApiValues,char*> RequestApiValueMap;
 	protected:
 		ChiString m_sListData;
 		ChiString m_sVersion;

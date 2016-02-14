@@ -16,7 +16,7 @@ Copyright 2009 Dan Weatherford, Facebook inc
 #ifdef _WIN32
 #include <boost/asio.hpp>
 #else
-#include "../3rdParty/utf8/utf8.h"
+#include "../ThirdParty/utf8/utf8.h"
 #include <xlocale.h>
 #include <wctype.h>
 #endif

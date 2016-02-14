@@ -17,9 +17,9 @@
 #define __ChiikaLocalDataManager_h__
 //----------------------------------------------------------------------------
 #include "Common/Required.h"
-#include "ThirdParty\pugixml\src\pugixml.hpp"
-#include "boost\asio.hpp"
-#include "Common\BoostHeaders.h"
+#include "ThirdParty/pugixml/src/pugixml.hpp"
+#include "boost/asio.hpp"
+#include "Common/BoostHeaders.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

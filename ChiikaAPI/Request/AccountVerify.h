@@ -16,7 +16,7 @@
 #ifndef __AccountVerify_h__
 #define __AccountVerify_h__
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
+#include "Common/Required.h"
 #include "RequestInterface.h"
 //---------------------------------------------------------------------------
 namespace ChiikaApi

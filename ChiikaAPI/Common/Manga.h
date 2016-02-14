@@ -20,7 +20,7 @@
 #ifndef __Manga_h__
 #define __Manga_h__
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
+#include "Common/Required.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

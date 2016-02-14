@@ -18,12 +18,12 @@
 #include "Stable.h"
 #include "MyAnimelistUtility.h"
 
-#include "boost\regex.hpp"
+#include "boost/regex.hpp"
 //#include "boost/regex/icu.hpp"
-#include "boost\algorithm\string.hpp"
-#include "boost\algorithm\string\replace.hpp"
-#include "boost\algorithm\string\split.hpp"
-#include "boost\filesystem.hpp"
+#include "boost/algorithm/string.hpp"
+#include "boost/algorithm/string/replace.hpp"
+#include "boost/algorithm/string/split.hpp"
+#include "boost/filesystem.hpp"
 
 #include "Common/UtfTools.h"
 

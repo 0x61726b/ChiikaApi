@@ -18,7 +18,7 @@
 #ifndef __MalAjax_h__
 #define __MalAjax_h__
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
+#include "Common/Required.h"
 #include "RequestInterface.h"
 //---------------------------------------------------------------------------
 namespace ChiikaApi

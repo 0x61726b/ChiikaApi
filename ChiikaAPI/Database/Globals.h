@@ -18,29 +18,6 @@
 //----------------------------------------------------------------------------
 #define CONCAT_STR(str1,str2) (std::string(std::string(str1) + std::string(str2))).c_str()
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
-//----------------------------------------------------------------------------
-
-MalApiExport enum RequestApiValues
-{
-	REQUEST_VERIFY_SUCCESS = 0,
-	REQUEST_VERIFY_ERROR,
-
-	REQUEST_GETMYANIMELIST_SUCCESS,
-	REQUEST_GETMYANIMELIST_ERROR,
-
-	REQUEST_GETMYMANGALIST_SUCCESS,
-	REQUEST_GETMYMANGALIST_ERROR,
-
-	REQUEST_IMAGEDOWNLOAD_SUCCESS,
-	REQUEST_IMAGEDOWNLOAD_ERROR,
-
-	REQUEST_ANIMESCRAPE_SUCCESS,
-	REQUEST_ANIMESCRAPE_ERROR
-
-	
-};
-
 namespace
 {
 	//Requests

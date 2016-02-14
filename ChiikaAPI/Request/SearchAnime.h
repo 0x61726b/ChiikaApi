@@ -18,7 +18,7 @@
 #ifndef __SearchAnime_h__
 #define __SearchAnime_h__
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
+#include "Common/Required.h"
 #include "RequestInterface.h"
 //---------------------------------------------------------------------------
 namespace ChiikaApi

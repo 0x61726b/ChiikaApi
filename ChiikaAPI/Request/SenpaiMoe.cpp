@@ -17,14 +17,14 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "SenpaiMoe.h"
-#include "Database\LocalDataManager.h"
-#include "Settings\Settings.h"
-#include "Root\Root.h"
-#include "Logging\ChiString.h"
-#include "Request\MalManager.h"
-#include "Logging\FileHelper.h"
-#include "Common\MyAnimelistUtility.h"
-#include "json\json.h"
+#include "Database/LocalDataManager.h"
+#include "Settings/Settings.h"
+#include "Root/Root.h"
+#include "Logging/ChiString.h"
+#include "Request/MalManager.h"
+#include "Logging/FileHelper.h"
+#include "Common/MyAnimeListUtility.h"
+#include "json/json.h"
 #include "Seasons/SeasonManager.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi

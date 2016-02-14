@@ -15,9 +15,9 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "AddToAnimeList.h"
-#include "Database\LocalDataManager.h"
-#include "Logging\ChiString.h"
-#include "Root\Root.h"
+#include "Database/LocalDataManager.h"
+#include "Logging/ChiString.h"
+#include "Root/Root.h"
 
 //----------------------------------------------------------------------------
 namespace ChiikaApi

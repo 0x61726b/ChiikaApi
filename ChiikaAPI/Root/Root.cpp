@@ -22,14 +22,14 @@
 #include "Recognition/MediaPlayerRecognitionManager.h"
 #include "Recognition/AnimeRecognition.h"
 #include "Seasons/SeasonManager.h"
-#include "Request\ParsingManager.h"
-#include "Logging\FileHelper.h"
-#include "Logging\ChiString.h"
-#include "Root\ThreadManager.h"
+#include "Request/ParsingManager.h"
+#include "Logging/FileHelper.h"
+#include "Logging/ChiString.h"
+#include "Root/ThreadManager.h"
 #include <log4cplus/initializer.h>
-#include "Logging\LogManager.h"
+#include "Logging/LogManager.h"
 
-#include "Common\UtfTools.h"
+#include "Common/UtfTools.h"
 //----------------------------------------------------------------------------
 //Whoops..
 MalApiExport ChiikaApi::Root* GlobalInstance = 0;
@@ -333,17 +333,6 @@ namespace ChiikaApi
 	ChiString Root::GetHash()
 	{
 		return m_sCommitHash;
-	}
-	//----------------------------------------------------------------------------
-	const char* Root::GetKey(RequestApiValues api)
-	{
-		std::map<RequestApiValues,char*>::iterator It = RequestApiValueMap.find(api);
-
-		if(It != RequestApiValueMap.end())
-		{
-			return It->second;
-		}
-		return "Not_Found";
 	}
 	//----------------------------------------------------------------------------
 	void Root::StoreKeys()

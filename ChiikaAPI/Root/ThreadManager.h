@@ -16,8 +16,8 @@
 #ifndef __ThreadManager_h__
 #define __ThreadManager_h__
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
-#include "boost\thread.hpp"
+#include "Common/Required.h"
+#include "boost/thread.hpp"
 
 
 //----------------------------------------------------------------------------

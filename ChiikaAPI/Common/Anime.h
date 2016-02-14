@@ -16,7 +16,7 @@
 #ifndef __Anime_h__
 #define __Anime_h__
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
+#include "Common/Required.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

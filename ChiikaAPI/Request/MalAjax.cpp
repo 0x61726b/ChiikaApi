@@ -17,12 +17,12 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "MalAjax.h"
-#include "Database\LocalDataManager.h"
-#include "Root\Root.h"
-#include "Logging\ChiString.h"
-#include "Request\MalManager.h"
-#include "Logging\FileHelper.h"
-#include "Common\MyAnimelistUtility.h"
+#include "Database/LocalDataManager.h"
+#include "Root/Root.h"
+#include "Logging/ChiString.h"
+#include "Request/MalManager.h"
+#include "Logging/FileHelper.h"
+#include "Common/MyAnimeListUtility.h"
 
 //----------------------------------------------------------------------------
 namespace ChiikaApi

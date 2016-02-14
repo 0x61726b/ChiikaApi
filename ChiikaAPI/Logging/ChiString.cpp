@@ -15,7 +15,7 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "ChiString.h"
-#include "boost\regex.hpp"
+#include "boost/regex.hpp"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

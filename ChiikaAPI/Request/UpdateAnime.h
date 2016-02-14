@@ -18,7 +18,7 @@
 #ifndef __UpdateAnime_h__
 #define __UpdateAnime_h__
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
+#include "Common/Required.h"
 #include "RequestInterface.h"
 //---------------------------------------------------------------------------
 namespace ChiikaApi

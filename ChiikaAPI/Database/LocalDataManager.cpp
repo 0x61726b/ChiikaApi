@@ -18,9 +18,9 @@
 #include "Request/MalManager.h"
 #include "Settings/Settings.h"
 #include "Seasons/SeasonManager.h"
-#include "json\json.h"
-#include "Logging\FileHelper.h"
-#include "Root\Root.h"
+#include "json/json.h"
+#include "Logging/FileHelper.h"
+#include "Root/Root.h"
 #include "Logging/LogManager.h"
 
 #include "boost/thread.hpp"

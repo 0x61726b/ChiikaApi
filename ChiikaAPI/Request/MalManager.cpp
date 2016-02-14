@@ -18,7 +18,6 @@
 #include "curl.h"
 #include "pugixml.hpp"
 #include <sstream>
-#include "boost\thread\recursive_mutex.hpp"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

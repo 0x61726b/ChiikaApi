@@ -16,7 +16,7 @@
 #include "Stable.h"
 #include "CurlRequest.h"
 
-#include "Logging\LogManager.h"
+#include "Logging/LogManager.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

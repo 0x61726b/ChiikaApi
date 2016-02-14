@@ -19,9 +19,9 @@
 #include "RequestManager.h"
 #include "Database/LocalDataManager.h"
 #include "Settings/Settings.h"
-#include "json\json.h"
-#include "Logging\ChiString.h"
-#include "Logging\FileHelper.h"
+#include "json/json.h"
+#include "Logging/ChiString.h"
+#include "Logging/FileHelper.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

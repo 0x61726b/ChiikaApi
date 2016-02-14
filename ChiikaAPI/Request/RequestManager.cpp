@@ -28,16 +28,16 @@
 
 #include "SenpaiMoe.h"
 
-#include "Common\MyAnimelistUtility.h"
+#include "Common/MyAnimeListUtility.h"
 
-#include "Root\Root.h"
-#include "Root\ThreadManager.h"
-#include "Settings\Settings.h"
-#include "Request\MalManager.h"
+#include "Root/Root.h"
+#include "Root/ThreadManager.h"
+#include "Settings/Settings.h"
+#include "Request/MalManager.h"
 
-#include "Logging\LogManager.h"
+#include "Logging/LogManager.h"
 
-#include "boost\shared_ptr.hpp"
+#include "boost/shared_ptr.hpp"
 
 //----------------------------------------------------------------------------
 namespace ChiikaApi

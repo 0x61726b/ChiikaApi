@@ -16,7 +16,7 @@
 #ifndef __AddToAnimelist_h__
 #define __AddToAnimelist_h__
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
+#include "Common/Required.h"
 #include "RequestInterface.h"
 //---------------------------------------------------------------------------
 namespace ChiikaApi

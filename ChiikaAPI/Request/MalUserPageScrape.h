@@ -18,7 +18,7 @@
 #ifndef __MalScrape_h__
 #define __MalScrape_h__
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
+#include "Common/Required.h"
 #include "RequestInterface.h"
 //---------------------------------------------------------------------------
 namespace ChiikaApi

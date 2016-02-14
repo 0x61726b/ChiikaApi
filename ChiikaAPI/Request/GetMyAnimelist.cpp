@@ -15,9 +15,9 @@
 //----------------------------------------------------------------------------
 #include "Stable.h"
 #include "GetMyAnimelist.h"
-#include "Database\LocalDataManager.h"
-#include "Request\MalManager.h"
-#include "Root\Root.h"
+#include "Database/LocalDataManager.h"
+#include "Request/MalManager.h"
+#include "Root/Root.h"
 
 //----------------------------------------------------------------------------
 namespace ChiikaApi

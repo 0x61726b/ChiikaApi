@@ -16,10 +16,10 @@
 #ifndef __RequestInterface_h__
 #define __RequestInterface_h__
 //----------------------------------------------------------------------------
-#include "Common\Required.h"
-#include "Request\CurlRequest.h"
-#include "Request\RequestListener.h"
-#include "Request\RequestList.h"
+#include "Common/Required.h"
+#include "Request/CurlRequest.h"
+#include "Request/RequestListener.h"
+#include "Request/RequestList.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi
 {

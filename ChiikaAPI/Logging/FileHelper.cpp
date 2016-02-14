@@ -16,7 +16,7 @@
 #include "Stable.h"
 #include "FileHelper.h"
 
-#include "boost\filesystem.hpp"
+#include "boost/filesystem.hpp"
 //----------------------------------------------------------------------------
 ChiikaApi::FileUtil* gFileUtil = NULL;
 namespace ChiikaApi

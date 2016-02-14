@@ -16,7 +16,7 @@
 #include "Stable.h"
 #include "Seasons/SeasonManager.h"
 #include "Request/MalManager.h"
-#include "Root\Root.h"
+#include "Root/Root.h"
 
 #if YUME_PLATFORM == YUME_PLATFORM_WIN32
 #include <Windows.h>
