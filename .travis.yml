@@ -7,9 +7,6 @@ sudo: false
 git:
   submodules: false
 
-env:
-  - TARGET_ARCH=x64
-
 matrix:
   include:
     - env: COMPILER=clang++-3.5 CMAKE_OPTIONS="-DJSONCPP_LIB_BUILD_STATIC=ON -DJSONCPP_LIB_BUILD_SHARED=OFF"
@@ -23,7 +20,7 @@ matrix:
             - llvm-toolchain-precise-3.7
             - llvm-toolchain-precise
     - os: osx
-      env: COMPILER=clang++
+      env: COMPILER=clang++ CMAKE_OPTIONS="-DJSONCPP_LIB_BUILD_STATIC=ON -DJSONCPP_LIB_BUILD_SHARED=OFF"
       osx_image: xcode6.4
 
 install:
