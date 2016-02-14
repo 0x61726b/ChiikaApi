@@ -22,7 +22,7 @@
 #include "Logging/ChiString.h"
 #include "Request/MalManager.h"
 #include "Logging/FileHelper.h"
-#include "Common/MyAnimeListUtility.h"
+#include "Common/MyAnimelistUtility.h"
 
 //----------------------------------------------------------------------------
 namespace ChiikaApi

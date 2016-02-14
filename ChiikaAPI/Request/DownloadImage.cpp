@@ -21,7 +21,7 @@
 #include "Root/Root.h"
 #include "Settings/Settings.h"
 
-#include "Common/MyAnimeListUtility.h"
+#include "Common/MyAnimelistUtility.h"
 #include "Common/BoostHeaders.h"
 //----------------------------------------------------------------------------
 namespace ChiikaApi

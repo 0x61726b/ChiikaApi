@@ -28,7 +28,7 @@
 
 #include "SenpaiMoe.h"
 
-#include "Common/MyAnimeListUtility.h"
+#include "Common/MyAnimelistUtility.h"
 
 #include "Root/Root.h"
 #include "Root/ThreadManager.h"
