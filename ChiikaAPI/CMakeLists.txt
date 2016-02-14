@@ -235,6 +235,7 @@ add_subdirectory(Tests/HelloWorld)
 #log4cplus
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/log4cplus/include)
 set(CHIIKA_INCLUDE_DIR ${CHIIKA_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/log4cplus/include)
+include_directories(${CMAKE_BINARY_DIR}/ChiikaAPI/ThirdParty)
 
 set(CHIIKA_LIBRARIES ${CHIIKA_LIBRARIES} log4cplus)
 
