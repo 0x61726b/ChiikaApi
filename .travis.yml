@@ -9,16 +9,6 @@ git:
 
 matrix:
   include:
-    - env: COMPILER=clang++-3.5 CMAKE_OPTIONS="-DJSONCPP_LIB_BUILD_STATIC=ON -DJSONCPP_LIB_BUILD_SHARED=OFF"
-      addons: &clang35
-        apt:
-          packages: ["clang-3.5", "valgrind"]
-          sources: &sources
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.5
-            - llvm-toolchain-precise-3.6
-            - llvm-toolchain-precise-3.7
-            - llvm-toolchain-precise
     - os: osx
       env: COMPILER=clang++ CMAKE_OPTIONS="-DJSONCPP_LIB_BUILD_STATIC=ON -DJSONCPP_LIB_BUILD_SHARED=OFF"
       osx_image: xcode6.4
@@ -41,4 +31,6 @@ before_script:
   - cd ${TRAVIS_BUILD_DIR}
   - (mkdir build && cd build && cmake .. -DCMAKE_CXX_COMPILER=${COMPILER} ${CMAKE_OPTIONS})
 
-script: make
+script:
+  - cd ${TRAVIS_BUILD_DIR}
+  - cd build && make
