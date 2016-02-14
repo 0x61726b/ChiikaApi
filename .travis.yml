@@ -44,6 +44,7 @@ matrix:
         - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 20
         - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
         - sudo bash ./rungcc.sh
+        - ./cmake-3.2.2-Linux-x86_64/bin/cmake .
       addons:
         apt:
           sources:
@@ -53,6 +54,4 @@ matrix:
             - g++-4.8
 
 script:
-  - ${TRAVIS_BUILD_DIR}/ChiikaAPI/ThirdParty/log4cplus/configure
-  - cd ${TRAVIS_BUILD_DIR}
-  - cd build && make
+  - make
