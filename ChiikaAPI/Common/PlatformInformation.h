@@ -135,11 +135,7 @@
 #endif
 #endif
 #if YUME_PLATFORM == YUME_PLATFORM_LINUX
-#if defined(ChiikaLibraryDLL)
-#  define MalApiExport Q_DECL_EXPORT
-#else
-#  define MalApiExport Q_DECL_IMPORT
-#endif
+#  define MalApiExport
 #endif
 
 #define YUME_CPU_UNKNOWN    0
