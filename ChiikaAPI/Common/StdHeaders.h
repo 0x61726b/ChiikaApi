@@ -19,21 +19,17 @@
 
 // STL containers
 
-
+#if YUME_COMPILER == YUME_COMPILER_CLANG
 #include <string>
+#else
+#include <cstring>
+#endif
+
 #include <sstream>
 #include <iostream>
 #include <map>
 #include <vector>
 
 
-
-#if YUME_PLATFORM == YUME_PLATFORM_WIN32 || YUME_PLATFORM == YUME_PLATFORM_WINRT
-#  undef min
-#  undef max
-#  if defined( __MINGW32__ )
-#    include <unistd.h>
-#  endif
-#endif
 
 #endif
