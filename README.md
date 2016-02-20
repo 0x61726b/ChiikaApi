@@ -1,6 +1,6 @@
 ![Chiika](https://raw.githubusercontent.com/arkenthera/Chiika/master/resources/icon.png)
 
-[![Build Status](https://travis-ci.org/arkenthera/ChiikaApi.svg?branch=master)](https://travis-ci.org/arkenthera/ChiikaApi)
+[![Build Status](https://travis-ci.org/arkenthera/ChiikaApi.svg?branch=master)](https://travis-ci.org/Chiika-Anime/ChiikaApi)
 
 
 
